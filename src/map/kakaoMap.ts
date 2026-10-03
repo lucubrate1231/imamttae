@@ -109,6 +109,14 @@ export function createKakaoMap(kakao: KakaoNS, opts: { reduceMotion?: boolean } 
       selected = id;
       paint();
     },
+    fit() {
+      clearTimers();
+      if (!map || pins.length === 0) return;
+      map.relayout(); // 숨어 있던 칸에서 처음 보일 때 크기를 다시 잼
+      const b = new K.LatLngBounds();
+      for (const { p } of pins) b.extend(new K.LatLng(p.lat, p.lng));
+      map.setBounds(b, 24, 24, 24, 24);
+    },
     onPinClick(cb) {
       handler = cb;
     },

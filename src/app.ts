@@ -2,7 +2,8 @@
  * 앱 뼈대: 주소(해시)에 따라 화면을 그립니다.
  * - #/ 또는 #/month/10 → 첫 화면 '지금 볼 만한 곳'(기능 ①)
  * - #/scene/… → 장면 상세(F2). 첫 화면 위에 올라옴
- * - 풍경 찾기·내 수첩은 아직 없음: 아래 메뉴를 누르면 '곧 열려요'(10/3 사용자 결정)
+ * - #/find, #/find/danpung, #/find/all/gangwon → 풍경 찾기(F3)
+ * - 내 수첩은 아직 없음: 아래 메뉴를 누르면 '곧 열려요'(10/3 사용자 결정)
  */
 import type { ContentFile } from '../shared/schema/content';
 import { monthInSeoul, type Month } from './domain/month';
@@ -10,7 +11,9 @@ import { parseRoute, routeHref, type Route } from './domain/router';
 import { createFailedMap } from './map/failedMap';
 import type { MapAdapter } from './map/types';
 import { createSafeStore, type SafeStore } from './storage/safeStorage';
+import { seasonOf } from './domain/home';
 import { createDetail } from './ui/detail';
+import { createFind } from './ui/find';
 import { h } from './ui/dom';
 import { createHome } from './ui/home';
 import { createNavi } from './ui/navi';
@@ -23,6 +26,8 @@ export interface AppDeps {
   content: ContentFile | null;
   now?: Date;
   win?: Window;
+  /** 풍경 찾기의 지도(첫 화면 지도와 따로). 없으면 '지도를 불러오지 못했어요' */
+  findMap?: MapAdapter;
   /** 지도를 못 불러왔음(테스트에서 실패를 흉내 낼 때) */
   mapFailed?: boolean;
   /** 휴대폰인지 가리는 브라우저 정보(길찾기). 기본은 navigator.userAgent */
@@ -61,7 +66,11 @@ export async function startApp(deps: AppDeps): Promise<AppHandle> {
   const tabs = h('nav', { class: 'tabs', 'aria-label': '메뉴' });
   for (const [i, t] of ['지금 풍경', '풍경 찾기', '내 수첩'].entries()) {
     const b = h('button', { type: 'button', text: t, ...(i === 0 ? { 'aria-current': 'page' } : {}) });
-    b.addEventListener('click', () => (i === 0 ? (win.location.hash = routeHref({ name: 'month', month: null })) : toast('곧 열려요')));
+    b.addEventListener('click', () => {
+      if (i === 0) win.location.hash = routeHref({ name: 'month', month: null });
+      else if (i === 1) win.location.hash = routeHref({ name: 'find', type: null, region: null });
+      else toast('곧 열려요');
+    });
     tabs.append(b);
   }
 
@@ -99,16 +108,58 @@ export async function startApp(deps: AppDeps): Promise<AppHandle> {
       } else win.location.hash = routeHref({ name: 'month', month: null });
     },
   });
-  root.replaceChildren(...home.nodes, tabs, detail.el, navi.sheet, toastEl);
-  await map.mount(home.mapHost);
+  const findMap = deps.mapFailed ? createFailedMap() : (deps.findMap ?? createFailedMap());
+  const find = createFind({
+    win,
+    map: findMap,
+    scenes: deps.content.scenes,
+    today: thisMonth,
+    openScene: (id) => {
+      openedInApp = true;
+      win.location.hash = routeHref({ name: 'scene', id });
+    },
+  });
+  find.el.hidden = true;
+  root.replaceChildren(...home.nodes, find.el, tabs, detail.el, navi.sheet, toastEl);
+  await Promise.all([map.mount(home.mapHost), findMap.mount(find.mapHost)]);
+
+  const tabButtons = [...tabs.querySelectorAll('button')];
+  let screen: 'home' | 'find' = 'home';
+  /** 첫 화면 ↔ 풍경 찾기 바꾸기. 풍경 찾기는 늘 오늘의 계절 색 */
+  function showScreen(next: 'home' | 'find'): void {
+    if (next !== screen) win.scrollTo?.({ top: 0 });
+    screen = next;
+    for (const n of home.nodes) n.hidden = next !== 'home';
+    find.el.hidden = next !== 'find';
+    tabButtons.forEach((b, i) => (i === (next === 'home' ? 0 : 1) ? b.setAttribute('aria-current', 'page') : b.removeAttribute('aria-current')));
+    const m = next === 'home' ? (shown ?? thisMonth) : thisMonth;
+    root.dataset.season = seasonOf(m);
+    const soft = getComputedStyle(root).getPropertyValue('--season-soft').trim();
+    win.document.querySelector('meta[name=theme-color]')?.setAttribute('content', soft || '#ffffff');
+  }
 
   let shown: Month | null = null;
+  let findKey = '';
   function render(route: Route): void {
-    // 장면 상세를 여는 동안에도 첫 화면은 보던 달 그대로
-    const month = route.name === 'month' ? (route.month ?? thisMonth) : (shown ?? thisMonth);
-    if (month !== shown) {
-      shown = month;
-      home.render(month);
+    if (route.name === 'find') {
+      const key = `${route.type}/${route.region}`;
+      if (key !== findKey) {
+        findKey = key;
+        find.render(route.type, route.region);
+        win.scrollTo?.({ top: 0 }); // 풍경 찾기 안에서 화면이 바뀌면 맨 위부터(상세에서 돌아올 때는 그대로)
+      }
+      showScreen('find');
+    } else if (route.name !== 'scene') {
+      // 장면 상세를 여는 동안에도 아래 화면은 보던 그대로
+      const month = route.name === 'month' ? (route.month ?? thisMonth) : (shown ?? thisMonth);
+      if (month !== shown) {
+        shown = month;
+        home.render(month);
+      }
+      showScreen('home');
+    } else if (shown === null) {
+      shown = thisMonth;
+      home.render(thisMonth);
     }
     if (route.name === 'scene' && detail.show(route.id)) return;
     detail.hide();
@@ -126,7 +177,9 @@ export async function startApp(deps: AppDeps): Promise<AppHandle> {
     destroy() {
       win.removeEventListener('hashchange', onHash);
       home.destroy();
+      find.destroy();
       map.destroy();
+      findMap.destroy();
     },
   };
 }

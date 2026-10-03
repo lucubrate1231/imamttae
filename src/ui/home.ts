@@ -88,7 +88,7 @@ export function createHome(d: HomeDeps): Home {
   );
   const extra = h('section', { class: 'extra' }, homeAdd, storyLink);
 
-  const main = h('main', {}, eyebrow, title, months, peakSec, mapSec, recSec, extra);
+  const main = h('main', { class: 'home' }, eyebrow, title, months, peakSec, mapSec, recSec, extra);
 
   // 큰 제목이 화면 위로 나가면 작은 제목 막대를 보임
   const io = typeof IntersectionObserver === 'function' ? new IntersectionObserver(([e]) => mini.classList.toggle('on', !e!.isIntersecting && e!.boundingClientRect.top < 0)) : null;

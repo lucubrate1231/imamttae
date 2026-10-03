@@ -13,6 +13,7 @@ export function createFailedMap(): MapAdapter {
     },
     setPins() {},
     select() {},
+    fit() {},
     onPinClick() {},
     destroy() {
       note?.remove();

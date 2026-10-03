@@ -14,6 +14,8 @@
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname } from 'node:path';
 import { pathToFileURL } from 'node:url';
+import { REGIONS } from '../src/domain/find';
+import { SCENE_TYPES } from '../src/domain/sceneTypes';
 
 export const TITLE_FONT = {
   woff2: 'src/styles/fonts/gowun-batang-title.woff2',
@@ -21,8 +23,15 @@ export const TITLE_FONT = {
   license: 'src/styles/fonts/OFL-GowunBatang.txt',
 } as const;
 
-/** 화면에서 명조로 쓰는 고정 글(장면 데이터 말고). 시안 v2: 큰 제목·작은 제목 막대·작가 부부가 다녀온 곳 제목 */
-export const UI_TEXT = ['0123456789', '월에 만나는 풍경', '월, 작가 부부가 다녀온 곳'];
+/** 화면에서 명조로 쓰는 고정 글(장면 데이터 말고): 첫 화면 제목들, 풍경 찾기 제목·풍경 이름·권역 이름 */
+export const UI_TEXT = [
+  '0123456789',
+  '월에 만나는 풍경',
+  '월, 작가 부부가 다녀온 곳',
+  '어떤 풍경이 보고 싶으세요?',
+  ...SCENE_TYPES.map((t) => t.label),
+  ...REGIONS.map((r) => r.label),
+];
 
 type SceneLike = { name?: unknown; excerpt?: unknown };
 
