@@ -6,8 +6,8 @@ test('첫 화면: 이번 달 제목, 이번 달 선택, 오류 없음', async ({
   page.on('pageerror', (e) => errors.push(e.message));
   page.on('console', (m) => m.type() === 'error' && errors.push(m.text()));
   await page.goto('./?map=fake');
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText(/^\d{1,2}월에 만나는 자연$/);
-  await expect(page).toHaveTitle('이맘때 자연');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(/^\d{1,2}월에 만나는 풍경$/);
+  await expect(page).toHaveTitle('이맘때 풍경');
   await expect(page.locator('.mchip[aria-pressed="true"]')).toHaveCount(1);
   expect(errors).toEqual([]);
 });
@@ -59,4 +59,10 @@ test('실제 앱 첫 화면도 시안과 같은 디자인 토큰을 씀(기본 �
   expect(t.season).toBe('#b0502a');
   expect(t.display).toContain('Gowun Batang');
   expect(t.body).toContain('IBM Plex Sans KR');
+});
+
+test('앱 이름은 "이맘때 풍경"(10/4 결정 D6): 창 제목·공유 정보', async ({ page }) => {
+  await page.goto('./?map=fake');
+  await expect(page).toHaveTitle('이맘때 풍경');
+  await expect(page.locator('meta[property="og:title"]')).toHaveAttribute('content', '이맘때 풍경');
 });

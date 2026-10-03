@@ -4,7 +4,7 @@
  */
 import type { PlaceholderScene, Scene, StoryScene } from '../../shared/schema/content';
 import { inWindow, type Month } from './month';
-import { splitByMonth, visitedMonth } from './sceneTier';
+import { isYearRound, splitByMonth, visitedMonth } from './sceneTier';
 
 export type Season = 'spring' | 'summer' | 'autumn' | 'winter';
 
@@ -78,4 +78,13 @@ export function homeView(scenes: readonly Scene[], month: Month): HomeView {
   }
 
   return { peak: orderPeak(peak, month), record, placeholders, empty, nearby };
+}
+
+/** 오늘 기준 제철 판단(장면 상세 꼬리표, 10/4 결정). 첫 화면에서 고른 달이 아니라 '오늘'(한국 날짜)이 기준 */
+export type SeasonNow = 'now' | 'off' | 'yearRound' | 'none';
+
+export function seasonNow(best: { from: Month; to: Month } | undefined | null, today: Month): SeasonNow {
+  if (!best) return 'none';
+  if (isYearRound(best)) return 'yearRound';
+  return inWindow(today, best) ? 'now' : 'off';
 }

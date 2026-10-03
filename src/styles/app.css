@@ -239,3 +239,27 @@ h1, h2, h3, p { margin: 0; }
 .listpin--peak { color: var(--season); }
 .listpin--placeholder { border: 2px dashed var(--draft); }
 .listpin[aria-current='true'] { background: var(--season); color: #fff; }
+
+/* ── 장면 상세: 10/4 결정으로 더한 것 ── */
+/* 철이 아닐 때 추천 시기 칸 맨 위 한 줄 */
+.when-off { margin: 0 0 8px; font-size: 16px; font-weight: 700; color: var(--ink-2); }
+/* 사진을 못 불러왔을 때(F2-AC10) */
+.slide.fail { display: grid; place-items: center; }
+.slide-fail { margin: 0; padding: 0 20px; font-size: var(--fs-meta); color: var(--ink-2); text-align: center; }
+/* 길찾기 버튼(티맵 기본) — 시안의 .dbar .go 모양을 버튼에도 */
+.dbar .go { cursor: pointer; }
+/* 작게 '다른 앱으로 길찾기'(본문 맨 아래, 누르는 곳 48px) */
+.navi-row { margin-top: 20px; text-align: center; }
+.navi-other { min-height: var(--tap); padding: 0 12px; font-size: 15px; font-weight: 600; color: var(--ink-3); text-decoration: underline; text-underline-offset: 3px; }
+/* 길찾기 앱 고르기 판: 아래에서 올라옴(블러 없음) */
+.navi-sheet { position: fixed; left: 50%; bottom: 0; transform: translateX(-50%); z-index: 40; width: 100%; max-width: 520px; padding: 18px var(--gutter) calc(14px + env(safe-area-inset-bottom)); background: #fff; border-radius: 24px 24px 0 0; box-shadow: 0 -10px 30px -12px rgba(23, 32, 27, .35); }
+.navi-sheet[hidden] { display: none; }
+.navi-ttl { margin: 0 0 12px; font-size: 18px; font-weight: 700; color: var(--ink); }
+.navi-btns { display: grid; gap: 8px; }
+.navi-opt { display: flex; align-items: center; justify-content: center; height: var(--btn); border-radius: var(--r-pill); border: 2px solid var(--line); font-size: 18px; font-weight: 700; color: var(--ink); text-decoration: none; }
+.navi-opt:first-child { background: var(--season); border-color: transparent; color: #fff; }
+.navi-close { height: var(--tap); font-size: 16px; color: var(--ink-2); }
+/* 준비 중 장면 상세(F2-AC8): 사진 없이 위에 뒤로 버튼 */
+.ph-top { padding: calc(10px + env(safe-area-inset-top)) 12px 0; }
+.ph-back { display: grid; place-items: center; width: var(--tap); height: var(--tap); border-radius: 50%; background: var(--bg-soft); color: var(--ink); }
+.ph-msg { margin-top: 18px; }

@@ -22,7 +22,7 @@ export const TITLE_FONT = {
 } as const;
 
 /** 화면에서 명조로 쓰는 고정 글(장면 데이터 말고). 시안 v2: 큰 제목·작은 제목 막대·작가 부부가 다녀온 곳 제목 */
-export const UI_TEXT = ['0123456789', '월에 만나는 자연', '월, 작가 부부가 다녀온 곳'];
+export const UI_TEXT = ['0123456789', '월에 만나는 풍경', '월, 작가 부부가 다녀온 곳'];
 
 type SceneLike = { name?: unknown; excerpt?: unknown };
 

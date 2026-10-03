@@ -80,8 +80,8 @@ function toast(msg: string): void {
 
 // ── 뼈대 ──
 const app = document.getElementById('app')!;
-// 머리(10/3 2차 코멘트): 작은 글씨 '이상호 작가의 추천' → 큰 글씨 'N월에 만나는 자연' → 달 띠.
-// 아래로 스크롤하면 'N월에 만나는 자연'만 위에 붙어 있음
+// 머리(10/3 2차 코멘트): 작은 글씨 '이상호 작가의 추천' → 큰 글씨 'N월에 만나는 풍경' → 달 띠.
+// 아래로 스크롤하면 'N월에 만나는 풍경'만 위에 붙어 있음
 const eyebrow = h('p', { class: 'eyebrow', text: `${RECOMMENDER}의 추천` });
 const pageTitle = h('h1', { class: 'ttl' });
 // 스크롤해서 큰 제목이 화면 밖으로 나가면, 작고 가는 제목 막대가 위에 서서히 나타남(큰 제목을 그대로 붙이면 투박해서)
@@ -159,7 +159,7 @@ const infoIcon = () => {
 const extra = h('section', { class: 'extra' }, homeAdd, storyLink);
 
 const tabs = h('nav', { class: 'tabs', 'aria-label': '메뉴' });
-for (const [i, t] of ['지금', '풍경 찾기', '내 수첩'].entries()) {
+for (const [i, t] of ['지금 풍경', '풍경 찾기', '내 수첩'].entries()) {
   const b = h('button', { type: 'button', text: t, ...(i === 0 ? { 'aria-current': 'page' } : {}) });
   if (i > 0) b.addEventListener('click', () => toast('시안에서는 첫 화면만 볼 수 있어요'));
   tabs.append(b);
@@ -222,7 +222,7 @@ function render(): void {
   peak = [...r.peak].sort((a, b) => gap(a) - gap(b) || monthsLeft(a, month) - monthsLeft(b, month) || b.visited.localeCompare(a.visited));
   record = r.record;
 
-  pageTitle.textContent = `${month}월에 만나는 자연`;
+  pageTitle.textContent = `${month}월에 만나는 풍경`;
   miniTitle.textContent = pageTitle.textContent;
   rail.replaceChildren(...peak.map(bigCard));
   rail.scrollLeft = 0;
@@ -396,7 +396,7 @@ function renderDetail(): void {
   share.innerHTML = `${icon('M12 3v12M7 8l5-5 5 5M5 13v6a2 2 0 002 2h10a2 2 0 002-2v-6', 24)}<span>공유</span>`;
   share.addEventListener('click', async () => {
     try {
-      if (navigator.share) await navigator.share({ title: `${s.name} · 이맘때 자연`, text: s.oneLiner, url: location.href });
+      if (navigator.share) await navigator.share({ title: `${s.name} · 이맘때 풍경`, text: s.oneLiner, url: location.href });
       else {
         await navigator.clipboard.writeText(location.href);
         toast('주소를 복사했어요');
