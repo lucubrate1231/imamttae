@@ -159,7 +159,7 @@ const infoIcon = () => {
 const extra = h('section', { class: 'extra' }, homeAdd, storyLink);
 
 const tabs = h('nav', { class: 'tabs', 'aria-label': '메뉴' });
-for (const [i, t] of ['지금 풍경', '풍경 찾기', '내 수첩'].entries()) {
+for (const [i, t] of ['지금 풍경', '풍경 찾기', '저장한 곳'].entries()) {
   const b = h('button', { type: 'button', text: t, ...(i === 0 ? { 'aria-current': 'page' } : {}) });
   if (i > 0) b.addEventListener('click', () => toast('시안에서는 첫 화면만 볼 수 있어요'));
   tabs.append(b);

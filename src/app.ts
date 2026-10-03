@@ -3,7 +3,7 @@
  * - #/ 또는 #/month/10 → 첫 화면 '지금 볼 만한 곳'(기능 ①)
  * - #/scene/… → 장면 상세(F2). 첫 화면 위에 올라옴
  * - #/find, #/find/danpung, #/find/all/gangwon → 풍경 찾기(F3)
- * - 내 수첩은 아직 없음: 아래 메뉴를 누르면 '곧 열려요'(10/3 사용자 결정)
+ * - 저장한 곳은 아직 없음: 아래 메뉴를 누르면 '곧 열려요'(10/3 사용자 결정, 10/4 이름 바꿈 D24)
  */
 import type { ContentFile } from '../shared/schema/content';
 import { monthInSeoul, type Month } from './domain/month';
@@ -62,9 +62,9 @@ export async function startApp(deps: AppDeps): Promise<AppHandle> {
     toastTimer = win.setTimeout(() => toastEl.classList.remove('on'), 1800);
   };
 
-  // 아래 메뉴: 지금 · 풍경 찾기 · 내 수첩
+  // 아래 메뉴: 지금 풍경 · 풍경 찾기 · 저장한 곳(10/4 결정 D24)
   const tabs = h('nav', { class: 'tabs', 'aria-label': '메뉴' });
-  for (const [i, t] of ['지금 풍경', '풍경 찾기', '내 수첩'].entries()) {
+  for (const [i, t] of ['지금 풍경', '풍경 찾기', '저장한 곳'].entries()) {
     const b = h('button', { type: 'button', text: t, ...(i === 0 ? { 'aria-current': 'page' } : {}) });
     b.addEventListener('click', () => {
       if (i === 0) win.location.hash = routeHref({ name: 'month', month: null });
