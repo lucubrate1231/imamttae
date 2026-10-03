@@ -7,6 +7,7 @@
   --bg: #ffffff;
   --bg-soft: #f3f5f2;
   --ink: #17201b;
+  --ink-title: #3a2a23; /* 제목 글자: 블랙에 가까운 어두운 고동색(10/3 코멘트 — 더 부드럽게) */
   --ink-2: #4b5650;
   --ink-3: #5f6963;
   --line: #e2e7e1;
@@ -214,3 +215,6 @@ h1, h2, h3, p { margin: 0; }
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; scroll-behavior: auto !important; }
 }
+
+/* 제목 글자 색: 어두운 고동색 */
+.ttl, .mini-ttl, .title { color: var(--ink-title); }
