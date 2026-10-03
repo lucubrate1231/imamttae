@@ -48,3 +48,14 @@ test('검색엔진 노출 막음(noindex)', async ({ page }) => {
   await page.goto('./?map=fake');
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', /noindex/);
 });
+
+test('실제 앱 첫 화면도 시안과 같은 디자인 토큰을 씀(기본 계절색 가을, 제목 글꼴 고운바탕)', async ({ page }) => {
+  await page.goto('./?map=fake');
+  const t = await page.evaluate(() => {
+    const cs = getComputedStyle(document.documentElement);
+    return { season: cs.getPropertyValue('--season').trim().toLowerCase(), display: cs.getPropertyValue('--font-display'), body: cs.getPropertyValue('--font-body') };
+  });
+  expect(t.season).toBe('#b0502a');
+  expect(t.display).toContain('Gowun Batang');
+  expect(t.body).toContain('IBM Plex Sans KR');
+});

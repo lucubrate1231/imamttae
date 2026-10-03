@@ -1,7 +1,7 @@
 # 디자인 가이드 — 이맘때 자연
 
 사용자(제품 주인)가 시안 v2를 보며 정한 화면 규칙을 한곳에 모은 문서입니다(10/3, 1~4차 코멘트).
-- 값의 원본은 지금 `src/review/v2.css`의 `:root`입니다. 시안 v2 OK 뒤 `src/styles/tokens.css`로 옮깁니다.
+- 값의 원본은 `src/styles/tokens.css`입니다(10/3 디자인 확정 뒤 시안에서 옮김). 시안 v2와 실제 앱이 이 파일을 가져다 쓰고, `tests/unit/tokens.test.ts`가 아래 3절 표와 같은지 지킵니다.
 - 규칙을 바꿀 때는 사용자에게 먼저 묻고, 이 문서와 완성 기준(`docs/features/F*.md`)을 함께 고칩니다.
 - ✅ 표시는 자동 테스트가 지키는 규칙입니다(`tests/e2e/v2-design.spec.ts`, `smoke.spec.ts`).
 

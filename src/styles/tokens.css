@@ -1,46 +1,78 @@
 /*
- * 디자인 토큰 — 색·글자·간격의 원본입니다.
- * 지금 값은 임시(스케치 색)입니다. 10/8 디자인 컨셉이 정해지면 design/tokens.json 과 함께 바꿉니다.
+ * 디자인 토큰 — 색·글꼴·글자 크기·간격의 원본입니다 (10/3 디자인 확정, 시안 v2에서 옮김).
+ * 시안(src/review/v2.css)과 실제 앱이 모두 이 파일을 가져다 씁니다. 값은 여기에만 둡니다.
+ * 규칙 설명은 docs/design-guide.md 에 있고, tests/unit/tokens.test.ts 가 이 파일을 지킵니다.
+ * Figma는 이 값을 따라갑니다(design/figma-sync.md).
  */
-:root {
-  --c-page: #fbf9f4;
-  --c-ink: #1f2a24;
-  --c-ink-2: #55605a;
-  --c-ink-3: #6b736d;
-  --c-line: #e3ded2;
-  --c-surface: #ffffff;
-  --c-brand: #2f5d46;
-  --c-on-brand: #ffffff;
-  --c-accent: #b8532a;
-  --c-draft: #8b6a2e;
-  --c-draft-bg: #f5ebd6;
-  --c-sea: #e4ecec;
 
-  --font-body: 'Pretendard', system-ui, -apple-system, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
-  --fs-body: 18px; /* 본문 18px 이상 (50~60대 기준) */
-  --fs-small: 15px;
-  --fs-title: 22px;
-  --tap: 48px; /* 누르는 곳 48px 이상 */
-  --radius: 14px;
-  --space: 16px;
+/* 글꼴 내려받기(C-9, '장면 확인표'와 같은 규칙): 고딕 = IBM Plex Sans KR 400·600·700, 명조(제목·작가의 한마디) = 고운바탕 700.
+   둘 다 무료 공개 글꼴(OFL)이고, 화면에 쓰인 글자 묶음만 내려받습니다. 토큰을 쓰는 모든 화면이 여기서 한 번에 받습니다. */
+@import url('https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@700&family=IBM+Plex+Sans+KR:wght@400;600;700&display=swap');
+
+:root {
+  color-scheme: light; /* 라이트 모드만(C-8, 사용자 결정). 다크 모드 규칙은 두지 않습니다 */
+
+  /* ── 글꼴 ── */
+  --font-body: 'IBM Plex Sans KR', system-ui, -apple-system, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; /* 본문·버튼·정보 */
+  --font-display: 'Gowun Batang', 'Nanum Myeongjo', serif; /* 제목·작가의 한마디(10/3 사용자 선택) */
+
+  /* ── 바탕·글자 색 ── */
+  --bg: #ffffff;
+  --bg-soft: #f3f5f2;
+  --ink: #3a3d3b; /* 본문 글자: 검정보다 한 톤 밝게(10/3 코멘트 — 너무 셈) */
+  --ink-title: #2e221d; /* 제목 글자: 계절 색이 아주 살짝 섞인 검정. 계절마다 아래에서 바뀜. 기본은 가을 */
+  --ink-2: #4f5753;
+  --ink-3: #5f6963;
+  --line: #e2e7e1;
+  --on-season: #ffffff; /* 계절 색 위에 얹는 글자 */
+
+  /* 작가 부부가 다녀온 곳(제철 아님): 계절 색 없이 회색 */
+  --rec: #5f6963;
+  --rec-bg: #eef0ed;
+  /* 초안(작가 확인 전) */
+  --draft: #7a5a1f;
+  --draft-bg: #f6edd9;
+  /* 지도 바다 */
+  --map-sea: #eaf0ef;
+
+  /* ── 계절 색(흰 바탕 대비 5.2 이상). 기본값은 가을. 달에 따라 [data-season]으로 바뀜 ── */
+  --season: #b0502a;
+  --season-soft: #fbefe8;
+
+  /* ── 모서리 ── */
+  --r-card: 28px;
+  --r-photo: 24px;
+  --r-pill: 999px;
+
+  /* ── 글자 크기·누르는 곳 ── */
+  --fs-body: 18px; /* 본문 18px 이상(50~60대 기준, C-2) */
+  --fs-meta: 16px; /* 정보(지역 등) */
+  --tap: 48px; /* 누르는 곳 48px 이상(C-2) */
+  --btn: 56px; /* 큰 버튼 높이 */
+
+  /* ── 간격·높이·그림자 ── */
+  --gutter: 16px;
+  --tabs-h: 68px; /* 아래 메뉴 높이 */
+  --shadow: 0 10px 30px -14px rgba(23, 32, 27, 0.35);
+
+  /* ── 옛 첫 화면(index.html, src/styles/base.css)이 쓰는 옛 이름 ──
+     값을 따로 적지 않고 위 토큰에 연결만 해 둡니다. 다음 할 일 2번(기능 ①을 실제 앱으로)에서 옛 화면을 지울 때 함께 지웁니다. */
+  --c-page: var(--bg);
+  --c-ink: var(--ink);
+  --c-ink-2: var(--ink-2);
+  --c-ink-3: var(--ink-3);
+  --c-line: var(--line);
+  --c-surface: var(--bg);
+  --c-brand: var(--season);
+  --c-on-brand: var(--on-season);
+  --c-accent: var(--season);
+  --c-draft: var(--draft);
+  --c-draft-bg: var(--draft-bg);
+  --c-sea: var(--map-sea);
 }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) {
-    --c-page: #171a18;
-    --c-ink: #ecebe6;
-    --c-ink-2: #b9beb9;
-    --c-ink-3: #9aa19b;
-    --c-line: #2c322e;
-    --c-surface: #20251f;
-    --c-sea: #1d2624;
-  }
-}
-:root[data-theme='dark'] {
-  --c-page: #171a18;
-  --c-ink: #ecebe6;
-  --c-ink-2: #b9beb9;
-  --c-ink-3: #9aa19b;
-  --c-line: #2c322e;
-  --c-surface: #20251f;
-  --c-sea: #1d2624;
-}
+
+/* 계절 규칙: 강조색·연한 바탕·제목 글자색(docs/design-guide.md 3절). 달 → 계절은 src/review/v2.ts 의 seasonOf 와 같음 */
+[data-season='spring'] { --season: #b0466b; --season-soft: #fbeef3; --ink-title: #2e1f26; } /* 제목: 자줏빛이 살짝 섞인 검정 */
+[data-season='summer'] { --season: #2e6b4a; --season-soft: #e9f3ed; --ink-title: #1c2a22; } /* 제목: 초록빛이 살짝 섞인 검정 */
+[data-season='autumn'] { --season: #b0502a; --season-soft: #fbefe8; --ink-title: #2e221d; } /* 제목: 고동빛 검정(10/3 사용자 선택 C) */
+[data-season='winter'] { --season: #466a86; --season-soft: #edf3f8; --ink-title: #1e2632; } /* 서리 낀 듯한 바탕, 제목: 남빛 검정 */

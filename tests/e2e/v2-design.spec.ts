@@ -169,3 +169,11 @@ test('사진 움직임: 휴대폰에서 "동작 줄이기"를 켜면 움직이�
   await page.waitForTimeout(1500);
   expect((await kbState(page)).some((x) => x)).toBe(false);
 });
+
+test('달을 바꾸면 계절 색이 토큰 값대로(4월 봄 #B0466B, 1월 겨울 #466A86)', async ({ page }) => {
+  const seasonOf = () => page.$eval('#app', (el) => getComputedStyle(el).getPropertyValue('--season').trim().toLowerCase());
+  await open(page, '?m=4');
+  expect(await seasonOf()).toBe('#b0466b');
+  await open(page, '?m=1');
+  expect(await seasonOf()).toBe('#466a86');
+});
