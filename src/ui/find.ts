@@ -78,26 +78,27 @@ export function createFind(d: FindDeps): Find {
     return now[0] ?? yr[0] ?? rest[0] ?? list[0];
   }
 
-  function tile(t: SceneTypeId, opts: { big?: boolean; wide?: boolean; nameOnly?: boolean } = {}): HTMLElement {
+  function tile(t: SceneTypeId, opts: { big?: boolean; nameOnly?: boolean } = {}): HTMLElement {
     const cover = coverOf(t);
     const w = typeWhen(stories, t);
     const count = ofType(t).length;
     const line = [whenText(w), `${count}곳`].filter(Boolean).join(' · ');
-    const cls = `tile${opts.big ? ' big-tile' : ''}${opts.wide ? ' wide' : ''}`;
+    const cls = `tile${opts.big ? ' big-tile' : ''}`;
     const b = h('button', { type: 'button', class: cls });
     const pic = cover ? photoImg(cover.photos[0]!, '', opts.big ? {} : { src: thumb(cover.photos[0]!.src, 480) }) : null;
     if (opts.big) {
-      const status = whenStatus(w, today) === 'now' ? h('span', { class: 'on-photo-status' }, h('span', { class: 'dot photo', 'aria-hidden': 'true' }), '지금 제철') : null;
-      b.append(h('span', { class: 'tile-photo' }, pic), h('span', { class: 'tile-cap' }, h('span', { class: 'tile-text' }, h('b', { class: 'tile-name', text: label(t) }), h('span', { class: 'tile-line', text: line })), status));
+      // 상태는 이름 위 한 줄(8-1, 10/4 — 이름 오른쪽에 두면 320px에서 '단풍·은행'이 두 줄로 깨짐)
+      const status = whenStatus(w, today) === 'now' ? h('span', { class: 'on-photo-status' }, h('span', { class: 'dot photo', 'aria-hidden': 'true' }), '지금 좋아요') : null;
+      b.append(h('span', { class: 'tile-photo' }, pic), h('span', { class: 'tile-cap' }, status, h('b', { class: 'tile-name', text: label(t) }), h('span', { class: 'tile-line', text: line })));
     } else {
       b.append(h('span', { class: 'tile-photo' }, pic), h('span', { class: 'tile-text' }, h('b', { class: 'tile-name', text: label(t) }), !opts.nameOnly && h('span', { class: 'tile-line', text: line })));
     }
     b.addEventListener('click', () => go(routeHref({ name: 'find', type: t, region: null })));
     return b;
   }
-  /** 작은 타일 2열. 홀수면 마지막 하나는 가로 타일(design-guide 8-1) */
+  /** 작은 타일 2열. 홀수여도 2열 그대로, 마지막 칸은 비움(8-1, 10/4 사용자) */
   function grid(types: SceneTypeId[], nameOnly = false): HTMLElement {
-    return h('div', { class: 'tiles' }, ...types.map((t, i) => tile(t, { wide: types.length % 2 === 1 && i === types.length - 1 && !nameOnly, nameOnly })));
+    return h('div', { class: 'tiles' }, ...types.map((t) => tile(t, { nameOnly })));
   }
 
   function chips(counts: { id: RegionId | null; label: string; count?: number }[], selected: RegionId | null, href: (r: RegionId | null) => string, cls: string): HTMLElement {
@@ -141,12 +142,12 @@ export function createFind(d: FindDeps): Find {
   }
 
   function row(s: StoryScene, record: boolean): HTMLElement {
-    const meta = record ? `${s.region} · ${visitedMonth(s.visited)}월에 다녀온 모습` : `${s.region} · ${s.best?.note ?? ''}`;
+    const meta = record ? `${visitedMonth(s.visited)}월에 다녀온 모습` : (s.best?.note ?? '');
     const b = h(
       'button',
       { type: 'button', class: `row${record ? ' rec-row' : ''}` },
       photoImg(s.photos[0]!, '', { src: thumb(s.photos[0]!.src, 240) }),
-      h('span', { class: 'row-text' }, h('b', { class: 'row-name', text: s.name }), h('span', { class: 'row-meta', text: meta })),
+      h('span', { class: 'row-text' }, h('b', { class: 'row-name', text: s.name }), h('span', { class: 'row-meta' }, h('span', { class: 'nowrap', text: `${s.region} ·` }), ' ', h('span', { class: 'nowrap', text: meta }))),
     );
     b.addEventListener('click', () => d.openScene(s.id, 'find-list'));
     return b;
@@ -168,7 +169,7 @@ export function createFind(d: FindDeps): Find {
       const range = whenText(w);
       when =
         status === 'now' || status === 'soon'
-          ? h('p', { class: 'when-line' }, h('span', { class: `dot ${status}`, 'aria-hidden': 'true' }), h('span', {}, h('b', { text: status === 'now' ? '지금 제철' : '곧' }), ` · ${range}에 가장 좋아요`))
+          ? h('p', { class: 'when-line' }, h('span', { class: `dot ${status}`, 'aria-hidden': 'true' }), h('span', {}, h('span', { class: 'nowrap' }, h('b', { text: status === 'now' ? '지금 좋아요' : '곧' }), ' ·'), ' ', h('span', { class: 'nowrap', text: status === 'now' && w.kind === 'range' ? `${w.to}월까지` : `${range}에 가장 좋아요` })))
           : h('p', { class: 'when-line', text: status === 'always' ? '언제나 좋아요' : `${range}에 가장 좋아요` });
     }
     const head = h('header', { class: 'find-head result' }, back, h('h1', { class: 'find-ttl', text: type ? label(type) : regionLabel(region!) }), when);
@@ -182,7 +183,7 @@ export function createFind(d: FindDeps): Find {
       'find-chips',
     );
 
-    // 나누기: 일 년 내내(낮추지 않음, D8) · 제철 장면은 때에 따라 묶음 · 작가 부부가 다녀온 곳
+    // 나누기: 일 년 내내(낮추지 않음, D8) · 좋은 때 다녀온 장면은 때에 따라 묶음 · 다른 때 다녀온 곳
     const yr = list.filter(yearRound).sort((a, b) => a.name.localeCompare(b.name, 'ko'));
     const timed = list.filter((s) => s.best && !yearRound(s) && sceneTier(s) === 'peak');
     const records = list.filter((s) => !yearRound(s) && !timed.includes(s)).sort((a, b) => visitedMonth(a.visited) - visitedMonth(b.visited) || a.name.localeCompare(b.name, 'ko'));
@@ -195,7 +196,7 @@ export function createFind(d: FindDeps): Find {
     const dotHead = (cls: string, text: string) => h('p', { class: 'group-head' }, h('span', { class: `dot ${cls}`, 'aria-hidden': 'true' }), h('b', { text }));
     const yrGroup: Group | null = yr.length ? { head: h('p', { class: 'group-head', text: '언제나 좋아요' }), more: '<b>언제나</b> 좋은 곳 더 보기', rows: yr } : null;
     if (yrGroup && w?.kind === 'always') groups.push(yrGroup);
-    if (now.length) groups.push({ head: dotHead('now', '지금 제철'), more: `<b>${today}월</b>에 좋은 곳 더 보기`, rows: sortNowGroup(now, today) });
+    if (now.length) groups.push({ head: dotHead('now', '지금 좋아요'), more: `<b>${today}월</b>에 좋은 곳 더 보기`, rows: sortNowGroup(now, today) });
     if (soon.length) groups.push({ head: dotHead('soon', '곧'), more: `<b>${next(today)}월</b>에 좋은 곳 더 보기`, rows: [...soon].sort(byName) });
     const starts = [...new Set(later.map((s) => s.best!.from))].sort((a, b) => ahead(next(today), a) - ahead(next(today), b));
     for (const m of starts) groups.push({ head: h('p', { class: 'group-head', text: `${m}월부터` }), more: `<b>${m}월</b>에 좋은 곳 더 보기`, rows: later.filter((s) => s.best!.from === m).sort(byName) });
@@ -211,14 +212,14 @@ export function createFind(d: FindDeps): Find {
       'section',
       { class: 'find-map', 'aria-label': '지도' },
       mapbox,
-      !few && h('div', { class: 'legend', 'aria-hidden': 'true' }, h('span', { text: '제철 풍경' }), h('span', { class: 'r', text: '작가 부부 방문' })),
+      !few && h('div', { class: 'legend', 'aria-hidden': 'true' }, h('span', { text: '좋은 때 다녀온 곳' }), h('span', { class: 'r', text: '다른 때 다녀온 곳' })),
     );
 
     // 목록: 첫 묶음만 펼치고 나머지는 'N월에 좋은 곳 더 보기'
     const listSec = h('section', { class: 'find-list' });
     if (few) {
       const word = (type ? label(type) : '').split(/[·\s]/)[0] ?? '';
-      listSec.append(h('p', { class: 'few-note', text: `${word}${iga(word)} 제철일 때 다녀온 이야기는 아직 없어요. 다른 계절에 다녀온 모습이에요.` }), ...records.map((s) => row(s, true)));
+      listSec.append(h('p', { class: 'few-note', text: `${word}${iga(word)} 가장 좋을 때 다녀온 이야기는 아직 없어요. 다른 계절에 다녀온 모습이에요.` }), ...records.map((s) => row(s, true)));
     } else if (groups.length) {
       listSec.append(h('h2', { text: '가까운 때부터' }));
       groups.forEach((g, i) => {
@@ -238,7 +239,7 @@ export function createFind(d: FindDeps): Find {
     }
     const recSec =
       !few && records.length
-        ? h('section', { class: 'find-records' }, h('h2', { text: '작가 부부가 다녀온 곳' }), ...records.map((s) => row(s, true)))
+        ? h('section', { class: 'find-records' }, h('h2', { text: '다른 때 다녀온 곳' }), ...records.map((s) => row(s, true)))
         : null;
     const together =
       few && type

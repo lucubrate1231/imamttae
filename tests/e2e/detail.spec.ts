@@ -115,15 +115,16 @@ test('올해 소식 찾아보기: 단풍 장면은 "올해 + 단풍지도"로 �
   expect(q).toBe(`${new Date().getFullYear()} 단풍지도`);
 });
 
-test('사진 안내는 모든 장면에, "작가 부부 방문" 꼬리표는 없음', async ({ page }) => {
+test('사진 안내는 모든 장면에("사진은 작가가 …"), 화면에 "제철"·"작가 부부"라는 말이 없음(D29·D30)', async ({ page }) => {
   await home(page, '#/month/8');
   await page.locator('.rec').first().click();
   await expect(page.locator('.detail.open')).toBeVisible();
-  await expect(page.locator('.detail .body .badges')).not.toContainText('작가 부부 방문');
-  await expect(page.locator('.detail .recnote')).toContainText('사진은 작가 부부가');
+  await expect(page.locator('.detail')).not.toContainText('제철');
+  await expect(page.locator('.detail')).not.toContainText('작가 부부');
+  await expect(page.locator('.detail .recnote')).toContainText('사진은 작가가');
   await page.goBack();
   await page.locator('.rail .big').first().click();
-  await expect(page.locator('.detail .recnote')).toContainText('사진은 작가 부부가');
+  await expect(page.locator('.detail .recnote')).toContainText('사진은 작가가');
 });
 
 const kbState = (page: Page) => page.$$eval('.gallery .kb', (els) => els.map((e) => e.getAnimations().some((a) => a.playState === 'running')));

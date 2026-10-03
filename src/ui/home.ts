@@ -1,6 +1,6 @@
 /**
  * 첫 화면 '지금 볼 만한 곳'(기능 ①) — 확정 시안 v2를 실제 앱으로 옮김
- * 위에서 아래로: 이상호 작가의 추천 → N월에 만나는 풍경 → 달 띠 → 제철 카드 → 작은 지도 → 작가 부부가 다녀온 곳 → 홈 화면에 두기·이 앱 이야기
+ * 위에서 아래로: 이상호 작가의 추천 → N월에 만나는 풍경 → 달 띠 → N월에 좋은 풍경 카드 → 작은 지도 → 작가가 다녀온 곳 → 홈 화면에 두기·이 앱 이야기
  * 완성 기준: docs/features/F1-지금-볼-만한-곳.md, 화면 규칙: docs/design-guide.md
  */
 import type { PlaceholderScene, Scene, StoryScene } from '../../shared/schema/content';
@@ -59,19 +59,20 @@ export function createHome(d: HomeDeps): Home {
 
   // ── 제철 카드 띠 ──
   const emptyNote = h('p', { class: 'empty-month', role: 'status' });
-  const rail = h('div', { class: 'rail', role: 'list', 'aria-label': '제철 풍경' });
-  const peakSec = h('section', { class: 'peak', 'aria-label': '제철 풍경' }, emptyNote, rail);
+  // 읽기 이름은 달마다 'N월에 좋은 풍경'(D29, render에서 정함)
+  const rail = h('div', { class: 'rail', role: 'list' });
+  const peakSec = h('section', { class: 'peak' }, emptyNote, rail);
 
   // ── 작은 지도 ──
   const mapHost = h('div', { class: 'kmap' });
-  // 범례: '제철'만 쓰면 무엇의 제철인지 헷갈려서 '제철 풍경'(10/3 5차 코멘트)
-  const legend = h('div', { class: 'legend', 'aria-hidden': 'true' }, h('span', { text: '제철 풍경' }), h('span', { class: 'r', text: '작가 부부 방문' }));
+  // 범례: 그 화면 두 구역의 이름과 같게 — 'N월에 좋은 풍경 · 작가가 다녀온 곳'(D29·D30, 달은 render에서)
+  const legend = h('div', { class: 'legend', 'aria-hidden': 'true' }, h('span', {}), h('span', { class: 'r', text: '작가가 다녀온 곳' }));
   const mapSec = h('section', { class: 'mapsec', 'aria-label': '지도' }, h('div', { class: 'mapbox' }, mapHost), legend);
 
-  // ── 작가 부부가 다녀온 곳(F1-AC11) ──
+  // ── 작가가 다녀온 곳(F1-AC11, D30) ──
   const recTitle = h('h2', {});
   const recList = h('ul', { class: 'reclist' });
-  const recSec = h('section', { class: 'records' }, recTitle, h('p', { class: 'sub', text: '제철은 아니지만 이맘때 모습을 볼 수 있어요.' }), recList);
+  const recSec = h('section', { class: 'records' }, recTitle, h('p', { class: 'sub', text: '가장 좋은 때는 아니지만 이맘때 모습을 볼 수 있어요.' }), recList);
 
   // ── 아래: 홈 화면에 두기(F5, 곧 열림) · 이 앱 이야기 ──
   const homeAdd = h(
@@ -165,7 +166,7 @@ export function createHome(d: HomeDeps): Home {
   map.onPinClick((id) => {
     const i = cards.findIndex((s) => s.id === id);
     if (i >= 0) select(i, true);
-    else d.openScene(id, 'map-pin'); // 작가 부부가 다녀온 곳·준비 중은 바로 상세로
+    else d.openScene(id, 'map-pin'); // 작가가 다녀온 곳·준비 중은 바로 상세로
   });
 
   function render(month: Month): void {
@@ -189,7 +190,11 @@ export function createHome(d: HomeDeps): Home {
     rail.scrollLeft = 0;
     peakSec.hidden = rail.children.length === 0 && !view.empty;
 
-    recTitle.textContent = `${month}월, 작가 부부가 다녀온 곳`;
+    recTitle.textContent = `${month}월, 작가가 다녀온 곳`;
+    const good = `${month}월에 좋은 풍경`;
+    rail.setAttribute('aria-label', good);
+    peakSec.setAttribute('aria-label', good);
+    (legend.firstElementChild as HTMLElement).textContent = good;
     recList.replaceChildren(...view.record.map(recRow));
     recSec.hidden = view.record.length === 0;
 

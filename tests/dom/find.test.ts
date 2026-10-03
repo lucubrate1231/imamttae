@@ -38,13 +38,15 @@ describe('풍경 고르기(#/find)', () => {
     expect(q('.find h1')!.textContent).toBe('어떤 풍경이 보고 싶으세요?');
   });
 
-  it('F3-AC1·D22: 10월에 좋은 풍경 — 이번 달 장면이 많은 순, 첫째는 큰 타일(지금 제철 표시)', async () => {
+  it('F3-AC1·D22: 10월에 좋은 풍경 — 이번 달 장면이 많은 순, 첫째는 큰 타일(이름 위에 "지금 좋아요")', async () => {
     await start('#/find');
     expect(q('.sec-good h2')!.textContent).toBe('10월에 좋은 풍경');
     expect(names('.sec-good .tile')).toEqual(['단풍·은행', '운해·물안개', '억새·갈대', '계곡·폭포']);
     const big = q('.sec-good .tile')!;
     expect(big.classList.contains('big-tile')).toBe(true);
-    expect(big.textContent).toContain('지금 제철');
+    const cap = big.querySelector('.tile-cap')!;
+    expect(cap.firstElementChild!.textContent).toBe('지금 좋아요'); // 상태는 이름 위(8-1)
+    expect(big.textContent).not.toContain('제철');
     expect(big.querySelector('.tile-line')!.textContent).toMatch(/^10~11월 · \d+곳$/);
   });
 
@@ -60,11 +62,9 @@ describe('풍경 고르기(#/find)', () => {
     expect(all('.sec-other .tile')[0]!.querySelector('.tile-line')!.textContent).toMatch(/^11~2월 · /);
   });
 
-  it('작은 타일이 홀수면 마지막 하나는 줄 전체를 쓰는 가로 타일(design-guide 8-1)', async () => {
+  it('작은 타일이 홀수여도 가로 타일을 쓰지 않음 — 2열 그대로, 마지막 칸은 비움(8-1, 10/4 사용자)', async () => {
     await start('#/find');
-    expect(all('.sec-good .tile').at(-1)!.classList.contains('wide')).toBe(true); // 작은 타일 3개
-    expect(all('.sec-other .tile').at(-1)!.classList.contains('wide')).toBe(true); // 7개
-    expect(all('.sec-always .tile').some((t) => t.classList.contains('wide'))).toBe(false); // 2개
+    expect(root.querySelectorAll('.tile.wide')).toHaveLength(0);
   });
 
   it('F3-AC7: 지역으로 고르기 — 전국 + 장면이 있는 권역(장면 수), 누르면 그 권역 주소', async () => {
@@ -85,11 +85,11 @@ describe('풍경 고르기(#/find)', () => {
 });
 
 describe('풍경을 고른 뒤(#/find/<풍경>)', () => {
-  it('F3-AC2: 제목 아래 볼 수 있는 때 한 줄 — ● 지금 제철 · 10~11월에 가장 좋아요', async () => {
+  it('F3-AC2: 제목 아래 볼 수 있는 때 한 줄 — ● 지금 좋아요 · 11월까지(D29)', async () => {
     await start('#/find/danpung');
     expect(q('.find h1')!.textContent).toBe('단풍·은행');
     const line = q('.when-line')!;
-    expect(line.textContent).toBe('지금 제철 · 10~11월에 가장 좋아요');
+    expect(line.textContent).toBe('지금 좋아요 · 11월까지');
     expect(line.querySelector('.dot.now')).not.toBeNull();
   });
 
@@ -106,10 +106,10 @@ describe('풍경을 고른 뒤(#/find/<풍경>)', () => {
     expect(q('.when-line')!.textContent).toBe('언제나 좋아요');
   });
 
-  it('F3-AC3·D23: 목록은 "지금 제철" 묶음이 먼저, 그 안에서는 추천 시기가 먼저 끝나는 곳 먼저(같으면 이름순)', async () => {
+  it('F3-AC3·D23: 목록은 "지금 좋아요" 묶음이 먼저, 그 안에서는 추천 시기가 먼저 끝나는 곳 먼저(같으면 이름순)', async () => {
     await start('#/find/danpung');
     const g = q('.group')!;
-    expect(g.querySelector('.group-head')!.textContent).toBe('지금 제철');
+    expect(g.querySelector('.group-head')!.textContent).toBe('지금 좋아요');
     const rows = [...g.querySelectorAll('.row')].map((r) => r.querySelector('.row-name')!.textContent!);
     expect(rows.indexOf('남설악 주전골')).toBeLessThan(rows.indexOf('내장산 우화정'));
     const metas = [...g.querySelectorAll('.row-meta')].map((m) => m.textContent!);
@@ -126,11 +126,11 @@ describe('풍경을 고른 뒤(#/find/<풍경>)', () => {
     expect(all('.group').filter((g) => g.hidden).length).toBe(hiddenBefore - 1);
   });
 
-  it('작가 부부가 다녀온 곳(제철 아님)은 아래에 "○월에 다녀온 모습"과 함께', async () => {
+  it('다른 때 다녀온 곳은 아래에 "○월에 다녀온 모습"과 함께(D30)', async () => {
     await start('#/find/danpung');
     const rec = q('.find-records')!; // 단풍·은행에는 철 지나 다녀온 곳이 있음(실제 데이터)
     expect(rec).not.toBeNull();
-    expect(rec.querySelector('h2')!.textContent).toBe('작가 부부가 다녀온 곳');
+    expect(rec.querySelector('h2')!.textContent).toBe('다른 때 다녀온 곳');
     expect(rec.querySelector('.row-meta')!.textContent).toMatch(/ · \d+월에 다녀온 모습$/);
   });
 
@@ -156,9 +156,14 @@ describe('풍경을 고른 뒤(#/find/<풍경>)', () => {
 
   it('F3-AC9: 제철 장면이 없는 풍경(억새·갈대) — 안내와 "지금 함께 보기 좋은 풍경" 타일 2개, 범례 없음', async () => {
     await start('#/find/eoksae');
-    expect(q('.few-note')!.textContent).toBe('억새가 제철일 때 다녀온 이야기는 아직 없어요. 다른 계절에 다녀온 모습이에요.');
+    expect(q('.few-note')!.textContent).toBe('억새가 가장 좋을 때 다녀온 이야기는 아직 없어요. 다른 계절에 다녀온 모습이에요.');
     expect(names('.together .tile')).toEqual(['단풍·은행', '운해·물안개']);
     expect(q('.find .legend')).toBeNull();
+  });
+
+  it('풍경 화면 지도 범례는 "좋은 때 다녀온 곳 · 다른 때 다녀온 곳"(8-1, D29·D30)', async () => {
+    await start('#/find/danpung');
+    expect(all('.find .legend span').map((s) => s.textContent)).toEqual(['좋은 때 다녀온 곳', '다른 때 다녀온 곳']);
   });
 
   it('F3-AC6: "‹ 풍경 찾기"를 누르면 고르기 화면으로', async () => {

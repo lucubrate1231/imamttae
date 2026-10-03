@@ -75,3 +75,15 @@ test('C-3: 풍경 찾기 접근성 검사(axe) 위반 0', async ({ page }) => {
     expect(r.violations.map((v) => `${hash} ${v.id}: ${v.help}`)).toEqual([]);
   }
 });
+
+test('D28~D30: 첫 화면·풍경 찾기에 "제철"·"작가 부부"·"가고 싶어요"라는 말이 없음', async ({ page }) => {
+  for (const hash of ['#/month/10', '#/month/8', '#/find', '#/find/danpung', '#/find/eoksae']) {
+    await page.goto(`./?map=fake&motion=0${hash}`);
+    await page.locator('#app main:not([hidden]), #app .find:not([hidden])').first().waitFor();
+    const words = await page.evaluate(() => {
+      const t = [...document.querySelectorAll('#app :is(main, .find, .tabs):not([hidden])')].map((e) => (e as HTMLElement).innerText + ' ' + [...e.querySelectorAll('[aria-label]')].map((x) => x.getAttribute('aria-label')).join(' ')).join(' ');
+      return ['제철', '작가 부부', '가고 싶어요', '담았어요'].filter((w) => t.includes(w));
+    });
+    expect(words, hash).toEqual([]);
+  }
+});

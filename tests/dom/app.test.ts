@@ -76,7 +76,9 @@ describe('제철 카드와 작가 부부가 다녀온 곳', () => {
 
   it('F1-AC11: 작가 부부가 다녀온 곳은 제철 카드 아래 작은 목록, 없는 달에는 숨김', async () => {
     await start();
-    expect(text('.records h2')).toBe('10월, 작가 부부가 다녀온 곳');
+    expect(text('.records h2')).toBe('10월, 작가가 다녀온 곳');
+    expect(text('.records .sub')).toBe('가장 좋은 때는 아니지만 이맘때 모습을 볼 수 있어요.');
+    expect(root.querySelector('.rail')!.getAttribute('aria-label')).toBe('10월에 좋은 풍경');
     expect(all('.rec').map((r) => r.querySelector('b')?.textContent)).toEqual(['동해 추암 촛대바위']);
     window.location.hash = '#/month/11';
     hashChange();
@@ -117,9 +119,9 @@ describe('작은 지도', () => {
     expect(all('.rail .big').length).toBeGreaterThan(0);
   });
 
-  it('지도 범례는 "제철 풍경 · 작가 부부 방문"', async () => {
+  it('지도 범례는 "N월에 좋은 풍경 · 작가가 다녀온 곳"(D29·D30)', async () => {
     await start();
-    expect(all('.legend span').map((s) => s.textContent)).toEqual(['제철 풍경', '작가 부부 방문']);
+    expect(all('.legend span').map((s) => s.textContent)).toEqual(['10월에 좋은 풍경', '작가가 다녀온 곳']);
   });
 });
 
