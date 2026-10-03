@@ -215,8 +215,9 @@ h1, h2, h3, p { margin: 0; }
 .when-row b { font-weight: 700; }
 .when-tip { margin: 0 0 10px; font-size: 17px; line-height: 1.5; color: var(--ink); }
 .when-tip .lbl { margin-right: 8px; font-weight: 600; color: var(--ink-2); }
-.when-vary { display: flex; align-items: flex-start; gap: 6px; font-size: 16px; color: var(--ink-2); }
-.when-vary .info { margin-top: 3px; }
+/* 안내 글: ⓘ 아이콘을 글 안에 넣어 둘째 줄이 들여써지지 않게(내어쓰기 없음) — 위 '추천 시기', 아래 '소식 찾아보기'와 왼쪽을 맞춤(10/3 5차 코멘트) */
+.when-vary { font-size: 16px; color: var(--ink-2); }
+.when-vary .info { vertical-align: -2px; margin-right: 5px; }
 .when-link { display: inline-flex; align-items: center; min-height: var(--tap); font-size: 16.5px; font-weight: 800; color: var(--season); text-decoration: none; }
 /* 작가의 한마디: 계절색을 옅게 섞은 왼쪽 세로선으로 인용임을 알림(10/3 3차 결정, 예전 방식 유지) */
 .quote { margin: 0; padding: 4px 0 4px 16px; border-left: 3px solid color-mix(in srgb, var(--season) 35%, #fff); }

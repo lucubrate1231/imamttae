@@ -66,3 +66,42 @@ test('사진 위 버튼은 상세에 들어갈 때 바로 뜨지 않고, 1초쯤
   await expect(page.locator('.gallery')).toHaveClass(/ov-wait/);
   await expect(page.locator('.gallery')).not.toHaveClass(/ov-wait/, { timeout: 4500 });
 });
+
+test('지도 범례는 "제철 풍경 · 작가 부부 방문"', async ({ page }) => {
+  await open(page, '?m=10');
+  await expect(page.locator('.legend span').first()).toHaveText('제철 풍경');
+  await expect(page.locator('.legend span.r')).toHaveText('작가 부부 방문');
+});
+
+test('넘김 화살표로 다음 사진에 가면 버튼이 숨었다가, 사진이 멈추고 1초쯤 뒤 서서히 다시 나타남', async ({ page }) => {
+  await open(page, '?m=10');
+  await page.locator('.big').first().click();
+  const gallery = page.locator('.gallery');
+  await expect(gallery).not.toHaveClass(/ov-wait/, { timeout: 4500 });
+  await page.locator('.gallery .next').click();
+  await expect(gallery).toHaveClass(/ov-wait/);
+  await expect(page.locator('.gdots i').nth(1)).toHaveClass(/on/, { timeout: 2000 });
+  await page.waitForTimeout(500);
+  await expect(gallery).toHaveClass(/ov-wait/);
+  await expect(gallery).not.toHaveClass(/ov-wait/, { timeout: 3000 });
+});
+
+test('추천 시기 칸의 안내 글은 내어쓰기 없이 "올해 ○○ 소식 찾아보기"와 왼쪽이 맞음', async ({ page }) => {
+  await page.setViewportSize({ width: 360, height: 740 });
+  await open(page, '?m=10');
+  await page.locator('.big').first().click();
+  await expect(page.locator('.detail.open')).toBeVisible();
+  const r = await page.evaluate(() => {
+    const vary = document.querySelector('.when-vary')!;
+    const range = document.createRange();
+    range.selectNodeContents(vary);
+    const lines = [...range.getClientRects()].filter((x) => x.width > 4);
+    const last = lines[lines.length - 1]!;
+    const link = document.querySelector('.when-link')!.getBoundingClientRect();
+    const row = document.querySelector('.when-row')!.getBoundingClientRect();
+    return { lastLeft: Math.round(last.left), linkLeft: Math.round(link.left), rowLeft: Math.round(row.left), multi: new Set(lines.map((x) => Math.round(x.top))).size > 1 };
+  });
+  expect(r.multi).toBe(true); // 두 줄 이상인 글로 확인
+  expect(Math.abs(r.lastLeft - r.linkLeft)).toBeLessThanOrEqual(1);
+  expect(Math.abs(r.linkLeft - r.rowLeft)).toBeLessThanOrEqual(1);
+});
