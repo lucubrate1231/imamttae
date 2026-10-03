@@ -69,6 +69,7 @@
   - 작가 확인 결과는 '장면 확인표' 아티팩트에 저장됩니다(인수인계 문서 참고).
 - 제철/기록: 사진은 다녀온 계절 그대로 보여 줍니다. 다녀온 달이 가장 좋은 때 안이면 제철, 아니면 작가 부부가 다녀온 곳(코드 이름 record, `src/domain/sceneTier.ts`, 10/3 사용자 결정).
 - 시안: `/_review/v2.html`(첫 화면 v2), `/_review/check.html`(작가님 확인용 목록)
+- 화면 규칙(글꼴·색·글자 크기·카드 한 줄 규칙·상세 버튼): `docs/design-guide.md`. 시안 v2의 규칙은 `tests/e2e/v2-design.spec.ts`가 지킵니다.
 - `.github/workflows/`
   - `ci.yml`: 검사, 테스트, 배포
   - `redeploy.yml`: 되돌리기

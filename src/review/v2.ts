@@ -22,7 +22,7 @@ type Season = 'spring' | 'summer' | 'autumn' | 'winter';
 const seasonOf = (m: Month): Season => (m >= 3 && m <= 5 ? 'spring' : m >= 6 && m <= 8 ? 'summer' : m >= 9 && m <= 11 ? 'autumn' : 'winter');
 const typeLabel = (s: Scene) => SCENE_TYPES.find((t) => t.id === s.types[0])?.label ?? '';
 const AUTHOR = '이상호';
-const RECOMMENDER = '이상호 대장'; // 맨 위 작은 글씨(10/3: '현곡 선생' → '이상호 대장')
+const RECOMMENDER = '이상호 작가'; // 맨 위 작은 글씨(10/3: '현곡 선생' → '이상호 대장' → '이상호 작가')
 const STORY_URL = 'https://brunch.co.kr/@caed5ea4c3d74d9/1';
 
 const qMonth = Number(new URLSearchParams(location.search).get('m'));
@@ -32,6 +32,7 @@ let peak: Scene[] = [];
 let record: Scene[] = [];
 let sel = 0;
 let revealOverlay: (() => void) | null = null; // 장면 상세의 사진 위 버튼을 보이게 하는 함수(열려 있는 장면 것)
+let ignoreScrollUntil = 0; // 이 시각 전의 상세 스크롤은 사람 손이 아님(상세를 열며 맨 위로 되돌린 것)
 const wanted = new Set<string>(); // 가고 싶어요(시안에서는 화면을 닫으면 사라짐. 실제 앱은 휴대폰에 저장)
 
 // ── 작은 도우미 ──
@@ -75,7 +76,7 @@ function toast(msg: string): void {
 
 // ── 뼈대 ──
 const app = document.getElementById('app')!;
-// 머리(10/3 2차 코멘트): 작은 글씨 '이상호 대장의 추천' → 큰 글씨 'N월에 만나는 자연' → 달 띠.
+// 머리(10/3 2차 코멘트): 작은 글씨 '이상호 작가의 추천' → 큰 글씨 'N월에 만나는 자연' → 달 띠.
 // 아래로 스크롤하면 'N월에 만나는 자연'만 위에 붙어 있음
 const eyebrow = h('p', { class: 'eyebrow', text: `${RECOMMENDER}의 추천` });
 const pageTitle = h('h1', { class: 'ttl' });
@@ -133,6 +134,14 @@ const calIcon = () => {
   i.innerHTML = CAL_SVG;
   return i;
 };
+/** 참고 아이콘(동그라미 안 i) — '해마다 달라져요', '눈이 와야 볼 수 있어요' 같은 참고사항 앞(10/3 4차 코멘트) */
+const INFO_SVG =
+  '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.6v.01"/></svg>';
+const infoIcon = () => {
+  const i = h('span', { class: 'info', 'aria-hidden': 'true' });
+  i.innerHTML = INFO_SVG;
+  return i;
+};
 const extra = h('section', { class: 'extra' }, homeAdd, storyLink);
 
 const tabs = h('nav', { class: 'tabs', 'aria-label': '메뉴' });
@@ -172,7 +181,7 @@ function bigCard(s: Scene, i: number): HTMLElement {
     ),
     // 계절말은 빼고 '추천 시기' + 날짜만, 그 아래 종류별 짧은 안내(10/3 2차 코멘트)
     h('div', { class: 'best' }, calIcon(), h('span', { class: 'lbl', text: '추천 시기' }), h('strong', { text: s.best?.note ?? '' })),
-    tn ? h('div', { class: 'vary', text: tn.short }) : null,
+    tn ? h('div', { class: 'vary' }, infoIcon(), h('span', { text: tn.short })) : null,
   );
   b.setAttribute('aria-label', `${s.name}, ${s.region}, 추천 시기 ${s.best?.note ?? ''}${tn ? `, ${tn.short}` : ''}`);
   b.addEventListener('click', () => openScene(s.id));
@@ -384,11 +393,12 @@ function renderDetail(): void {
         h('p', { class: 'when-row' }, h('span', { class: 'lbl', text: '추천 시기' }), h('b', { text: s.best.note }), s.review.best === 'draft' ? draft() : null),
         // 날씨·때 조건은 카드에서 빼고 여기에만(10/3 3차 결정)
         s.best.tip ? h('p', { class: 'when-tip' }, h('span', { class: 'lbl', text: '이럴 때 더 좋아요' }), h('span', { text: s.best.tip })) : null,
-        tn ? h('p', { class: 'when-vary', text: tn.text }) : null,
+        tn ? h('p', { class: 'when-vary' }, infoIcon(), h('span', { text: tn.text })) : null,
         tn ? h('a', { class: 'when-link', href: newsSearchUrl(s.name, tn.keyword), target: '_blank', rel: 'noopener', text: `올해 ${tn.keyword} 소식 찾아보기 ›` }) : null,
       )
     : null;
-  // 뒤로·넘김 버튼은 사진이 뜨고 2초 뒤에 서서히 나타남. 그 전에 스크롤하거나 사진을 만지면 바로 나타남(10/3 2차 코멘트)
+  // 뒤로·넘김 버튼은 사진이 뜨고 1초 뒤에 서서히 나타남(10/3 4차 코멘트: 2초 → 1초).
+  // 그 전에 사람이 스크롤하거나 사진을 만지면 바로 서서히 나타남(2차 코멘트). 상세를 열 때 스크롤 위치를 되돌리는 것은 사람 손이 아니므로 무시
   const gallery = h('div', { class: 'gallery ov-wait' }, slides, back, ...(n > 1 ? [prev, next] : []), credit);
   let revealed = false;
   const reveal = () => {
@@ -398,13 +408,13 @@ function renderDetail(): void {
   };
   revealOverlay = reveal;
   const first = slides.querySelector('img');
-  const arm = () => window.setTimeout(reveal, 2000);
+  const arm = () => window.setTimeout(reveal, 1000);
   if (!first || first.complete) arm();
   else {
     first.addEventListener('load', arm, { once: true });
     first.addEventListener('error', arm, { once: true });
   }
-  window.setTimeout(reveal, 4000); // 사진이 늦게 떠도 4초 안에는 보이게
+  window.setTimeout(reveal, 3500); // 사진이 늦게 떠도 3.5초 안에는 보이게
   slides.addEventListener('scroll', reveal, { passive: true });
   gallery.addEventListener('pointerdown', reveal);
   gallery.addEventListener('focusin', reveal);
@@ -423,13 +433,14 @@ function renderDetail(): void {
     ),
     bar,
   );
+  ignoreScrollUntil = performance.now() + 700; // 아래 scrollTop 되돌리기와 여는 움직임 동안 생기는 스크롤은 무시
   detail.scrollTop = 0;
   detail.setAttribute('aria-hidden', 'false');
   document.body.style.overflow = 'hidden';
   requestAnimationFrame(() => detail.classList.add('open'));
 }
 window.addEventListener('hashchange', renderDetail);
-detail.addEventListener('scroll', () => revealOverlay?.(), { passive: true });
+detail.addEventListener('scroll', () => performance.now() > ignoreScrollUntil && revealOverlay?.(), { passive: true });
 
 // ── 시작 ──
 async function start(): Promise<void> {
