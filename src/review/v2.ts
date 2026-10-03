@@ -13,6 +13,7 @@ import { inWindow, monthInSeoul, type Month } from '../domain/month';
 import { sceneTier, splitByMonth, visitedMonth } from '../domain/sceneTier';
 import { SCENE_TYPES } from '../domain/sceneTypes';
 import { newsLink, timingNotice, type TimingNotice } from '../domain/timingNotice';
+import { kenBurnsPlan } from '../domain/kenBurns';
 import { isYearRound } from '../domain/sceneTier';
 
 type Scene = StoryScene;
@@ -26,6 +27,9 @@ const RECOMMENDER = '이상호 작가'; // 맨 위 작은 글씨(10/3: '현곡 �
 const STORY_URL = 'https://brunch.co.kr/@caed5ea4c3d74d9/1';
 
 const qMonth = Number(new URLSearchParams(location.search).get('m'));
+/** 사진 움직임: 장면 상세 사진이 아주 천천히 움직임. 기본으로 켬(10/3 사용자 확정 — "모션이 들어가니까 너무 좋다"). ?motion=0 이면 끔(비교·점검용) */
+const MOTION = new URLSearchParams(location.search).get('motion') !== '0';
+if (MOTION) document.documentElement.dataset.motion = 'on';
 let month: Month = qMonth >= 1 && qMonth <= 12 ? qMonth : monthInSeoul();
 let scenes: Scene[] = [];
 let peak: Scene[] = [];
@@ -327,7 +331,31 @@ function renderDetail(): void {
 
   // ── 사진: 위에 얹는 것은 작고 검정 반투명하게(10/3 2차 코멘트). 뒤로 + 넘김 화살표 + 작은 크레딧만 ──
   const n = s.photos.length;
-  const slides = h('div', { class: 'rail', tabindex: '0', 'aria-label': `사진 ${n}장, 옆으로 넘겨 보세요` }, ...s.photos.map((p, i) => h('div', { class: 'slide' }, img(p, i === 0 ? `${s.name} 풍경` : ''))));
+  // 사진 움직임: 사진을 틀(.kb)로 감싸 틀째 움직임. 옆으로 긴 사진은 좌우 밀기, 그 밖은 살짝 확대(src/domain/kenBurns.ts)
+  const photoEl = (p: Photo, i: number): HTMLElement => {
+    const pic = img(p, i === 0 ? `${s.name} 풍경` : '');
+    if (!MOTION) return pic;
+    const k = kenBurnsPlan(p);
+    const box = h('div', { class: `kb ${k.mode}` }, pic);
+    if (k.mode === 'pan') {
+      box.style.setProperty('--ar', String(k.ar));
+      box.style.setProperty('--kb-from', `${k.from}%`);
+      box.style.setProperty('--kb-to', `${k.to}%`);
+    } else box.style.setProperty('--kb-origin', k.origin);
+    return box;
+  };
+  const slides = h('div', { class: 'rail', tabindex: '0', 'aria-label': `사진 ${n}장, 옆으로 넘겨 보세요` }, ...s.photos.map((p, i) => h('div', { class: 'slide' }, photoEl(p, i))));
+  /** 지금 사진(i)만 처음부터 움직이고, 나머지는 멈춰 출발 자세로 */
+  const playKb = (i: number): void => {
+    if (!MOTION || reduceMotion) return;
+    slides.querySelectorAll<HTMLElement>('.kb').forEach((el, k) => {
+      el.classList.remove('kb-on');
+      if (k === i) {
+        void el.offsetWidth; // 움직임을 처음부터 다시 시작
+        el.classList.add('kb-on');
+      }
+    });
+  };
   const back = h('button', { class: 'ov back', type: 'button', 'aria-label': '뒤로' });
   back.innerHTML = icon('M15 18l-6-6 6-6', 22);
   back.addEventListener('click', () => (history.length > 1 ? history.back() : (location.hash = '')));
@@ -406,7 +434,7 @@ function renderDetail(): void {
     : null;
   // 사진 위 버튼(뒤로·넘김)이 나타나는 규칙 — docs/design-guide.md 6장
   // - 상세에 들어오면 숨겨 두었다가 사진이 뜨고 1초 뒤 서서히(4차 코멘트). 사진이 늦게 떠도 3.5초 안에는 보임
-  // - 사진을 넘기면(화살표를 누르거나 밀어서) 숨겼다가, 사진이 멈추면 다시 빠르게 서서히(5차 코멘트, 6차: 2배쯤 빠르게 — 0.3초 뒤 0.25초 동안)
+  // - 사진을 넘기면(화살표를 누르거나 밀어서) 숨겼다가 약 0.5초 안에 다시 다 보이게(5차 코멘트, 6차 2배 빠르게, 7차 0.5초)
   // - 사람이 화면을 위아래로 스크롤하거나 사진을 톡 누르면 바로 서서히. 상세를 열 때 스크롤을 되돌리는 것은 사람 손이 아니므로 무시
   const gallery = h('div', { class: 'gallery ov-wait' }, slides, back, ...(n > 1 ? [prev, next] : []), credit);
   let showTimer = 0;
@@ -428,30 +456,47 @@ function renderDetail(): void {
   const fallback = window.setTimeout(show, 3500);
   revealOverlay = show;
   const first = slides.querySelector('img');
-  const arm = () => showLater(1000);
+  const arm = () => {
+    showLater(1000);
+    playKb(0);
+  };
   if (!first || first.complete) arm();
   else {
     first.addEventListener('load', arm, { once: true });
     first.addEventListener('error', arm, { once: true });
   }
-  // 사진이 움직이는 동안은 숨기고, 멈추면 0.3초 뒤 빠르게 다시 보이게(ov-quick: 0.25초 동안 서서히)
+  // 사진을 넘기면 버튼을 숨겼다가 약 0.5초 안에 다시 다 보이게(10/3: 0.9초 → 0.5초, ov-quick은 0.25초 동안 서서히)
+  // - 화살표: 누르고 0.25초 뒤부터 서서히(사진이 다 멈추기를 기다리지 않음)
+  // - 손으로 밀기: 사진이 멈추면 0.1초 뒤부터 서서히
+  let playing = 0; // 지금 움직이는 사진 번호
+  let arrowUntil = 0; // 이 시각까지는 화살표로 넘기는 중(정해진 때에 다시 보이므로 스크롤로 다시 숨기지 않음)
+  const byArrow = () => performance.now() < arrowUntil;
   const settled = () => {
     window.clearTimeout(settleTimer);
-    gallery.classList.add('ov-quick');
-    showLater(300);
+    if (!byArrow()) {
+      gallery.classList.add('ov-quick');
+      showLater(100);
+    }
+    if (cur() !== playing) playKb((playing = cur())); // 다른 사진으로 넘어갔을 때만 새로 시작
   };
   slides.addEventListener(
     'scroll',
     () => {
-      hide();
+      if (!byArrow()) hide();
       window.clearTimeout(settleTimer);
       settleTimer = window.setTimeout(settled, 120); // 'scrollend'를 모르는 브라우저(아이폰 사파리 등)용
     },
     { passive: true },
   );
   slides.addEventListener('scrollend', settled);
-  prev.addEventListener('click', hide);
-  next.addEventListener('click', hide);
+  const onArrow = () => {
+    hide();
+    gallery.classList.add('ov-quick');
+    arrowUntil = performance.now() + 600;
+    showLater(250);
+  };
+  prev.addEventListener('click', onArrow);
+  next.addEventListener('click', onArrow);
   slides.addEventListener('click', show); // 밀지 않고 톡 누르면 바로
   gallery.addEventListener('focusin', (e) => e.target === slides && show()); // 키보드로 사진 칸에 오면 보이게
   detail.replaceChildren(
