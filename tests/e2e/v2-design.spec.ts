@@ -73,22 +73,32 @@ test('지도 범례는 "제철 풍경 · 작가 부부 방문"', async ({ page }
   await expect(page.locator('.legend span.r')).toHaveText('작가 부부 방문');
 });
 
-test('넘김 화살표로 다음 사진에 가면 버튼이 숨었다가, 사진이 멈추면 빠르게(처음 들어올 때의 2배쯤) 다시 나타남', async ({ page }) => {
+test('넘김 화살표로 다음 사진에 가면 버튼이 숨었다가 약 0.5초 안에 다시 다 보임', async ({ page }) => {
   await open(page, '?m=10');
   await page.locator('.big').first().click();
   const gallery = page.locator('.gallery');
   await expect(gallery).not.toHaveClass(/ov-wait/, { timeout: 4500 });
-  await page.locator('.gallery .next').click();
-  const t0 = Date.now();
-  await expect(gallery).toHaveClass(/ov-wait/);
-  await expect(page.locator('.gdots i').nth(1)).toHaveClass(/on/, { timeout: 2000 });
-  await expect(gallery).not.toHaveClass(/ov-wait/, { timeout: 3000 });
-  const waited = Date.now() - t0;
-  expect(waited).toBeGreaterThan(300); // 넘어가는 동안은 숨어 있음
-  expect(waited).toBeLessThan(1300); // 예전(1.2초 기다림 + 0.5초 서서히)보다 2배쯤 빠르게
-  // 서서히 나타나는 시간도 짧게(0.25초)
-  const dur = await page.$eval('.gallery .back', (b) => getComputedStyle(b).transitionDuration);
-  expect(parseFloat(dur)).toBeLessThanOrEqual(0.25);
+  // 누른 순간부터 버튼이 다시 나오기 시작할 때까지(페이지 안에서 잼)
+  const t = await page.evaluate(
+    () =>
+      new Promise<{ hidden: boolean; back: number }>((res) => {
+        const g = document.querySelector('.gallery')!;
+        const t0 = performance.now();
+        (document.querySelector('.gallery .next') as HTMLButtonElement).click();
+        const hidden = g.classList.contains('ov-wait');
+        const iv = setInterval(() => {
+          if (!g.classList.contains('ov-wait')) {
+            clearInterval(iv);
+            res({ hidden, back: performance.now() - t0 });
+          }
+        }, 10);
+      }),
+  );
+  expect(t.hidden).toBe(true); // 누르면 바로 숨음
+  const fade = await page.$eval('.gallery .back', (b) => parseFloat(getComputedStyle(b).transitionDuration));
+  expect(t.back).toBeGreaterThan(150); // 넘어가는 동안 잠깐은 숨어 있음
+  expect(t.back + fade * 1000).toBeLessThanOrEqual(560); // 다 보이기까지 약 0.5초(10/3: 0.9초 → 0.5초)
+  await expect(page.locator('.gdots i').nth(1)).toHaveClass(/on/);
 });
 
 test('추천 시기 칸의 안내 글은 내어쓰기 없이 "올해 ○○ 소식 찾아보기"와 왼쪽이 맞음', async ({ page }) => {
