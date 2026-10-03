@@ -60,10 +60,11 @@ describe('디자인 토큰 원본(tokens.css)', () => {
     const css = tokens();
     expect(rootVar(css, '--font-body')).toMatch(/IBM Plex Sans KR/);
     expect(rootVar(css, '--font-display')).toMatch(/Gowun Batang/);
+    // 본문 고딕은 구글에서. 제목 명조(고운바탕)는 앱 안의 파일 하나로(10/3 사용자 결정, tests/contract/titleFont.test.ts)
     const imp = css.match(/@import\s+url\(["']?(https:\/\/fonts\.googleapis\.com[^"')]+)/)?.[1] ?? '';
-    expect(imp).toMatch(/Gowun\+Batang:wght@700/);
     expect(imp).toMatch(/IBM\+Plex\+Sans\+KR:wght@400;600;700/);
     expect(imp).toMatch(/display=swap/);
+    expect(css).toMatch(/@font-face\s*\{[^}]*Gowun Batang/);
   });
 
   it('크기 토큰: 글자 18px·누르는 곳 48px·버튼 56px·모서리·아래 메뉴 높이', () => {

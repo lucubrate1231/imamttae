@@ -5,9 +5,22 @@
  * Figma는 이 값을 따라갑니다(design/figma-sync.md).
  */
 
-/* 글꼴 내려받기(C-9, '장면 확인표'와 같은 규칙): 고딕 = IBM Plex Sans KR 400·600·700, 명조(제목·작가의 한마디) = 고운바탕 700.
-   둘 다 무료 공개 글꼴(OFL)이고, 화면에 쓰인 글자 묶음만 내려받습니다. 토큰을 쓰는 모든 화면이 여기서 한 번에 받습니다. */
-@import url('https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@700&family=IBM+Plex+Sans+KR:wght@400;600;700&display=swap');
+/* 글꼴 내려받기(C-9, '장면 확인표'와 같은 규칙)
+   - 본문 고딕 IBM Plex Sans KR 400·600·700: 구글에서 화면에 쓰인 글자 묶음만 받습니다.
+   - 제목·작가의 한마디 명조 고운바탕 700: 앱이 직접 가진 파일 하나로 받습니다(10/3 사용자 결정).
+     구글 조각으로 받으면 늦게 온 조각의 글자만 다른 글꼴로 섞여 보였기 때문입니다('덮·밭·쭉·릇').
+     파일이 오는 동안은 제목을 잠깐 비워 둡니다(block, 3초가 지나면 기본 글꼴로 보여 줌).
+     장면 데이터를 바꾸면 다시 만듭니다: npx tsx scripts/build-title-font.ts
+   둘 다 무료 공개 글꼴(OFL)입니다. */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;600;700&display=swap');
+
+@font-face {
+  font-family: 'Gowun Batang';
+  src: url('./fonts/gowun-batang-title.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: block;
+}
 
 :root {
   color-scheme: light; /* 라이트 모드만(C-8, 사용자 결정). 다크 모드 규칙은 두지 않습니다 */

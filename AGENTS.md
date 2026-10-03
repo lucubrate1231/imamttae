@@ -99,6 +99,7 @@
   - JS 키는 `.env.local`에 둡니다. 이 파일은 저장소에 올라가지 않습니다.
 - 장면 초안(`content/scenes/drafts.json`)을 고쳤다면 `npx tsx pipeline/scenes/build.ts`로 앱 데이터를 다시 만듭니다.
   - 다시 만들지 않으면 `npm run check`의 계약 테스트가 알려 줍니다.
+  - 그다음 제목 글꼴도 다시 만듭니다: `npx tsx scripts/build-title-font.ts`(인터넷 필요). 새 장면 이름·작가 글의 글자를 글꼴 파일에 담습니다. 빠뜨리면 역시 계약 테스트가 알려 줍니다.
   - 원문 대조 검사(`pipeline/scenes/check-cli.ts`)에는 브런치 글 캐시가 필요합니다. 먼저 `npx tsx pipeline/sync.ts`를 돌립니다(인터넷 필요).
 
 ## 하지 말 것
