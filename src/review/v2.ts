@@ -12,7 +12,7 @@ import { naviUrl } from '../domain/navi';
 import { inWindow, monthInSeoul, type Month } from '../domain/month';
 import { sceneTier, splitByMonth, visitedMonth } from '../domain/sceneTier';
 import { SCENE_TYPES } from '../domain/sceneTypes';
-import { newsSearchUrl, timingNotice } from '../domain/timingNotice';
+import { newsLink, timingNotice, type TimingNotice } from '../domain/timingNotice';
 import { isYearRound } from '../domain/sceneTier';
 
 type Scene = StoryScene;
@@ -135,6 +135,15 @@ const calIcon = () => {
   i.innerHTML = CAL_SVG;
   return i;
 };
+/** 올해 소식 찾아보기: 꽃·단풍은 '누른 해 + ○○지도', 눈·억새는 '장소 + 키워드'(10/3 6차 코멘트). 해는 누르는 순간 기준 */
+function newsAnchor(name: string, tn: TimingNotice): HTMLElement {
+  const first = newsLink(name, tn);
+  const a = h('a', { class: 'when-link', href: first.url, target: '_blank', rel: 'noopener', text: first.label });
+  a.addEventListener('click', () => {
+    a.setAttribute('href', newsLink(name, tn, new Date()).url);
+  });
+  return a;
+}
 /** 참고 아이콘(동그라미 안 i) — '해마다 달라져요', '눈이 와야 볼 수 있어요' 같은 참고사항 앞(10/3 4차 코멘트) */
 const INFO_SVG =
   '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.6v.01"/></svg>';
@@ -158,14 +167,11 @@ new IntersectionObserver(([e]) => miniTitle.classList.toggle('on', !e!.isInterse
 
 
 // ── 카드 ──
+// 장면 상세 꼬리표: 제철이면 '제철' + 풍경 종류. 작가 부부가 다녀온 곳(제철 아님)은 풍경 종류만 —
+// '작가 부부 방문' 꼬리표는 뜻이 잘 안 와닿아 빼고, 아래 "사진은 작가 부부가 N월에 다녀온 모습이에요"로 충분(10/3 6차 코멘트)
 function badges(s: Scene): HTMLElement {
   const peakB = sceneTier(s) === 'peak';
-  return h(
-    'span',
-    { class: 'badges' },
-    h('span', { class: `badge ${peakB ? 'peak-b' : 'rec-b'}`, text: peakB ? '제철' : '작가 부부 방문' }),
-    h('span', { class: 'badge', text: typeLabel(s) }),
-  );
+  return h('span', { class: 'badges' }, peakB ? h('span', { class: 'badge peak-b', text: '제철' }) : null, h('span', { class: 'badge', text: typeLabel(s) }));
 }
 /** 제철 카드는 모두 제철이라 '제철' 딱지는 빼고(10/3 코멘트), 종류만 반투명으로 약하게 */
 function bigCard(s: Scene, i: number): HTMLElement {
@@ -395,12 +401,12 @@ function renderDetail(): void {
         // 날씨·때 조건은 카드에서 빼고 여기에만(10/3 3차 결정)
         s.best.tip ? h('p', { class: 'when-tip' }, h('span', { class: 'lbl', text: '이럴 때 더 좋아요' }), h('span', { text: s.best.tip })) : null,
         tn ? h('p', { class: 'when-vary' }, infoIcon(), h('span', { text: tn.text })) : null,
-        tn ? h('a', { class: 'when-link', href: newsSearchUrl(s.name, tn.keyword), target: '_blank', rel: 'noopener', text: `올해 ${tn.keyword} 소식 찾아보기 ›` }) : null,
+        tn ? newsAnchor(s.name, tn) : null,
       )
     : null;
   // 사진 위 버튼(뒤로·넘김)이 나타나는 규칙 — docs/design-guide.md 6장
   // - 상세에 들어오면 숨겨 두었다가 사진이 뜨고 1초 뒤 서서히(4차 코멘트). 사진이 늦게 떠도 3.5초 안에는 보임
-  // - 사진을 넘기면(화살표를 누르거나 밀어서) 숨겼다가, 사진이 멈추고 1초 뒤 다시 서서히(5차 코멘트)
+  // - 사진을 넘기면(화살표를 누르거나 밀어서) 숨겼다가, 사진이 멈추면 다시 빠르게 서서히(5차 코멘트, 6차: 2배쯤 빠르게 — 0.3초 뒤 0.25초 동안)
   // - 사람이 화면을 위아래로 스크롤하거나 사진을 톡 누르면 바로 서서히. 상세를 열 때 스크롤을 되돌리는 것은 사람 손이 아니므로 무시
   const gallery = h('div', { class: 'gallery ov-wait' }, slides, back, ...(n > 1 ? [prev, next] : []), credit);
   let showTimer = 0;
@@ -428,16 +434,22 @@ function renderDetail(): void {
     first.addEventListener('load', arm, { once: true });
     first.addEventListener('error', arm, { once: true });
   }
-  // 사진이 움직이는 동안은 숨기고, 멈추면(0.15초 동안 움직임 없음) 1초 뒤 다시 보이게
+  // 사진이 움직이는 동안은 숨기고, 멈추면 0.3초 뒤 빠르게 다시 보이게(ov-quick: 0.25초 동안 서서히)
+  const settled = () => {
+    window.clearTimeout(settleTimer);
+    gallery.classList.add('ov-quick');
+    showLater(300);
+  };
   slides.addEventListener(
     'scroll',
     () => {
       hide();
       window.clearTimeout(settleTimer);
-      settleTimer = window.setTimeout(() => showLater(1000), 150);
+      settleTimer = window.setTimeout(settled, 120); // 'scrollend'를 모르는 브라우저(아이폰 사파리 등)용
     },
     { passive: true },
   );
+  slides.addEventListener('scrollend', settled);
   prev.addEventListener('click', hide);
   next.addEventListener('click', hide);
   slides.addEventListener('click', show); // 밀지 않고 톡 누르면 바로

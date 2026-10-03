@@ -73,17 +73,22 @@ test('지도 범례는 "제철 풍경 · 작가 부부 방문"', async ({ page }
   await expect(page.locator('.legend span.r')).toHaveText('작가 부부 방문');
 });
 
-test('넘김 화살표로 다음 사진에 가면 버튼이 숨었다가, 사진이 멈추고 1초쯤 뒤 서서히 다시 나타남', async ({ page }) => {
+test('넘김 화살표로 다음 사진에 가면 버튼이 숨었다가, 사진이 멈추면 빠르게(처음 들어올 때의 2배쯤) 다시 나타남', async ({ page }) => {
   await open(page, '?m=10');
   await page.locator('.big').first().click();
   const gallery = page.locator('.gallery');
   await expect(gallery).not.toHaveClass(/ov-wait/, { timeout: 4500 });
   await page.locator('.gallery .next').click();
+  const t0 = Date.now();
   await expect(gallery).toHaveClass(/ov-wait/);
   await expect(page.locator('.gdots i').nth(1)).toHaveClass(/on/, { timeout: 2000 });
-  await page.waitForTimeout(500);
-  await expect(gallery).toHaveClass(/ov-wait/);
   await expect(gallery).not.toHaveClass(/ov-wait/, { timeout: 3000 });
+  const waited = Date.now() - t0;
+  expect(waited).toBeGreaterThan(300); // 넘어가는 동안은 숨어 있음
+  expect(waited).toBeLessThan(1300); // 예전(1.2초 기다림 + 0.5초 서서히)보다 2배쯤 빠르게
+  // 서서히 나타나는 시간도 짧게(0.25초)
+  const dur = await page.$eval('.gallery .back', (b) => getComputedStyle(b).transitionDuration);
+  expect(parseFloat(dur)).toBeLessThanOrEqual(0.25);
 });
 
 test('추천 시기 칸의 안내 글은 내어쓰기 없이 "올해 ○○ 소식 찾아보기"와 왼쪽이 맞음', async ({ page }) => {
@@ -104,4 +109,21 @@ test('추천 시기 칸의 안내 글은 내어쓰기 없이 "올해 ○○ 소�
   expect(r.multi).toBe(true); // 두 줄 이상인 글로 확인
   expect(Math.abs(r.lastLeft - r.linkLeft)).toBeLessThanOrEqual(1);
   expect(Math.abs(r.linkLeft - r.rowLeft)).toBeLessThanOrEqual(1);
+});
+
+test('올해 소식 찾아보기: 단풍 장면은 "올해 + 단풍지도"로 검색', async ({ page }) => {
+  await open(page, '?m=10');
+  await page.locator('.big').first().click();
+  const link = page.locator('.when-link');
+  await expect(link).toHaveText('올해 단풍지도 찾아보기 ›');
+  const q = new URL((await link.getAttribute('href'))!).searchParams.get('query');
+  expect(q).toBe(`${new Date().getFullYear()} 단풍지도`);
+});
+
+test('장면 상세에는 "작가 부부 방문" 꼬리표를 두지 않음(사진 안내 문구로 충분)', async ({ page }) => {
+  await open(page, '?m=8');
+  await page.locator('.rec').first().click();
+  await expect(page.locator('.detail.open')).toBeVisible();
+  await expect(page.locator('.detail .body .badges')).not.toContainText('작가 부부 방문');
+  await expect(page.locator('.detail .recnote')).toContainText('사진은 작가 부부가');
 });
