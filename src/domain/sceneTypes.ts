@@ -1,4 +1,7 @@
-/** 자연 명장면 10가지 (작가 확인 전 초안, 2026-10-03) */
+/**
+ * 자연 명장면 13가지 (작가 확인 전 초안)
+ * 10/3 사용자 결정으로 계곡·폭포, 바다 절경, 신록·초원을 더했습니다(10가지에 맞지 않는 장면이 17곳 있었음).
+ */
 export const SCENE_TYPES = [
   { id: 'maehwa', label: '매화·산수유' },
   { id: 'beotkkot', label: '벚꽃' },
@@ -10,6 +13,9 @@ export const SCENE_TYPES = [
   { id: 'unhae', label: '운해·물안개' },
   { id: 'ilchul', label: '일출·낙조' },
   { id: 'seolgyeong', label: '설경·상고대' },
+  { id: 'gyegok', label: '계곡·폭포' },
+  { id: 'bada', label: '바다 절경' },
+  { id: 'sinrok', label: '신록·초원' },
 ] as const;
 
 export type SceneTypeId = (typeof SCENE_TYPES)[number]['id'];

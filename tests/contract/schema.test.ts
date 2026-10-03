@@ -24,6 +24,32 @@ describe('데이터 규칙(계약)', () => {
     expect(StoryScene.safeParse(story).success).toBe(false);
   });
 
+  it('가장 좋은 때가 없는 장면(기록)도 통과', () => {
+    const story = structuredClone(sample.scenes[0]) as Record<string, unknown>;
+    delete story.best;
+    expect(StoryScene.safeParse(story).success).toBe(true);
+  });
+
+  it('가장 좋은 때를 적었다면 시작·끝 달이 있어야 함', () => {
+    const story = structuredClone(sample.scenes[0]) as Record<string, unknown>;
+    story.best = { note: '여름' };
+    expect(StoryScene.safeParse(story).success).toBe(false);
+  });
+
+  it('가장 좋은 때의 계절말(늦가을, 초여름 등)은 짧게(8자 안)', () => {
+    const story = structuredClone(sample.scenes[0]) as Record<string, unknown>;
+    story.best = { from: 10, to: 11, note: '10월 하순~11월 초', season: '늦가을' };
+    expect(StoryScene.safeParse(story).success).toBe(true);
+    story.best = { from: 10, to: 11, note: '', season: '가을이 깊어 가는 무렵' };
+    expect(StoryScene.safeParse(story).success).toBe(false);
+  });
+
+  it('새 명장면 종류(계곡·폭포, 바다 절경, 신록·초원)를 받음', () => {
+    const story = structuredClone(sample.scenes[0]) as Record<string, unknown>;
+    story.types = ['gyegok', 'bada', 'sinrok'];
+    expect(StoryScene.safeParse(story).success).toBe(true);
+  });
+
   it('없는 명장면 종류는 거부', () => {
     const story = structuredClone(sample.scenes[0]) as Record<string, unknown>;
     story.types = ['차박'];

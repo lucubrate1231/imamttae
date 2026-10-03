@@ -3,9 +3,9 @@
  * 앱 실행 코드는 타입만 가져다 쓰므로(import type) 앱 무게에는 영향이 없습니다.
  */
 import { z } from 'zod';
-import { SCENE_TYPES } from '../../src/domain/sceneTypes';
+import { SCENE_TYPES, type SceneTypeId } from '../../src/domain/sceneTypes';
 
-const sceneTypeIds = SCENE_TYPES.map((t) => t.id) as [string, ...string[]];
+const sceneTypeIds = SCENE_TYPES.map((t) => t.id) as [SceneTypeId, ...SceneTypeId[]];
 
 export const LatLng = z.object({
   lat: z.number().min(33.0).max(38.7),
@@ -43,7 +43,19 @@ export const StoryScene = z.object({
   region: z.string().min(1).max(20),
   types: z.array(z.enum(sceneTypeIds)).min(1).max(3),
   visited: IsoDate,
-  best: z.object({ from: Month, to: Month, note: z.string().max(40).default('') }),
+  /**
+   * 가장 좋은 때. 다녀온 달이 이 안에 있으면 '제철', 아니면 '기록' 장면입니다(src/domain/sceneTier.ts).
+   * 일 년 내내 볼 수 있거나 철을 말하기 어려운 장면은 비워 둘 수 있습니다.
+   */
+  best: z
+    .object({
+      from: Month,
+      to: Month,
+      note: z.string().max(40).default(''),
+      /** 계절말(늦가을, 초여름 등). 날짜보다 먼저 보여 줘 '해마다 달라질 수 있음'을 덜 단정적으로 전함 */
+      season: z.string().min(1).max(8).optional(),
+    })
+    .optional(),
   oneLiner: z.string().min(1).max(60),
   /** 작가 글 대목: 브런치 원문 그대로여야 함(계약 테스트로 확인) */
   excerpt: z.string().min(1).max(400),
@@ -51,6 +63,8 @@ export const StoryScene = z.object({
   spot: LatLng,
   dest: LatLng.extend({ name: z.string().min(1).max(40), kind: z.enum(['parking', 'trailhead', 'entrance']) }),
   review: z.object({ best: Review, dest: Review, oneLiner: Review, types: Review }),
+  /** 글 제목의 '몇 번째 여행'(앱 데이터를 만들 때 붙임) */
+  trip: z.string().max(30).optional(),
   contestEntry: z.boolean().default(false),
   hidden: z.boolean().default(false),
   /** 작가 확인 때 볼 메모(앱에는 안 보임) */

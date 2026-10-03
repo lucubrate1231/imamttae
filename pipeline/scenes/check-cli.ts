@@ -5,10 +5,12 @@
 import { readFileSync, existsSync } from 'node:fs';
 import { checkScene } from './check';
 import type { Story } from '../brunch/normalize';
+import { sceneTier, type TierInput } from '../../src/domain/sceneTier';
 
 const files = process.argv.slice(2);
 let bad = 0;
 let total = 0;
+const tiers = { peak: 0, record: 0 };
 const ids = new Set<string>();
 for (const f of files) {
   const data = JSON.parse(readFileSync(f, 'utf8')) as { scenes?: unknown[] } | unknown[];
@@ -22,6 +24,11 @@ for (const f of files) {
     const cache = `.cache/brunch/${String(sc.brunchNo).padStart(2, '0')}.json`;
     if (!existsSync(cache)) probs.push(`원문 캐시 없음: ${cache}`);
     else probs.push(...checkScene(sc, JSON.parse(readFileSync(cache, 'utf8')) as Story));
+    try {
+      tiers[sceneTier(sc as unknown as TierInput)]++;
+    } catch {
+      /* 형식 오류는 위 검사가 알려 줌 */
+    }
     if (probs.length) {
       bad++;
       console.log(`✗ ${id}`);
@@ -30,4 +37,5 @@ for (const f of files) {
   }
 }
 console.log(bad ? `✗ ${total}곳 중 ${bad}곳 문제` : `✓ ${total}곳 모두 통과`);
+console.log(`  제철 ${tiers.peak}곳 · 기록 ${tiers.record}곳`);
 process.exitCode = bad ? 1 : 0;
