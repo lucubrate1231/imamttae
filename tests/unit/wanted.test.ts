@@ -1,11 +1,6 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { createSafeStore } from '../../src/storage/safeStorage';
-
-// 구현 파일을 만들기 전에도 각 테스트의 실패 수를 기록한다.
-let createWantedStore: typeof import('../../src/storage/wanted').createWantedStore;
-beforeEach(async () => {
-  ({ createWantedStore } = await import('../../src/storage/wanted'));
-});
+import { createWantedStore } from '../../src/storage/wanted';
 afterEach(() => vi.unstubAllGlobals());
 
 function memoryStorage(): Storage {
