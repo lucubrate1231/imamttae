@@ -51,7 +51,10 @@ export const StoryScene = z.object({
     .object({
       from: Month,
       to: Month,
-      note: z.string().max(40).default(''),
+      /** 추천 시기. 카드 한 줄에 들어가게 시기만 짧게(예: '10월 중순~하순', '일 년 내내') */
+      note: z.string().max(14).default(''),
+      /** 이럴 때 더 좋아요: 날씨·때 조건(예: '맑은 날, 눈 온 뒤'). 장면 상세에만 보여 줌(10/3 3차 결정) */
+      tip: z.string().min(1).max(20).optional(),
       /** 계절말(늦가을, 초여름 등). 날짜보다 먼저 보여 줘 '해마다 달라질 수 있음'을 덜 단정적으로 전함 */
       season: z.string().min(1).max(8).optional(),
     })

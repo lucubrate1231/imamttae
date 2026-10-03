@@ -133,7 +133,7 @@ h1, h2, h3, p { margin: 0; }
 .pin.on .dot { width: 24px; height: 24px; }
 .pin.on .nm { display: block; }
 
-/* ── 다녀온 기록 (톤을 낮춤: 작은 사진, 회색, 계절 색 없음) ── */
+/* ── 작가 부부가 다녀온 곳(제철 아님, 톤을 낮춤: 작은 사진, 회색, 계절 색 없음) ── */
 .records { padding: 30px var(--gutter) 0; }
 .records h2 { font-size: 21px; font-weight: 800; letter-spacing: -0.03em; color: var(--ink-2); }
 .records .sub { margin-top: 2px; font-size: var(--fs-meta); color: var(--ink-3); }
@@ -199,8 +199,8 @@ h1, h2, h3, p { margin: 0; }
 .one { margin-top: 12px; font-size: 20px; line-height: 1.5; font-weight: 600; }
 .draft { display: inline-block; vertical-align: 2px; margin-left: 6px; font-size: 14px; font-weight: 800; padding: 1px 8px; border-radius: 8px; background: var(--draft-bg); color: var(--draft); }
 .recnote { padding: 14px 16px; border-radius: 18px; background: var(--rec-bg); font-size: 17px; color: var(--ink-2); }
-/* 장면 상세의 가로 구역: 얇은 선으로 나눔 */
-.dsec + .dsec { margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--line); }
+/* 장면 상세의 구역: 선 없이 넉넉한 위아래 여백으로 나눔(10/3 3차 결정) */
+.dsec + .dsec { margin-top: 40px; }
 .dlbl { margin: 0 0 12px; font-size: 15px; font-weight: 600; color: var(--ink-3); }
 .when-sec .recnote + .when-box { margin-top: 12px; }
 /* 추천 시기 + 해마다 달라짐 안내를 한 상자에 */
@@ -208,10 +208,12 @@ h1, h2, h3, p { margin: 0; }
 .when-row { margin: 0; padding-bottom: 8px; font-size: 18px; line-height: 1.5; color: var(--season); }
 .when-row .lbl { font-weight: 400; margin-right: 6px; }
 .when-row b { font-weight: 700; }
+.when-tip { margin: 0 0 10px; font-size: 17px; line-height: 1.5; color: var(--ink); }
+.when-tip .lbl { margin-right: 8px; font-weight: 600; color: var(--ink-2); }
 .when-vary { font-size: 16px; color: var(--ink-2); }
 .when-link { display: inline-flex; align-items: center; min-height: var(--tap); font-size: 16.5px; font-weight: 800; color: var(--season); text-decoration: none; }
-/* 작가의 한마디: 왼쪽 세로선 없이 명조 글자와 여백만으로(구역은 위아래 가로선이 나눔, 10/3 코멘트) */
-.quote { margin: 0; padding: 0; }
+/* 작가의 한마디: 계절색을 옅게 섞은 왼쪽 세로선으로 인용임을 알림(10/3 3차 결정, 예전 방식 유지) */
+.quote { margin: 0; padding: 4px 0 4px 16px; border-left: 3px solid color-mix(in srgb, var(--season) 35%, #fff); }
 .quote p { font-size: 18px; line-height: 1.75; }
 .quote cite { display: block; margin-top: 10px; font-style: normal; font-size: 15px; color: var(--ink-3); }
 .btn { display: flex; align-items: center; justify-content: center; gap: 8px; height: var(--btn); border-radius: var(--r-pill); font-size: 18px; font-weight: 800; text-decoration: none; }

@@ -1,7 +1,7 @@
 /**
  * 시안 v2 — 실제 장면 초안 55곳으로 만든 첫 화면.
  * - 한 페이지를 위아래로 스크롤합니다(위아래가 짧던 느낌 해결).
- * - 제철 장면은 큰 사진과 계절 색으로 강조, 다녀온 기록은 작은 사진·회색으로 톤을 낮춥니다.
+ * - 제철 장면은 큰 사진과 계절 색으로 강조, 작가 부부가 다녀온 곳(제철 아님)은 작은 사진·회색으로 톤을 낮춥니다.
  * - 작은 지도는 손으로 움직이지 않습니다(페이지 스크롤과 다투지 않게). 전국 → 장면 확대 움직임은 그대로.
  * 실제 앱 코드가 아니라 확인용입니다. 정해지면 테스트와 함께 src/ 로 옮겨 다시 만듭니다.
  */
@@ -97,7 +97,7 @@ const rail = h('div', { class: 'rail', role: 'list', 'aria-label': '제철 풍�
 const peakSec = h('section', { class: 'peak', 'aria-label': '제철 풍경' }, rail);
 
 const mapbox = h('div', { class: 'mapbox' }, h('div', { class: 'kmap', id: 'kmap' }));
-const legend = h('div', { class: 'legend', 'aria-hidden': 'true' }, h('span', { text: '제철' }), h('span', { class: 'r', text: '다녀온 기록' }));
+const legend = h('div', { class: 'legend', 'aria-hidden': 'true' }, h('span', { text: '제철' }), h('span', { class: 'r', text: '작가 부부 방문' }));
 const mapSec = h('section', { class: 'mapsec', 'aria-label': '지도' }, mapbox, legend);
 
 const recTitle = h('h2', {});
@@ -106,7 +106,7 @@ const recSec = h(
   'section',
   { class: 'records' },
   recTitle,
-  h('p', { class: 'sub', text: '제철은 아니어도 작가 부부가 이맘때 다녀온 곳이에요.' }),
+  h('p', { class: 'sub', text: '제철은 아니지만 이맘때 모습을 볼 수 있어요.' }),
   recList,
 );
 
@@ -153,7 +153,7 @@ function badges(s: Scene): HTMLElement {
   return h(
     'span',
     { class: 'badges' },
-    h('span', { class: `badge ${peakB ? 'peak-b' : 'rec-b'}`, text: peakB ? '제철' : '다녀온 기록' }),
+    h('span', { class: `badge ${peakB ? 'peak-b' : 'rec-b'}`, text: peakB ? '제철' : '작가 부부 방문' }),
     h('span', { class: 'badge', text: typeLabel(s) }),
   );
 }
@@ -208,7 +208,7 @@ function render(): void {
   rail.scrollLeft = 0;
   peakSec.hidden = peak.length === 0;
 
-  recTitle.textContent = `${month}월에 다녀온 기록`;
+  recTitle.textContent = `${month}월, 작가 부부가 다녀온 곳`;
   recList.replaceChildren(...record.map(recRow));
   recSec.hidden = record.length === 0;
 
@@ -374,7 +374,7 @@ function renderDetail(): void {
   const vm = visitedMonth(s.visited);
   const recNote = isPeak
     ? null
-    : h('p', { class: 'recnote', text: s.best && !isYearRound(s.best) ? `사진은 작가 부부가 ${vm}월에 다녀온 모습이에요.` : `사진은 작가 부부가 ${vm}월에 다녀온 모습이에요. 일 년 내내 볼 수 있는 풍경이에요.` });
+    : h('p', { class: 'recnote', text: `사진은 작가 부부가 ${vm}월에 다녀온 모습이에요.` }); // 일 년 내내인 곳은 아래 추천 시기 칸이 알려 줌
   const tn = s.best && !isYearRound(s.best) ? timingNotice(s.types) : null;
   // '가는 곳'은 칸에서 뺌(제목과 겹침, 10/3 2차 코멘트). 길찾기는 여전히 주차장·입구 좌표로 엶
   const when = s.best
@@ -382,6 +382,8 @@ function renderDetail(): void {
         'div',
         { class: 'when-box' },
         h('p', { class: 'when-row' }, h('span', { class: 'lbl', text: '추천 시기' }), h('b', { text: s.best.note }), s.review.best === 'draft' ? draft() : null),
+        // 날씨·때 조건은 카드에서 빼고 여기에만(10/3 3차 결정)
+        s.best.tip ? h('p', { class: 'when-tip' }, h('span', { class: 'lbl', text: '이럴 때 더 좋아요' }), h('span', { text: s.best.tip })) : null,
         tn ? h('p', { class: 'when-vary', text: tn.text }) : null,
         tn ? h('a', { class: 'when-link', href: newsSearchUrl(s.name, tn.keyword), target: '_blank', rel: 'noopener', text: `올해 ${tn.keyword} 소식 찾아보기 ›` }) : null,
       )
@@ -412,7 +414,7 @@ function renderDetail(): void {
     h(
       'div',
       { class: 'body' },
-      // 가로 구역으로 나눔(10/3 코멘트 — 산만함 줄이기): ① 제목 ② 작가의 한마디 ③ 추천 시기 ④ 전체 이야기
+      // 구역으로 나눔(선 없이 여백으로, 10/3 3차 결정): ① 제목 ② 작가의 한마디 ③ 추천 시기 ④ 전체 이야기
       h('section', { class: 'dsec' }, badges(s), h('h2', { class: 'title', text: s.name }), h('p', { class: 'region', text: s.region }), h('p', { class: 'one' }, s.oneLiner, s.review.oneLiner === 'draft' ? draft() : null)),
       // 작가의 한마디: 명조로('장면 확인표'처럼). 작가 이름·몇 번째 여행 없이 다녀온 날짜만
       h('section', { class: 'dsec', 'aria-label': '작가의 한마디' }, h('h3', { class: 'dlbl', text: '작가의 한마디' }), h('blockquote', { class: 'quote' }, h('p', { text: s.excerpt }), h('cite', { text: fmtDate(s.visited) }))),

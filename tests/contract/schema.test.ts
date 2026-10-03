@@ -44,6 +44,18 @@ describe('데이터 규칙(계약)', () => {
     expect(StoryScene.safeParse(story).success).toBe(false);
   });
 
+  it('추천 시기는 시기만 짧게(카드 한 줄), 날씨·때 조건은 따로 tip에(10/3 3차 결정)', () => {
+    const story = structuredClone(sample.scenes[0]) as Record<string, unknown>;
+    story.best = { from: 12, to: 2, note: '12~2월', tip: '맑은 날, 눈 온 뒤' };
+    expect(StoryScene.safeParse(story).success).toBe(true);
+    story.best = { from: 12, to: 2, note: '12~2월 맑은 날, 눈 온 뒤면 더 좋음' };
+    expect(StoryScene.safeParse(story).success).toBe(false);
+    story.best = { from: 12, to: 2, note: '12~2월', tip: '' };
+    expect(StoryScene.safeParse(story).success).toBe(false);
+    story.best = { from: 12, to: 2, note: '12~2월', tip: '눈이 많이 온 다음 날 아침 일찍 해 뜨기 전에 가면 가장 좋음' };
+    expect(StoryScene.safeParse(story).success).toBe(false);
+  });
+
   it('새 풍경 종류(계곡·폭포, 바다 절경, 신록·초원)를 받음', () => {
     const story = structuredClone(sample.scenes[0]) as Record<string, unknown>;
     story.types = ['gyegok', 'bada', 'sinrok'];
