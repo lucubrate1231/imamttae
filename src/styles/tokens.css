@@ -51,6 +51,9 @@
   /* ── 계절 색(흰 바탕 대비 5.2 이상). 기본값은 가을. 달에 따라 [data-season]으로 바뀜 ── */
   --season: #b0502a;
   --season-soft: #fbefe8;
+  --season-line: #e3c2b4; /* '지금 제철' 점의 고리(디자인 세션 토큰) */
+  --photo-empty: #d9ddd8; /* 사진이 뜨기 전·없을 때 */
+  --pin-rec: #aab2ac; /* 작가 부부가 다녀온 곳 점 */
 
   /* ── 모서리 ── */
   --r-card: 28px;
@@ -70,7 +73,7 @@
 }
 
 /* 계절 규칙: 강조색·연한 바탕·제목 글자색(docs/design-guide.md 3절). 달 → 계절은 src/review/v2.ts 의 seasonOf 와 같음 */
-[data-season='spring'] { --season: #b0466b; --season-soft: #fbeef3; --ink-title: #2e1f26; } /* 제목: 자줏빛이 살짝 섞인 검정 */
-[data-season='summer'] { --season: #2e6b4a; --season-soft: #e9f3ed; --ink-title: #1c2a22; } /* 제목: 초록빛이 살짝 섞인 검정 */
-[data-season='autumn'] { --season: #b0502a; --season-soft: #fbefe8; --ink-title: #2e221d; } /* 제목: 고동빛 검정(10/3 사용자 선택 C) */
-[data-season='winter'] { --season: #466a86; --season-soft: #edf3f8; --ink-title: #1e2632; } /* 서리 낀 듯한 바탕, 제목: 남빛 검정 */
+[data-season='spring'] { --season: #b0466b; --season-soft: #fbeef3; --season-line: #e3becb; --ink-title: #2e1f26; } /* 제목: 자줏빛이 살짝 섞인 검정 */
+[data-season='summer'] { --season: #2e6b4a; --season-soft: #e9f3ed; --season-line: #b6cbc0; --ink-title: #1c2a22; } /* 제목: 초록빛이 살짝 섞인 검정 */
+[data-season='autumn'] { --season: #b0502a; --season-soft: #fbefe8; --season-line: #e3c2b4; --ink-title: #2e221d; } /* 제목: 고동빛 검정(10/3 사용자 선택 C) */
+[data-season='winter'] { --season: #466a86; --season-soft: #edf3f8; --season-line: #becbd5; --ink-title: #1e2632; } /* 서리 낀 듯한 바탕, 제목: 남빛 검정 */

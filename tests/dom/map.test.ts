@@ -95,4 +95,20 @@ describe('카카오 지도 어댑터 (가짜 SDK로 확인)', () => {
     expect(log.overlays[1]!.z).toBeGreaterThan(log.overlays[0]!.z);
     expect(log.calls.slice(-2)).toEqual(['level 10', 'center 37.47,129.16']);
   });
+
+  it("풍경 찾기: fit()은 올린 핀이 모두 보이게 지도를 맞춤(한 곳으로 확대하지 않음)", async () => {
+    const { log, m, fire } = await mount();
+    m.setPins(pins);
+    fire("tilesloaded");
+    m.fit();
+    expect(log.calls.at(-1)).toBe("bounds 3");
+  });
+});
+
+describe("지도 없이도 fit()을 불러도 멈추지 않음", () => {
+  it("목록 지도·실패 지도", async () => {
+    const l = createListMap();
+    await l.mount(document.createElement("div"));
+    expect(() => l.fit()).not.toThrow();
+  });
 });

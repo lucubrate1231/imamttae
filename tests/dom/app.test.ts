@@ -28,7 +28,7 @@ describe('머리와 달 띠', () => {
     expect(all('.mchip')).toHaveLength(12);
     expect(all('.mchip[aria-pressed="true"]').map((c) => c.textContent)).toEqual(['10월']);
     expect(text('.eyebrow')).toBe('이상호 작가의 추천');
-    expect(text('h1.ttl')).toBe('10월에 만나는 자연');
+    expect(text('h1.ttl')).toBe('10월에 만나는 풍경');
   });
 
   it('F1-AC9: 달을 누르면 주소가 #/month/11 이 되고, 그 주소대로 화면이 바뀜', async () => {
@@ -36,7 +36,7 @@ describe('머리와 달 띠', () => {
     all('.mchip')[10]!.click();
     expect(window.location.hash).toBe('#/month/11');
     hashChange();
-    expect(text('h1.ttl')).toBe('11월에 만나는 자연');
+    expect(text('h1.ttl')).toBe('11월에 만나는 풍경');
     expect(all('.mchip[aria-pressed="true"]').map((c) => c.textContent)).toEqual(['11월']);
   });
 
@@ -51,7 +51,7 @@ describe('머리와 달 띠', () => {
   it('F1-AC13: 스크롤하면 나오는 작은 제목 막대도 같은 달', async () => {
     window.location.hash = '#/month/1';
     await start();
-    expect(text('.mini-ttl')).toBe('1월에 만나는 자연');
+    expect(text('.mini-ttl')).toBe('1월에 만나는 풍경');
   });
 });
 
@@ -124,12 +124,12 @@ describe('작은 지도', () => {
 });
 
 describe('아래 메뉴와 실패할 때', () => {
-  it('아직 없는 화면(풍경 찾기·내 수첩·홈 화면에 두기)은 누르면 "곧 열려요"', async () => {
+  it('아직 없는 화면(내 수첩·홈 화면에 두기)은 누르면 "곧 열려요"', async () => {
     await start();
-    const tab = all('.tabs button').find((b) => b.textContent === '풍경 찾기')!;
+    const tab = all('.tabs button').find((b) => b.textContent === '내 수첩')!;
     tab.click();
     expect(text('.toast')).toBe('곧 열려요');
-    expect(all('.tabs button').map((b) => b.textContent)).toEqual(['지금', '풍경 찾기', '내 수첩']);
+    expect(all('.tabs button').map((b) => b.textContent)).toEqual(['지금 풍경', '풍경 찾기', '내 수첩']);
   });
 
   it('C-4: 장면 데이터를 못 불러오면 쉬운 말로 알림', async () => {

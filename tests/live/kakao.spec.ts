@@ -5,7 +5,7 @@ test('실제 카카오 지도가 뜨고, 장면 점이 올라가며, 첫 카드 
   const warnings: string[] = [];
   page.on('console', (m) => warnings.push(m.text()));
   await page.goto('./#/month/10');
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('10월에 만나는 자연');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('10월에 만나는 풍경');
   const ok = await page.waitForFunction(() => Boolean((window as unknown as { kakao?: { maps?: { Map?: unknown } } }).kakao?.maps?.Map), null, { timeout: 15_000 });
   expect(ok).toBeTruthy();
   await expect(page.locator('.mapfail')).toHaveCount(0);

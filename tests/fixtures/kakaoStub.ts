@@ -15,7 +15,7 @@ export function createKakaoStub(): { kakao: KakaoNS; log: StubLog; fire: (event:
     getLat() { return this.lat; }
     getLng() { return this.lng; }
   }
-  class LatLngBounds { extend() {} }
+  class LatLngBounds { pts: [number, number][] = []; extend(ll: LatLng) { this.pts.push([ll.getLat(), ll.getLng()]); } }
   class KMap {
     rec: StubLog['maps'][number];
     constructor(_el: HTMLElement, o: { center: LatLng; level: number } & Record<string, unknown>) {
@@ -27,7 +27,7 @@ export function createKakaoStub(): { kakao: KakaoNS; log: StubLog; fire: (event:
     getLevel() { return this.rec.level; }
     getCenter() { return new LatLng(...this.rec.center); }
     panTo(ll: LatLng) { this.setCenter(ll); }
-    setBounds() { this.rec.level = 13; }
+    setBounds(b: LatLngBounds) { this.rec.level = 13; log.calls.push(`bounds ${b.pts.length}`); }
     setZoomable(z: boolean) { this.rec.zoomable = z; }
     relayout() {}
   }
