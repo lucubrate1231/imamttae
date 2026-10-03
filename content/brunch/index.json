@@ -1,6 +1,6 @@
 {
  "version": 1,
- "generatedAt": "2026-10-03T13:59:32.231Z",
+ "generatedAt": "2026-10-03T15:00:47.661Z",
  "count": 51,
  "stories": [
   {
@@ -5382,7 +5382,7 @@
    "title": "서른두 번째 여행 - 원주 소금산과 뮤지엄 산",
    "url": "https://brunch.co.kr/@caed5ea4c3d74d9/48",
    "publishTime": 1791004962000,
-   "contentHash": "85a14f049a1417506883dc784b3eeba4f0abd09f",
+   "contentHash": "2e77775d09fb6c664452aefdaf56a8304e7c677e",
    "dateLine": "23년 8월 1일, 2일",
    "visit": {
     "year": 2023,
@@ -5535,14 +5535,14 @@
      "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/sFASLIb2JkZjzyXb3FiBRrUg4_k.jpg",
      "w": 1370,
      "h": 640,
-     "cap": "【✍ 저작권 확인】 사진 27: 전시 작품, 로봇 조형물 (저작권)",
+     "cap": "전시 작품, 로봇 조형물",
      "section": "뮤지엄 산"
     },
     {
      "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/LA1yL4exCmfQY9MTyiLoL_zRtvI.jpg",
      "w": 1370,
      "h": 640,
-     "cap": "【✍ 저작권 확인】 사진 28: 야외 조각 작품 (저작권)",
+     "cap": "",
      "section": "뮤지엄 산"
     },
     {
