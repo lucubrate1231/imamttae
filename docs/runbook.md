@@ -1,8 +1,9 @@
 # 운영 안내 (runbook)
 
 ## 주소
-- **미리보기:** `https://<GitHub 아이디>.github.io/imamttae/next/`. main에 올릴 때마다 자동으로 바뀝니다. 개발 중 확인용입니다.
-- **알파 주소:** `https://<GitHub 아이디>.github.io/imamttae/`. 버전 태그(v0.1.0 등)를 붙였을 때만 바뀝니다. 지인에게 주는 주소입니다.
+- **저장소:** https://github.com/lucubrate1231/imamttae (공개)
+- **미리보기:** https://lucubrate1231.github.io/imamttae/next/. main에 올릴 때마다 자동으로 바뀝니다. 개발 중 확인용입니다.
+- **알파 주소:** https://lucubrate1231.github.io/imamttae/. 버전 태그(v0.1.0 등)를 붙였을 때만 바뀝니다. 지인에게 주는 주소입니다.
 
 ## 자주 하는 일
 | 하고 싶은 일 | 방법 |
@@ -21,7 +22,7 @@
 - 카카오 키는 카카오 개발자 콘솔 [앱] → [플랫폼 키]에서 확인합니다.
 - JS 키는 등록한 도메인에서만 작동합니다. 카카오 콘솔의 JavaScript SDK 도메인에는 다음 두 개가 있어야 합니다.
   - `http://localhost:8080`
-  - `https://<GitHub 아이디>.github.io`
+  - `https://lucubrate1231.github.io`
 
 ## 코드를 GitHub에 올리는 길 (Cowork 작업 공간)
 Claude의 클라우드 작업 공간은 GitHub에 바로 올릴 수 없어서, 사용자 컴퓨터를 거쳐 올립니다.

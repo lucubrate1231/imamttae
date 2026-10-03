@@ -9,11 +9,12 @@ on:
   workflow_dispatch:
 jobs:
   live:
-    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    # JS 키 변수가 등록되기 전에는 건너뜁니다(지도가 뜰 수 없으므로)
+    if: vars.KAKAO_JS_KEY != '' && (github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success')
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with: { node-version: 22, cache: npm }
       - run: npm ci
       - run: npx playwright install --with-deps chromium
