@@ -67,21 +67,6 @@
   --gutter: 16px;
   --tabs-h: 68px; /* 아래 메뉴 높이 */
   --shadow: 0 10px 30px -14px rgba(23, 32, 27, 0.35);
-
-  /* ── 옛 첫 화면(index.html, src/styles/base.css)이 쓰는 옛 이름 ──
-     값을 따로 적지 않고 위 토큰에 연결만 해 둡니다. 다음 할 일 2번(기능 ①을 실제 앱으로)에서 옛 화면을 지울 때 함께 지웁니다. */
-  --c-page: var(--bg);
-  --c-ink: var(--ink);
-  --c-ink-2: var(--ink-2);
-  --c-ink-3: var(--ink-3);
-  --c-line: var(--line);
-  --c-surface: var(--bg);
-  --c-brand: var(--season);
-  --c-on-brand: var(--on-season);
-  --c-accent: var(--season);
-  --c-draft: var(--draft);
-  --c-draft-bg: var(--draft-bg);
-  --c-sea: var(--map-sea);
 }
 
 /* 계절 규칙: 강조색·연한 바탕·제목 글자색(docs/design-guide.md 3절). 달 → 계절은 src/review/v2.ts 의 seasonOf 와 같음 */

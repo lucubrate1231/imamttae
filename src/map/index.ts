@@ -1,4 +1,5 @@
-/** 어떤 지도를 쓸지 정합니다. 카카오 지도가 실패하면 목록 화면으로 바꿉니다. */
+/** 어떤 지도를 쓸지 정합니다. 카카오 지도를 못 불러오면 안내만 보여 줍니다(F1-AC10). */
+import { createFailedMap } from './failedMap';
 import { createKakaoMap } from './kakaoMap';
 import { createListMap } from './listMap';
 import { loadKakaoSdk } from './kakaoSdk';
@@ -18,6 +19,6 @@ export async function createMap(mode: MapMode, appkey: string, load = loadKakaoS
     const kakao = await load(appkey);
     return { map: createKakaoMap(kakao) };
   } catch (e) {
-    return { map: createListMap(), fallbackReason: e instanceof Error ? e.message : String(e) };
+    return { map: createFailedMap(), fallbackReason: e instanceof Error ? e.message : String(e) };
   }
 }

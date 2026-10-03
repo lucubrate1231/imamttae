@@ -55,7 +55,8 @@
 ### 같은 컴퓨터에서 동시에 일할 때 (Claude Code와 Codex)
 - **폴더를 따로 씁니다.** 한 폴더에서 두 에이전트가 동시에 가지를 바꾸면 서로의 작업이 꼬입니다.
   - Codex: `C:\dev\imamttae`
-  - Claude Code: `C:\dev\imamttae-claude` (같은 저장소를 한 번 더 클론)
+  - Claude Code: `C:\dev\imamttae-claude\imamttae` (같은 저장소를 한 번 더 클론)
+  - `.env.local`은 각 저장소 폴더 안(`package.json` 옆)에 둡니다. 한 단계 위에 두면 읽히지 않습니다.
 - **화면 테스트 포트를 나눕니다.** `npm run e2e`는 테스트용 서버를 띄웁니다(기본 4173).
   - Claude 폴더의 `.env.local`에 `E2E_PORT=4174` 한 줄을 넣어 둡니다. 이 파일은 저장소에 올라가지 않습니다.
   - 이미 떠 있는 서버는 다시 쓰지 않으므로, 포트가 겹치면 "already used" 오류로 바로 알 수 있습니다. 다른 폴더의 화면을 잘못 시험하는 일은 생기지 않습니다.
