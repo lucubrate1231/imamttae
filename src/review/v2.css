@@ -179,6 +179,7 @@ h1, h2, h3, p { margin: 0; }
 /* 사진이 뜨고 2초 뒤(또는 스크롤·터치하면 바로) 서서히 나타남. 숨어 있는 동안에는 눌리지 않음 */
 .gallery .ov { transition: opacity .5s ease; }
 .gallery.ov-wait .ov { opacity: 0; pointer-events: none; }
+.gallery.ov-quick .ov { transition-duration: .25s; } /* 사진을 넘긴 뒤에는 2배 빠르게(10/3 6차 코멘트) */
 /* 뒤로: 흰 동그라미(사진 위에서 잘 보이고, 검정 반투명 넘김 화살표와도 구분, 10/3 4차 코멘트) */
 .gallery .back { top: 12px; left: 12px; width: 38px; height: 38px; background: rgba(255, 255, 255, .94); color: var(--ink); box-shadow: 0 1px 6px rgba(0, 0, 0, .18); }
 /* 넘김 버튼은 세로로 긴 둥근 사각형(뒤로 버튼의 동그라미와 헷갈리지 않게, 10/3 코멘트) */

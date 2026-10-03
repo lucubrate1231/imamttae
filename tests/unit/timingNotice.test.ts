@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { timingNotice, newsSearchUrl } from '../../src/domain/timingNotice';
+import { timingNotice, newsLink } from '../../src/domain/timingNotice';
 
 /**
  * 사용자 요청(10/3): 꽃·단풍처럼 해마다 기온에 따라 달라지는 장면은
@@ -46,13 +46,34 @@ describe('timingNotice.short: 카드에 쓰는 짧은 한 줄 (10/3 2차 코멘�
   });
 });
 
-describe('newsSearchUrl: 올해 소식 찾아보기 링크', () => {
-  it('장면 이름과 키워드로 검색', () => {
-    const u = new URL(newsSearchUrl('내장산 우화정', '단풍'));
-    expect(u.origin).toBe('https://search.naver.com');
-    expect(u.searchParams.get('query')).toBe('내장산 우화정 단풍');
+describe('newsLink: 올해 소식 찾아보기 링크 (10/3 6차 코멘트)', () => {
+  const q = (u: string) => new URL(u).searchParams.get('query');
+  const oct2026 = new Date(2026, 9, 3);
+
+  it('단풍은 장소가 아니라 "누른 해 + 단풍지도"로 검색', () => {
+    const l = newsLink('내장산 우화정', timingNotice(['danpung'])!, oct2026);
+    expect(new URL(l.url).origin).toBe('https://search.naver.com');
+    expect(q(l.url)).toBe('2026 단풍지도');
+    expect(l.label).toBe('올해 단풍지도 찾아보기 ›');
   });
-  it('이름에 키워드가 이미 있으면 겹치지 않게', () => {
-    expect(new URL(newsSearchUrl('설악 대승폭포 단풍길', '단풍')).searchParams.get('query')).toBe('설악 대승폭포 단풍길');
+  it('벚꽃은 "누른 해 + 벚꽃지도", 그 밖의 꽃은 "누른 해 + 꽃지도"', () => {
+    expect(q(newsLink('경주 대릉원', timingNotice(['beotkkot'])!, oct2026).url)).toBe('2026 벚꽃지도');
+    for (const t of ['maehwa', 'jindallae', 'yeoreumkkot', 'kkotmureut'] as const) {
+      const l = newsLink('비슬산 참꽃 군락지', timingNotice([t])!, oct2026);
+      expect(q(l.url)).toBe('2026 꽃지도');
+      expect(l.label).toBe('올해 꽃지도 찾아보기 ›');
+    }
+  });
+  it('해는 누른 때를 따름(해가 바뀌면 그해로)', () => {
+    expect(q(newsLink('x', timingNotice(['danpung'])!, new Date(2027, 0, 5)).url)).toBe('2027 단풍지도');
+  });
+  it('눈은 지금처럼 장소 + 눈으로 검색(그곳 CCTV·눈 소식이 나옴)', () => {
+    const l = newsLink('발왕산 상고대', timingNotice(['seolgyeong'])!, oct2026);
+    expect(q(l.url)).toBe('발왕산 상고대 눈');
+    expect(l.label).toBe('올해 눈 소식 찾아보기 ›');
+  });
+  it('억새도 장소로 검색(억새 지도는 흔하지 않음), 이름에 키워드가 있으면 겹치지 않게', () => {
+    expect(q(newsLink('간월재', timingNotice(['eoksae'])!, oct2026).url)).toBe('간월재 억새');
+    expect(q(newsLink('신불산 억새평원', timingNotice(['eoksae'])!, oct2026).url)).toBe('신불산 억새평원');
   });
 });
