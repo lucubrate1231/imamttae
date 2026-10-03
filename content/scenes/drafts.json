@@ -86,9 +86,16 @@
    "excerpt": "상림공원에 들어서자 울창한 숲이 우리를 맞이했고, 가까이 다가가니 꽃무릇이 나무 아래의 지면을 붉게 덮고 있었다.",
    "photos": [
     {
-     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/UMKwfBGjsZKKVE7mivuC25W2KTs.jpg",
-     "w": 1280,
-     "h": 960,
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/4U4MZIHvByYuCmcmSo0vqI3FG3Q.jpg",
+     "w": 2117,
+     "h": 1206,
+     "cap": "",
+     "focus": "50% 60%"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/5C-s7KzFsZiguaNcvtJvzdL-B5Q.jpg",
+     "w": 2121,
+     "h": 1206,
      "cap": "",
      "focus": "50% 60%"
     }
@@ -3255,6 +3262,12 @@
    "excerpt": "햇살을 안은 붉은 참꽃의 화사한 미소가 수만 평의 산을 덮고 있어 행락객들도 덩달아 터지는 미소에 감탄사가 산을 울렸다.",
    "photos": [
     {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/Elix4_T6LbPwkgmRuAlLfQ-sO-c.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": ""
+    },
+    {
      "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/PcwKqbk4J5GMSSXAwuAcC66kC7E.jpg",
      "w": 1370,
      "h": 640,
@@ -3263,12 +3276,6 @@
     },
     {
      "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/8TIbAj4tahdTic4qzUA2pfMqIxc.jpg",
-     "w": 1370,
-     "h": 640,
-     "cap": ""
-    },
-    {
-     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/Elix4_T6LbPwkgmRuAlLfQ-sO-c.jpg",
      "w": 1370,
      "h": 640,
      "cap": ""

@@ -1,6 +1,6 @@
 {
  "version": 1,
- "generatedAt": "2026-10-03T12:59:12.397Z",
+ "generatedAt": "2026-10-03T13:59:32.231Z",
  "count": 51,
  "stories": [
   {
@@ -167,7 +167,7 @@
    "title": "네 번째 여행 - 여름의 지리산",
    "url": "https://brunch.co.kr/@caed5ea4c3d74d9/4",
    "publishTime": 1754567820000,
-   "contentHash": "5c9c10f675530acf0a5155ec37b276b009ab10c9",
+   "contentHash": "b8f183617e817b0961e4d42b76e2af1304ccc480",
    "dateLine": "2019년 9월 23일",
    "visit": {
     "year": 2019,
@@ -188,6 +188,20 @@
      "h": 1280,
      "cap": "",
      "section": "실상사 가든에서의 특별한 다슬기탕"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/4U4MZIHvByYuCmcmSo0vqI3FG3Q.jpg",
+     "w": 2117,
+     "h": 1206,
+     "cap": "",
+     "section": "상림공원의 붉은 꽃무릇 향연"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/5C-s7KzFsZiguaNcvtJvzdL-B5Q.jpg",
+     "w": 2121,
+     "h": 1206,
+     "cap": "",
+     "section": "상림공원의 붉은 꽃무릇 향연"
     },
     {
      "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/UMKwfBGjsZKKVE7mivuC25W2KTs.jpg",
