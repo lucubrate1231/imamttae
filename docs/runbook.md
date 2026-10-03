@@ -26,12 +26,18 @@
 ## 코드를 GitHub에 올리는 길 (Cowork 작업 공간)
 Claude의 클라우드 작업 공간은 GitHub에 바로 올릴 수 없어서, 사용자 컴퓨터를 거쳐 올립니다.
 1. 클라우드에서 개발·테스트한 뒤 바뀐 내용을 꾸러미 파일 하나(git bundle)로 만듭니다.
-2. 그 파일을 사용자 폴더 `band-to-brunch/imamttae-app/.git/`에 내려놓습니다.
-3. 사용자 컴퓨터의 작업 공간에서 받아 합친 뒤(`git pull`) GitHub에 올립니다(`git push`).
-   - 사용자 컴퓨터 작업 공간에는 GitHub 로그인이 저장되어 있습니다(gh CLI).
-   - 새 세션에서 로그인이 풀려 있으면 기기 로그인 코드를 다시 받아야 합니다.
+2. 그 파일을 사용자 폴더 `band-to-brunch/imamttae-app/.sync/incoming.bundle`에 내려놓습니다. 매번 같은 파일을 덮어씁니다.
+3. 사용자 컴퓨터 작업 공간(Cowork가 쓰는 리눅스 공간)의 git 저장소(`~/imamttae`)가 꾸러미를 합친 뒤 GitHub에 올립니다.
+   - 실행하는 것은 `~/bin/imamttae-sync.sh push`입니다.
+   - GitHub 로그인은 이 공간에 저장되어 있습니다(gh CLI).
+4. 마지막으로 `band-to-brunch/imamttae-app/` 폴더에 최신 파일을 펼쳐 둡니다.
 
-`band-to-brunch/imamttae-app/` 폴더는 GitHub 저장소와 같은 내용입니다. VS Code나 GitHub Desktop으로 열어 볼 수 있습니다.
+- `imamttae-app/` 폴더는 GitHub 저장소와 같은 파일을 담은 **사본**입니다(.git 없음).
+  - 연결된 폴더에서는 파일을 지울 수 없어서, git이 자기 임시 파일을 지우지 못합니다. 그래서 git 저장소 자체는 그 폴더에 두지 않습니다.
+- 새 Cowork 세션에서는 그 리눅스 공간이 비어 있을 수 있습니다. 그때는 다음 순서로 다시 준비합니다.
+  1. GitHub에서 저장소를 새로 받습니다(clone).
+  2. 기기 로그인 코드를 다시 받습니다.
+- Claude Code나 GitHub Desktop으로 직접 작업하려면 GitHub에서 저장소를 새로 받는(clone) 것이 가장 깔끔합니다.
 
 ## 문제가 생겼을 때
 - **지도가 안 뜨고 목록만 나옴:** 카카오 콘솔에 주소가 등록되어 있는지, `KAKAO_JS_KEY` 변수가 있는지, 카카오맵 사용 설정이 ON인지 확인합니다.
