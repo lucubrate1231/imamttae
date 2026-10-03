@@ -98,7 +98,8 @@ const rail = h('div', { class: 'rail', role: 'list', 'aria-label': '제철 풍�
 const peakSec = h('section', { class: 'peak', 'aria-label': '제철 풍경' }, rail);
 
 const mapbox = h('div', { class: 'mapbox' }, h('div', { class: 'kmap', id: 'kmap' }));
-const legend = h('div', { class: 'legend', 'aria-hidden': 'true' }, h('span', { text: '제철' }), h('span', { class: 'r', text: '작가 부부 방문' }));
+// 범례: '제철'만 쓰면 무엇의 제철인지 헷갈려서 '제철 풍경'(10/3 5차 코멘트)
+const legend = h('div', { class: 'legend', 'aria-hidden': 'true' }, h('span', { text: '제철 풍경' }), h('span', { class: 'r', text: '작가 부부 방문' }));
 const mapSec = h('section', { class: 'mapsec', 'aria-label': '지도' }, mapbox, legend);
 
 const recTitle = h('h2', {});
@@ -397,27 +398,50 @@ function renderDetail(): void {
         tn ? h('a', { class: 'when-link', href: newsSearchUrl(s.name, tn.keyword), target: '_blank', rel: 'noopener', text: `올해 ${tn.keyword} 소식 찾아보기 ›` }) : null,
       )
     : null;
-  // 뒤로·넘김 버튼은 사진이 뜨고 1초 뒤에 서서히 나타남(10/3 4차 코멘트: 2초 → 1초).
-  // 그 전에 사람이 스크롤하거나 사진을 만지면 바로 서서히 나타남(2차 코멘트). 상세를 열 때 스크롤 위치를 되돌리는 것은 사람 손이 아니므로 무시
+  // 사진 위 버튼(뒤로·넘김)이 나타나는 규칙 — docs/design-guide.md 6장
+  // - 상세에 들어오면 숨겨 두었다가 사진이 뜨고 1초 뒤 서서히(4차 코멘트). 사진이 늦게 떠도 3.5초 안에는 보임
+  // - 사진을 넘기면(화살표를 누르거나 밀어서) 숨겼다가, 사진이 멈추고 1초 뒤 다시 서서히(5차 코멘트)
+  // - 사람이 화면을 위아래로 스크롤하거나 사진을 톡 누르면 바로 서서히. 상세를 열 때 스크롤을 되돌리는 것은 사람 손이 아니므로 무시
   const gallery = h('div', { class: 'gallery ov-wait' }, slides, back, ...(n > 1 ? [prev, next] : []), credit);
-  let revealed = false;
-  const reveal = () => {
-    if (revealed) return;
-    revealed = true;
+  let showTimer = 0;
+  let settleTimer = 0;
+  const show = () => {
+    window.clearTimeout(showTimer);
+    window.clearTimeout(fallback);
     gallery.classList.remove('ov-wait');
   };
-  revealOverlay = reveal;
+  const showLater = (ms: number) => {
+    window.clearTimeout(showTimer);
+    showTimer = window.setTimeout(show, ms);
+  };
+  const hide = () => {
+    window.clearTimeout(showTimer);
+    window.clearTimeout(fallback);
+    gallery.classList.add('ov-wait');
+  };
+  const fallback = window.setTimeout(show, 3500);
+  revealOverlay = show;
   const first = slides.querySelector('img');
-  const arm = () => window.setTimeout(reveal, 1000);
+  const arm = () => showLater(1000);
   if (!first || first.complete) arm();
   else {
     first.addEventListener('load', arm, { once: true });
     first.addEventListener('error', arm, { once: true });
   }
-  window.setTimeout(reveal, 3500); // 사진이 늦게 떠도 3.5초 안에는 보이게
-  slides.addEventListener('scroll', reveal, { passive: true });
-  gallery.addEventListener('pointerdown', reveal);
-  gallery.addEventListener('focusin', reveal);
+  // 사진이 움직이는 동안은 숨기고, 멈추면(0.15초 동안 움직임 없음) 1초 뒤 다시 보이게
+  slides.addEventListener(
+    'scroll',
+    () => {
+      hide();
+      window.clearTimeout(settleTimer);
+      settleTimer = window.setTimeout(() => showLater(1000), 150);
+    },
+    { passive: true },
+  );
+  prev.addEventListener('click', hide);
+  next.addEventListener('click', hide);
+  slides.addEventListener('click', show); // 밀지 않고 톡 누르면 바로
+  gallery.addEventListener('focusin', (e) => e.target === slides && show()); // 키보드로 사진 칸에 오면 보이게
   detail.replaceChildren(
     gallery,
     ...(n > 1 ? [gdots] : []),
