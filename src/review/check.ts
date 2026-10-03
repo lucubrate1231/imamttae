@@ -54,7 +54,7 @@ function item(s: Scene, no: number): HTMLElement {
         h('b', { text: s.name }),
         h('span', { text: s.region }),
         h('br', {}),
-        h('span', { class: `tag ${peak ? 'peak' : 'rec'}`, text: peak ? '제철' : '다녀온 기록' }),
+        h('span', { class: `tag ${peak ? 'peak' : 'rec'}`, text: peak ? '제철' : '작가 부부 방문' }),
         ask ? h('span', { class: 'tag ask', text: '메모' }) : null,
       ),
       h('span', { class: 'chev', 'aria-hidden': 'true', text: '›' }),
@@ -65,8 +65,8 @@ function item(s: Scene, no: number): HTMLElement {
   const tierText = peak
     ? `제철 — 가장 좋은 때(${best?.season ?? ''})에 다녀오셔서 그 달들에 크게 보여요`
     : best && !isYearRound(best)
-      ? `다녀온 기록 — ${visitedMonth(s.visited)}월에 다녀오셔서 ${visitedMonth(s.visited)}월에만 작게 보여요`
-      : `다녀온 기록 — 일 년 내내 볼 수 있는 곳이라 다녀온 ${visitedMonth(s.visited)}월에만 작게 보여요`;
+      ? `작가 부부 방문 — ${visitedMonth(s.visited)}월에 다녀오셔서 ${visitedMonth(s.visited)}월에만 작게 보여요`
+      : `작가 부부 방문 — 일 년 내내 볼 수 있는 곳이라 다녀온 ${visitedMonth(s.visited)}월에만 작게 보여요`;
   const m = peak ? (best!.from as number) : visitedMonth(s.visited);
   const appUrl = `./v2.html?m=${m}#scene=${encodeURIComponent(s.id)}`;
   d.append(
@@ -80,6 +80,7 @@ function item(s: Scene, no: number): HTMLElement {
         {},
         h('div', {}, h('dt', { text: '풍경 종류' }), h('dd', {}, s.types.map(label).join(', '), draft(s.review.types === 'draft'))),
         h('div', {}, h('dt', { text: '가장 좋은 때' }), h('dd', {}, bestText, draft(s.review.best === 'draft'), h('small', { text: tierText }))),
+        best?.tip ? h('div', {}, h('dt', { text: '이럴 때 더 좋아요' }), h('dd', {}, best.tip, draft(s.review.best === 'draft'))) : null,
         h('div', {}, h('dt', { text: '한 줄 소개' }), h('dd', {}, s.oneLiner, draft(s.review.oneLiner === 'draft'))),
         h('div', {}, h('dt', { text: '가는 곳(길찾기 목적지)' }), h('dd', {}, s.dest.name, draft(s.review.dest === 'draft'))),
         h('div', {}, h('dt', { text: '다녀온 날' }), h('dd', { text: fmtDate(s.visited) })),
@@ -156,7 +157,7 @@ async function start(): Promise<void> {
         'div',
         { class: 'legend' },
         h('p', {}, h('span', { class: 'tag peak', text: '제철' }), '가장 좋은 때에 다녀온 곳. 그 철 내내 크게 보여요.'),
-        h('p', {}, h('span', { class: 'tag rec', text: '다녀온 기록' }), '철이 지났거나 일 년 내내 볼 수 있는 곳. 다녀온 달에만 작게 보여요.'),
+        h('p', {}, h('span', { class: 'tag rec', text: '작가 부부 방문' }), '철이 지났거나 일 년 내내 볼 수 있는 곳. 다녀온 달에만 작게 보여요.'),
       ),
     ),
   );
@@ -164,7 +165,7 @@ async function start(): Promise<void> {
     ['all', `전체 ${counts.all}`],
     ['ask', `메모 있는 곳 ${counts.ask}`],
     ['peak', `제철 ${counts.peak}`],
-    ['record', `다녀온 기록 ${counts.record}`],
+    ['record', `작가 부부 방문 ${counts.record}`],
   ];
   for (const [f, t] of opts) {
     const b = h('button', { type: 'button', 'aria-pressed': String(f === filter), text: t });
