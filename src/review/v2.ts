@@ -167,14 +167,11 @@ new IntersectionObserver(([e]) => miniTitle.classList.toggle('on', !e!.isInterse
 
 
 // ── 카드 ──
+// 장면 상세 꼬리표: 제철이면 '제철' + 풍경 종류. 작가 부부가 다녀온 곳(제철 아님)은 풍경 종류만 —
+// '작가 부부 방문' 꼬리표는 뜻이 잘 안 와닿아 빼고, 아래 "사진은 작가 부부가 N월에 다녀온 모습이에요"로 충분(10/3 6차 코멘트)
 function badges(s: Scene): HTMLElement {
   const peakB = sceneTier(s) === 'peak';
-  return h(
-    'span',
-    { class: 'badges' },
-    h('span', { class: `badge ${peakB ? 'peak-b' : 'rec-b'}`, text: peakB ? '제철' : '작가 부부 방문' }),
-    h('span', { class: 'badge', text: typeLabel(s) }),
-  );
+  return h('span', { class: 'badges' }, peakB ? h('span', { class: 'badge peak-b', text: '제철' }) : null, h('span', { class: 'badge', text: typeLabel(s) }));
 }
 /** 제철 카드는 모두 제철이라 '제철' 딱지는 빼고(10/3 코멘트), 종류만 반투명으로 약하게 */
 function bigCard(s: Scene, i: number): HTMLElement {

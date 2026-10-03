@@ -119,3 +119,11 @@ test('올해 소식 찾아보기: 단풍 장면은 "올해 + 단풍지도"로 �
   const q = new URL((await link.getAttribute('href'))!).searchParams.get('query');
   expect(q).toBe(`${new Date().getFullYear()} 단풍지도`);
 });
+
+test('장면 상세에는 "작가 부부 방문" 꼬리표를 두지 않음(사진 안내 문구로 충분)', async ({ page }) => {
+  await open(page, '?m=8');
+  await page.locator('.rec').first().click();
+  await expect(page.locator('.detail.open')).toBeVisible();
+  await expect(page.locator('.detail .body .badges')).not.toContainText('작가 부부 방문');
+  await expect(page.locator('.detail .recnote')).toContainText('사진은 작가 부부가');
+});
