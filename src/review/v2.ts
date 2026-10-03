@@ -31,7 +31,7 @@ let scenes: Scene[] = [];
 let peak: Scene[] = [];
 let record: Scene[] = [];
 let sel = 0;
-const stamped = new Set<string>();
+const wanted = new Set<string>(); // 가고 싶어요(시안에서는 화면을 닫으면 사라짐. 실제 앱은 휴대폰에 저장)
 
 // ── 작은 도우미 ──
 function h<K extends keyof HTMLElementTagNameMap>(tag: K, attrs: Record<string, string> = {}, ...kids: (Node | string | null)[]): HTMLElementTagNameMap[K] {
@@ -89,10 +89,7 @@ for (let m = 1; m <= 12; m++) {
 const seasonLabel = h('span', { class: 'season-label' });
 const peakTitle = h('h2', {});
 const rail = h('div', { class: 'rail', role: 'list', 'aria-label': '제철 명장면' });
-const pagerText = h('span', {});
-const pagerBar = h('b', {});
-const pager = h('div', { class: 'pager', 'aria-hidden': 'true' }, h('i', {}, pagerBar), pagerText);
-const peakSec = h('section', { class: 'peak' }, h('div', { class: 'sec-head' }, seasonLabel, peakTitle), rail, pager);
+const peakSec = h('section', { class: 'peak' }, h('div', { class: 'sec-head' }, seasonLabel, peakTitle), rail);
 
 const mapbox = h('div', { class: 'mapbox' }, h('div', { class: 'kmap', id: 'kmap' }));
 const legend = h('div', { class: 'legend', 'aria-hidden': 'true' }, h('span', { text: '제철' }), h('span', { class: 'r', text: '다녀온 기록' }));
@@ -130,7 +127,8 @@ const detail = h('section', { class: 'detail', 'aria-label': '장면 상세', 'a
 const toastEl = h('div', { class: 'toast', role: 'status' });
 app.append(months, h('main', {}, h('h1', { class: 'sr', text: '이맘때 자연' }), peakSec, mapSec, recSec, extra), tabs, detail, toastEl);
 
-window.addEventListener('scroll', () => months.classList.toggle('lifted', window.scrollY > 4), { passive: true });
+// 계절 띠 비교용: ?band=split 이면 띠가 제목까지만 (기본은 제철 구역 전체)
+if (new URLSearchParams(location.search).get('band') === 'split') app.dataset.band = 'split';
 
 // ── 카드 ──
 function badges(s: Scene): HTMLElement {
@@ -142,11 +140,18 @@ function badges(s: Scene): HTMLElement {
     h('span', { class: 'badge', text: typeLabel(s) }),
   );
 }
+/** 제철 카드는 모두 제철이라 '제철' 딱지는 빼고(10/3 코멘트), 종류만 반투명으로 약하게 */
 function bigCard(s: Scene, i: number): HTMLElement {
   const b = h(
     'button',
     { class: 'big', type: 'button' },
-    h('div', { class: 'photo' }, img(s.photos[0]!, ''), badges(s), h('span', { class: 'cap' }, h('b', { text: s.name }), h('span', { text: s.region }))),
+    h(
+      'div',
+      { class: 'photo' },
+      img(s.photos[0]!, ''),
+      h('span', { class: 'badges' }, h('span', { class: 'badge on-photo', text: typeLabel(s) })),
+      h('span', { class: 'cap' }, h('b', { text: s.name }), h('span', { text: s.region })),
+    ),
     h(
       'div',
       { class: 'best' },
@@ -165,7 +170,7 @@ function recRow(s: Scene): HTMLElement {
     'button',
     { class: 'rec', type: 'button' },
     img(s.photos[0]!, '', thumb(s.photos[0]!.src)),
-    h('span', {}, h('b', { text: s.name }), h('span', { class: 'meta', text: `${s.region} · ${fmtDate(s.visited.slice(0, 7))}에 다녀옴` }), h('span', { class: 'badge rec-b', text: typeLabel(s) })),
+    h('span', {}, h('b', { text: s.name }), h('span', { class: 'meta', text: s.region }), h('span', { class: 'badge rec-b', text: typeLabel(s) })),
   );
   b.addEventListener('click', () => openScene(s.id));
   return h('li', {}, b);
@@ -195,12 +200,7 @@ function render(): void {
   recSec.hidden = record.length === 0;
 
   sel = 0;
-  updatePager();
   drawPins();
-}
-function updatePager(): void {
-  pagerText.textContent = peak.length ? `${sel + 1} / ${peak.length}` : '';
-  pagerBar.style.width = peak.length ? `${((sel + 1) / peak.length) * 100}%` : '0';
 }
 
 // ── 지도 ──
@@ -260,7 +260,6 @@ function flyTo(s: Scene): void {
 }
 function select(i: number, scrollRail: boolean): void {
   sel = i;
-  updatePager();
   highlight();
   if (scrollRail) {
     const c = rail.children[i] as HTMLElement | undefined;
@@ -294,11 +293,27 @@ function renderDetail(): void {
     return;
   }
   const isPeak = sceneTier(s) === 'peak';
-  const slides = h('div', { class: 'rail', tabindex: '0', 'aria-label': `사진 ${s.photos.length}장, 옆으로 넘겨 보세요` }, ...s.photos.map((p, i) => h('div', { class: 'slide' }, img(p, i === 0 ? `${s.name} 풍경` : ''))));
-  const count = h('span', { class: 'count', text: `1 / ${s.photos.length}` });
-  slides.addEventListener('scroll', () => {
-    count.textContent = `${Math.round(slides.scrollLeft / slides.clientWidth) + 1} / ${s.photos.length}`;
-  });
+  // 사진 넘김 힌트(10/3 코멘트): 양옆 화살표 버튼 + 사진 아래 점. 손가락으로 밀어도 되고 눌러도 됩니다
+  const n = s.photos.length;
+  const slides = h('div', { class: 'rail', tabindex: '0', 'aria-label': `사진 ${n}장, 옆으로 넘겨 보세요` }, ...s.photos.map((p, i) => h('div', { class: 'slide' }, img(p, i === 0 ? `${s.name} 풍경` : ''))));
+  const chevron = (d: string) => `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="${d}"/></svg>`;
+  const prev = h('button', { class: 'round nav prev', type: 'button', 'aria-label': '이전 사진' });
+  prev.innerHTML = chevron('M15 18l-6-6 6-6');
+  const next = h('button', { class: 'round nav next', type: 'button', 'aria-label': '다음 사진' });
+  next.innerHTML = chevron('M9 18l6-6-6-6');
+  const gdots = h('div', { class: 'gdots', 'aria-hidden': 'true' }, ...s.photos.map((_, i) => h('i', { class: i === 0 ? 'on' : '' })));
+  const cur = () => Math.round(slides.scrollLeft / Math.max(1, slides.clientWidth));
+  const go = (i: number) => slides.scrollTo({ left: Math.max(0, Math.min(n - 1, i)) * slides.clientWidth, behavior: reduceMotion ? 'auto' : 'smooth' });
+  const paintNav = () => {
+    const i = cur();
+    prev.hidden = i <= 0;
+    next.hidden = i >= n - 1;
+    gdots.querySelectorAll('i').forEach((d, k) => d.classList.toggle('on', k === i));
+  };
+  prev.addEventListener('click', () => go(cur() - 1));
+  next.addEventListener('click', () => go(cur() + 1));
+  slides.addEventListener('scroll', paintNav, { passive: true });
+  paintNav();
   const back = h('button', { class: 'round back', type: 'button', 'aria-label': '뒤로' });
   back.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>';
   back.addEventListener('click', () => (history.length > 1 ? history.back() : (location.hash = '')));
@@ -315,17 +330,19 @@ function renderDetail(): void {
       /* 사용자가 취소 */
     }
   });
-  const stamp = h('button', { class: 'stamp', type: 'button' });
-  const paintStamp = () => {
-    stamp.setAttribute('aria-pressed', String(stamped.has(s.id)));
-    stamp.textContent = stamped.has(s.id) ? '✓ 봤어요' : '봤어요';
+  // 봤어요 → 가고 싶어요(10/3 코멘트): 앱을 여는 때는 여행 전이라 '점 찍어 두기'가 맞는 자리
+  const want = h('button', { class: 'want', type: 'button' });
+  const paintWant = () => {
+    const on = wanted.has(s.id);
+    want.setAttribute('aria-pressed', String(on));
+    want.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="${on ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-6-4.5L6 21z"/></svg><span>${on ? '담았어요' : '가고 싶어요'}</span>`;
   };
-  paintStamp();
-  stamp.addEventListener('click', () => {
-    if (stamped.has(s.id)) stamped.delete(s.id);
-    else stamped.add(s.id);
-    paintStamp();
-    toast(stamped.has(s.id) ? `수첩에 '${typeLabel(s)}' 도장을 찍었어요` : '도장을 지웠어요');
+  paintWant();
+  want.addEventListener('click', () => {
+    if (wanted.has(s.id)) wanted.delete(s.id);
+    else wanted.add(s.id);
+    paintWant();
+    toast(wanted.has(s.id) ? '가고 싶은 곳에 담았어요' : '가고 싶은 곳에서 뺐어요');
   });
 
   const draft = () => h('span', { class: 'draft', text: '초안' });
@@ -344,11 +361,12 @@ function renderDetail(): void {
     : null;
   const credit = h('span', { class: 'credit' }, `사진·글 ${AUTHOR}`, h('span', { class: 'sign', title: '작가 손글씨 서명 자리', text: '서명' }));
   detail.replaceChildren(
-    h('div', { class: 'gallery' }, slides, back, share, credit, count),
+    h('div', { class: 'gallery' }, slides, back, share, ...(n > 1 ? [prev, next] : []), credit),
+    ...(n > 1 ? [gdots] : []),
     h(
       'div',
       { class: 'body' },
-      h('div', { class: 'row' }, badges(s), stamp),
+      h('div', { class: 'row' }, badges(s), want),
       h('h2', { class: 'title', text: s.name }),
       h('p', { class: 'region', text: s.region }),
       h('p', { class: 'one' }, s.oneLiner, s.review.oneLiner === 'draft' ? draft() : null),
@@ -364,11 +382,16 @@ function renderDetail(): void {
               h('dd', {}, h('b', { text: s.best.season ?? '' }), s.review.best === 'draft' ? draft() : null, h('small', { text: s.best.note })),
             )
           : null,
-        h('div', {}, h('dt', { text: '다녀온 날' }), h('dd', { text: fmtDate(s.visited) })),
         h('div', {}, h('dt', { text: '가는 곳' }), h('dd', {}, s.dest.name, s.review.dest === 'draft' ? draft() : null)),
       ),
       vary,
-      h('blockquote', { class: 'quote' }, h('p', { text: s.excerpt }), h('cite', { text: `— ${AUTHOR}${s.trip ? `, ${s.trip}` : ''}` })),
+      // 다녀온 날은 칸에서 빼고 작가 글 출처 끝에 작게(10/3 코멘트)
+      h(
+        'blockquote',
+        { class: 'quote' },
+        h('p', { text: s.excerpt }),
+        h('cite', {}, `— ${AUTHOR}${s.trip ? `, ${s.trip}` : ''}`, h('span', { class: 'when', text: ` · ${fmtDate(s.visited.slice(0, 7))}에 다녀옴` })),
+      ),
       h(
         'div',
         { class: 'actions' },
