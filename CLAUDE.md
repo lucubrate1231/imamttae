@@ -48,7 +48,7 @@
 |---|---|
 | `npm run dev` | 개발 서버 http://localhost:8080 (카카오에 등록한 시험 주소) |
 | `npm run check` | 타입, 단위·데이터 규칙 테스트, 비밀 키, 빌드, 성능 예산 |
-| `npm run e2e` | 휴대폰(390·360px) 화면 흐름과 접근성(axe). 가짜 지도(`?map=fake`) 사용 |
+| `npm run e2e` | 휴대폰(390·360px) 화면 흐름과 접근성(axe). 가짜 지도(`?map=fake`) 사용. 테스트 서버 포트는 `E2E_PORT`(기본 4173) |
 | `npm run live` | 실제 카카오 지도 확인(localhost:8080 또는 `LIVE_URL`) |
 | `npx tsx pipeline/sync.ts` | 브런치 발행 글 동기화 → `content/brunch/index.json` (글 전문은 `.cache/`에만) |
 | `npx tsx pipeline/scenes/check-cli.ts content/scenes/drafts.json` | 장면 초안 검사(원문 대목·사진·15km·날짜) |
@@ -92,3 +92,4 @@
 ## 작업 공간 메모
 - Cowork 클라우드 작업 공간은 GitHub에 바로 올릴 수 없어, 사용자 컴퓨터 작업 공간(GitHub 로그인 저장됨)을 거쳐 올립니다(`docs/runbook.md`의 중계). Claude Code 클라우드 세션은 GitHub에 바로 올리므로 중계가 필요 없습니다.
 - 카카오 JS SDK 도메인에는 `http://localhost:8080`, `https://lucubrate1231.github.io`가 등록되어 있습니다.
+- 사용자 컴퓨터에서 Codex와 동시에 일할 수 있습니다. 폴더(Claude Code는 `C:\dev\imamttae-claude`)와 화면 테스트 포트(`.env.local`의 `E2E_PORT=4174`)를 나눕니다. 자세한 규칙은 `AGENTS.md`의 '같은 컴퓨터에서 동시에 일할 때'에 있습니다.
