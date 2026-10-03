@@ -23,7 +23,7 @@ export function parseVisitDate(line: string): VisitDate | null {
   const rest = line.slice(m[0].length);
 
   // "4일~5일", "25~26일", "2.3.4일", "5일 - 12월 6일", "12"
-  const days = /^(\d{1,2})(?:\s*일)?((?:\s*[.~\-–]\s*(?:\d{1,2}\s*월\s*)?\d{1,2}(?:\s*일)?)*)/.exec(rest);
+  const days = /^(\d{1,2})(?:\s*일)?((?:\s*[.,~\-–]\s*(?:\d{1,2}\s*월\s*)?\d{1,2}(?:\s*일)?)*)/.exec(rest);
   if (!days || !days[1]) return out;
   const day = Number(days[1]);
   if (day < 1 || day > 31) return out;

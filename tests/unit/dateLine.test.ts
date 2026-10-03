@@ -18,6 +18,7 @@ describe('parseVisitDate: 작가가 글 맨 위에 쓰는 날짜 줄을 읽는�
     ['20년 8월 25~26일', { year: 2020, month: 8, day: 25, endDay: 26 }],
     ['22년 1월 19~20일(1박 2일)', { year: 2022, month: 1, day: 19, endDay: 20 }],
     ['22년 8월 2.3.4일(2박3일)', { year: 2022, month: 8, day: 2, endDay: 4 }],
+    ['23년 8월 1일, 2일', { year: 2023, month: 8, day: 1, endDay: 2 }],
   ])('여러 날 여행: %s', (line, want) => {
     expect(parseVisitDate(line)).toEqual(want);
   });

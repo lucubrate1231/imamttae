@@ -8,3 +8,4 @@ playwright-report/
 *.bundle
 .DS_Store
 .sync/
+.cache/
