@@ -48,19 +48,41 @@
   - 계산(`src/domain/`)과 저장(`src/storage/`)은 화면 없이 단위 테스트만으로 완성할 수 있어 Codex가 따로 일하기 좋습니다.
 - **함수 이름을 먼저 정합니다.** Codex가 만든 함수를 Claude가 화면에서 가져다 씁니다. 일을 맡기기 전에 함수 이름과 주고받는 값을 `docs/tasks/`에 적어 둡니다. 바꿔야 하면 PR 설명에 적어 사용자에게 묻습니다.
 - **서로의 PR을 읽고 의견을 남깁니다.** 상대 PR에서 완성 기준과 맞지 않거나 내 일과 부딪히는 곳을 찾아 알려 줍니다. 합치는 결정은 사용자가 합니다.
-- **둘 다 건드리지 않는 것:** 장면 데이터와 데이터 규칙(`content/`, `pipeline/`, `public/data/`, `shared/schema/`, Cowork의 Claude 담당), `package.json`·`package-lock.json`(새 도구는 사용자에게 먼저 묻기), 이 파일과 CLAUDE.md의 **상대방 칸**.
+- **둘 다 건드리지 않는 것:** 장면 데이터와 데이터 규칙(`content/`, `pipeline/`, `public/data/`, `shared/schema/`, Cowork 콘텐츠 세션 담당), `package.json`·`package-lock.json`(새 도구는 사용자에게 먼저 묻기), 이 파일과 CLAUDE.md의 **상대방 칸**.
+
+### 세 곳이 함께 일하는 규칙 (10/4 기획 합의 — 프로젝트 문서 '세션 분담' v2.3 6장과 같음)
+Cowork(기획·콘텐츠·디자인 세션), Claude Code(개발 리드), Codex가 함께 일합니다. **모든 결정은 기획이 우선**이고, Claude Code는 개발 판단을 의견으로 정리해 올립니다.
+1. **결정의 원본은 기획(PRD, D번호)입니다.** F 문서·design-guide·docs/tasks는 그 결정을 개발용으로 옮겨 적은 것입니다. 어긋나면 PRD가 맞고 개발 쪽이 고칩니다. 개발 판단은 PR 설명에 '의견'으로만 올리고 결정을 바꾸지 않습니다.
+2. **Codex에게 가는 지시는 한 길로만:** `docs/tasks/codex-N-*.md` 작업 문서. 기획은 Codex에 닿는 결정을 **D번호와 함께 Claude Code에게만** 보내고, Claude Code가 작업 문서에 옮겨 PR로 올립니다. Codex에게 주는 말은 늘 같은 틀입니다: "main 최신 받고 `docs/tasks/○○` 읽고 해 줘."
+3. **작업 문서는 main에 합쳐진 뒤에만 Codex에 넘깁니다.** 합쳐진 PR은 고치지 않고, 고칠 것은 새 PR로 올립니다(10/4 사고: #16 뒤에 올린 범위 수정이 main에 안 들어가 Codex가 옛 범위로 일함 → #18로 바로잡음).
+4. **계획·디자인이 확정되지 않은 기능은 Codex에게 맡기지 않습니다.** 확정된 조각만 떼어 맡깁니다.
+5. **문서마다 주인이 하나입니다.** 남의 문서를 고쳐야 하면 PR 설명에 "○○ 세션 확인 필요"로 적습니다.
+   - 기획 세션: PRD·개발계획(저장소 파일은 직접 고치지 않음)
+   - 콘텐츠 세션: `content/`, `pipeline/`, `public/data/`, `shared/schema/`, `docs/curation-guide.md`
+   - 디자인 세션: `docs/design-guide.md`의 화면 규칙, F3~F5의 화면 기준
+   - Claude Code(개발 리드): F1·F2 문서, `docs/tasks/`, 문서의 '✅ 테스트가 지킴' 표시, 화면 코드와 테스트. 단 design-guide 6장(장면 상세)은 10/4 한 번 예외로 고침(D12·D13)
+   - Codex: 작업 문서에 적힌 `src/domain/`·`src/storage/` 파일
+6. **누가 무엇을 하는지:** 개발 쪽(Claude Code·Codex)은 이 파일 한 곳(아래 '순서'와 '맡고 있는 것' 칸), Cowork 세션들의 역할은 프로젝트 문서 **'세션 분담'** 한 곳에 둡니다. 일을 시작하기 전에 둘 다 읽습니다.
+7. **데이터를 바꾸는 PR은 제목 글꼴도 다시 만듭니다:** `npx tsx scripts/build-title-font.ts`(빠뜨리면 검사가 알려 줌).
+8. **PR은 위에 쌓지 않습니다.** 앞 PR이 합쳐진 뒤 main에서 새로 시작합니다. 어쩔 수 없이 쌓으면 PR 맨 위에 합치는 순서를 적습니다.
+- 개발에 관한 질문·결정 요청은 Cowork 세션들도 **Claude Code(개발 리드)에게** 보냅니다. Claude Code가 정리해 Codex 작업 문서나 PR로 옮깁니다.
 
 ### 순서 (하나 끝나면 다음, 하나씩 PR)
 | 순서 | Claude Code (화면) | Codex (계산·저장) |
 |---|---|---|
-| 지금 | 글꼴 깨짐 → 기능 ① 첫 화면·장면 상세를 실제 앱으로(F1·F2) | **일 1** 풍경 찾기 계산(F3): [`docs/tasks/codex-1-풍경찾기-계산.md`](docs/tasks/codex-1-풍경찾기-계산.md) → **일 2** 가고 싶어요 저장(F2-AC2c): [`docs/tasks/codex-2-가고싶어요-저장.md`](docs/tasks/codex-2-가고싶어요-저장.md) · 틈틈이 Claude PR 검토 |
-| 그다음 | 풍경 찾기 화면(F3), 내 수첩 계획·디자인 → 내 수첩 화면(F4) | 내 수첩 저장(도장·다녀온 곳·새해 넘김, F4) — **내 수첩 계획·디자인이 정해진 뒤** Claude가 `docs/tasks/`에 적음(10/3 사용자 결정). 적을 때 PRD 3-2장 **D9~D11**을 넣음: 여러 풍경 장면은 확인 뒤 도장(D9), 도장 날짜 고치기(D10), 같은 풍경은 도장 하나 + 만난 곳 쌓기(D11) |
+| 지금 | 기능 ① 첫 화면·장면 상세를 실제 앱으로(F1·F2) → 사용 통계(Umami) 설계 | **일 1** 풍경 찾기 계산(F3, PR #13): [`docs/tasks/codex-1-풍경찾기-계산.md`](docs/tasks/codex-1-풍경찾기-계산.md) → **일 2** 가고 싶어요 저장(F2-AC2c): [`docs/tasks/codex-2-가고싶어요-저장.md`](docs/tasks/codex-2-가고싶어요-저장.md) → **일 3** 풍경 찾기 볼 수 있는 때·묶음 계산(D16·D17·D22·D23): [`docs/tasks/codex-3-풍경찾기-묶음-계산.md`](docs/tasks/codex-3-풍경찾기-묶음-계산.md) · 틈틈이 Claude PR 검토 |
+| 그다음 | 풍경 찾기 화면(F3, 일 3이 합쳐진 뒤), 내 수첩 계획·디자인 → 내 수첩 화면(F4) | 내 수첩 저장(도장·다녀온 곳·새해 넘김, F4) — **내 수첩 계획·디자인이 정해진 뒤** Claude가 `docs/tasks/`에 적음(10/3 사용자 결정). 적을 때 PRD 3-2장 **D9~D11**을 넣음: 여러 풍경 장면은 확인 뒤 도장(D9), 도장 날짜 고치기(D10), 같은 풍경은 도장 하나 + 만난 곳 쌓기(D11) |
 | 그다음 | 홈 화면에 추가 화면(F5), 사용 통계 붙이기 | 홈 화면에 추가 준비 파일(F5-AC1·2·6), 길찾기 앱 기억하기(F2-AC5) |
 
 - **계획·디자인이 정해지지 않은 기능의 저장·계산은 맡기지 않습니다(10/3 사용자 결정).** 무엇을 저장할지가 디자인에 따라 바뀌어 다시 만들게 되기 때문입니다.
 
+### 지금 Cowork 세션들이 맡고 있는 것 (자세한 것은 프로젝트 문서 '세션 분담')
+- **기획 세션:** PRD·개발계획, 결정(D번호). 저장소 파일은 직접 고치지 않고, 개발에 닿는 결정은 Claude Code에게 보냅니다.
+- **콘텐츠 세션:** 장면 데이터와 파이프라인 — `content/`, `pipeline/`, `public/data/`, `public/_review/`, `shared/schema/`, `docs/curation-guide.md`
+- **디자인 세션:** `docs/design-guide.md`의 화면 규칙, F3~F5의 화면 기준(디자인 캔버스)
+
 ### 지금 Claude가 맡고 있는 것 (겹치지 않게)
-- 장면 데이터와 파이프라인: `content/`, `pipeline/`, `public/data/`, `public/_review/` (Cowork의 Claude)
+- 개발 리드(Claude Code): 기획·디자인·콘텐츠 세션의 개발 관련 질문을 받아 정리하고, Codex 작업 문서(`docs/tasks/`)를 씁니다.
 - 화면 전부 (Claude Code)
   - `src/styles/`, `index.html`, `src/main.ts`, `src/app.ts`, 앞으로 만들 `src/ui/`, `src/map/`
   - 확정 시안 `_review/`, `src/review/`와 화면 테스트 `tests/e2e/`, `tests/dom/`
