@@ -45,6 +45,7 @@ export function createListMap(): MapAdapter {
       selected = id;
       paint();
     },
+    fit() {},
     onPinClick(cb) {
       handler = cb;
     },

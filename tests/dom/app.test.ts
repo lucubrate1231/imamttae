@@ -124,9 +124,9 @@ describe('작은 지도', () => {
 });
 
 describe('아래 메뉴와 실패할 때', () => {
-  it('아직 없는 화면(풍경 찾기·내 수첩·홈 화면에 두기)은 누르면 "곧 열려요"', async () => {
+  it('아직 없는 화면(내 수첩·홈 화면에 두기)은 누르면 "곧 열려요"', async () => {
     await start();
-    const tab = all('.tabs button').find((b) => b.textContent === '풍경 찾기')!;
+    const tab = all('.tabs button').find((b) => b.textContent === '내 수첩')!;
     tab.click();
     expect(text('.toast')).toBe('곧 열려요');
     expect(all('.tabs button').map((b) => b.textContent)).toEqual(['지금 풍경', '풍경 찾기', '내 수첩']);

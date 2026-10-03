@@ -19,9 +19,11 @@ async function main(): Promise<void> {
   const root = document.getElementById('app');
   if (!root) return;
   const mode = pickMapMode(location.search, import.meta.env.VITE_MAP_MODE);
-  const [content, { map, fallbackReason }] = await Promise.all([loadContent(), createMap(mode, import.meta.env.VITE_KAKAO_JS_KEY ?? '')]);
+  const key = import.meta.env.VITE_KAKAO_JS_KEY ?? '';
+  // 첫 화면과 풍경 찾기가 지도를 하나씩 씀(카카오 SDK는 한 번만 불러옴)
+  const [content, { map, fallbackReason }, { map: findMap }] = await Promise.all([loadContent(), createMap(mode, key), createMap(mode, key)]);
   if (fallbackReason) console.warn('[imamttae] 지도 대체:', fallbackReason);
-  await startApp({ root, map, content });
+  await startApp({ root, map, findMap, content });
 }
 
 void main();

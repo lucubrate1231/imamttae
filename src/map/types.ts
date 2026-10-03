@@ -17,6 +17,8 @@ export interface MapAdapter {
   setPins(pins: readonly MapPin[]): void;
   /** 장소 고르기: 그 핀만 이름표를 보이고, 지도는 우리나라 전체 → 그 장소로 확대(F1-AC5·AC6) */
   select(id: string | null): void;
+  /** 풍경 찾기: 올린 핀이 모두 보이게 지도를 맞춤(F3-AC2·AC7) */
+  fit(): void;
   onPinClick(cb: (id: string) => void): void;
   destroy(): void;
 }
