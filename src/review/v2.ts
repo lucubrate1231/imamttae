@@ -13,6 +13,7 @@ import { inWindow, monthInSeoul, type Month } from '../domain/month';
 import { sceneTier, splitByMonth, visitedMonth } from '../domain/sceneTier';
 import { SCENE_TYPES } from '../domain/sceneTypes';
 import { newsLink, timingNotice, type TimingNotice } from '../domain/timingNotice';
+import { kenBurnsPlan } from '../domain/kenBurns';
 import { isYearRound } from '../domain/sceneTier';
 
 type Scene = StoryScene;
@@ -26,6 +27,9 @@ const RECOMMENDER = '이상호 작가'; // 맨 위 작은 글씨(10/3: '현곡 �
 const STORY_URL = 'https://brunch.co.kr/@caed5ea4c3d74d9/1';
 
 const qMonth = Number(new URLSearchParams(location.search).get('m'));
+/** 사진 움직임 비교안(10/3 사용자 요청): 주소에 ?motion=1 을 붙였을 때만 장면 상세 사진이 천천히 움직임 */
+const MOTION = new URLSearchParams(location.search).get('motion') === '1';
+if (MOTION) document.documentElement.dataset.motion = 'on';
 let month: Month = qMonth >= 1 && qMonth <= 12 ? qMonth : monthInSeoul();
 let scenes: Scene[] = [];
 let peak: Scene[] = [];
@@ -327,7 +331,31 @@ function renderDetail(): void {
 
   // ── 사진: 위에 얹는 것은 작고 검정 반투명하게(10/3 2차 코멘트). 뒤로 + 넘김 화살표 + 작은 크레딧만 ──
   const n = s.photos.length;
-  const slides = h('div', { class: 'rail', tabindex: '0', 'aria-label': `사진 ${n}장, 옆으로 넘겨 보세요` }, ...s.photos.map((p, i) => h('div', { class: 'slide' }, img(p, i === 0 ? `${s.name} 풍경` : ''))));
+  // 사진 움직임(비교안): 사진을 틀(.kb)로 감싸 틀째 움직임. 옆으로 긴 사진은 좌우 밀기, 그 밖은 살짝 확대(src/domain/kenBurns.ts)
+  const photoEl = (p: Photo, i: number): HTMLElement => {
+    const pic = img(p, i === 0 ? `${s.name} 풍경` : '');
+    if (!MOTION) return pic;
+    const k = kenBurnsPlan(p);
+    const box = h('div', { class: `kb ${k.mode}` }, pic);
+    if (k.mode === 'pan') {
+      box.style.setProperty('--ar', String(k.ar));
+      box.style.setProperty('--kb-from', `${k.from}%`);
+      box.style.setProperty('--kb-to', `${k.to}%`);
+    } else box.style.setProperty('--kb-origin', k.origin);
+    return box;
+  };
+  const slides = h('div', { class: 'rail', tabindex: '0', 'aria-label': `사진 ${n}장, 옆으로 넘겨 보세요` }, ...s.photos.map((p, i) => h('div', { class: 'slide' }, photoEl(p, i))));
+  /** 지금 사진(i)만 처음부터 움직이고, 나머지는 멈춰 출발 자세로 */
+  const playKb = (i: number): void => {
+    if (!MOTION || reduceMotion) return;
+    slides.querySelectorAll<HTMLElement>('.kb').forEach((el, k) => {
+      el.classList.remove('kb-on');
+      if (k === i) {
+        void el.offsetWidth; // 움직임을 처음부터 다시 시작
+        el.classList.add('kb-on');
+      }
+    });
+  };
   const back = h('button', { class: 'ov back', type: 'button', 'aria-label': '뒤로' });
   back.innerHTML = icon('M15 18l-6-6 6-6', 22);
   back.addEventListener('click', () => (history.length > 1 ? history.back() : (location.hash = '')));
@@ -428,17 +456,22 @@ function renderDetail(): void {
   const fallback = window.setTimeout(show, 3500);
   revealOverlay = show;
   const first = slides.querySelector('img');
-  const arm = () => showLater(1000);
+  const arm = () => {
+    showLater(1000);
+    playKb(0);
+  };
   if (!first || first.complete) arm();
   else {
     first.addEventListener('load', arm, { once: true });
     first.addEventListener('error', arm, { once: true });
   }
   // 사진이 움직이는 동안은 숨기고, 멈추면 0.3초 뒤 빠르게 다시 보이게(ov-quick: 0.25초 동안 서서히)
+  let playing = 0; // 지금 움직이는 사진 번호
   const settled = () => {
     window.clearTimeout(settleTimer);
     gallery.classList.add('ov-quick');
     showLater(300);
+    if (cur() !== playing) playKb((playing = cur())); // 다른 사진으로 넘어갔을 때만 새로 시작
   };
   slides.addEventListener(
     'scroll',

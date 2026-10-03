@@ -127,3 +127,35 @@ test('장면 상세에는 "작가 부부 방문" 꼬리표를 두지 않음(사�
   await expect(page.locator('.detail .body .badges')).not.toContainText('작가 부부 방문');
   await expect(page.locator('.detail .recnote')).toContainText('사진은 작가 부부가');
 });
+
+// ── 사진 움직임(비교안): 주소에 ?motion=1 을 붙였을 때만 ──
+const kbState = (page: Page) =>
+  page.$$eval('.gallery .kb', (els) => els.map((e) => e.getAnimations().some((a) => a.playState === 'running')));
+
+test('사진 움직임(?motion=1): 지금 사진만 아주 천천히(10초 넘게) 움직이고, 넘기면 새 사진이 처음부터 움직임', async ({ page }) => {
+  await open(page, '?m=10&motion=1');
+  await page.locator('.big').first().click();
+  await expect(page.locator('.detail.open')).toBeVisible();
+  await expect.poll(async () => (await kbState(page))[0]).toBe(true);
+  expect((await kbState(page)).slice(1).every((x) => !x)).toBe(true);
+  const dur = await page.$eval('.gallery .kb', (e) => parseFloat(getComputedStyle(e).animationDuration));
+  expect(dur).toBeGreaterThanOrEqual(10);
+  await page.locator('.gallery .next').click();
+  await expect.poll(async () => (await kbState(page)).slice(0, 2), { timeout: 3000 }).toEqual([false, true]);
+});
+
+test('사진 움직임: 기본 주소에서는 움직이지 않음(지금 모습 그대로)', async ({ page }) => {
+  await open(page, '?m=10');
+  await page.locator('.big').first().click();
+  await expect(page.locator('.detail.open')).toBeVisible();
+  await expect(page.locator('.gallery .kb')).toHaveCount(0);
+});
+
+test('사진 움직임: 휴대폰에서 "동작 줄이기"를 켜면 움직이지 않음', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await open(page, '?m=10&motion=1');
+  await page.locator('.big').first().click();
+  await expect(page.locator('.detail.open')).toBeVisible();
+  await page.waitForTimeout(1500);
+  expect((await kbState(page)).some((x) => x)).toBe(false);
+});
