@@ -381,7 +381,7 @@ function renderDetail(): void {
     ? h(
         'div',
         { class: 'when-box' },
-        h('p', { class: 'when-row' }, calIcon(), h('span', { class: 'lbl', text: '추천 시기' }), h('b', { text: s.best.note }), s.review.best === 'draft' ? draft() : null),
+        h('p', { class: 'when-row' }, h('span', { class: 'lbl', text: '추천 시기' }), h('b', { text: s.best.note }), s.review.best === 'draft' ? draft() : null),
         tn ? h('p', { class: 'when-vary', text: tn.text }) : null,
         tn ? h('a', { class: 'when-link', href: newsSearchUrl(s.name, tn.keyword), target: '_blank', rel: 'noopener', text: `올해 ${tn.keyword} 소식 찾아보기 ›` }) : null,
       )

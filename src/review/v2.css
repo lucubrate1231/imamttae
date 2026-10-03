@@ -104,10 +104,13 @@ h1, h2, h3, p { margin: 0; }
 .big .cap { position: absolute; left: 18px; right: 18px; bottom: 14px; z-index: 2; color: #fff; }
 .big .cap b { display: block; font-size: 28px; line-height: 1.25; letter-spacing: -0.03em; text-shadow: 0 1px 8px rgba(0, 0, 0, .35); }
 .big .cap span { font-size: 17px; opacity: .95; }
-.big .best { display: flex; flex-wrap: wrap; column-gap: 8px; row-gap: 0; align-items: baseline; padding: 10px 6px 0; font-size: var(--fs-meta); color: var(--ink-2); }
-.big .best strong { font-size: 19px; color: var(--season); }
+/* 추천 시기 줄: 아이콘·'추천 시기'·날짜를 한 크기, 한 색(계절색)으로. 굵기만 다르게(10/3 3차 코멘트) */
+/* 줄이 길면 날짜가 통째로 다음 줄로 떨어지지 않고 글처럼 이어서 접히게 */
+.big .best { padding: 10px 6px 0; font-size: 18px; line-height: 1.45; color: var(--season); }
+.big .best .lbl { font-weight: 400; margin-right: 6px; }
+.big .best strong { font-weight: 700; }
 .cal { display: inline-flex; align-self: center; color: var(--season); }
-.big .best .cal { margin-right: -2px; }
+.big .best .cal { vertical-align: -2px; margin-right: 6px; }
 .big .best .note { font-size: 17px; font-weight: 600; color: var(--ink); }
 /* 해마다 달라짐: 위 줄보다 한 단계 약하게 */
 .big .vary { padding: 2px 6px 0; font-size: 14px; font-weight: 400; color: var(--ink-3); }
@@ -202,9 +205,9 @@ h1, h2, h3, p { margin: 0; }
 .when-sec .recnote + .when-box { margin-top: 12px; }
 /* 추천 시기 + 해마다 달라짐 안내를 한 상자에 */
 .when-box { padding: 14px 16px 6px; border-radius: 18px; background: var(--bg-soft); }
-.when-row { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; padding-bottom: 8px; }
-.when-row .lbl { font-size: 16px; color: var(--ink-3); }
-.when-row b { font-size: 19px; color: var(--season); }
+.when-row { margin: 0; padding-bottom: 8px; font-size: 18px; line-height: 1.5; color: var(--season); }
+.when-row .lbl { font-weight: 400; margin-right: 6px; }
+.when-row b { font-weight: 700; }
 .when-vary { font-size: 16px; color: var(--ink-2); }
 .when-link { display: inline-flex; align-items: center; min-height: var(--tap); font-size: 16.5px; font-weight: 800; color: var(--season); text-decoration: none; }
 /* 작가의 한마디: 왼쪽 세로선 없이 명조 글자와 여백만으로(구역은 위아래 가로선이 나눔, 10/3 코멘트) */
