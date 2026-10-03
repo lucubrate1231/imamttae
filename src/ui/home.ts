@@ -19,7 +19,8 @@ export interface HomeDeps {
   win: Window;
   map: MapAdapter;
   scenes: readonly Scene[];
-  openScene(id: string): void;
+  /** from: 통계 scene-open의 '어디서 열었나'(photo-card / visited-row / map-pin) */
+  openScene(id: string, from: string): void;
   toast(msg: string): void;
 }
 
@@ -111,7 +112,7 @@ export function createHome(d: HomeDeps): Home {
       h('div', { class: 'best' }, calIcon(), h('span', { class: 'lbl', text: '추천 시기' }), h('strong', { text: note })),
       tn && h('div', { class: 'vary' }, infoIcon(), h('span', { text: tn.short })),
     );
-    b.addEventListener('click', () => d.openScene(s.id));
+    b.addEventListener('click', () => d.openScene(s.id, 'photo-card'));
     return h('div', { role: 'listitem' }, b);
   }
   /** 준비 중 카드(F1-AC4): 사진 없이 점선, 이름과 다녀온 날 */
@@ -127,7 +128,7 @@ export function createHome(d: HomeDeps): Home {
         h('span', { class: 'ph-date', text: `${fmtDate(p.visited)}에 다녀옴` }),
       ),
     );
-    b.addEventListener('click', () => d.openScene(p.id));
+    b.addEventListener('click', () => d.openScene(p.id, 'photo-card'));
     return h('div', { role: 'listitem' }, b);
   }
   function recRow(s: StoryScene): HTMLElement {
@@ -137,7 +138,7 @@ export function createHome(d: HomeDeps): Home {
       photoImg(s.photos[0]!, '', { src: thumb(s.photos[0]!.src) }),
       h('span', {}, h('b', { text: s.name }), h('span', { class: 'meta', text: s.region }), h('span', { class: 'badge rec-b', text: typeLabel(s) })),
     );
-    b.addEventListener('click', () => d.openScene(s.id));
+    b.addEventListener('click', () => d.openScene(s.id, 'visited-row'));
     return h('li', {}, b);
   }
 
@@ -164,7 +165,7 @@ export function createHome(d: HomeDeps): Home {
   map.onPinClick((id) => {
     const i = cards.findIndex((s) => s.id === id);
     if (i >= 0) select(i, true);
-    else d.openScene(id); // 작가 부부가 다녀온 곳·준비 중은 바로 상세로
+    else d.openScene(id, 'map-pin'); // 작가 부부가 다녀온 곳·준비 중은 바로 상세로
   });
 
   function render(month: Month): void {

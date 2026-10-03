@@ -17,7 +17,9 @@ import { createFind } from './ui/find';
 import { h } from './ui/dom';
 import { createHome } from './ui/home';
 import { createNavi } from './ui/navi';
-import { createMemoryWanted, type WantedLike } from './ui/wanted';
+import type { WantedLike } from './ui/wanted';
+import { applyMeParam, firstMonth, launchMode, type EventData, type Tracker } from './analytics';
+import { createWantedStore } from './storage/wanted';
 
 export interface AppDeps {
   root: HTMLElement;
@@ -38,6 +40,8 @@ export interface AppDeps {
   store?: SafeStore;
   /** 가고 싶어요 저장. Codex 일 2 전까지는 임시(화면을 닫으면 사라짐) */
   wanted?: WantedLike;
+  /** 사용 통계(Umami). 없으면 아무것도 보내지 않음 */
+  tracker?: Tracker;
   /** 사진 움직임. 기본 켬, 주소에 ?motion=0이면 끔 */
   motion?: boolean;
 }
@@ -62,6 +66,27 @@ export async function startApp(deps: AppDeps): Promise<AppHandle> {
     toastTimer = win.setTimeout(() => toastEl.classList.remove('on'), 1800);
   };
 
+  // ── 사용 통계(docs/analytics.md) ──
+  const tracker: Tracker = deps.tracker ?? { load() {}, pageview() {}, track() {} };
+  const store = deps.store ?? createSafeStore();
+  applyMeParam(win, toast); // ?me=off / ?me=on: 우리 식구 빼기
+  {
+    const fm = firstMonth(store, deps.now ?? new Date());
+    const open: EventData = { mode: launchMode(win) };
+    if (new URLSearchParams(win.location.search).get('from') === 'share') open.from = 'share';
+    open.first_month = fm.first_month;
+    open.returning = fm.returning;
+    tracker.track('app-open', open);
+    if (fm.blocked) tracker.track('error', { kind: 'storage-blocked' });
+  }
+  let lastPage = ''; // 같은 주소를 연달아 두 번 세지 않음
+  const pageview = () => {
+    const url = `${win.location.pathname}${win.location.search}${win.location.hash}`;
+    if (url === lastPage) return;
+    lastPage = url;
+    tracker.pageview(url);
+  };
+
   // 아래 메뉴: 지금 풍경 · 풍경 찾기 · 저장한 곳(10/4 결정 D24)
   const tabs = h('nav', { class: 'tabs', 'aria-label': '메뉴' });
   for (const [i, t] of ['지금 풍경', '풍경 찾기', '저장한 곳'].entries()) {
@@ -76,29 +101,37 @@ export async function startApp(deps: AppDeps): Promise<AppHandle> {
 
   // C-4: 데이터를 못 불러오면 쉬운 말로 알리고 멈추지 않음
   if (!deps.content) {
+    tracker.track('error', { kind: 'data-fail' });
+    pageview();
+    tracker.load();
     root.replaceChildren(h('main', {}, h('p', { class: 'empty-month', role: 'alert', text: '장면을 불러오지 못했어요. 잠시 뒤 다시 열어 주세요.' })), tabs, toastEl);
     return { render() {}, destroy() {} };
   }
 
   const map = deps.mapFailed ? createFailedMap() : deps.map;
+  if (map.kind === 'failed') tracker.track('error', { kind: 'map-fail' });
+  let sceneFrom: string | null = null; // 통계 scene-open: 앱 안에서 연 곳(없으면 주소로 바로 = link)
   let openedInApp = false; // 앱 안에서 상세를 열었으면 뒤로 = 이전 화면, 주소로 바로 열었으면 뒤로 = 첫 화면
   const home = createHome({
     win,
     map,
     scenes: deps.content.scenes,
-    openScene: (id) => {
+    openScene: (id, from) => {
       openedInApp = true;
+      sceneFrom = from;
       win.location.hash = routeHref({ name: 'scene', id });
     },
     toast,
   });
-  const navi = createNavi({ win, ua: deps.ua ?? win.navigator.userAgent, openUrl: deps.openUrl ?? ((u) => win.location.assign(u)), store: deps.store ?? createSafeStore() });
+  const navi = createNavi({ win, ua: deps.ua ?? win.navigator.userAgent, openUrl: deps.openUrl ?? ((u) => win.location.assign(u)), store, track: tracker.track });
   const detail = createDetail({
     win,
     scenes: deps.content.scenes,
     today: thisMonth,
     navi,
-    wanted: deps.wanted ?? createMemoryWanted(),
+    // 저장은 휴대폰에 남김(Codex 일 2 createWantedStore). 테스트는 임시 저장을 끼울 수 있음
+    wanted: deps.wanted ?? createWantedStore(store),
+    track: tracker.track,
     motion: deps.motion ?? new URLSearchParams(win.location.search).get('motion') !== '0',
     toast,
     back: () => {
@@ -114,8 +147,9 @@ export async function startApp(deps: AppDeps): Promise<AppHandle> {
     map: findMap,
     scenes: deps.content.scenes,
     today: thisMonth,
-    openScene: (id) => {
+    openScene: (id, from) => {
       openedInApp = true;
+      sceneFrom = from;
       win.location.hash = routeHref({ name: 'scene', id });
     },
   });
@@ -161,16 +195,24 @@ export async function startApp(deps: AppDeps): Promise<AppHandle> {
       shown = thisMonth;
       home.render(thisMonth);
     }
-    if (route.name === 'scene' && detail.show(route.id)) return;
+    if (route.name === 'scene' && detail.show(route.id)) {
+      tracker.track('scene-open', { scene: route.id, from: sceneFrom ?? 'link' });
+      sceneFrom = null;
+      return;
+    }
     detail.hide();
     navi.sheet.hidden = true;
   }
 
-  const onHash = () => render(parseRoute(win.location.hash));
+  const onHash = () => {
+    render(parseRoute(win.location.hash));
+    pageview();
+  };
   win.addEventListener('hashchange', onHash);
   onHash();
   // F1-AC1: 달 띠의 이번 달을 화면 가운데로
   root.querySelector<HTMLElement>('.mchip[aria-pressed="true"]')?.scrollIntoView?.({ inline: 'center', block: 'nearest' });
+  tracker.load(); // 첫 화면을 다 그린 뒤 통계 스크립트를 늦게 부름
 
   return {
     render,

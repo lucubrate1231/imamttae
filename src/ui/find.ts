@@ -22,7 +22,8 @@ export interface FindDeps {
   scenes: readonly Scene[];
   /** 오늘(한국 날짜)의 달 — 풍경 찾기는 늘 오늘 기준 */
   today: Month;
-  openScene(id: string): void;
+  /** from: 통계 scene-open의 '어디서 열었나'(find-list / map-pin) */
+  openScene(id: string, from: string): void;
 }
 
 export interface Find {
@@ -59,7 +60,7 @@ export function createFind(d: FindDeps): Find {
   const mapHost = h('div', { class: 'kmap' });
   const mapbox = h('div', { class: 'mapbox' }, mapHost);
   const go = (hash: string) => (win.location.hash = hash);
-  map.onPinClick((id) => d.openScene(id));
+  map.onPinClick((id) => d.openScene(id, 'map-pin'));
 
   const ofType = (t: SceneTypeId | null) => (t ? stories.filter((s) => s.types.includes(t)) : stories);
   const yearRound = (s: StoryScene) => !!s.best && isYearRound(s.best);
@@ -147,7 +148,7 @@ export function createFind(d: FindDeps): Find {
       photoImg(s.photos[0]!, '', { src: thumb(s.photos[0]!.src, 240) }),
       h('span', { class: 'row-text' }, h('b', { class: 'row-name', text: s.name }), h('span', { class: 'row-meta', text: meta })),
     );
-    b.addEventListener('click', () => d.openScene(s.id));
+    b.addEventListener('click', () => d.openScene(s.id, 'find-list'));
     return b;
   }
 

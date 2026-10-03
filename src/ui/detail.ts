@@ -15,6 +15,7 @@ import { newsLink, timingNotice, type TimingNotice } from '../domain/timingNotic
 import type { Month } from '../domain/month';
 import { fmtDate, h, infoIcon, photoImg } from './dom';
 import type { Navi } from './navi';
+import { shareUrl, type EventData, type EventName } from '../analytics';
 import type { WantedLike } from './wanted';
 
 const AUTHOR = '이상호';
@@ -29,6 +30,8 @@ export interface DetailDeps {
   today: Month;
   navi: Navi;
   wanted: WantedLike;
+  /** 사용 통계(docs/analytics.md) */
+  track(name: EventName, data?: EventData): void;
   /** 사진 움직임(기본 켬, ?motion=0이면 끔) */
   motion: boolean;
   toast(msg: string): void;
@@ -190,10 +193,19 @@ export function createDetail(d: DetailDeps): Detail {
   }
 
   /** 올해 소식 찾아보기: 해는 누르는 순간 기준 */
-  function newsAnchor(name: string, tn: TimingNotice): HTMLElement {
+  function newsAnchor(name: string, tn: TimingNotice, sceneId: string): HTMLElement {
     const first = newsLink(name, tn);
     const a = h('a', { class: 'when-link', href: first.url, target: '_blank', rel: 'noopener', text: first.label });
-    a.addEventListener('click', () => a.setAttribute('href', newsLink(name, tn, new Date()).url));
+    a.addEventListener('click', () => {
+      a.setAttribute('href', newsLink(name, tn, new Date()).url);
+      d.track('news', { scene: sceneId });
+    });
+    return a;
+  }
+
+  function brunchLink(s: StoryScene): HTMLElement {
+    const a = h('a', { class: 'btn line', href: s.brunchUrl, target: '_blank', rel: 'noopener', text: '브런치에서 전체 이야기 읽기' });
+    a.addEventListener('click', () => d.track('brunch', { scene: s.id }));
     return a;
   }
 
@@ -216,7 +228,7 @@ export function createDetail(d: DetailDeps): Detail {
           h('p', { class: 'when-row' }, h('span', { class: 'lbl', text: '추천 시기' }), h('b', { text: s.best.note }), s.review.best === 'draft' && draft()),
           s.best.tip && h('p', { class: 'when-tip' }, h('span', { class: 'lbl', text: '이럴 때 더 좋아요' }), h('span', { text: s.best.tip })),
           tn && h('p', { class: 'when-vary' }, infoIcon(), h('span', { text: tn.text })),
-          tn && newsAnchor(s.name, tn),
+          tn && newsAnchor(s.name, tn, s.id),
         )
       : null;
     const recNote = h('p', { class: 'recnote', text: `사진은 작가 부부가 ${visitedMonth(s.visited)}월에 다녀온 모습이에요.` });
@@ -231,6 +243,7 @@ export function createDetail(d: DetailDeps): Detail {
     paintWant();
     want.addEventListener('click', () => {
       const on = d.wanted.toggleWanted(s.id);
+      d.track('save', { scene: s.id, on });
       paintWant();
       d.toast(on ? '가고 싶은 곳에 담았어요' : '가고 싶은 곳에서 뺐어요');
     });
@@ -238,10 +251,13 @@ export function createDetail(d: DetailDeps): Detail {
     share.innerHTML = `${svg('M12 3v12M7 8l5-5 5 5M5 13v6a2 2 0 002 2h10a2 2 0 002-2v-6', 24)}<span>공유</span>`;
     share.addEventListener('click', async () => {
       const nav = win.navigator;
-      const url = win.location.href;
+      const url = shareUrl(win.location, s.id); // 받은 사람이 열면 from=share로 셈(통계)
       try {
-        if (nav.share) await nav.share({ title: `${s.name} · ${APP_NAME}`, text: s.oneLiner, url });
-        else {
+        if (nav.share) {
+          d.track('share', { scene: s.id, where: 'detail', how: 'share-sheet' });
+          await nav.share({ title: `${s.name} · ${APP_NAME}`, text: s.oneLiner, url });
+        } else {
+          d.track('share', { scene: s.id, where: 'detail', how: 'copy' });
           await nav.clipboard.writeText(url);
           d.toast('주소를 복사했어요');
         }
@@ -249,7 +265,7 @@ export function createDetail(d: DetailDeps): Detail {
         /* 사용자가 취소 */
       }
     });
-    const { go, other } = d.navi.controls(s.dest);
+    const { go, other } = d.navi.controls(s.dest, s.id);
     const bar = h('div', { class: 'dbar' }, want, share, go);
 
     const g = gallery(s);
@@ -262,7 +278,7 @@ export function createDetail(d: DetailDeps): Detail {
         h('section', { class: 'dsec', 'aria-label': '제목' }, badges, h('h2', { class: 'title', text: s.name }), h('p', { class: 'region', text: s.region }), h('p', { class: 'one' }, s.oneLiner, s.review.oneLiner === 'draft' && draft())),
         h('section', { class: 'dsec when-sec', 'aria-label': '추천 시기' }, recNote, when),
         h('section', { class: 'dsec', 'aria-label': '작가의 한마디' }, h('h3', { class: 'dlbl', text: '작가의 한마디' }), h('blockquote', { class: 'quote' }, h('p', { text: s.excerpt }), h('cite', { text: fmtDate(s.visited) }))),
-        h('section', { class: 'dsec', 'aria-label': '브런치 전체 이야기' }, h('a', { class: 'btn line', href: s.brunchUrl, target: '_blank', rel: 'noopener', text: '브런치에서 전체 이야기 읽기' })),
+        h('section', { class: 'dsec', 'aria-label': '브런치 전체 이야기' }, brunchLink(s)),
         // 작게 '다른 앱으로 길찾기'(10/4 결정). 아래 막대가 높아지지 않게, 누르는 곳 48px을 지키려고 본문 맨 아래에 둠
         other && h('div', { class: 'navi-row' }, other),
       ),
