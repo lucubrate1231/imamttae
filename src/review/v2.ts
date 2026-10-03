@@ -79,6 +79,8 @@ const app = document.getElementById('app')!;
 // 아래로 스크롤하면 'N월에 만나는 자연'만 위에 붙어 있음
 const eyebrow = h('p', { class: 'eyebrow', text: `${PEN_NAME} 선생의 추천` });
 const pageTitle = h('h1', { class: 'ttl' });
+// 스크롤해서 큰 제목이 화면 밖으로 나가면, 작고 가는 제목 막대가 위에 서서히 나타남(큰 제목을 그대로 붙이면 투박해서)
+const miniTitle = h('div', { class: 'mini-ttl', 'aria-hidden': 'true' });
 const months = h('nav', { class: 'months', 'aria-label': '달 고르기' });
 for (let m = 1; m <= 12; m++) {
   const b = h('button', { class: 'mchip', type: 'button', 'aria-pressed': String(m === month), text: `${m}월` });
@@ -128,10 +130,8 @@ for (const [i, t] of ['지금', '명장면 찾기', '수첩'].entries()) {
 }
 const detail = h('section', { class: 'detail', 'aria-label': '장면 상세', 'aria-hidden': 'true' });
 const toastEl = h('div', { class: 'toast', role: 'status' });
-// 제목이 페이지 끝까지 위에 붙어 있으려면 같은 부모(main) 안에 있어야 함
-app.append(h('main', {}, eyebrow, pageTitle, months, peakSec, mapSec, recSec, extra), tabs, detail, toastEl);
-// 제목이 위에 붙었는지(작은 글씨가 화면 밖으로 나갔는지) 보고 그림자를 줌
-new IntersectionObserver(([e]) => pageTitle.classList.toggle('stuck', !e!.isIntersecting)).observe(eyebrow);
+app.append(miniTitle, h('main', {}, eyebrow, pageTitle, months, peakSec, mapSec, recSec, extra), tabs, detail, toastEl);
+new IntersectionObserver(([e]) => miniTitle.classList.toggle('on', !e!.isIntersecting && e!.boundingClientRect.top < 0)).observe(pageTitle);
 
 // 계절 띠 비교용: ?band=split 이면 띠가 제목까지만 (기본은 제철 구역 전체)
 if (new URLSearchParams(location.search).get('band') === 'split') app.dataset.band = 'split';
@@ -192,6 +192,7 @@ function render(): void {
   record = r.record;
 
   pageTitle.textContent = `${month}월에 만나는 자연`;
+  miniTitle.textContent = pageTitle.textContent;
   rail.replaceChildren(...peak.map(bigCard));
   rail.scrollLeft = 0;
   peakSec.hidden = peak.length === 0;
