@@ -2,7 +2,7 @@
 
 > 개발 리드 Claude Code · 2026-10-04 · **사용자 확인 전 설계안**(CLAUDE.md: 설계안을 먼저 보여 주고 붙임)
 > 기준: 기획 통계 문서 `claude/자연여행앱-통계도구-비교.md` **7장 '측정 계획 v1'**(사건 13개·붙이는 규칙). 도구는 Umami Cloud 무료(10/4 결정).
-> 사건 이름은 7장 그대로 씁니다(바꾼 것 없음). 바꾸게 되면 기획에 알려 7장을 맞춥니다.
+> 사건 이름은 7장 그대로 씁니다. 단 `want`는 **`save`**로 바꿨습니다(10/4 기획 결정 D28: 버튼이 [저장]/[저장됨]). 더 바꾸게 되면 기획에 알려 7장을 맞춥니다.
 
 ## 1. 실제로 확인한 것 (Umami 추적 스크립트를 내려받아 읽음, 10/4)
 - **Umami 기본 설정은 이 앱의 화면 이동을 세지 못합니다.** Umami는 주소가 `pushState`·`replaceState`로 바뀔 때만 화면 조회를 셉니다. 이 앱은 `#` 뒤만 바꿔(`#/scene/…`, `#/find/…`) 화면을 옮기므로, **처음 연 화면 한 번만** 세고 그 뒤 이동과 휴대폰 뒤로 가기는 세지 않습니다.
@@ -20,7 +20,7 @@
 | `navi` ★ | 길찾기 버튼, '다른 앱으로 길찾기'에서 고른 앱, 티맵이 안 열렸을 때 고른 다른 앱 | `app`(tmap / naver / kakao), `how`(main / other), `scene`, `where`(detail, F4 때 saved) | 지금 |
 | `navi-no-app` | 티맵이 안 열렸을 때 '티맵 설치'를 누름 | `app` | 지금 |
 | `share` | 공유 버튼 | `scene`, `where`(detail, F4 때 stamp), `how`(share-sheet / copy) | 지금 |
-| `want` | 가고 싶어요를 담거나 뺄 때 | `scene`, `on`(true / false) | 지금 |
+| `save` | [저장]을 누르거나 다시 눌러 뺄 때(옛 '가고 싶어요', D28) | `scene`, `on`(true / false) | 지금 |
 | `brunch` | '브런치에서 전체 이야기 읽기' | `scene` | 지금 |
 | `news` | '올해 ○○ 찾아보기' | `scene` | 지금 |
 | `error` | 지도를 못 불러옴 / 장면 데이터를 못 불러옴 / 저장이 막힘 | `kind`(map-fail / data-fail / storage-blocked) | 지금 |
@@ -29,6 +29,7 @@
 | `visited` | 다녀왔어요·취소·날짜 고치기 | `scene`, `action` | F4 화면과 함께 |
 | `a2hs` | 홈 화면에 두기 | `action`(tap / guide) | F5와 함께(지금 버튼은 '곧 열려요') |
 
+- 버튼·문구 글자는 디자인 세션의 design-guide '화면 글자 표'를 따릅니다(D28~D30). 사건은 글자가 아니라 버튼에 달기 때문에 글자가 바뀌어도 사건 이름은 그대로입니다.
 - **화면 조회:** 화면을 옮길 때마다 `#` 뒤까지 포함한 주소로 보냅니다. 예: `/imamttae/#/find/danpung/gangwon`, `/imamttae/#/scene/s-005-biryong`. 풍경·권역·장면 인기는 이 조회로 봅니다(따로 사건 없음).
 - **퍼널(첫 화면 → 상세 → 길찾기):** `app-open` → `scene-open` → `navi`.
 
