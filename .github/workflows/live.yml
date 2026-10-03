@@ -1,0 +1,23 @@
+# 실제 카카오 지도 확인: 배포 주소에서 지도가 뜨는지 봅니다(github.io 주소를 카카오에 등록한 뒤부터 의미 있음).
+name: live
+on:
+  workflow_run:
+    workflows: [ci]
+    types: [completed]
+  schedule:
+    - cron: '7 18 * * *' # 매일 새벽 3시 7분(한국)
+  workflow_dispatch:
+jobs:
+  live:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: 미리보기(/next/)에서 실제 지도
+        run: npm run live
+        env:
+          LIVE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/next/

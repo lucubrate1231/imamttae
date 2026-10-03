@@ -1,0 +1,64 @@
+# 올릴 때마다: 검사 → 휴대폰 화면 테스트 → (main이면) /next/ 미리보기 배포, (v* 태그면) 알파 주소 배포
+name: ci
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+permissions:
+  contents: write
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: 검사 (타입·단위·데이터 규칙·비밀 키·예산)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - run: npm run check
+        env:
+          KAKAO_REST_KEY: ${{ secrets.KAKAO_REST_KEY }}
+          VITE_KAKAO_JS_KEY: ${{ vars.KAKAO_JS_KEY }}
+
+  e2e:
+    name: 휴대폰 화면 테스트 (390·360px, 접근성)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run e2e
+        env: { CI: '1' }
+      - if: failure()
+        uses: actions/upload-artifact@v4
+        with: { name: playwright-report, path: playwright-report, retention-days: 7 }
+
+  deploy:
+    name: 배포
+    needs: [check, e2e]
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    concurrency: { group: pages-publish, cancel-in-progress: false }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - run: npm run build
+        env:
+          VITE_KAKAO_JS_KEY: ${{ vars.KAKAO_JS_KEY }}
+          VITE_MAP_MODE: kakao
+      - name: 배포물에 비밀 키가 없는지 한 번 더
+        run: npm run secrets
+        env: { KAKAO_REST_KEY: '${{ secrets.KAKAO_REST_KEY }}' }
+      - run: bash scripts/publish-pages.sh
+        env:
+          TARGET: ${{ startsWith(github.ref, 'refs/tags/v') && 'root' || 'next' }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

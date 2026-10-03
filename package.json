@@ -1,0 +1,33 @@
+{
+  "name": "imamttae",
+  "private": true,
+  "version": "0.0.1",
+  "description": "이맘때 자연 — 이상호 작가의 자연 명장면 지도",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port 8080 --strictPort",
+    "build": "vite build",
+    "preview": "vite preview --port 8080 --strictPort",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "secrets": "node scripts/check-secrets.mjs",
+    "budget": "node scripts/check-budget.mjs",
+    "check": "npm run typecheck && npm run test && npm run secrets && npm run build && npm run budget",
+    "e2e": "playwright test",
+    "live": "playwright test -c playwright.live.config.ts"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
+    "@playwright/test": "^1.56.1",
+    "@types/node": "^26.6.4",
+    "happy-dom": "^20.14.5",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.2",
+    "vitest": "^5.0.3",
+    "zod": "^4.6.5"
+  },
+  "overrides": {
+    "playwright-core": "1.56.1"
+  }
+}

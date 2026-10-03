@@ -1,0 +1,46 @@
+/*
+ * 디자인 토큰 — 색·글자·간격의 원본입니다.
+ * 지금 값은 임시(스케치 색)입니다. 10/8 디자인 컨셉이 정해지면 design/tokens.json 과 함께 바꿉니다.
+ */
+:root {
+  --c-page: #fbf9f4;
+  --c-ink: #1f2a24;
+  --c-ink-2: #55605a;
+  --c-ink-3: #6b736d;
+  --c-line: #e3ded2;
+  --c-surface: #ffffff;
+  --c-brand: #2f5d46;
+  --c-on-brand: #ffffff;
+  --c-accent: #b8532a;
+  --c-draft: #8b6a2e;
+  --c-draft-bg: #f5ebd6;
+  --c-sea: #e4ecec;
+
+  --font-body: 'Pretendard', system-ui, -apple-system, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  --fs-body: 18px; /* 본문 18px 이상 (50~60대 기준) */
+  --fs-small: 15px;
+  --fs-title: 22px;
+  --tap: 48px; /* 누르는 곳 48px 이상 */
+  --radius: 14px;
+  --space: 16px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --c-page: #171a18;
+    --c-ink: #ecebe6;
+    --c-ink-2: #b9beb9;
+    --c-ink-3: #9aa19b;
+    --c-line: #2c322e;
+    --c-surface: #20251f;
+    --c-sea: #1d2624;
+  }
+}
+:root[data-theme='dark'] {
+  --c-page: #171a18;
+  --c-ink: #ecebe6;
+  --c-ink-2: #b9beb9;
+  --c-ink-3: #9aa19b;
+  --c-line: #2c322e;
+  --c-surface: #20251f;
+  --c-sea: #1d2624;
+}
