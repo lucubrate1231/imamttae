@@ -2447,17 +2447,18 @@
    "excerpt": "전망대에서 하늘다리를 바라보니 안개구름이 산허리를 휘감고 계곡의 맑은 물은 세월을 안고 흘러갔다.",
    "photos": [
     {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/rKt3bgF2u-9Wl7MDUFXhmivLfuk.jpg",
+     "w": 640,
+     "h": 1393,
+     "cap": "원시림의 비둘기낭 폭포",
+     "focus": "50% 60%"
+    },
+    {
      "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/fd-WPOiLf2fEDYnljgePsBif4hE.jpg",
      "w": 1362,
      "h": 640,
      "cap": "포천 비둘기낭 공원 전망대에서",
      "focus": "50% 50%"
-    },
-    {
-     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/rKt3bgF2u-9Wl7MDUFXhmivLfuk.jpg",
-     "w": 640,
-     "h": 1393,
-     "cap": "원시림의 비둘기낭 폭포"
     },
     {
      "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/OreT7D9pPAOPhERisENAEusjSFE.jpg",
@@ -2571,6 +2572,13 @@
    "excerpt": "절벽으로 만든 잔도길과 한탄강을 유유자적 흐르는 물은 행락객들을 즐겁게 하였다. 살아서 한 번은 꼭 걸어보고 싶은 잔도 길이며, 특히 10월 중순경 단풍이 물들었을 때의 경치가 최고라고 관계자가 소개했다.",
    "photos": [
     {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/i4A8gUUiMDej_rwuQ0V4qQ1Y5Uo.jpg",
+     "w": 1363,
+     "h": 640,
+     "cap": "",
+     "focus": "50% 50%"
+    },
+    {
      "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/FtMXNx-2mYYEgnVBSZjQFapJe04.jpg",
      "w": 1363,
      "h": 640,
@@ -2580,12 +2588,6 @@
     {
      "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/UoL4YJRP5F6KwCzw3H-oGsVhyK0.jpg",
      "w": 1389,
-     "h": 640,
-     "cap": ""
-    },
-    {
-     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/i4A8gUUiMDej_rwuQ0V4qQ1Y5Uo.jpg",
-     "w": 1363,
      "h": 640,
      "cap": ""
     }
@@ -3169,17 +3171,18 @@
    "excerpt": "커다란 바위굴 사이로 계곡물이 흐르고 버스도 바위터널을 통과하여 운행하는 특이한 관광 명소였다.",
    "photos": [
     {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/LigVH8lagEAz-UZ1BdhXyROVxVo.jpg",
+     "w": 2000,
+     "h": 934,
+     "cap": "구문소 전경",
+     "focus": "50% 50%"
+    },
+    {
      "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/vCQV_tlhtiZcGFXBxP9-2qER6Vk.jpg",
      "w": 2000,
      "h": 934,
      "cap": "구문소 전경",
      "focus": "45% 50%"
-    },
-    {
-     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/LigVH8lagEAz-UZ1BdhXyROVxVo.jpg",
-     "w": 2000,
-     "h": 934,
-     "cap": "구문소 전경"
     }
    ],
    "spot": {
