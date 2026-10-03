@@ -23,6 +23,10 @@ export const Photo = z.object({
   cap: z.string().default(''),
   w: z.number().int().nonnegative(),
   h: z.number().int().nonnegative(),
+  /** 3:2로 자를 때 중심(CSS object-position), 예: '50% 60%' */
+  focus: z.string().regex(/^\d{1,3}% \d{1,3}%$/).optional(),
+  /** 수평 보정 각도(도). 원본은 그대로 두고 앱에서 돌려 보여 줍니다 */
+  rotate: z.number().min(-10).max(10).optional(),
 });
 
 const IsoDate = z.string().regex(/^\d{4}-\d{2}(-\d{2})?$/, 'YYYY-MM 또는 YYYY-MM-DD');
@@ -43,12 +47,14 @@ export const StoryScene = z.object({
   oneLiner: z.string().min(1).max(60),
   /** 작가 글 대목: 브런치 원문 그대로여야 함(계약 테스트로 확인) */
   excerpt: z.string().min(1).max(400),
-  photos: z.array(Photo).min(1).max(8),
+  photos: z.array(Photo).min(1).max(6),
   spot: LatLng,
   dest: LatLng.extend({ name: z.string().min(1).max(40), kind: z.enum(['parking', 'trailhead', 'entrance']) }),
   review: z.object({ best: Review, dest: Review, oneLiner: Review, types: Review }),
   contestEntry: z.boolean().default(false),
   hidden: z.boolean().default(false),
+  /** 작가 확인 때 볼 메모(앱에는 안 보임) */
+  notes: z.string().max(300).optional(),
 });
 
 /** 준비 중 장면: 저장글. 이름과 다녀온 날, 대표 위치만 (사진·본문 없음) */

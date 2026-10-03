@@ -30,6 +30,9 @@
 | `npm run check` | 타입, 단위·데이터 규칙 테스트, 비밀 키, 빌드, 성능 예산 |
 | `npm run e2e` | 휴대폰(390·360px) 화면 흐름과 접근성(axe). 가짜 지도(`?map=fake`) 사용 |
 | `npm run live` | 실제 카카오 지도 확인(localhost:8080 또는 `LIVE_URL`) |
+| `npx tsx pipeline/sync.ts` | 브런치 발행 글 동기화 → `content/brunch/index.json` (글 전문은 `.cache/`에만) |
+| `npx tsx pipeline/scenes/check-cli.ts content/scenes/drafts.json` | 장면 초안 검사(원문 대목·사진·15km·날짜) |
+| `KAKAO_REST_KEY=… npx tsx pipeline/geocode.ts "지역 장소"` | 좌표 찾기(키는 환경 변수로만) |
 
 ## 개발 방식 (TDD)
 1. 완성 기준을 `docs/features/F*.md`에 한국어로 씁니다(F2-AC3처럼 번호). 사용자가 확인합니다.
@@ -53,6 +56,9 @@
 - `src/styles/tokens.css`: 디자인 토큰의 원본입니다. Figma는 이 값을 따라갑니다.
 - `shared/schema/`: zod 데이터 규칙. 파이프라인과 테스트가 함께 씁니다.
 - `content/`: 앱 데이터. `pipeline/`이 브런치에서 만듭니다.
+  - `content/brunch/index.json`: 발행 글 목록, 날짜, 소제목, 사진 주소. 글 전문은 공개 저장소에 두지 않습니다(작가 글 보호, 공모전 중복 게재 우려).
+  - `content/scenes/drafts.json`: 장면 초안. 만드는 법은 `docs/curation-guide.md`에 있습니다.
+  - 작가 확인 결과는 '장면 확인표' 아티팩트에 저장됩니다(인수인계 문서 참고).
 - `.github/workflows/`
   - `ci.yml`: 검사, 테스트, 배포
   - `redeploy.yml`: 되돌리기

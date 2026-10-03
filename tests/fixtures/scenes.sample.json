@@ -9,18 +9,53 @@
       "brunchUrl": "https://brunch.co.kr/@caed5ea4c3d74d9/5",
       "name": "설악산 주전골",
       "region": "강원 양양",
-      "types": ["danpung"],
+      "types": [
+        "danpung"
+      ],
       "visited": "2019-10-12",
-      "best": { "from": 10, "to": 10, "note": "10월 중순~하순" },
+      "best": {
+        "from": 10,
+        "to": 10,
+        "note": "10월 중순~하순"
+      },
       "oneLiner": "(테스트용 표본) 계곡을 따라 걷는 단풍길",
-      "excerpt": "(테스트용 표본)",
-      "photos": [{ "src": "https://t1.daumcdn.net/brunch/service/user/sample.jpg", "cap": "", "w": 1200, "h": 800 }],
-      "spot": { "lat": 38.0825, "lng": 128.4282 },
-      "dest": { "name": "오색약수터주차장", "lat": 38.0774, "lng": 128.4526, "kind": "parking" },
-      "review": { "best": "draft", "dest": "draft", "oneLiner": "draft", "types": "draft" },
+      "excerpt": "(테스트용 표본) 앞 문장.",
+      "photos": [
+        {
+          "src": "https://t1.daumcdn.net/brunch/service/user/sample.jpg",
+          "cap": "",
+          "w": 1200,
+          "h": 800
+        }
+      ],
+      "spot": {
+        "lat": 38.0825,
+        "lng": 128.4282
+      },
+      "dest": {
+        "name": "오색약수터주차장",
+        "lat": 38.0774,
+        "lng": 128.4526,
+        "kind": "parking"
+      },
+      "review": {
+        "best": "draft",
+        "dest": "draft",
+        "oneLiner": "draft",
+        "types": "draft"
+      },
       "contestEntry": true,
       "hidden": false
     },
-    { "id": "p-033-taejongdae", "kind": "placeholder", "name": "부산 태종대", "visited": "2023-11-26", "spot": { "lat": 35.0532, "lng": 129.0871 } }
+    {
+      "id": "p-033-taejongdae",
+      "kind": "placeholder",
+      "name": "부산 태종대",
+      "visited": "2023-11-26",
+      "spot": {
+        "lat": 35.0532,
+        "lng": 129.0871
+      }
+    }
   ]
 }
