@@ -64,3 +64,14 @@ describe('카드 순서가 완전히 같을 때', () => {
     expect(homeView(scenes, 10).peak.map((s) => s.id)).toEqual(['s-b', 's-a']);
   });
 });
+
+describe('오늘 기준 제철 판단 seasonNow (F2 꼬리표, 10/4 결정)', () => {
+  it('오늘이 추천 시기 안이면 now, 밖이면 off, 일 년 내내면 yearRound, 추천 시기가 없으면 none', async () => {
+    const { seasonNow } = await import('../../src/domain/home');
+    expect(seasonNow({ from: 10, to: 11 }, 10)).toBe('now');
+    expect(seasonNow({ from: 12, to: 2 }, 1)).toBe('now'); // 해를 넘는 기간
+    expect(seasonNow({ from: 1, to: 1 }, 10)).toBe('off');
+    expect(seasonNow({ from: 1, to: 12 }, 5)).toBe('yearRound');
+    expect(seasonNow(undefined, 5)).toBe('none');
+  });
+});

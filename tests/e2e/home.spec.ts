@@ -10,10 +10,10 @@ async function open(page: Page, hash = ''): Promise<void> {
   await page.evaluate(() => document.fonts.ready);
 }
 
-test('머리 작은 글씨 "이상호 작가의 추천", 큰 제목 "N월에 만나는 자연"', async ({ page }) => {
+test('머리 작은 글씨 "이상호 작가의 추천", 큰 제목 "N월에 만나는 풍경"', async ({ page }) => {
   await open(page, '#/month/10');
   await expect(page.locator('.eyebrow')).toHaveText('이상호 작가의 추천');
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('10월에 만나는 자연');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('10월에 만나는 풍경');
 });
 
 test('카드의 추천 시기 줄은 320px 폭에서도 한 줄로 끝나고 잘리지 않음(모든 달)', async ({ page }) => {
@@ -49,9 +49,9 @@ test('지도 범례는 "제철 풍경 · 작가 부부 방문"', async ({ page }
 test('F1-AC9: 달을 바꾸고 뒤로 가기를 누르면 이전 달로 돌아감', async ({ page }) => {
   await open(page, '#/month/10');
   await page.getByRole('button', { name: '12월', exact: true }).click();
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('12월에 만나는 자연');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('12월에 만나는 풍경');
   await page.goBack();
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('10월에 만나는 자연');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('10월에 만나는 풍경');
   await expect(page.getByRole('button', { name: '10월', exact: true })).toHaveAttribute('aria-pressed', 'true');
 });
 
@@ -69,7 +69,7 @@ test('F1-AC13: 아래로 스크롤해 큰 제목이 사라지면 작은 제목 �
   await expect(mini).not.toHaveClass(/\bon\b/);
   await page.mouse.wheel(0, 900);
   await expect(mini).toHaveClass(/\bon\b/);
-  await expect(mini).toHaveText('10월에 만나는 자연');
+  await expect(mini).toHaveText('10월에 만나는 풍경');
   await page.evaluate(() => window.scrollTo(0, 0));
   await expect(mini).not.toHaveClass(/\bon\b/);
 });
