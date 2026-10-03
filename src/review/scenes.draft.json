@@ -1,0 +1,234 @@
+{
+ "note": "시안용 초안 데이터 (작가 확인 전). 작가 글 대목은 브런치 원문 그대로",
+ "scenes": [
+  {
+   "id": "s-020-naejangsan",
+   "brunchNo": 20,
+   "name": "내장산 우화정",
+   "region": "전북 정읍",
+   "types": [
+    "danpung"
+   ],
+   "typeLabel": "단풍·은행",
+   "visited": "2021-11-09",
+   "best": "10월 말~11월 초",
+   "bestFrom": 10,
+   "bestTo": 11,
+   "oneLiner": "물에 비친 정자와 단풍, 이른 아침이 가장 고요해요",
+   "excerpt": "이른 아침이라 차도 사람들도 없으니 황홀하게 아름다운 단풍이 모두 나의 것이다.",
+   "trip": "스무 번째 여행",
+   "photos": [
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/cUeGsHhL9CurQ477iSKGcKYgGw4.jpg",
+     "w": 1323,
+     "h": 640,
+     "cap": "내장산 연못",
+     "focus": "50% 55%"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/rBZycDPcwdWHZD-ycWPPDu7WLok.jpg",
+     "w": 1421,
+     "h": 640,
+     "cap": "내장산",
+     "focus": "50% 50%"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/z7par4C8_L86Pqy6MYHj9RnEUFU.jpg",
+     "w": 1405,
+     "h": 640,
+     "cap": "내장산",
+     "focus": "50% 50%"
+    }
+   ],
+   "spot": {
+    "lat": 0,
+    "lng": 0
+   },
+   "dest": {
+    "name": "내장산 주차장",
+    "lat": 0,
+    "lng": 0
+   },
+   "brunchUrl": "https://brunch.co.kr/@caed5ea4c3d74d9/20"
+  },
+  {
+   "id": "s-020-baegyangsa",
+   "brunchNo": 20,
+   "name": "백양사 연못",
+   "region": "전남 장성",
+   "types": [
+    "danpung"
+   ],
+   "typeLabel": "단풍·은행",
+   "visited": "2021-11-10",
+   "best": "10월 말~11월 초",
+   "bestFrom": 10,
+   "bestTo": 11,
+   "oneLiner": "키 큰 단풍나무가 연못에 한 번 더 비치는 곳",
+   "excerpt": "백양사 산책로 주변의 단풍나무들은 키가 크고, 연못 속에 들어간 단풍들이 또 다른 가을을 연출하고 있었다.",
+   "trip": "스무 번째 여행",
+   "photos": [
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/odDDij-xjiGqEhrHaEYXLVP4454.jpg",
+     "w": 1359,
+     "h": 640,
+     "cap": "백양사",
+     "focus": "40% 50%"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/bLYzF_v3vT4_wqrMiie82D4d1bo.jpg",
+     "w": 1280,
+     "h": 648,
+     "cap": "내장산에서 백양사 가는길에서",
+     "focus": "50% 50%"
+    }
+   ],
+   "spot": {
+    "lat": 0,
+    "lng": 0
+   },
+   "dest": {
+    "name": "백양사 주차장",
+    "lat": 0,
+    "lng": 0
+   },
+   "brunchUrl": "https://brunch.co.kr/@caed5ea4c3d74d9/20"
+  },
+  {
+   "id": "s-025-jinyangho",
+   "brunchNo": 25,
+   "name": "진양호 아침 물안개",
+   "region": "경남 진주",
+   "types": [
+    "unhae"
+   ],
+   "typeLabel": "운해·물안개",
+   "visited": "2022-10-23",
+   "best": "10~11월 이른 아침",
+   "bestFrom": 10,
+   "bestTo": 11,
+   "oneLiner": "전망대에서 내려다보는, 산허리에 피어오르는 물안개",
+   "excerpt": "산속으로 굽이굽이 꼬리를 감춘 진양호는 아직도 깊은 수면으로 고요하였고, 산허리에는 운무가 피어오르며 태양은 구름 속에서 얼굴을 보일 듯 말 듯이 인사를 하는 몽환적인 아침이다.",
+   "trip": "스물다섯 번째 여행",
+   "photos": [
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/KEIf_a8RMzRn4k4L5HaB6Nbjf9I.jpg",
+     "w": 1420,
+     "h": 640,
+     "cap": "",
+     "focus": "50% 50%"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/s4uqI32QpV6dUaIol_GrbyHhl0A.jpg",
+     "w": 1408,
+     "h": 640,
+     "cap": "",
+     "focus": "50% 50%"
+    }
+   ],
+   "spot": {
+    "lat": 0,
+    "lng": 0
+   },
+   "dest": {
+    "name": "진양호공원 전용주차장",
+    "lat": 0,
+    "lng": 0
+   },
+   "brunchUrl": "https://brunch.co.kr/@caed5ea4c3d74d9/25"
+  },
+  {
+   "id": "s-013-jujeongol",
+   "brunchNo": 13,
+   "name": "남설악 주전골",
+   "region": "강원 양양",
+   "types": [
+    "danpung"
+   ],
+   "typeLabel": "단풍·은행",
+   "visited": "2020-10-20",
+   "best": "10월 중순~하순",
+   "bestFrom": 10,
+   "bestTo": 10,
+   "oneLiner": "기암절벽과 단풍이 함께 걷는 계곡길",
+   "excerpt": "계곡 좌우로 만들어진 길을 따라 걸어가면서 만나는 단풍은 웅장하고 장대한 바위들과 한 폭 한 폭의 산수화를 만들고 있었다.",
+   "trip": "열세 번째 여행",
+   "photos": [
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/kU98tBrQtExhzFuyW9nKYCk2Ob4.jpg",
+     "w": 1416,
+     "h": 640,
+     "cap": "",
+     "focus": "60% 50%"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/-9_pSNtTTfXirlzfn5TL6lfOLwU.jpg",
+     "w": 1417,
+     "h": 640,
+     "cap": "",
+     "focus": "50% 50%"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/B9dRLLGz3fkGRVEwNuzc6--p3Pw.jpg",
+     "w": 1395,
+     "h": 640,
+     "cap": "",
+     "focus": "50% 50%"
+    }
+   ],
+   "spot": {
+    "lat": 0,
+    "lng": 0
+   },
+   "dest": {
+    "name": "오색약수터주차장",
+    "lat": 0,
+    "lng": 0
+   },
+   "brunchUrl": "https://brunch.co.kr/@caed5ea4c3d74d9/13"
+  },
+  {
+   "id": "s-005-biryong",
+   "brunchNo": 5,
+   "name": "설악산 비룡폭포",
+   "region": "강원 속초",
+   "types": [
+    "danpung"
+   ],
+   "typeLabel": "단풍·은행",
+   "visited": "2019-10-12",
+   "best": "10월 중순~하순",
+   "bestFrom": 10,
+   "bestTo": 10,
+   "oneLiner": "철계단 끝에서 만나는 힘찬 물줄기",
+   "excerpt": "관광객 안전을 위해 설치된 철계단을 오르자 비룡폭포가 소화전에서 뿜어져 나오는 듯한 힘찬 물줄기를 내뿜고 있었다.",
+   "trip": "다섯 번째 여행",
+   "photos": [
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/xnHCW3Qpnj4Ehlh8iQuYArj-Juo.jpg",
+     "w": 1280,
+     "h": 960,
+     "cap": "",
+     "focus": "50% 45%"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/GEjtKhinvrdSZ4wWOsaZkn0lmTM.jpg",
+     "w": 1280,
+     "h": 960,
+     "cap": "",
+     "focus": "50% 50%"
+    }
+   ],
+   "spot": {
+    "lat": 0,
+    "lng": 0
+   },
+   "dest": {
+    "name": "설악산 소공원 주차장",
+    "lat": 0,
+    "lng": 0
+   },
+   "brunchUrl": "https://brunch.co.kr/@caed5ea4c3d74d9/5"
+  }
+ ]
+}
