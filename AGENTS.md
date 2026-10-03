@@ -8,8 +8,9 @@
 1. `CLAUDE.md`: 절대 규칙, 명령어, 개발 방식(TDD), 폴더 구조
    - 파일 이름은 Claude용이지만 **공용 규칙**입니다. Codex에도 똑같이 적용됩니다.
 2. `docs/features/README.md`와 `F1~F5`: 기능별 완성 기준(F1-AC3 같은 번호)과 이미 정해진 결정
-3. 데이터를 만질 때: `docs/curation-guide.md`
-4. 배포·운영: `docs/runbook.md`
+3. 화면을 만질 때: `docs/design-guide.md`(사용자가 정한 화면 규칙)
+4. 데이터를 만질 때: `docs/curation-guide.md`
+5. 배포·운영: `docs/runbook.md`
 
 ## 절대 규칙 (요약 — 자세한 것은 CLAUDE.md)
 - 작가 글 대목(`excerpt`)은 브런치 원문 그대로 둡니다. 한 글자도 바꾸지 않습니다.

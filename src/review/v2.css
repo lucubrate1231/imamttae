@@ -104,16 +104,18 @@ h1, h2, h3, p { margin: 0; }
 .big .cap { position: absolute; left: 18px; right: 18px; bottom: 14px; z-index: 2; color: #fff; }
 .big .cap b { display: block; font-size: 28px; line-height: 1.25; letter-spacing: -0.03em; text-shadow: 0 1px 8px rgba(0, 0, 0, .35); }
 .big .cap span { font-size: 17px; opacity: .95; }
-/* 추천 시기 줄: 아이콘·'추천 시기'·날짜를 한 크기, 한 색(계절색)으로. 굵기만 다르게(10/3 3차 코멘트) */
-/* 줄이 길면 날짜가 통째로 다음 줄로 떨어지지 않고 글처럼 이어서 접히게 */
-.big .best { padding: 10px 6px 0; font-size: 18px; line-height: 1.45; color: var(--season); }
-.big .best .lbl { font-weight: 400; margin-right: 6px; }
-.big .best strong { font-weight: 700; }
+/* 추천 시기 줄: 아이콘·'추천 시기'·날짜를 한 크기(17px), 한 색(계절색)으로. 굵기만 다르게(10/3 3차 코멘트)
+   항상 한 줄로 끝냄(10/3 4차 코멘트, docs/design-guide.md). 글자를 크게 키운 휴대폰에서 넘치면 날짜 끝을 '…'로 줄임 */
+.big .best { display: flex; align-items: center; gap: 6px; white-space: nowrap; padding: 10px 6px 0; font-size: 17px; line-height: 1.45; color: var(--season); }
+.big .best .lbl { flex: none; font-weight: 400; }
+.big .best strong { min-width: 0; overflow: hidden; text-overflow: ellipsis; font-weight: 700; }
 .cal { display: inline-flex; align-self: center; color: var(--season); }
-.big .best .cal { vertical-align: -2px; margin-right: 6px; }
+.big .best .cal { flex: none; }
 .big .best .note { font-size: 17px; font-weight: 600; color: var(--ink); }
 /* 해마다 달라짐: 위 줄보다 한 단계 약하게 */
-.big .vary { padding: 2px 6px 0; font-size: 14px; font-weight: 400; color: var(--ink-3); }
+.big .vary { display: flex; align-items: center; gap: 5px; padding: 2px 6px 0; font-size: 14px; font-weight: 400; color: var(--ink-3); }
+/* 참고 아이콘: 글자와 같은 색, 작게 */
+.info { display: inline-flex; flex: none; }
 
 /* ── 작은 지도 (손으로 움직이지 않음: 페이지 스크롤과 다투지 않게) ── */
 .mapsec { padding: 20px var(--gutter) 0; }
@@ -162,11 +164,12 @@ h1, h2, h3, p { margin: 0; }
 .tabs button[aria-current='page'] { background: var(--season-soft); color: var(--season); }
 
 /* ── 장면 상세 ── */
-.detail { position: fixed; inset: 0; z-index: 20; max-width: 520px; margin: 0 auto; background: #fff; overflow-y: auto; display: flex; flex-direction: column; transform: translateY(100%); transition: transform .28s ease; visibility: hidden; }
+/* 옆으로 밀리지 않게: 가로 넘침은 자르고, 끝까지 스크롤해도 뒤 화면으로 번지지 않게(10/3 4차 코멘트) */
+.detail { position: fixed; inset: 0; z-index: 20; max-width: 520px; margin: 0 auto; background: #fff; overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; display: flex; flex-direction: column; transform: translateY(100%); transition: transform .28s ease; visibility: hidden; }
 .detail > * { flex-shrink: 0; }
 .detail.open { transform: none; visibility: visible; }
-.gallery { position: relative; }
-.gallery .rail { padding: 0; gap: 0; scroll-padding: 0; }
+.gallery { position: relative; overflow: hidden; }
+.gallery .rail { padding: 0; gap: 0; scroll-padding: 0; overscroll-behavior-x: contain; }
 .gallery .rail > * { flex: 0 0 100%; }
 .gallery .slide { aspect-ratio: 3 / 2; background: #d9ddd8; overflow: hidden; }
 .gallery .slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -176,10 +179,11 @@ h1, h2, h3, p { margin: 0; }
 /* 사진이 뜨고 2초 뒤(또는 스크롤·터치하면 바로) 서서히 나타남. 숨어 있는 동안에는 눌리지 않음 */
 .gallery .ov { transition: opacity .5s ease; }
 .gallery.ov-wait .ov { opacity: 0; pointer-events: none; }
-.gallery .back { top: 12px; left: 12px; width: 38px; height: 38px; }
+/* 뒤로: 흰 동그라미(사진 위에서 잘 보이고, 검정 반투명 넘김 화살표와도 구분, 10/3 4차 코멘트) */
+.gallery .back { top: 12px; left: 12px; width: 38px; height: 38px; background: rgba(255, 255, 255, .94); color: var(--ink); box-shadow: 0 1px 6px rgba(0, 0, 0, .18); }
 /* 넘김 버튼은 세로로 긴 둥근 사각형(뒤로 버튼의 동그라미와 헷갈리지 않게, 10/3 코멘트) */
 .gallery .nav { top: 50%; margin-top: -24px; width: 28px; height: 48px; border-radius: 10px; background: rgba(12, 16, 14, .36); }
-.gallery .nav::after { inset: 0 -10px; }
+.gallery .nav::after { inset: 0 -8px; } /* 누르는 범위 48px 이상, 사진 밖으로는 안 나가게 */
 .gallery .nav[hidden] { display: none; }
 .gallery .prev { left: 8px; }
 .gallery .next { right: 8px; }
@@ -195,8 +199,9 @@ h1, h2, h3, p { margin: 0; }
 .body .badge { font-size: 14px; padding: 6px 10px; }
 .body .badge:not(.peak-b):not(.rec-b) { background: var(--bg-soft); color: var(--ink-2); }
 .title { margin-top: 10px; font-size: 28px; line-height: 1.25; letter-spacing: -0.035em; }
-.region { margin-top: 2px; font-size: 17px; color: var(--ink-2); }
-.one { margin-top: 12px; font-size: 20px; line-height: 1.5; font-weight: 600; }
+/* 위계: 제목(명조 28 굵게) > 한 줄 소개(18 보통) > 지역(16 연하게). 지역은 제목에 붙이고, 한 줄 소개와는 떼어 놓음(10/3 4차 코멘트) */
+.region { margin-top: 4px; font-size: 16px; color: var(--ink-3); }
+.one { margin-top: 16px; font-size: 18px; line-height: 1.6; font-weight: 500; color: var(--ink); }
 .draft { display: inline-block; vertical-align: 2px; margin-left: 6px; font-size: 14px; font-weight: 800; padding: 1px 8px; border-radius: 8px; background: var(--draft-bg); color: var(--draft); }
 .recnote { padding: 14px 16px; border-radius: 18px; background: var(--rec-bg); font-size: 17px; color: var(--ink-2); }
 /* 장면 상세의 구역: 선 없이 넉넉한 위아래 여백으로 나눔(10/3 3차 결정) */
@@ -210,7 +215,8 @@ h1, h2, h3, p { margin: 0; }
 .when-row b { font-weight: 700; }
 .when-tip { margin: 0 0 10px; font-size: 17px; line-height: 1.5; color: var(--ink); }
 .when-tip .lbl { margin-right: 8px; font-weight: 600; color: var(--ink-2); }
-.when-vary { font-size: 16px; color: var(--ink-2); }
+.when-vary { display: flex; align-items: flex-start; gap: 6px; font-size: 16px; color: var(--ink-2); }
+.when-vary .info { margin-top: 3px; }
 .when-link { display: inline-flex; align-items: center; min-height: var(--tap); font-size: 16.5px; font-weight: 800; color: var(--season); text-decoration: none; }
 /* 작가의 한마디: 계절색을 옅게 섞은 왼쪽 세로선으로 인용임을 알림(10/3 3차 결정, 예전 방식 유지) */
 .quote { margin: 0; padding: 4px 0 4px 16px; border-left: 3px solid color-mix(in srgb, var(--season) 35%, #fff); }
