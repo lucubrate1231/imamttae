@@ -22,7 +22,7 @@ type Season = 'spring' | 'summer' | 'autumn' | 'winter';
 const seasonOf = (m: Month): Season => (m >= 3 && m <= 5 ? 'spring' : m >= 6 && m <= 8 ? 'summer' : m >= 9 && m <= 11 ? 'autumn' : 'winter');
 const typeLabel = (s: Scene) => SCENE_TYPES.find((t) => t.id === s.types[0])?.label ?? '';
 const AUTHOR = '이상호';
-const PEN_NAME = '현곡'; // 작가의 호
+const RECOMMENDER = '이상호 대장'; // 맨 위 작은 글씨(10/3: '현곡 선생' → '이상호 대장')
 const STORY_URL = 'https://brunch.co.kr/@caed5ea4c3d74d9/1';
 
 const qMonth = Number(new URLSearchParams(location.search).get('m'));
@@ -75,9 +75,9 @@ function toast(msg: string): void {
 
 // ── 뼈대 ──
 const app = document.getElementById('app')!;
-// 머리(10/3 2차 코멘트): 작은 글씨 '현곡 선생의 추천' → 큰 글씨 'N월에 만나는 자연' → 달 띠.
+// 머리(10/3 2차 코멘트): 작은 글씨 '이상호 대장의 추천' → 큰 글씨 'N월에 만나는 자연' → 달 띠.
 // 아래로 스크롤하면 'N월에 만나는 자연'만 위에 붙어 있음
-const eyebrow = h('p', { class: 'eyebrow', text: `${PEN_NAME} 선생의 추천` });
+const eyebrow = h('p', { class: 'eyebrow', text: `${RECOMMENDER}의 추천` });
 const pageTitle = h('h1', { class: 'ttl' });
 // 스크롤해서 큰 제목이 화면 밖으로 나가면, 작고 가는 제목 막대가 위에 서서히 나타남(큰 제목을 그대로 붙이면 투박해서)
 const miniTitle = h('div', { class: 'mini-ttl', 'aria-hidden': 'true' });
