@@ -20,6 +20,7 @@
 - **main에 직접 올리지 않고** `claude/<주제>` 가지에서 작업해 PR로 올립니다. 합치는 것은 사용자가 합니다.
 - 작업 전에는 GitHub 최신본을 먼저 받습니다(`imamttae-sync.sh pull`, `docs/runbook.md`).
 - 열린 PR과 AGENTS.md의 'Claude가 맡고 있는 것'을 보고, Codex가 고치는 파일은 건드리지 않습니다.
+- **분담(10/3 사용자 결정): Claude Code는 화면, Codex는 계산(`src/domain/`)과 저장(`src/storage/`).** 순서와 Codex의 지금 일은 AGENTS.md '나누는 원칙'·'순서'에 있습니다. Codex 일을 맡길 때는 함수 이름과 주고받는 값을 `docs/tasks/`에 먼저 적습니다.
 
 ## 협업 방식 (사용자 요청)
 - 사용자는 제품 주인이고 개발자가 아닙니다. 쉬운 한국어로 말하고, 전문 용어는 풀어서 설명합니다.
