@@ -44,13 +44,13 @@ describe('데이터 규칙(계약)', () => {
     expect(StoryScene.safeParse(story).success).toBe(false);
   });
 
-  it('새 명장면 종류(계곡·폭포, 바다 절경, 신록·초원)를 받음', () => {
+  it('새 풍경 종류(계곡·폭포, 바다 절경, 신록·초원)를 받음', () => {
     const story = structuredClone(sample.scenes[0]) as Record<string, unknown>;
     story.types = ['gyegok', 'bada', 'sinrok'];
     expect(StoryScene.safeParse(story).success).toBe(true);
   });
 
-  it('없는 명장면 종류는 거부', () => {
+  it('없는 풍경 종류는 거부', () => {
     const story = structuredClone(sample.scenes[0]) as Record<string, unknown>;
     story.types = ['차박'];
     expect(StoryScene.safeParse(story).success).toBe(false);

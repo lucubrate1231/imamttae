@@ -49,7 +49,7 @@ export async function startApp(deps: AppDeps): Promise<AppHandle> {
   const mapwrap = h('main', { className: 'mapwrap' }, canvas, empty);
 
   root.replaceChildren(
-    h('header', { className: 'top' }, h('h1', { className: 'brand', textContent: '이맘때 자연' }), h('p', { className: 'sub', textContent: '이상호 작가가 아내와 다녀온 자연 명장면' })),
+    h('header', { className: 'top' }, h('h1', { className: 'brand', textContent: '이맘때 자연' }), h('p', { className: 'sub', textContent: '이상호 작가가 아내와 다녀온 자연 풍경' })),
     months,
     ...(deps.fallbackReason ? [h('p', { className: 'notice', role: 'alert', textContent: '지도를 불러오지 못해 목록으로 보여 드려요.' })] : []),
     mapwrap,
@@ -70,7 +70,7 @@ export async function startApp(deps: AppDeps): Promise<AppHandle> {
       else c.removeAttribute('aria-current');
     }
     map.setPins(pins);
-    empty.textContent = pins.length ? '' : `${monthLabel(month)} 명장면을 정리하고 있어요. 곧 핀이 올라옵니다.`;
+    empty.textContent = pins.length ? '' : `${monthLabel(month)} 풍경을 정리하고 있어요. 곧 핀이 올라옵니다.`;
     empty.hidden = pins.length > 0;
   }
 

@@ -34,6 +34,18 @@ describe('timingNotice: 해마다 달라지는 장면 안내', () => {
   });
 });
 
+describe('timingNotice.short: 카드에 쓰는 짧은 한 줄 (10/3 2차 코멘트: "단풍 시기는 해마다 달라져요")', () => {
+  it('종류에 맞는 말', () => {
+    expect(timingNotice(['danpung'])!.short).toBe('단풍 시기는 해마다 달라져요');
+    expect(timingNotice(['beotkkot'])!.short).toBe('꽃 피는 시기는 해마다 달라져요');
+    expect(timingNotice(['eoksae'])!.short).toBe('억새 시기는 해마다 달라져요');
+    expect(timingNotice(['seolgyeong'])!.short).toBe('눈이 와야 볼 수 있어요');
+  });
+  it('짧게(18자 안) — 카드 한 줄에 들어가게', () => {
+    for (const t of ['maehwa', 'danpung', 'eoksae', 'seolgyeong'] as const) expect(timingNotice([t])!.short.length).toBeLessThanOrEqual(18);
+  });
+});
+
 describe('newsSearchUrl: 올해 소식 찾아보기 링크', () => {
   it('장면 이름과 키워드로 검색', () => {
     const u = new URL(newsSearchUrl('내장산 우화정', '단풍'));

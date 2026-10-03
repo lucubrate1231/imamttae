@@ -85,7 +85,7 @@ describe('splitByMonth: 그달 화면에 나올 제철·기록 나누기', () =>
   });
 });
 
-describe('명장면 종류 13가지 (10/3 사용자 결정: 계곡·폭포, 바다 절경, 신록·초원 추가)', () => {
+describe('풍경 종류 13가지 (10/3 사용자 결정: 계곡·폭포, 바다 절경, 신록·초원 추가)', () => {
   it('13가지이고 id가 겹치지 않음', () => {
     expect(SCENE_TYPES).toHaveLength(13);
     expect(new Set(SCENE_TYPES.map((t) => t.id)).size).toBe(13);

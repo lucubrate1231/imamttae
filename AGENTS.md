@@ -1,7 +1,7 @@
 # AGENTS.md — 이맘때 자연 (Codex 등 AI 에이전트용 안내)
 
 이 저장소는 이상호 작가의 브런치 연재 「아내와 살아서 가볼 100곳」으로 만드는 휴대폰 웹앱 **이맘때 자연**입니다.
-작가 부부가 직접 다녀온 곳의 **자연 명장면**을 달별·지도로 보여 줍니다. 대상은 50~60대 부부입니다.
+작가 부부가 직접 다녀온 곳의 **자연 풍경**을 달별·지도로 보여 줍니다. 대상은 50~60대 부부입니다.
 제품 주인은 사용자(프프)이고, Claude(Anthropic)와 Codex(OpenAI)가 함께 만듭니다.
 
 ## 작업 전에 꼭 읽을 것 (순서대로)
@@ -50,13 +50,11 @@
 - Node 22 이상. 처음에는 `npm ci`
 - 휴대폰 화면 테스트 전: `npx playwright install chromium` (리눅스 CI에서는 `--with-deps`를 붙임)
   - Playwright 1.56을 쓰고, `playwright-core`는 1.56.1로 고정되어 있습니다.
-- **Codex 앱(Windows)에서:** 설정 → 로컬 환경(Local environments)의 setup 스크립트에 아래 두 줄을 넣어 두세요. 새 worktree를 만들 때마다 자동으로 실행됩니다.
-  ```
-  npm ci
-  npx playwright install chromium
-  ```
-  - 작업은 **Worktree**로 시작하고, 끝나면 `codex/<주제>` 가지를 만들어 PR을 엽니다.
-  - 시작 전에 main을 GitHub 최신본으로 받아 두세요(GitHub Desktop의 Fetch → Pull).
+- **Codex 앱(Windows)에서:**
+  - 대화는 기본 모드(**Local**)로 시작합니다. 처음 한 번 `npm ci`와 `npx playwright install chromium`을 실행해 두면 그 폴더에 남습니다.
+  - 일을 맡으면 `codex/<주제>` 가지를 만들어 작업하고, 검사를 통과하면 PR을 엽니다.
+  - 시작 전에 main을 GitHub 최신본으로 받아 둡니다(GitHub Desktop의 Fetch → Pull).
+  - Worktree 모드를 쓸 때는 앱 설정의 로컬 환경 setup 스크립트에 위 두 명령을 넣어 둡니다.
 - 자주 쓰는 명령 (전체 표는 CLAUDE.md)
   - `npm run check`: 타입, 단위·데이터 규칙 테스트, 비밀 키 검사, 빌드, 성능 예산
   - `npm run e2e`: 390·360px 화면 흐름과 접근성 검사. 가짜 지도를 써서 카카오 키 없이 돌아갑니다.
@@ -71,4 +69,4 @@
 - 브런치 글 전문(`.cache/`), 저장글, 네이버 밴드 원문을 저장소에 올리기
 - `.env.local`이나 키 값을 커밋하기
 - 작가 글 대목을 다듬거나 요약해서 넣기
-- '풍광'이라는 말 쓰기. 용어는 **자연 명장면**, **초안**, **준비 중**, **제철**, **다녀온 기록**입니다.
+- '풍광'이라는 말 쓰기. 용어는 **자연 풍경**, **초안**, **준비 중**, **제철**, **다녀온 기록**입니다.
