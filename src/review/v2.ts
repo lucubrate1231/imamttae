@@ -133,8 +133,6 @@ const toastEl = h('div', { class: 'toast', role: 'status' });
 app.append(miniTitle, h('main', {}, eyebrow, pageTitle, months, peakSec, mapSec, recSec, extra), tabs, detail, toastEl);
 new IntersectionObserver(([e]) => miniTitle.classList.toggle('on', !e!.isIntersecting && e!.boundingClientRect.top < 0)).observe(pageTitle);
 
-// 계절 띠 비교용: ?band=split 이면 띠가 제목까지만 (기본은 제철 구역 전체)
-if (new URLSearchParams(location.search).get('band') === 'split') app.dataset.band = 'split';
 
 // ── 카드 ──
 function badges(s: Scene): HTMLElement {

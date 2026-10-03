@@ -84,8 +84,7 @@ h1, h2, h3, p { margin: 0; }
 
 /* ── 제철 ── */
 .peak { background: var(--season-soft); padding-bottom: 24px; transition: background-color .3s; }
-/* 계절 띠가 제철 구역 전체를 덮음(기본). ?band=split 이면 띠는 제목까지만, 카드는 흰 바탕 */
-[data-band='split'] .peak { background: none; padding-top: 16px; padding-bottom: 0; }
+/* 계절 띠는 맨 위부터 제철 카드 끝까지 제철 구역 전체를 덮음(10/3 사용자 결정: 덜 사무적으로 보임) */
 
 .rail { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 0 var(--gutter); scroll-padding: 0 var(--gutter); scrollbar-width: none; }
 .rail::-webkit-scrollbar { display: none; }
