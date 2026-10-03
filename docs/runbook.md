@@ -40,10 +40,10 @@ Claude의 클라우드 작업 공간은 GitHub에 바로 올릴 수 없어서, �
    - 가지를 GitHub에 올리고 PR을 만듭니다.
    - 사용자가 GitHub에서 PR을 보고 **Merge**를 누르면 main에 들어가고 `/next/`에 배포됩니다.
 5. 사용자가 허락한 작은 변경만 `imamttae-sync.sh push`로 main에 바로 올립니다.
-6. 어느 경우든 마지막에 `band-to-brunch/imamttae-app/` 폴더를 GitHub main 기준으로 갱신합니다.
 
-- `imamttae-app/` 폴더는 GitHub 저장소와 같은 파일을 담은 **사본**입니다(.git 없음).
-  - 연결된 폴더에서는 파일을 지울 수 없어서, git이 자기 임시 파일을 지우지 못합니다. 그래서 git 저장소 자체는 그 폴더에 두지 않습니다.
+- `band-to-brunch/imamttae-app/`에는 중계 파일(`.sync/`)만 둡니다. 예전에 두던 코드 사본은 10/3에 정리했습니다. 이제 코드는 GitHub과 사용자 컴퓨터의 클론에서 봅니다(Codex `C:\dev\imamttae`, Claude Code `C:\dev\imamttae-claude`).
+  - 연결된 폴더에서는 파일을 지울 수 없어서, git이 자기 임시 파일을 지우지 못합니다. 그래서 git 저장소 자체는 그 폴더에 두지 않고 리눅스 공간의 `~/imamttae`에 둡니다.
+- 지금 이 중계는 **Cowork의 Claude**만 씁니다(콘텐츠·데이터 PR). Claude Code와 Codex는 클론에서 GitHub에 바로 올립니다.
 - 새 Cowork 세션에서는 그 리눅스 공간이 비어 있을 수 있습니다. 그때는 다음 순서로 다시 준비합니다.
   1. GitHub에서 저장소를 새로 받습니다(clone).
   2. 기기 로그인 코드를 다시 받습니다.

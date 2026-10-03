@@ -42,15 +42,35 @@
    - ③ 사용자가 미리보기에서 확인할 곳
 7. 큰 결정은 바꾸지 말고 제안만 합니다. 공개 범위, 비용, 외부 서비스 설정, 디자인 방향이 여기에 들어갑니다.
 
+### 나누는 원칙 (10/3 사용자 결정)
+- **Claude Code는 화면, Codex는 계산과 저장**을 맡습니다. 같은 파일을 두 AI가 고치지 않게 기능이 아니라 **폴더**로 나눕니다.
+  - 화면 코드는 디자인 토큰·시안·첫 화면과 얽혀 있어 한쪽(Claude Code)이 계속 맡습니다.
+  - 계산(`src/domain/`)과 저장(`src/storage/`)은 화면 없이 단위 테스트만으로 완성할 수 있어 Codex가 따로 일하기 좋습니다.
+- **함수 이름을 먼저 정합니다.** Codex가 만든 함수를 Claude가 화면에서 가져다 씁니다. 일을 맡기기 전에 함수 이름과 주고받는 값을 `docs/tasks/`에 적어 둡니다. 바꿔야 하면 PR 설명에 적어 사용자에게 묻습니다.
+- **서로의 PR을 읽고 의견을 남깁니다.** 상대 PR에서 완성 기준과 맞지 않거나 내 일과 부딪히는 곳을 찾아 알려 줍니다. 합치는 결정은 사용자가 합니다.
+- **둘 다 건드리지 않는 것:** 장면 데이터와 데이터 규칙(`content/`, `pipeline/`, `public/data/`, `shared/schema/`, Cowork의 Claude 담당), `package.json`·`package-lock.json`(새 도구는 사용자에게 먼저 묻기), 이 파일과 CLAUDE.md의 **상대방 칸**.
+
+### 순서 (하나 끝나면 다음, 하나씩 PR)
+| 순서 | Claude Code (화면) | Codex (계산·저장) |
+|---|---|---|
+| 지금 | 글꼴 깨짐 → 기능 ① 첫 화면·장면 상세를 실제 앱으로(F1·F2) | **일 1** 풍경 찾기 계산(F3): [`docs/tasks/codex-1-풍경찾기-계산.md`](docs/tasks/codex-1-풍경찾기-계산.md) |
+| 그다음 | 풍경 찾기 화면(F3), 내 수첩 화면(F4) | **일 2** 내 수첩 저장(F4, F2-AC2c 가고 싶어요): [`docs/tasks/codex-2-내수첩-저장.md`](docs/tasks/codex-2-내수첩-저장.md) |
+| 그다음 | 홈 화면에 추가 화면(F5), 사용 통계 붙이기 | 일 3 홈 화면에 추가 준비 파일(F5-AC1·2·6), 길찾기 앱 기억하기(F2-AC5) |
+
 ### 지금 Claude가 맡고 있는 것 (겹치지 않게)
 - 장면 데이터와 파이프라인: `content/`, `pipeline/`, `public/data/`, `public/_review/` (Cowork의 Claude)
-- 디자인 토큰과 기능 ①(지금 볼 만한 곳)·장면 상세 구현 (Claude Code, 10/3 디자인 확정 뒤)
-  - `src/styles/tokens.css`, `index.html`, `src/main.ts`, 앞으로 만들 `src/app.ts`·`src/ui/`
-  - 확정 시안 `_review/`, `src/review/`와 그 테스트 `tests/e2e/v2-design.spec.ts`, `tests/e2e/smoke.spec.ts`
-- 맡은 일이 바뀌면 이 목록을 고칩니다. Codex가 맡은 일이 정해지면 아래에 적습니다.
+- 화면 전부 (Claude Code)
+  - `src/styles/`, `index.html`, `src/main.ts`, `src/app.ts`, 앞으로 만들 `src/ui/`, `src/map/`
+  - 확정 시안 `_review/`, `src/review/`와 화면 테스트 `tests/e2e/`, `tests/dom/`
+  - 예외: 기능 ①(F1·F2)에 필요한 계산(F1-AC3 정렬, F1-AC8 가까운 달 등)은 화면 작업과 함께 Claude가 새 파일(`src/domain/home.ts`)로 만듭니다. Codex가 맡은 파일은 건드리지 않습니다.
+- 맡은 일이 바뀌면 이 목록을 고칩니다.
 
 ### 지금 Codex가 맡고 있는 것
-- (사용자가 정하면 적습니다)
+- **일 1 풍경 찾기 계산(F3)** — 가지 `codex/find-calc`
+  - 새로 만듦: `src/domain/find.ts`, `tests/unit/find.test.ts`
+  - 고침: `src/domain/router.ts`, `tests/unit/router.test.ts`
+  - 자세한 내용: [`docs/tasks/codex-1-풍경찾기-계산.md`](docs/tasks/codex-1-풍경찾기-계산.md)
+- 일이 끝나 PR이 합쳐지면 이 칸을 다음 일로 바꿉니다.
 
 ### 같은 컴퓨터에서 동시에 일할 때 (Claude Code와 Codex)
 - **폴더를 따로 씁니다.** 한 폴더에서 두 에이전트가 동시에 가지를 바꾸면 서로의 작업이 꼬입니다.
