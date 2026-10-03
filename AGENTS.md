@@ -90,10 +90,10 @@ Cowork(기획·콘텐츠·디자인 세션), Claude Code(개발 리드), Codex�
 - 맡은 일이 바뀌면 이 목록을 고칩니다.
 
 ### 지금 Codex가 맡고 있는 것
-- **일 1 풍경 찾기 계산(F3)** — 가지 `codex/find-calc`
-  - 새로 만듦: `src/domain/find.ts`, `tests/unit/find.test.ts`
-  - 고침: `src/domain/router.ts`, `tests/unit/router.test.ts`
-  - 자세한 내용: [`docs/tasks/codex-1-풍경찾기-계산.md`](docs/tasks/codex-1-풍경찾기-계산.md)
+- **일 2 가고 싶어요 저장(F2-AC2c)** — 가지 `codex/wanted`
+  - 새로 만듦: `src/storage/wanted.ts`, `tests/unit/wanted.test.ts`
+  - 그대로 가져다 씀: `src/storage/safeStorage.ts`
+  - 자세한 내용: [`docs/tasks/codex-2-가고싶어요-저장.md`](docs/tasks/codex-2-가고싶어요-저장.md)
 - 일이 끝나 PR이 합쳐지면 이 칸을 다음 일로 바꿉니다.
 
 ### 같은 컴퓨터에서 동시에 일할 때 (Claude Code와 Codex)
