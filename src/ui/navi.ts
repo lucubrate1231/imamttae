@@ -9,6 +9,7 @@
 import { naviUrl, type NaviAppId, type NaviDest } from '../domain/navi';
 import type { SafeStore } from '../storage/safeStorage';
 import { h } from './dom';
+import type { EventData, EventName } from '../analytics';
 
 export const NAVI_LABEL: Record<NaviAppId, string> = { tmap: '티맵', naver: '네이버지도', kakao: '카카오맵' };
 const STORE: Record<Exclude<NaviAppId, 'kakao'>, { android: string; ios: string }> = {
@@ -26,11 +27,13 @@ export interface NaviDeps {
   ua: string;
   openUrl(url: string): void;
   store: SafeStore;
+  /** 사용 통계: navi(가장 중요한 지표)·navi-no-app */
+  track(name: EventName, data?: EventData): void;
 }
 
 export interface Navi {
   /** 장면 상세 아래 막대의 길찾기 버튼과 작은 '다른 앱으로 길찾기' */
-  controls(dest: NaviDest): { go: HTMLElement; other: HTMLElement | null };
+  controls(dest: NaviDest, sceneId: string): { go: HTMLElement; other: HTMLElement | null };
   /** 화면에 한 번 붙여 두는 고르기 안내 */
   sheet: HTMLElement;
 }
@@ -60,7 +63,9 @@ export function createNavi(d: NaviDeps): Navi {
   }
 
   /** 앱 주소를 열고, 앱이 안 열리면(화면이 그대로면) 다른 길을 안내 */
-  function launch(app: NaviAppId, dest: NaviDest): void {
+  let scene = '';
+  function launch(app: NaviAppId, dest: NaviDest, how: 'main' | 'other'): void {
+    d.track('navi', { app, how, scene, where: 'detail' });
     d.openUrl(url(app, dest));
     if (app === 'kakao') return; // 카카오맵은 웹 주소라 앱이 없어도 열림
     let left = false;
@@ -72,6 +77,7 @@ export function createNavi(d: NaviDeps): Navi {
       win.document.removeEventListener('visibilitychange', onHide);
       if (left || win.document.visibilityState === 'hidden') return;
       const install = h('a', { class: 'navi-opt', href: STORE[app][isIOS(ua) ? 'ios' : 'android'], target: '_blank', rel: 'noopener', text: `${NAVI_LABEL[app]} 설치` });
+      install.addEventListener('click', () => d.track('navi-no-app', { app }));
       openSheet(`${NAVI_LABEL[app]} 앱이 열리지 않았어요`, [install, ...others(app, dest, false)]);
     }, WAIT_MS);
   }
@@ -88,20 +94,25 @@ export function createNavi(d: NaviDeps): Navi {
             d.store.set(KEY, a);
             paint();
           }
-          launch(a, dest);
+          launch(a, dest, 'other');
         });
         return b;
       });
   }
 
   let paint = () => {};
-  function controls(dest: NaviDest): { go: HTMLElement; other: HTMLElement | null } {
+  function controls(dest: NaviDest, sceneId: string): { go: HTMLElement; other: HTMLElement | null } {
+    scene = sceneId;
     const go = h('button', { type: 'button', class: 'go' });
     paint = () => {
       go.textContent = `길찾기(${NAVI_LABEL[mobile ? pref() : 'kakao']})`;
     };
     paint();
-    go.addEventListener('click', () => (mobile ? launch(pref(), dest) : d.openUrl(url('kakao', dest))));
+    go.addEventListener('click', () => {
+      if (mobile) return launch(pref(), dest, 'main');
+      d.track('navi', { app: 'kakao', how: 'main', scene, where: 'detail' });
+      d.openUrl(url('kakao', dest));
+    });
     if (!mobile) return { go, other: null };
     const other = h('button', { type: 'button', class: 'navi-other', text: '다른 앱으로 길찾기' });
     other.addEventListener('click', () => openSheet('어느 앱으로 길을 찾을까요?', others(pref(), dest, true)));

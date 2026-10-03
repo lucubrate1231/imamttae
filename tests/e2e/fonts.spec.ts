@@ -31,22 +31,32 @@ async function renderedFonts(page: Page, cdp: CDPSession, selector: string): Pro
 
 const isFontFile = (url: string) => /\.(woff2?|ttf|otf)(\?|$)/.test(url);
 
-test('글꼴 파일 일부가 끝내 오지 않아도 한 제목 안에서 명조와 다른 글꼴이 섞이지 않음', async ({ page }) => {
-  await page.route('**/dapi.kakao.com/**', (r) => r.abort());
-  // 느린·끊기는 휴대폰 흉내: 글꼴 파일을 하나 걸러 하나씩 막음(일부 조각만 오지 않는 상황).
-  // 늦추기(지연)로는 크롬이 재현하지 못해, 가장 나쁜 경우인 '끝내 안 옴'으로 확인합니다(10/3 확인).
-  let n = 0;
-  await page.route((url) => isFontFile(url.href), async (r) => {
-    if (n++ % 2 === 1) return r.abort();
-    await r.fallback();
+/**
+ * 막으려는 것: 한 제목 안에서 **고운바탕과 다른 글꼴이 함께** 쓰이는 섞임(구글 조각 시절의 '덮·밭·쭉·릇').
+ * 제목 글꼴 파일이 통째로 안 오면 제목 전체가 휴대폰 기본 글꼴로 그려지는 것은 정상입니다.
+ * (10/4 바로잡음: 리눅스 기본 글꼴은 숫자와 한글을 다른 글꼴로 그려서, '글꼴이 둘 이상이면 실패'로 보면 GitHub에서만 잘못 실패했음)
+ */
+const gowunMixed = (rows: { text: string; fonts: string[] }[]) =>
+  rows.filter((r) => r.fonts.includes('Gowun Batang') && r.fonts.some((f) => f !== 'Gowun Batang')).map((m) => `"${m.text}" ← ${m.fonts.join(' + ')}`);
+
+for (const [name, block] of [
+  ['글꼴 파일을 하나 걸러 하나씩 막아도', (n: number) => n % 2 === 1],
+  ['제목 글꼴 파일만 막아도', (_n: number, url: string) => url.includes('gowun-batang-title')],
+] as const) {
+  test(`${name} 한 제목 안에서 고운바탕과 다른 글꼴이 섞이지 않음`, async ({ page }) => {
+    await page.route('**/dapi.kakao.com/**', (r) => r.abort());
+    let n = 0;
+    await page.route((url) => isFontFile(url.href), async (r) => {
+      if (block(n++, r.request().url())) return r.abort();
+      await r.fallback();
+    });
+    const cdp = await cdpFor(page);
+    await page.goto('./_review/v2.html?m=9');
+    await page.locator('.big').first().waitFor();
+    await page.waitForTimeout(2500); // 올 파일은 다 오고, 막힌 파일은 실패로 끝난 뒤
+    expect(gowunMixed(await renderedFonts(page, cdp, DISPLAY))).toEqual([]);
   });
-  const cdp = await cdpFor(page);
-  await page.goto('./_review/v2.html?m=9');
-  await page.locator('.big').first().waitFor();
-  await page.waitForTimeout(2500); // 올 파일은 다 오고, 막힌 파일은 실패로 끝난 뒤
-  const mixed = (await renderedFonts(page, cdp, DISPLAY)).filter((r) => new Set(r.fonts).size > 1);
-  expect(mixed.map((m) => `"${m.text}" ← ${m.fonts.join(' + ')}`)).toEqual([]);
-});
+}
 
 test('다 받은 뒤에는 제목·작가의 한마디의 모든 글자가 고운바탕(여러 달, 장면 상세 포함)', async ({ page }) => {
   await page.route('**/dapi.kakao.com/**', (r) => r.abort());
