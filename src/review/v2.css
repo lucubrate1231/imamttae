@@ -6,10 +6,10 @@
   color-scheme: light;
   --bg: #ffffff;
   --bg-soft: #f3f5f2;
-  --ink: #17201b;
+  --ink: #3a3d3b; /* 본문 글자: 검정보다 한 톤 밝게(10/3 코멘트 — 너무 셈) */
   --font-display: 'Gowun Batang', 'Nanum Myeongjo', serif; /* 제목·작가 글: 고운바탕(10/3 사용자 선택) */
   --ink-title: #2e221d; /* 제목 글자: 검정에 가까운 고동색. 계절마다 그 계절 색이 아주 살짝 섞인 검정으로 바뀜(아래) */
-  --ink-2: #4b5650;
+  --ink-2: #4f5753;
   --ink-3: #5f6963;
   --line: #e2e7e1;
   --rec: #5f6963; /* 기록: 계절 색 없이 회색 */
@@ -61,7 +61,7 @@ h1, h2, h3, p { margin: 0; }
 
 /* ── 맨 위: '현곡 선생의 추천' → 'N월에 만나는 자연'(스크롤하면 이 줄만 위에 붙음) → 달 띠 (10/3 2차 코멘트) ── */
 .eyebrow { padding: calc(14px + env(safe-area-inset-top)) var(--gutter) 0; background: var(--season-soft); font-size: var(--fs-meta); font-weight: 700; color: var(--season); transition: background-color .3s; }
-.ttl { margin: 0; padding: 4px var(--gutter) 12px; background: var(--season-soft); font-size: 28px; line-height: 1.3; font-weight: 800; letter-spacing: -0.035em; transition: background-color .3s; }
+.ttl { margin: 0; padding: 4px var(--gutter) 12px; background: var(--season-soft); font-size: clamp(28px, 8.4vw, 34px); line-height: 1.3; font-weight: 800; letter-spacing: -0.035em; transition: background-color .3s; }
 /* 스크롤하면 나타나는 작은 제목 막대: 작은 글씨(18px)·가운데 정렬·얇은 선, 그림자 없음 */
 .mini-ttl {
   position: fixed; top: 0; left: 50%; z-index: 12; width: 100%; max-width: 520px;
@@ -80,7 +80,7 @@ h1, h2, h3, p { margin: 0; }
   transition: background-color .3s;
 }
 .months::-webkit-scrollbar { display: none; }
-.mchip { flex: 0 0 auto; min-width: 64px; height: var(--tap); padding: 0 16px; border-radius: var(--r-pill); background: #fff; color: var(--ink); font-size: 18px; font-weight: 700; }
+.mchip { flex: 0 0 auto; min-width: 64px; height: var(--tap); padding: 0 16px; border-radius: var(--r-pill); background: #fff; color: var(--ink-2); font-size: 18px; font-weight: 600; }
 .mchip[aria-pressed='true'] { background: var(--season); color: #fff; }
 
 /* ── 제철 ── */
@@ -106,6 +106,8 @@ h1, h2, h3, p { margin: 0; }
 .big .cap span { font-size: 17px; opacity: .95; }
 .big .best { display: flex; flex-wrap: wrap; column-gap: 8px; row-gap: 0; align-items: baseline; padding: 10px 6px 0; font-size: var(--fs-meta); color: var(--ink-2); }
 .big .best strong { font-size: 19px; color: var(--season); }
+.cal { display: inline-flex; align-self: center; color: var(--season); }
+.big .best .cal { margin-right: -2px; }
 .big .best .note { font-size: 17px; font-weight: 600; color: var(--ink); }
 /* 해마다 달라짐: 위 줄보다 한 단계 약하게 */
 .big .vary { padding: 2px 6px 0; font-size: 14px; font-weight: 400; color: var(--ink-3); }
@@ -148,6 +150,8 @@ h1, h2, h3, p { margin: 0; }
 .home-add span { font-size: 15px; color: var(--ink-2); }
 .story-link { display: flex; justify-content: space-between; align-items: center; min-height: var(--tap); padding: 6px 4px; font-size: var(--fs-meta); color: var(--ink-2); text-decoration: none; }
 .story-link b { color: var(--ink); font-size: 17px; }
+.story-txt { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 10px; }
+.story-txt small { font-size: 14px; color: var(--ink-3); }
 
 /* ── 아래 메뉴 (붙박이) ── */
 .tabs { position: fixed; left: 50%; bottom: 0; transform: translateX(-50%); z-index: 15; width: 100%; max-width: 520px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; padding: 8px 12px calc(10px + env(safe-area-inset-bottom)); border-top: 1px solid var(--line); background: #fff; }
@@ -170,8 +174,9 @@ h1, h2, h3, p { margin: 0; }
 .gallery .ov { transition: opacity .5s ease; }
 .gallery.ov-wait .ov { opacity: 0; pointer-events: none; }
 .gallery .back { top: 12px; left: 12px; width: 38px; height: 38px; }
-.gallery .nav { top: 50%; margin-top: -16px; width: 32px; height: 32px; background: rgba(12, 16, 14, .3); }
-.gallery .nav::after { inset: -8px; }
+/* 넘김 버튼은 세로로 긴 둥근 사각형(뒤로 버튼의 동그라미와 헷갈리지 않게, 10/3 코멘트) */
+.gallery .nav { top: 50%; margin-top: -24px; width: 28px; height: 48px; border-radius: 10px; background: rgba(12, 16, 14, .36); }
+.gallery .nav::after { inset: 0 -10px; }
 .gallery .nav[hidden] { display: none; }
 .gallery .prev { left: 8px; }
 .gallery .next { right: 8px; }
@@ -190,19 +195,23 @@ h1, h2, h3, p { margin: 0; }
 .region { margin-top: 2px; font-size: 17px; color: var(--ink-2); }
 .one { margin-top: 12px; font-size: 20px; line-height: 1.5; font-weight: 600; }
 .draft { display: inline-block; vertical-align: 2px; margin-left: 6px; font-size: 14px; font-weight: 800; padding: 1px 8px; border-radius: 8px; background: var(--draft-bg); color: var(--draft); }
-.recnote { margin-top: 16px; padding: 14px 16px; border-radius: 18px; background: var(--rec-bg); font-size: 17px; color: var(--ink-2); }
+.recnote { padding: 14px 16px; border-radius: 18px; background: var(--rec-bg); font-size: 17px; color: var(--ink-2); }
+/* 장면 상세의 가로 구역: 얇은 선으로 나눔 */
+.dsec + .dsec { margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--line); }
+.dlbl { margin: 0 0 10px; font-size: 15px; font-weight: 600; color: var(--ink-3); }
+.when-sec .recnote + .when-box { margin-top: 12px; }
 /* 추천 시기 + 해마다 달라짐 안내를 한 상자에 */
-.when-box { margin-top: 18px; padding: 14px 16px 6px; border-radius: 18px; background: var(--bg-soft); }
-.when-row { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; padding-bottom: 8px; }
+.when-box { padding: 14px 16px 6px; border-radius: 18px; background: var(--bg-soft); }
+.when-row { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; padding-bottom: 8px; }
 .when-row .lbl { font-size: 16px; color: var(--ink-3); }
 .when-row b { font-size: 19px; color: var(--season); }
 .when-vary { font-size: 16px; color: var(--ink-2); }
 .when-link { display: inline-flex; align-items: center; min-height: var(--tap); font-size: 16.5px; font-weight: 800; color: var(--season); text-decoration: none; }
-.quote { margin: 18px 0 0; padding: 4px 0 4px 16px; border-left: 3px solid color-mix(in srgb, var(--season) 35%, #fff); }
+.quote { margin: 0; padding: 4px 0 4px 16px; border-left: 3px solid color-mix(in srgb, var(--season) 35%, #fff); }
 .quote p { font-size: 18px; line-height: 1.75; }
 .quote cite { display: block; margin-top: 6px; font-style: normal; font-size: 15px; color: var(--ink-3); }
 .btn { display: flex; align-items: center; justify-content: center; gap: 8px; height: var(--btn); border-radius: var(--r-pill); font-size: 18px; font-weight: 800; text-decoration: none; }
-.btn.line { margin-top: 22px; border: 2px solid var(--line); color: var(--ink); }
+.btn.line { border: 2px solid var(--line); color: var(--ink); }
 /* 아래 붙박이 막대: 가고 싶어요 · 공유 · 길찾기 */
 .dbar { position: sticky; bottom: 0; z-index: 5; margin-top: auto; display: flex; align-items: center; gap: 4px; padding: 8px 12px calc(8px + env(safe-area-inset-bottom)); background: #fff; border-top: 1px solid var(--line); }
 .dact { flex: 0 0 auto; min-width: 68px; min-height: 56px; display: grid; justify-items: center; align-content: center; gap: 2px; font-size: 14px; font-weight: 700; color: var(--ink-2); }

@@ -119,11 +119,24 @@ const homeAdd = h(
 (homeAdd.firstChild as HTMLElement).innerHTML =
   '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M12 9v6M9 12h6"/></svg>';
 homeAdd.addEventListener('click', () => toast('시안에서는 안내 화면 자리만 보여요'));
-const storyLink = h('a', { class: 'story-link', href: STORY_URL, target: '_blank', rel: 'noopener' }, h('b', { text: '60대 부부의 100곳 여행 약속' }), h('span', { 'aria-hidden': 'true', text: '›' }));
+const storyLink = h(
+  'a',
+  { class: 'story-link', href: STORY_URL, target: '_blank', rel: 'noopener' },
+  h('span', { class: 'story-txt' }, h('small', { text: '이 앱 이야기' }), h('b', { text: '60대 부부의 100곳 여행 약속' })),
+  h('span', { 'aria-hidden': 'true', text: '›' }),
+);
+/** 달력 아이콘(추천 시기 앞, 눈에 잘 띄게) */
+const CAL_SVG =
+  '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>';
+const calIcon = () => {
+  const i = h('span', { class: 'cal', 'aria-hidden': 'true' });
+  i.innerHTML = CAL_SVG;
+  return i;
+};
 const extra = h('section', { class: 'extra' }, homeAdd, storyLink);
 
 const tabs = h('nav', { class: 'tabs', 'aria-label': '메뉴' });
-for (const [i, t] of ['지금', '풍경 찾기', '수첩'].entries()) {
+for (const [i, t] of ['지금', '풍경 찾기', '내 수첩'].entries()) {
   const b = h('button', { type: 'button', text: t, ...(i === 0 ? { 'aria-current': 'page' } : {}) });
   if (i > 0) b.addEventListener('click', () => toast('시안에서는 첫 화면만 볼 수 있어요'));
   tabs.append(b);
@@ -158,7 +171,7 @@ function bigCard(s: Scene, i: number): HTMLElement {
       h('span', { class: 'cap' }, h('b', { text: s.name }), h('span', { text: s.region })),
     ),
     // 계절말은 빼고 '추천 시기' + 날짜만, 그 아래 종류별 짧은 안내(10/3 2차 코멘트)
-    h('div', { class: 'best' }, h('span', { class: 'lbl', text: '추천 시기' }), h('strong', { text: s.best?.note ?? '' })),
+    h('div', { class: 'best' }, calIcon(), h('span', { class: 'lbl', text: '추천 시기' }), h('strong', { text: s.best?.note ?? '' })),
     tn ? h('div', { class: 'vary', text: tn.short }) : null,
   );
   b.setAttribute('aria-label', `${s.name}, ${s.region}, 추천 시기 ${s.best?.note ?? ''}${tn ? `, ${tn.short}` : ''}`);
@@ -361,14 +374,14 @@ function renderDetail(): void {
   const vm = visitedMonth(s.visited);
   const recNote = isPeak
     ? null
-    : h('p', { class: 'recnote', text: s.best && !isYearRound(s.best) ? `작가 부부가 ${vm}월에 다녀온 모습이에요.` : `작가 부부가 ${vm}월에 다녀온 모습이에요. 일 년 내내 볼 수 있는 풍경이에요.` });
+    : h('p', { class: 'recnote', text: s.best && !isYearRound(s.best) ? `사진은 작가 부부가 ${vm}월에 다녀온 모습이에요.` : `사진은 작가 부부가 ${vm}월에 다녀온 모습이에요. 일 년 내내 볼 수 있는 풍경이에요.` });
   const tn = s.best && !isYearRound(s.best) ? timingNotice(s.types) : null;
   // '가는 곳'은 칸에서 뺌(제목과 겹침, 10/3 2차 코멘트). 길찾기는 여전히 주차장·입구 좌표로 엶
   const when = s.best
     ? h(
         'div',
         { class: 'when-box' },
-        h('p', { class: 'when-row' }, h('span', { class: 'lbl', text: '추천 시기' }), h('b', { text: s.best.note }), s.review.best === 'draft' ? draft() : null),
+        h('p', { class: 'when-row' }, calIcon(), h('span', { class: 'lbl', text: '추천 시기' }), h('b', { text: s.best.note }), s.review.best === 'draft' ? draft() : null),
         tn ? h('p', { class: 'when-vary', text: tn.text }) : null,
         tn ? h('a', { class: 'when-link', href: newsSearchUrl(s.name, tn.keyword), target: '_blank', rel: 'noopener', text: `올해 ${tn.keyword} 소식 찾아보기 ›` }) : null,
       )
@@ -399,15 +412,12 @@ function renderDetail(): void {
     h(
       'div',
       { class: 'body' },
-      badges(s),
-      h('h2', { class: 'title', text: s.name }),
-      h('p', { class: 'region', text: s.region }),
-      h('p', { class: 'one' }, s.oneLiner, s.review.oneLiner === 'draft' ? draft() : null),
-      // 작가의 한마디: 한 줄 소개 바로 아래, 명조로('장면 확인표'처럼). 작가 이름·몇 번째 여행 없이 다녀온 날짜만
-      h('blockquote', { class: 'quote' }, h('p', { text: s.excerpt }), h('cite', { text: fmtDate(s.visited) })),
-      recNote,
-      when,
-      h('a', { class: 'btn line', href: s.brunchUrl, target: '_blank', rel: 'noopener', text: '브런치에서 전체 이야기 읽기' }),
+      // 가로 구역으로 나눔(10/3 코멘트 — 산만함 줄이기): ① 제목 ② 작가의 한마디 ③ 추천 시기 ④ 전체 이야기
+      h('section', { class: 'dsec' }, badges(s), h('h2', { class: 'title', text: s.name }), h('p', { class: 'region', text: s.region }), h('p', { class: 'one' }, s.oneLiner, s.review.oneLiner === 'draft' ? draft() : null)),
+      // 작가의 한마디: 명조로('장면 확인표'처럼). 작가 이름·몇 번째 여행 없이 다녀온 날짜만
+      h('section', { class: 'dsec', 'aria-label': '작가의 한마디' }, h('h3', { class: 'dlbl', text: '작가의 한마디' }), h('blockquote', { class: 'quote' }, h('p', { text: s.excerpt }), h('cite', { text: fmtDate(s.visited) }))),
+      recNote || when ? h('section', { class: 'dsec when-sec', 'aria-label': '추천 시기' }, recNote, when) : null,
+      h('section', { class: 'dsec' }, h('a', { class: 'btn line', href: s.brunchUrl, target: '_blank', rel: 'noopener', text: '브런치에서 전체 이야기 읽기' })),
     ),
     bar,
   );
