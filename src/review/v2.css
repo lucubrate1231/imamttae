@@ -156,6 +156,9 @@ h1, h2, h3, p { margin: 0; }
 /* 사진 위에 얹는 버튼: 작고 검정 반투명(10/3 2차 코멘트). 보이는 크기는 작아도 누르는 범위는 48px 이상 */
 .gallery .ov { position: absolute; z-index: 3; display: grid; place-items: center; border-radius: 50%; color: #fff; background: rgba(12, 16, 14, .42); }
 .gallery .ov::after { content: ''; position: absolute; inset: -6px; }
+/* 사진이 뜨고 2초 뒤(또는 스크롤·터치하면 바로) 서서히 나타남. 숨어 있는 동안에는 눌리지 않음 */
+.gallery .ov { transition: opacity .5s ease; }
+.gallery.ov-wait .ov { opacity: 0; pointer-events: none; }
 .gallery .back { top: 12px; left: 12px; width: 38px; height: 38px; }
 .gallery .nav { top: 50%; margin-top: -16px; width: 32px; height: 32px; background: rgba(12, 16, 14, .3); }
 .gallery .nav::after { inset: -8px; }

@@ -31,6 +31,7 @@ let scenes: Scene[] = [];
 let peak: Scene[] = [];
 let record: Scene[] = [];
 let sel = 0;
+let revealOverlay: (() => void) | null = null; // 장면 상세의 사진 위 버튼을 보이게 하는 함수(열려 있는 장면 것)
 const wanted = new Set<string>(); // 가고 싶어요(시안에서는 화면을 닫으면 사라짐. 실제 앱은 휴대폰에 저장)
 
 // ── 작은 도우미 ──
@@ -373,8 +374,28 @@ function renderDetail(): void {
         tn ? h('a', { class: 'when-link', href: newsSearchUrl(s.name, tn.keyword), target: '_blank', rel: 'noopener', text: `올해 ${tn.keyword} 소식 찾아보기 ›` }) : null,
       )
     : null;
+  // 뒤로·넘김 버튼은 사진이 뜨고 2초 뒤에 서서히 나타남. 그 전에 스크롤하거나 사진을 만지면 바로 나타남(10/3 2차 코멘트)
+  const gallery = h('div', { class: 'gallery ov-wait' }, slides, back, ...(n > 1 ? [prev, next] : []), credit);
+  let revealed = false;
+  const reveal = () => {
+    if (revealed) return;
+    revealed = true;
+    gallery.classList.remove('ov-wait');
+  };
+  revealOverlay = reveal;
+  const first = slides.querySelector('img');
+  const arm = () => window.setTimeout(reveal, 2000);
+  if (!first || first.complete) arm();
+  else {
+    first.addEventListener('load', arm, { once: true });
+    first.addEventListener('error', arm, { once: true });
+  }
+  window.setTimeout(reveal, 4000); // 사진이 늦게 떠도 4초 안에는 보이게
+  slides.addEventListener('scroll', reveal, { passive: true });
+  gallery.addEventListener('pointerdown', reveal);
+  gallery.addEventListener('focusin', reveal);
   detail.replaceChildren(
-    h('div', { class: 'gallery' }, slides, back, ...(n > 1 ? [prev, next] : []), credit),
+    gallery,
     ...(n > 1 ? [gdots] : []),
     h(
       'div',
@@ -397,6 +418,7 @@ function renderDetail(): void {
   requestAnimationFrame(() => detail.classList.add('open'));
 }
 window.addEventListener('hashchange', renderDetail);
+detail.addEventListener('scroll', () => revealOverlay?.(), { passive: true });
 
 // ── 시작 ──
 async function start(): Promise<void> {
