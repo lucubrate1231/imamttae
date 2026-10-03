@@ -43,9 +43,24 @@
 7. 큰 결정은 바꾸지 말고 제안만 합니다. 공개 범위, 비용, 외부 서비스 설정, 디자인 방향이 여기에 들어갑니다.
 
 ### 지금 Claude가 맡고 있는 것 (겹치지 않게)
-- 장면 데이터와 파이프라인: `content/`, `pipeline/`, `public/data/`, `public/_review/`
-- 첫 화면 시안과 기능 ①(지금 볼 만한 곳): `_review/`, `src/review/`, 앞으로 만들 `src/app.ts`·`src/ui/`
-- 맡은 일이 바뀌면 이 목록을 고칩니다.
+- 장면 데이터와 파이프라인: `content/`, `pipeline/`, `public/data/`, `public/_review/` (Cowork의 Claude)
+- 디자인 토큰과 기능 ①(지금 볼 만한 곳)·장면 상세 구현 (Claude Code, 10/3 디자인 확정 뒤)
+  - `src/styles/tokens.css`, `index.html`, `src/main.ts`, 앞으로 만들 `src/app.ts`·`src/ui/`
+  - 확정 시안 `_review/`, `src/review/`와 그 테스트 `tests/e2e/v2-design.spec.ts`, `tests/e2e/smoke.spec.ts`
+- 맡은 일이 바뀌면 이 목록을 고칩니다. Codex가 맡은 일이 정해지면 아래에 적습니다.
+
+### 지금 Codex가 맡고 있는 것
+- (사용자가 정하면 적습니다)
+
+### 같은 컴퓨터에서 동시에 일할 때 (Claude Code와 Codex)
+- **폴더를 따로 씁니다.** 한 폴더에서 두 에이전트가 동시에 가지를 바꾸면 서로의 작업이 꼬입니다.
+  - Codex: `C:\dev\imamttae`
+  - Claude Code: `C:\dev\imamttae-claude` (같은 저장소를 한 번 더 클론)
+- **화면 테스트 포트를 나눕니다.** `npm run e2e`는 테스트용 서버를 띄웁니다(기본 4173).
+  - Claude 폴더의 `.env.local`에 `E2E_PORT=4174` 한 줄을 넣어 둡니다. 이 파일은 저장소에 올라가지 않습니다.
+  - 이미 떠 있는 서버는 다시 쓰지 않으므로, 포트가 겹치면 "already used" 오류로 바로 알 수 있습니다. 다른 폴더의 화면을 잘못 시험하는 일은 생기지 않습니다.
+- **실제 카카오 지도는 `localhost:8080`에서만** 뜹니다(카카오에 등록된 주소). `npm run dev`는 한 번에 한 폴더에서만 띄웁니다. 다른 쪽이 쓰는 중이면 `npm run dev -- --port 8081`로 띄우고, 이때 지도는 '불러오지 못했어요'로 나오는 것이 정상입니다.
+- 작업을 시작하기 전에는 항상 main을 GitHub 최신으로 받고 새 가지를 만듭니다. 같은 파일을 고쳐야 하면 PR 설명에 적어 사용자에게 묻습니다.
 
 ## 개발 환경
 - Node 22 이상. 처음에는 `npm ci`
