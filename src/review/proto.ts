@@ -6,8 +6,6 @@ import './review.css';
 import data from './scenes.draft.json';
 import { loadKakaoSdk } from '../map/kakaoSdk';
 import { naviUrl } from '../domain/navi';
-import { distanceKm, formatDistance, midpoint, overviewLevel, type LatLng } from '../domain/geo';
-import { createSafeStore } from '../storage/safeStorage';
 
 interface Photo { src: string; w: number; h: number; cap: string; focus: string }
 interface Scene {
@@ -84,10 +82,8 @@ for (const [i, t] of ['지금', '명장면 찾기', '수첩'].entries()) {
 
 const detail = h('section', { class: 'detail', 'aria-label': '장면 상세', 'aria-hidden': 'true' });
 
-app.append(
-  h('header', { class: 'top' }, h('h1', { class: 'brand', text: '이맘때 자연' }), h('p', { class: 'sub', text: '이상호 작가가 아내와 다녀온 자연 명장면' })),
-  months,
-);
+// 앱 이름·부제는 없앴습니다(사용자 결정). 화면 맨 위가 바로 달 띠입니다.
+app.append(months);
 if (variant === 'a') {
   app.append(headline, mapbox, rail, empty);
 } else {
@@ -143,15 +139,10 @@ type K = any;
 let kakao: K = null;
 let map: K = null;
 let overlays: { o: K; el: HTMLElement }[] = [];
-const store = createSafeStore();
-const KOREA_CENTER = { lat: 36.2, lng: 127.9 };
 const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
-let me: LatLng | null = null;
-let meOverlay: K = null;
-let line: K = null;
 let flyTimers: number[] = [];
 let national: { level: number; center: K } | null = null; // 우리나라가 다 보이는 단계(실제 지도 크기로 잼)
-let ready = false; // 첫 지도 그림이 다 뜬 뒤에 움직이기 시작
+let ready = false; // 첫 지도 그림이 뜬 뒤에 움직이기 시작
 
 function drawPins(list: Scene[]): void {
   for (const { o } of overlays) o.setMap(null);
@@ -167,7 +158,6 @@ function drawPins(list: Scene[]): void {
         h('div', { class: 'ph' }, h('img', { class: 'pinimg', src: thumb(s.photos[0]!.src), alt: '' })), h('div', { class: 'nm', text: s.name }));
     } else {
       el = h('div', { class: 'dotwrap', role: 'button', 'aria-label': s.name }, h('div', { class: 'nm', text: s.name }), h('div', { class: 'dot' }));
-      el.dataset.name = s.name;
     }
     el.addEventListener('click', () => select(i, true));
     const o = new kakao.maps.CustomOverlay({ position: pos, content: el, yAnchor: 1, clickable: true, zIndex: 1 });
@@ -175,7 +165,6 @@ function drawPins(list: Scene[]): void {
     overlays.push({ o, el });
   });
   if (list.length && variant === 'a') map.setBounds(bounds, 70, 40, 40, 40);
-  updateLabels();
   highlight();
 }
 
@@ -189,92 +178,29 @@ function highlight(): void {
   if (variant === 'b' && map && s) flyTo(s);
 }
 
-/** 이름표: 내 위치를 알면 거리도 함께 */
-function updateLabels(): void {
-  const list = visibleScenes();
-  overlays.forEach(({ el }, i) => {
-    const s = list[i];
-    const nm = el.querySelector('.nm');
-    if (!s || !nm) return;
-    nm.textContent = me ? `${s.name} · ${formatDistance(distanceKm(me, s.spot))}` : s.name;
-  });
-}
-
-const LL = (p: LatLng) => new kakao.maps.LatLng(p.lat, p.lng);
-
 /**
- * B안 지도 움직임: ① 넓게(내 위치와 장면이 함께, 내 위치를 모르면 전국) → ② 잠시 뒤 장면으로 확대.
- * 어디쯤인지, 내 위치에서 얼마나 먼지 먼저 보여 주고 나서 자세히 보여 줍니다.
+ * B안 지도 움직임: ① 우리나라 전체 → (1.5초 머묾) → ② 장면으로 확대 → ③ 가운데 맞춤.
+ * 어디쯤인지 먼저 보여 주고 나서 자세히 보여 줍니다.
  */
 function flyTo(s: Scene): void {
   for (const t of flyTimers) clearTimeout(t);
   flyTimers = [];
-  const spot = LL(s.spot);
-  if (line) line.setMap(null);
-  if (me) {
-    line = new kakao.maps.Polyline({ path: [LL(me), spot], strokeWeight: 3, strokeColor: '#1f4a36', strokeOpacity: 0.75, strokeStyle: 'shortdash' });
-    line.setMap(map);
-  }
-  if (!ready) return;
-  const wideCenter = me ? LL(midpoint(me, s.spot)) : (national?.center ?? LL(KOREA_CENTER));
-  const wideLevel = me ? Math.min(overviewLevel(distanceKm(me, s.spot)), national?.level ?? 13) : (national?.level ?? 13);
-  void wideCenter;
+  if (!ready || !national) return;
+  const spot = new kakao.maps.LatLng(s.spot.lat, s.spot.lng);
   const CLOSE = 10;
   if (reduceMotion) {
     map.setLevel(CLOSE);
     map.setCenter(spot);
     return;
   }
-  // ① 넓게(부드럽게 축소한 뒤 정확히 맞춤) → (1.5초 머묾) → ② 장면으로 확대 → ③ 가운데 맞춤
-  if (map.getLevel() !== wideLevel) map.setLevel(wideLevel, { animate: { duration: 350 } });
+  const { level, center } = national;
+  if (map.getLevel() !== level) map.setLevel(level, { animate: { duration: 350 } });
   flyTimers.push(
-    window.setTimeout(() => {
-      if (me) {
-        const b = new kakao.maps.LatLngBounds();
-        b.extend(LL(me));
-        b.extend(spot);
-        map.setBounds(b, 80, 110, 40, 110); // 이름표가 잘리지 않게 좌우 여백을 넉넉히
-      } else map.setCenter(wideCenter);
-    }, 380),
+    window.setTimeout(() => map.setCenter(center), 380),
     window.setTimeout(() => map.setLevel(CLOSE, { animate: { duration: 700 }, anchor: spot }), 1900),
     window.setTimeout(() => map.panTo(spot), 2650),
   );
 }
-
-// ── 내 위치 (누를 때만 묻습니다) ──
-const locBtn = h('button', { class: 'locbtn', type: 'button', text: '내 위치에서 얼마나 멀까요?' });
-function setMe(p: LatLng): void {
-  me = p;
-  if (meOverlay) meOverlay.setMap(null);
-  meOverlay = new kakao.maps.CustomOverlay({
-    position: LL(p), yAnchor: 0.5, zIndex: 5,
-    content: h('div', { class: 'me' }, h('div', { class: 'medot' }), h('div', { class: 'menm', text: '내 위치' })),
-  });
-  meOverlay.setMap(map);
-  locBtn.textContent = '내 위치와 같이 보기';
-  updateLabels();
-}
-function askLocation(auto: boolean): void {
-  if (!navigator.geolocation) { if (!auto) toast('이 브라우저는 위치를 알 수 없어요'); return; }
-  if (!auto) locBtn.textContent = '위치를 찾는 중…';
-  navigator.geolocation.getCurrentPosition(
-    (pos) => {
-      store.set('geo', 'on');
-      setMe({ lat: pos.coords.latitude, lng: pos.coords.longitude });
-      const s = visibleScenes()[sel];
-      if (s) flyTo(s);
-    },
-    () => {
-      locBtn.textContent = '내 위치에서 얼마나 멀까요?';
-      if (!auto) toast('위치를 알 수 없어요. 휴대폰에서 위치 사용을 켜 주세요');
-    },
-    { enableHighAccuracy: false, timeout: 10000, maximumAge: 10 * 60 * 1000 },
-  );
-}
-locBtn.addEventListener('click', () => {
-  if (me) { const s = visibleScenes()[sel]; if (s) flyTo(s); }
-  else askLocation(false);
-});
 
 function select(i: number, scrollRail: boolean): void {
   sel = i;
@@ -389,16 +315,6 @@ loadKakaoSdk(import.meta.env.VITE_KAKAO_JS_KEY ?? '')
       });
       window.setTimeout(start, 2500);
     } else ready = true;
-    if (variant === 'b') {
-      mapbox.append(locBtn);
-      // 전에 위치 사용을 허락했으면 다시 묻지 않고 바로 씁니다
-      const granted = () => askLocation(true);
-      if (store.get<string>('geo', '') === 'on') {
-        const perms = (navigator as Navigator & { permissions?: Permissions }).permissions;
-        if (perms?.query) perms.query({ name: 'geolocation' as PermissionName }).then((r) => r.state === 'granted' && granted()).catch(() => undefined);
-        else granted();
-      }
-    }
     drawPins(visibleScenes());
     new ResizeObserver(() => map.relayout()).observe(mapbox);
   })
