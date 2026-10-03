@@ -7,7 +7,8 @@
 #                     (.sync/pr-body.md 가 있으면 PR 설명으로 씀. 같은 가지 PR이 이미 있으면 가지만 갱신)
 #   push              incoming 의 main을 GitHub main에 바로 올림 — 사용자가 허락한 경우만
 #
-# 어느 경우든 마지막에 사용자 폴더 사본(band-to-brunch/imamttae-app)을 GitHub main 기준으로 갱신합니다.
+# 사용자 폴더의 band-to-brunch/imamttae-app 에는 중계 파일(.sync/)만 둡니다.
+# 코드 사본은 두지 않습니다(10/3 정리 — 코드는 GitHub과 C:\dev 의 클론에서 봅니다).
 set -euo pipefail
 APP="$HOME/mnt/band-to-brunch/imamttae-app"
 IN="$APP/.sync/incoming.bundle"
@@ -54,5 +55,4 @@ case "${1:-}" in
     ;;
 esac
 
-git archive HEAD | tar -x --overwrite -C "$APP"
 echo "HEAD $(git log -1 --format='%h %s' | cut -c1-60)"
