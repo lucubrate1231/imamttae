@@ -2,12 +2,14 @@
 import type { KakaoNS } from '../../src/map/kakaoSdk';
 
 export interface StubLog {
-  maps: { center: [number, number]; level: number }[];
-  overlays: { lat: number; lng: number; el: HTMLElement; onMap: boolean }[];
+  maps: { center: [number, number]; level: number; opts: Record<string, unknown>; zoomable?: boolean }[];
+  overlays: { lat: number; lng: number; el: HTMLElement; onMap: boolean; z: number }[];
+  calls: string[];
 }
 
-export function createKakaoStub(): { kakao: KakaoNS; log: StubLog } {
-  const log: StubLog = { maps: [], overlays: [] };
+export function createKakaoStub(): { kakao: KakaoNS; log: StubLog; fire: (event: string) => void } {
+  const log: StubLog = { maps: [], overlays: [], calls: [] };
+  const listeners = new Map<string, (() => void)[]>();
   class LatLng {
     constructor(private lat: number, private lng: number) {}
     getLat() { return this.lat; }
@@ -15,24 +17,33 @@ export function createKakaoStub(): { kakao: KakaoNS; log: StubLog } {
   }
   class LatLngBounds { extend() {} }
   class KMap {
-    rec: { center: [number, number]; level: number };
-    constructor(_el: HTMLElement, o: { center: LatLng; level: number }) {
-      this.rec = { center: [o.center.getLat(), o.center.getLng()], level: o.level };
+    rec: StubLog['maps'][number];
+    constructor(_el: HTMLElement, o: { center: LatLng; level: number } & Record<string, unknown>) {
+      this.rec = { center: [o.center.getLat(), o.center.getLng()], level: o.level, opts: o };
       log.maps.push(this.rec);
     }
-    setCenter(ll: LatLng) { this.rec.center = [ll.getLat(), ll.getLng()]; }
-    setLevel(l: number) { this.rec.level = l; }
-    setBounds() {}
+    setCenter(ll: LatLng) { this.rec.center = [ll.getLat(), ll.getLng()]; log.calls.push(`center ${ll.getLat()},${ll.getLng()}`); }
+    setLevel(l: number) { this.rec.level = l; log.calls.push(`level ${l}`); }
+    getLevel() { return this.rec.level; }
+    getCenter() { return new LatLng(...this.rec.center); }
+    panTo(ll: LatLng) { this.setCenter(ll); }
+    setBounds() { this.rec.level = 13; }
+    setZoomable(z: boolean) { this.rec.zoomable = z; }
     relayout() {}
   }
   class CustomOverlay {
     rec: StubLog['overlays'][number];
-    constructor(o: { position: LatLng; content: HTMLElement }) {
-      this.rec = { lat: o.position.getLat(), lng: o.position.getLng(), el: o.content, onMap: false };
+    constructor(o: { position: LatLng; content: HTMLElement; zIndex?: number }) {
+      this.rec = { lat: o.position.getLat(), lng: o.position.getLng(), el: o.content, onMap: false, z: o.zIndex ?? 0 };
       log.overlays.push(this.rec);
     }
     setMap(m: unknown) { this.rec.onMap = m !== null; }
+    setZIndex(z: number) { this.rec.z = z; }
   }
-  const kakao = { maps: { load: (cb: () => void) => cb(), LatLng, LatLngBounds, Map: KMap, CustomOverlay } } as unknown as KakaoNS;
-  return { kakao, log };
+  const event = {
+    addListener: (_t: unknown, name: string, fn: () => void) => listeners.set(name, [...(listeners.get(name) ?? []), fn]),
+    removeListener: (_t: unknown, name: string, fn: () => void) => listeners.set(name, (listeners.get(name) ?? []).filter((f) => f !== fn)),
+  };
+  const kakao = { maps: { load: (cb: () => void) => cb(), LatLng, LatLngBounds, Map: KMap, CustomOverlay, event } } as unknown as KakaoNS;
+  return { kakao, log, fire: (name) => [...(listeners.get(name) ?? [])].forEach((f) => f()) };
 }

@@ -33,10 +33,10 @@
 ## 지금 단계와 다음 할 일 (10/3 밤 기준 — 새 세션은 여기부터)
 - 큰 계획(개발계획)의 **1단계 '컨셉·데이터·기능 ①'** 중입니다. **디자인은 확정**됐습니다(사용자 OK, 10/3).
   - 확정 시안: `/_review/v2.html`(코드 `src/review/v2.ts`, `src/review/v2.css`). 화면 규칙은 `docs/design-guide.md`, 자동 테스트는 `tests/e2e/v2-design.spec.ts`.
-  - 아직 실제 앱 첫 화면(`index.html`, `src/main.ts`)은 기반 단계의 옛 화면입니다.
+  - 실제 앱 첫 화면은 시안 v2와 같은 화면으로 바뀌는 중입니다(PR `claude/home-screen`). 장면 상세는 다음 PR입니다.
 - 다음 할 일(순서대로, 하나씩 PR):
-  1. **디자인 토큰 옮기기:** `src/review/v2.css`의 `:root` 값, 계절 규칙(`[data-season]`), 글꼴을 `src/styles/tokens.css`로 옮기고, 시안과 실제 앱이 같은 값을 쓰게 합니다. 화면은 바뀌지 않아야 합니다(시안 테스트 통과).
-  2. **기능 ① 지금 볼 만한 곳 + 장면 상세를 실제 앱으로:** 시안 `v2.ts`의 동작을 F1·F2 완성 기준대로 `src/app.ts`, `src/ui/`로 옮깁니다(TDD). 주소는 해시 방식(`#/month/10`, `#/scene/…`)입니다. 옛 첫 화면을 바꾸면 `tests/e2e/smoke.spec.ts`도 새 화면에 맞게 고칩니다.
+  1. ~~**디자인 토큰 옮기기**~~ **끝(PR `claude/design-tokens`):** 색·계절 규칙·글꼴이 `src/styles/tokens.css` 한곳에 있고, 시안 v2와 실제 앱이 같은 값을 씁니다. 글꼴 내려받기도 이 파일에서 합니다. 옛 첫 화면의 옛 이름(`--c-*`)은 새 토큰에 연결만 해 두었고 2번에서 옛 화면과 함께 지웁니다.
+  2. **기능 ① 지금 볼 만한 곳 + 장면 상세를 실제 앱으로**(첫 화면 PR `claude/home-screen` 올림, 장면 상세 PR이 다음. 10/3 결정: 길찾기는 티맵 기본이고 앱이 안 열리면 카카오맵, 가고 싶어요 저장은 Codex 일 2 전까지 임시, 아직 없는 화면은 '곧 열려요', 쓸어내려 닫기는 나중): 시안 `v2.ts`의 동작을 F1·F2 완성 기준대로 `src/app.ts`, `src/ui/`로 옮깁니다(TDD). 주소는 해시 방식(`#/month/10`, `#/scene/…`)입니다. 옛 첫 화면을 바꾸면 `tests/e2e/smoke.spec.ts`도 새 화면에 맞게 고칩니다.
   3. **사용 통계 설계(사용자 요청):** 화면별 조회 수, 얼마나 많이 쓰는지, 얼마나 오래 머무는지 봐야 합니다. 쿠키 없는 방문 통계 도구 후보를 비교해 설계안을 사용자에게 먼저 보여 주고, 사용자가 고르면 붙입니다(외부 서비스 가입·비용은 사용자 결정).
   4. 그다음: ② 풍경 찾기(F3, 권역 칩), ③ 내 수첩(F4), 홈 화면에 추가(F5).
 - 어디서 일하나
@@ -54,6 +54,7 @@
 | `npx tsx pipeline/sync.ts` | 브런치 발행 글 동기화 → `content/brunch/index.json` (글 전문은 `.cache/`에만) |
 | `npx tsx pipeline/scenes/check-cli.ts content/scenes/drafts.json` | 장면 초안 검사(원문 대목·사진·15km·날짜) |
 | `npx tsx pipeline/scenes/build.ts` | 앱 데이터 만들기 → `public/data/scenes.json`(메모 뺌), 작가 확인용 메모 `public/_review/notes.json` |
+| `npx tsx scripts/build-title-font.ts` | 제목 글꼴 다시 만들기(장면 데이터를 바꾼 뒤). 제목·작가의 한마디 글자만 담은 고운바탕 파일 하나 → `src/styles/fonts/`. 빠뜨리면 `npm run check`가 알려 줌 |
 | `KAKAO_REST_KEY=… npx tsx pipeline/geocode.ts "지역 장소"` | 좌표 찾기(키는 환경 변수로만) |
 
 ## 개발 방식 (TDD)
@@ -93,4 +94,4 @@
 ## 작업 공간 메모
 - Cowork 클라우드 작업 공간은 GitHub에 바로 올릴 수 없어, 사용자 컴퓨터 작업 공간(GitHub 로그인 저장됨)을 거쳐 올립니다(`docs/runbook.md`의 중계). Claude Code 클라우드 세션은 GitHub에 바로 올리므로 중계가 필요 없습니다.
 - 카카오 JS SDK 도메인에는 `http://localhost:8080`, `https://lucubrate1231.github.io`가 등록되어 있습니다.
-- 사용자 컴퓨터에서 Codex와 동시에 일할 수 있습니다. 폴더(Claude Code는 `C:\dev\imamttae-claude`)와 화면 테스트 포트(`.env.local`의 `E2E_PORT=4174`)를 나눕니다. 자세한 규칙은 `AGENTS.md`의 '같은 컴퓨터에서 동시에 일할 때'에 있습니다.
+- 사용자 컴퓨터에서 Codex와 동시에 일할 수 있습니다. 폴더(Claude Code는 `C:\dev\imamttae-claude\imamttae`)와 화면 테스트 포트(`.env.local`의 `E2E_PORT=4174`)를 나눕니다. `.env.local`은 **저장소 폴더 안**(`package.json` 옆)에 있어야 카카오 키와 포트가 읽힙니다(10/3 확인: 한 단계 위에 있으면 키가 없고 포트 4173으로 돎). 자세한 규칙은 `AGENTS.md`의 '같은 컴퓨터에서 동시에 일할 때'에 있습니다.

@@ -1,18 +1,26 @@
 /**
- * 앱 뼈대. 기반 단계(10/4~10/6)에서는 달 띠와 지도까지만 있습니다.
- * 기능 ①②③은 docs/features 의 완성 기준을 확인받은 뒤 테스트부터 붙입니다.
+ * 앱 뼈대: 주소(해시)에 따라 화면을 그립니다.
+ * - #/ 또는 #/month/10 → 첫 화면 '지금 볼 만한 곳'(기능 ①)
+ * - #/scene/… → 장면 상세(F2, 다음 PR)
+ * - 풍경 찾기·내 수첩은 아직 없음: 아래 메뉴를 누르면 '곧 열려요'(10/3 사용자 결정)
  */
-import { MONTHS, monthInSeoul, monthLabel } from './domain/month';
+import type { ContentFile } from '../shared/schema/content';
+import { monthInSeoul, type Month } from './domain/month';
 import { parseRoute, routeHref, type Route } from './domain/router';
-import type { MapAdapter, MapPin } from './map/types';
+import { createFailedMap } from './map/failedMap';
+import type { MapAdapter } from './map/types';
+import { h } from './ui/dom';
+import { createHome } from './ui/home';
 
 export interface AppDeps {
   root: HTMLElement;
   map: MapAdapter;
-  pins: readonly MapPin[];
+  /** 장면 데이터. 못 불러왔으면 null */
+  content: ContentFile | null;
   now?: Date;
-  fallbackReason?: string;
   win?: Window;
+  /** 지도를 못 불러왔음(테스트에서 실패를 흉내 낼 때) */
+  mapFailed?: boolean;
 }
 
 export interface AppHandle {
@@ -20,69 +28,67 @@ export interface AppHandle {
   destroy(): void;
 }
 
-function h<K extends keyof HTMLElementTagNameMap>(tag: K, props: Partial<HTMLElementTagNameMap[K]> & { dataset?: Record<string, string> } = {}, ...kids: (Node | string)[]): HTMLElementTagNameMap[K] {
-  const el = document.createElement(tag);
-  const { dataset, ...rest } = props;
-  Object.assign(el, rest);
-  if (dataset) for (const [k, v] of Object.entries(dataset)) el.dataset[k] = v;
-  el.append(...kids);
-  return el;
-}
-
 export async function startApp(deps: AppDeps): Promise<AppHandle> {
-  const { root, map, pins } = deps;
+  const { root } = deps;
   const win = deps.win ?? window;
   const thisMonth = monthInSeoul(deps.now);
 
-  const months = h('nav', { className: 'months', ariaLabel: '달 고르기' });
-  const chips = MONTHS.map((m) => {
-    const b = h('button', { type: 'button', className: 'mchip', textContent: monthLabel(m), dataset: { month: String(m) } });
-    b.addEventListener('click', () => {
-      win.location.hash = routeHref({ name: 'month', month: m });
-    });
-    months.append(b);
-    return b;
+  // 잠깐 뜨는 알림
+  const toastEl = h('div', { class: 'toast', role: 'status' });
+  let toastTimer = 0;
+  const toast = (msg: string) => {
+    toastEl.textContent = msg;
+    toastEl.classList.add('on');
+    win.clearTimeout(toastTimer);
+    toastTimer = win.setTimeout(() => toastEl.classList.remove('on'), 1800);
+  };
+
+  // 아래 메뉴: 지금 · 풍경 찾기 · 내 수첩
+  const tabs = h('nav', { class: 'tabs', 'aria-label': '메뉴' });
+  for (const [i, t] of ['지금', '풍경 찾기', '내 수첩'].entries()) {
+    const b = h('button', { type: 'button', text: t, ...(i === 0 ? { 'aria-current': 'page' } : {}) });
+    b.addEventListener('click', () => (i === 0 ? (win.location.hash = routeHref({ name: 'month', month: null })) : toast('곧 열려요')));
+    tabs.append(b);
+  }
+
+  // C-4: 데이터를 못 불러오면 쉬운 말로 알리고 멈추지 않음
+  if (!deps.content) {
+    root.replaceChildren(h('main', {}, h('p', { class: 'empty-month', role: 'alert', text: '장면을 불러오지 못했어요. 잠시 뒤 다시 열어 주세요.' })), tabs, toastEl);
+    return { render() {}, destroy() {} };
+  }
+
+  const map = deps.mapFailed ? createFailedMap() : deps.map;
+  const home = createHome({
+    win,
+    map,
+    scenes: deps.content.scenes,
+    openScene: (id) => (win.location.hash = routeHref({ name: 'scene', id })),
+    toast,
   });
+  root.replaceChildren(...home.nodes, tabs, toastEl);
+  await map.mount(home.mapHost);
 
-  const canvas = h('div', { className: 'mapcanvas' });
-  const empty = h('p', { className: 'empty', role: 'status' });
-  const mapwrap = h('main', { className: 'mapwrap' }, canvas, empty);
-
-  root.replaceChildren(
-    h('header', { className: 'top' }, h('h1', { className: 'brand', textContent: '이맘때 자연' }), h('p', { className: 'sub', textContent: '이상호 작가가 아내와 다녀온 자연 풍경' })),
-    months,
-    ...(deps.fallbackReason ? [h('p', { className: 'notice', role: 'alert', textContent: '지도를 불러오지 못해 목록으로 보여 드려요.' })] : []),
-    mapwrap,
-    h('footer', { className: 'foot' }, '글·사진 © 이상호 · ', h('a', { href: 'https://brunch.co.kr/@caed5ea4c3d74d9', target: '_blank', rel: 'noopener', textContent: '브런치에서 전체 이야기' })),
-  );
-
-  await map.mount(canvas);
-  map.onPinClick((id) => {
-    win.location.hash = routeHref({ name: 'scene', id });
-  });
-
+  let shown: Month | null = null;
   function render(route: Route): void {
-    const month = route.name === 'month' ? (route.month ?? thisMonth) : thisMonth;
-    for (const c of chips) {
-      const on = Number(c.dataset.month) === month;
-      c.setAttribute('aria-pressed', String(on));
-      if (on) c.setAttribute('aria-current', 'date');
-      else c.removeAttribute('aria-current');
+    // 장면 상세(다음 PR)를 여는 동안에도 첫 화면은 보던 달 그대로
+    const month = route.name === 'month' ? (route.month ?? thisMonth) : (shown ?? thisMonth);
+    if (month !== shown) {
+      shown = month;
+      home.render(month);
     }
-    map.setPins(pins);
-    empty.textContent = pins.length ? '' : `${monthLabel(month)} 풍경을 정리하고 있어요. 곧 핀이 올라옵니다.`;
-    empty.hidden = pins.length > 0;
   }
 
   const onHash = () => render(parseRoute(win.location.hash));
   win.addEventListener('hashchange', onHash);
   onHash();
-  chips.find((c) => c.getAttribute('aria-pressed') === 'true')?.scrollIntoView?.({ inline: 'center', block: 'nearest' });
+  // F1-AC1: 달 띠의 이번 달을 화면 가운데로
+  root.querySelector<HTMLElement>('.mchip[aria-pressed="true"]')?.scrollIntoView?.({ inline: 'center', block: 'nearest' });
 
   return {
     render,
     destroy() {
       win.removeEventListener('hashchange', onHash);
+      home.destroy();
       map.destroy();
     },
   };

@@ -1271,6 +1271,116 @@
    "hidden": false
   },
   {
+   "id": "s-019-huibang-falls",
+   "kind": "story",
+   "brunchNo": 19,
+   "brunchUrl": "https://brunch.co.kr/@caed5ea4c3d74d9/19",
+   "name": "소백산 희방폭포",
+   "region": "경북 영주",
+   "types": [
+    "gyegok"
+   ],
+   "visited": "2021-10-05",
+   "best": {
+    "from": 6,
+    "to": 8,
+    "note": "6~8월",
+    "season": "여름",
+    "tip": "10월 중순 단풍 때도 좋아요"
+   },
+   "oneLiner": "소백산 숲속, 높은 바위에서 곧게 떨어지는 물줄기",
+   "excerpt": "죽령재를 내려가서 희방사로 들어가니 희방폭포가 수십 년 만에 찾은 나에게 어서 오라며 하얀 물보라로 소리치며 반긴다.",
+   "photos": [
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/u0NIfOLJXulPKSatIQeV0fP61xM.jpg",
+     "w": 640,
+     "h": 1380,
+     "cap": "희방폭포",
+     "focus": "50% 55%"
+    }
+   ],
+   "spot": {
+    "lat": 0,
+    "lng": 0
+   },
+   "dest": {
+    "name": "소백산국립공원 희방제2주차장",
+    "lat": 0,
+    "lng": 0,
+    "kind": "parking"
+   },
+   "review": {
+    "best": "draft",
+    "dest": "draft",
+    "oneLiner": "draft",
+    "types": "draft"
+   },
+   "contestEntry": false,
+   "hidden": false
+  },
+  {
+   "id": "s-019-forest-healing-deck",
+   "kind": "story",
+   "brunchNo": 19,
+   "brunchUrl": "https://brunch.co.kr/@caed5ea4c3d74d9/19",
+   "name": "산림치유원 무장애 데크길",
+   "region": "경북 영주",
+   "types": [
+    "sinrok"
+   ],
+   "visited": "2021-10-05",
+   "best": {
+    "from": 5,
+    "to": 6,
+    "note": "5~6월",
+    "season": "늦봄~초여름",
+    "tip": "연초록 잎에 햇살 드는 날"
+   },
+   "oneLiner": "계단 없는 2.1km 숲속 데크길, 휠체어로도 걸어요",
+   "excerpt": "숲속으로 2.1km를 깔아놓은 데크는 계단이 한 개도 없어 휠체어도 오르내릴 수 있도록 만들었다. 햇살이 나뭇잎 사이를 비집고 내려와서 또 다른 나뭇잎에 앉으니 연초록의 밝은 나뭇잎이 갈바람에 춤을 춘다.",
+   "photos": [
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/8j3DmtuKQQ0o2s-ah3zeMi0AGG0.jpg",
+     "w": 1415,
+     "h": 640,
+     "cap": "",
+     "focus": "50% 60%"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/Xy8Yh1mBmOhqPzUyytFuRfeIlC0.jpg",
+     "w": 640,
+     "h": 1421,
+     "cap": "데크로드",
+     "focus": "50% 50%"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/KZJCe38oo7Pwy1dxNBoouCdVDrQ.jpg",
+     "w": 640,
+     "h": 1421,
+     "cap": "",
+     "focus": "50% 50%"
+    }
+   ],
+   "spot": {
+    "lat": 0,
+    "lng": 0
+   },
+   "dest": {
+    "name": "국립산림치유원 데크로드 주차장",
+    "lat": 0,
+    "lng": 0,
+    "kind": "parking"
+   },
+   "review": {
+    "best": "draft",
+    "dest": "draft",
+    "oneLiner": "draft",
+    "types": "draft"
+   },
+   "contestEntry": false,
+   "hidden": false
+  },
+  {
    "id": "s-020-baegyangsa",
    "kind": "story",
    "brunchNo": 20,

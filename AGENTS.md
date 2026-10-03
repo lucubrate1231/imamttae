@@ -77,7 +77,8 @@
 ### 같은 컴퓨터에서 동시에 일할 때 (Claude Code와 Codex)
 - **폴더를 따로 씁니다.** 한 폴더에서 두 에이전트가 동시에 가지를 바꾸면 서로의 작업이 꼬입니다.
   - Codex: `C:\dev\imamttae`
-  - Claude Code: `C:\dev\imamttae-claude` (같은 저장소를 한 번 더 클론)
+  - Claude Code: `C:\dev\imamttae-claude\imamttae` (같은 저장소를 한 번 더 클론)
+  - `.env.local`은 각 저장소 폴더 안(`package.json` 옆)에 둡니다. 한 단계 위에 두면 읽히지 않습니다.
 - **화면 테스트 포트를 나눕니다.** `npm run e2e`는 테스트용 서버를 띄웁니다(기본 4173).
   - Claude 폴더의 `.env.local`에 `E2E_PORT=4174` 한 줄을 넣어 둡니다. 이 파일은 저장소에 올라가지 않습니다.
   - 이미 떠 있는 서버는 다시 쓰지 않으므로, 포트가 겹치면 "already used" 오류로 바로 알 수 있습니다. 다른 폴더의 화면을 잘못 시험하는 일은 생기지 않습니다.
@@ -101,6 +102,7 @@
   - JS 키는 `.env.local`에 둡니다. 이 파일은 저장소에 올라가지 않습니다.
 - 장면 초안(`content/scenes/drafts.json`)을 고쳤다면 `npx tsx pipeline/scenes/build.ts`로 앱 데이터를 다시 만듭니다.
   - 다시 만들지 않으면 `npm run check`의 계약 테스트가 알려 줍니다.
+  - 그다음 제목 글꼴도 다시 만듭니다: `npx tsx scripts/build-title-font.ts`(인터넷 필요). 새 장면 이름·작가 글의 글자를 글꼴 파일에 담습니다. 빠뜨리면 역시 계약 테스트가 알려 줍니다.
   - 원문 대조 검사(`pipeline/scenes/check-cli.ts`)에는 브런치 글 캐시가 필요합니다. 먼저 `npx tsx pipeline/sync.ts`를 돌립니다(인터넷 필요).
 
 ## 하지 말 것
