@@ -197,8 +197,8 @@ h1, h2, h3, p { margin: 0; }
 .draft { display: inline-block; vertical-align: 2px; margin-left: 6px; font-size: 14px; font-weight: 800; padding: 1px 8px; border-radius: 8px; background: var(--draft-bg); color: var(--draft); }
 .recnote { padding: 14px 16px; border-radius: 18px; background: var(--rec-bg); font-size: 17px; color: var(--ink-2); }
 /* 장면 상세의 가로 구역: 얇은 선으로 나눔 */
-.dsec + .dsec { margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--line); }
-.dlbl { margin: 0 0 10px; font-size: 15px; font-weight: 600; color: var(--ink-3); }
+.dsec + .dsec { margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--line); }
+.dlbl { margin: 0 0 12px; font-size: 15px; font-weight: 600; color: var(--ink-3); }
 .when-sec .recnote + .when-box { margin-top: 12px; }
 /* 추천 시기 + 해마다 달라짐 안내를 한 상자에 */
 .when-box { padding: 14px 16px 6px; border-radius: 18px; background: var(--bg-soft); }
@@ -207,9 +207,10 @@ h1, h2, h3, p { margin: 0; }
 .when-row b { font-size: 19px; color: var(--season); }
 .when-vary { font-size: 16px; color: var(--ink-2); }
 .when-link { display: inline-flex; align-items: center; min-height: var(--tap); font-size: 16.5px; font-weight: 800; color: var(--season); text-decoration: none; }
-.quote { margin: 0; padding: 4px 0 4px 16px; border-left: 3px solid color-mix(in srgb, var(--season) 35%, #fff); }
+/* 작가의 한마디: 왼쪽 세로선 없이 명조 글자와 여백만으로(구역은 위아래 가로선이 나눔, 10/3 코멘트) */
+.quote { margin: 0; padding: 0; }
 .quote p { font-size: 18px; line-height: 1.75; }
-.quote cite { display: block; margin-top: 6px; font-style: normal; font-size: 15px; color: var(--ink-3); }
+.quote cite { display: block; margin-top: 10px; font-style: normal; font-size: 15px; color: var(--ink-3); }
 .btn { display: flex; align-items: center; justify-content: center; gap: 8px; height: var(--btn); border-radius: var(--r-pill); font-size: 18px; font-weight: 800; text-decoration: none; }
 .btn.line { border: 2px solid var(--line); color: var(--ink); }
 /* 아래 붙박이 막대: 가고 싶어요 · 공유 · 길찾기 */
