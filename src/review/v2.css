@@ -57,10 +57,13 @@ h1, h2, h3, p { margin: 0; }
 
 #app { position: relative; max-width: 520px; margin: 0 auto; min-height: 100dvh; padding-bottom: calc(var(--tabs-h) + env(safe-area-inset-bottom) + 8px); background: var(--bg); }
 
-/* ── 맨 위: 계절 띠 + 달 고르기 (스크롤하면 함께 올라감 — 10/3 코멘트) ── */
+/* ── 맨 위: '현곡 선생의 추천' → 'N월에 만나는 자연'(스크롤하면 이 줄만 위에 붙음) → 달 띠 (10/3 2차 코멘트) ── */
+.eyebrow { padding: calc(14px + env(safe-area-inset-top)) var(--gutter) 0; background: var(--season-soft); font-size: var(--fs-meta); font-weight: 700; color: var(--season); transition: background-color .3s; }
+.ttl { position: sticky; top: 0; z-index: 10; margin: 0; padding: 8px var(--gutter) 10px; background: var(--season-soft); font-size: 28px; line-height: 1.3; font-weight: 800; letter-spacing: -0.035em; transition: box-shadow .2s, background-color .3s; }
+.ttl.stuck { box-shadow: 0 8px 16px -14px rgba(0, 0, 0, .55); }
 .months {
   display: flex; gap: 8px; overflow-x: auto;
-  padding: calc(12px + env(safe-area-inset-top)) var(--gutter) 12px;
+  padding: 2px var(--gutter) 16px;
   background: var(--season-soft);
   scrollbar-width: none; scroll-padding: 0 var(--gutter);
   transition: background-color .3s;
@@ -72,13 +75,7 @@ h1, h2, h3, p { margin: 0; }
 /* ── 제철 ── */
 .peak { background: var(--season-soft); padding-bottom: 24px; transition: background-color .3s; }
 /* 계절 띠가 제철 구역 전체를 덮음(기본). ?band=split 이면 띠는 제목까지만, 카드는 흰 바탕 */
-[data-band='split'] .peak { background: none; padding-bottom: 0; }
-[data-band='split'] .sec-head { background: var(--season-soft); padding-bottom: 20px; margin-bottom: 16px; }
-.sec-head { padding: 6px var(--gutter) 14px; }
-.season-label { display: inline-flex; align-items: center; gap: 8px; font-size: var(--fs-meta); font-weight: 700; color: var(--season); }
-.season-label::before { content: ''; width: 10px; height: 10px; border-radius: 50%; background: var(--season); }
-.sec-head h2 { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-top: 2px; font-size: 25px; line-height: 1.3; font-weight: 800; letter-spacing: -0.035em; }
-.sec-head h2 small { font-size: var(--fs-meta); font-weight: 600; color: var(--ink-2); letter-spacing: 0; }
+[data-band='split'] .peak { background: none; padding-top: 16px; padding-bottom: 0; }
 
 .rail { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 0 var(--gutter); scroll-padding: 0 var(--gutter); scrollbar-width: none; }
 .rail::-webkit-scrollbar { display: none; }
@@ -140,7 +137,7 @@ h1, h2, h3, p { margin: 0; }
 .home-add b { display: block; font-size: 18px; }
 .home-add span { font-size: 15px; color: var(--ink-2); }
 .story-link { display: flex; justify-content: space-between; align-items: center; min-height: var(--tap); padding: 6px 4px; font-size: var(--fs-meta); color: var(--ink-2); text-decoration: none; }
-.story-link b { color: var(--ink); }
+.story-link b { color: var(--ink); font-size: 17px; }
 
 /* ── 아래 메뉴 (붙박이) ── */
 .tabs { position: fixed; left: 50%; bottom: 0; transform: translateX(-50%); z-index: 15; width: 100%; max-width: 520px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; padding: 8px 12px calc(10px + env(safe-area-inset-bottom)); border-top: 1px solid var(--line); background: #fff; }
@@ -148,55 +145,56 @@ h1, h2, h3, p { margin: 0; }
 .tabs button[aria-current='page'] { background: var(--season-soft); color: var(--season); }
 
 /* ── 장면 상세 ── */
-.detail { position: fixed; inset: 0; z-index: 20; max-width: 520px; margin: 0 auto; background: #fff; overflow-y: auto; transform: translateY(100%); transition: transform .28s ease; visibility: hidden; }
+.detail { position: fixed; inset: 0; z-index: 20; max-width: 520px; margin: 0 auto; background: #fff; overflow-y: auto; display: flex; flex-direction: column; transform: translateY(100%); transition: transform .28s ease; visibility: hidden; }
+.detail > * { flex-shrink: 0; }
 .detail.open { transform: none; visibility: visible; }
 .gallery { position: relative; }
 .gallery .rail { padding: 0; gap: 0; scroll-padding: 0; }
 .gallery .rail > * { flex: 0 0 100%; }
 .gallery .slide { aspect-ratio: 3 / 2; background: #d9ddd8; overflow: hidden; }
 .gallery .slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.gallery .round { position: absolute; top: 12px; width: var(--tap); height: var(--tap); border-radius: 50%; background: #fff; display: grid; place-items: center; box-shadow: 0 4px 12px -6px rgba(0, 0, 0, .5); z-index: 3; }
-.gallery .back { left: 12px; }
-.gallery .share { right: 12px; }
-.gallery .nav { top: 50%; transform: translateY(-50%); background: rgba(255, 255, 255, .9); }
+/* 사진 위에 얹는 버튼: 작고 검정 반투명(10/3 2차 코멘트). 보이는 크기는 작아도 누르는 범위는 48px 이상 */
+.gallery .ov { position: absolute; z-index: 3; display: grid; place-items: center; border-radius: 50%; color: #fff; background: rgba(12, 16, 14, .42); }
+.gallery .ov::after { content: ''; position: absolute; inset: -6px; }
+.gallery .back { top: 12px; left: 12px; width: 38px; height: 38px; }
+.gallery .nav { top: 50%; margin-top: -16px; width: 32px; height: 32px; background: rgba(12, 16, 14, .3); }
+.gallery .nav::after { inset: -8px; }
 .gallery .nav[hidden] { display: none; }
-.gallery .prev { left: 10px; }
-.gallery .next { right: 10px; }
+.gallery .prev { left: 8px; }
+.gallery .next { right: 8px; }
 .gdots { display: flex; justify-content: center; gap: 6px; padding: 12px 0 0; }
 .gdots i { width: 8px; height: 8px; border-radius: 4px; background: #cfd5d0; transition: width .2s, background-color .2s; }
 .gdots i.on { width: 22px; background: var(--season); }
-/* 사진 아래 작가 이름 + 손글씨 서명 자리(서명을 받으면 이미지로 바꿈) */
-.credit { position: absolute; left: 12px; bottom: 12px; z-index: 3; display: flex; align-items: center; gap: 8px; font-size: 15px; color: #fff; background: rgba(10, 16, 12, .62); padding: 3px 6px 3px 12px; border-radius: var(--r-pill); }
-.sign { display: inline-block; min-width: 64px; padding: 0 8px; border: 1.5px dashed rgba(255, 255, 255, .7); border-radius: 10px; font: italic 600 15px/1.5 Georgia, 'Nanum Myeongjo', serif; text-align: center; }
+/* 사진 아래 작가 이름 + 손글씨 서명 자리(작게). 서명을 받으면 이미지로 바꿈 */
+.credit { position: absolute; left: 10px; bottom: 10px; z-index: 3; display: flex; align-items: center; gap: 6px; font-size: 12.5px; color: #fff; background: rgba(10, 16, 12, .6); padding: 2px 4px 2px 9px; border-radius: var(--r-pill); }
+.sign { display: inline-block; min-width: 44px; padding: 0 6px; border: 1px dashed rgba(255, 255, 255, .7); border-radius: 8px; font: italic 600 12.5px/1.5 Georgia, 'Nanum Myeongjo', serif; text-align: center; }
 
-.body { padding: 18px 20px 28px; }
-.row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-.row .badges { position: static; }
-.row .badge:not(.peak-b):not(.rec-b) { background: var(--bg-soft); }
-.want { display: inline-flex; align-items: center; gap: 6px; height: var(--tap); padding: 0 16px; border-radius: var(--r-pill); border: 2px solid var(--line); font-size: 17px; font-weight: 700; }
-.want[aria-pressed='true'] { border-color: var(--season); background: var(--season); color: #fff; }
-.title { margin-top: 12px; font-size: 30px; line-height: 1.25; letter-spacing: -0.035em; }
+.body { padding: 16px 20px 24px; }
+.body .badges { position: static; }
+.body .badge { font-size: 14px; padding: 6px 10px; }
+.body .badge:not(.peak-b):not(.rec-b) { background: var(--bg-soft); color: var(--ink-2); }
+.title { margin-top: 10px; font-size: 28px; line-height: 1.25; letter-spacing: -0.035em; }
 .region { margin-top: 2px; font-size: 17px; color: var(--ink-2); }
-.one { margin-top: 14px; font-size: 20px; line-height: 1.5; font-weight: 600; }
+.one { margin-top: 12px; font-size: 20px; line-height: 1.5; font-weight: 600; }
 .draft { display: inline-block; vertical-align: 2px; margin-left: 6px; font-size: 14px; font-weight: 800; padding: 1px 8px; border-radius: 8px; background: var(--draft-bg); color: var(--draft); }
 .recnote { margin-top: 16px; padding: 14px 16px; border-radius: 18px; background: var(--rec-bg); font-size: 17px; color: var(--ink-2); }
-.facts { margin: 18px 0 0; padding: 4px 18px; border-radius: var(--r-photo); background: var(--bg-soft); }
-.facts div { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 0; }
-.facts div + div { border-top: 1px solid var(--line); }
-.facts dt { font-size: var(--fs-meta); color: var(--ink-3); flex: 0 0 auto; }
-.facts dd { margin: 0; font-size: 18px; font-weight: 700; text-align: right; }
-.facts dd small { display: block; font-size: 15px; font-weight: 500; color: var(--ink-2); }
-.varybox { margin-top: 12px; padding: 14px 16px; border-radius: 18px; border: 2px solid var(--season-soft); }
-.varybox p { font-size: 17px; color: var(--ink-2); }
-.varybox a { display: inline-flex; align-items: center; min-height: var(--tap); font-size: 17px; font-weight: 800; color: var(--season); text-decoration: none; }
+/* 추천 시기 + 해마다 달라짐 안내를 한 상자에 */
+.when-box { margin-top: 18px; padding: 14px 16px 6px; border-radius: 18px; background: var(--bg-soft); }
+.when-row { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; padding-bottom: 8px; }
+.when-row .lbl { font-size: 16px; color: var(--ink-3); }
+.when-row b { font-size: 19px; color: var(--season); }
+.when-vary { font-size: 16px; color: var(--ink-2); }
+.when-link { display: inline-flex; align-items: center; min-height: var(--tap); font-size: 16.5px; font-weight: 800; color: var(--season); text-decoration: none; }
 .quote { margin: 22px 0 0; padding: 2px 0 2px 16px; border-left: 4px solid color-mix(in srgb, var(--season) 35%, #fff); }
 .quote p { font-size: 18px; line-height: 1.75; }
-.quote cite { display: block; margin-top: 6px; font-style: normal; font-size: var(--fs-meta); color: var(--ink-3); }
-.quote cite .when { font-size: 15px; }
-.actions { display: grid; gap: 10px; margin-top: 24px; }
+.quote cite { display: block; margin-top: 6px; font-style: normal; font-size: 15px; color: var(--ink-3); }
 .btn { display: flex; align-items: center; justify-content: center; gap: 8px; height: var(--btn); border-radius: var(--r-pill); font-size: 18px; font-weight: 800; text-decoration: none; }
-.btn.primary { background: var(--season); color: #fff; }
-.btn.line { border: 2px solid var(--line); color: var(--ink); }
+.btn.line { margin-top: 22px; border: 2px solid var(--line); color: var(--ink); }
+/* 아래 붙박이 막대: 가고 싶어요 · 공유 · 길찾기 */
+.dbar { position: sticky; bottom: 0; z-index: 5; margin-top: auto; display: flex; align-items: center; gap: 4px; padding: 8px 12px calc(8px + env(safe-area-inset-bottom)); background: #fff; border-top: 1px solid var(--line); }
+.dact { flex: 0 0 auto; min-width: 68px; min-height: 56px; display: grid; justify-items: center; align-content: center; gap: 2px; font-size: 14px; font-weight: 700; color: var(--ink-2); }
+.dact[aria-pressed='true'] { color: var(--season); }
+.dbar .go { flex: 1; margin-left: 6px; display: flex; align-items: center; justify-content: center; height: 54px; border-radius: var(--r-pill); background: var(--season); color: #fff; font-size: 18px; font-weight: 800; text-decoration: none; }
 
 .toast { position: fixed; left: 50%; bottom: calc(var(--tabs-h) + 24px); transform: translateX(-50%); z-index: 30; background: var(--ink); color: #fff; font-size: 16px; padding: 10px 16px; border-radius: var(--r-pill); opacity: 0; transition: opacity .2s; pointer-events: none; white-space: nowrap; }
 .toast.on { opacity: 1; }

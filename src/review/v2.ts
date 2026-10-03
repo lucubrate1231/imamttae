@@ -19,10 +19,10 @@ type Scene = StoryScene;
 type Photo = Scene['photos'][number];
 type Season = 'spring' | 'summer' | 'autumn' | 'winter';
 
-const SEASON_NAME: Record<Season, string> = { spring: '봄', summer: '여름', autumn: '가을', winter: '겨울' };
 const seasonOf = (m: Month): Season => (m >= 3 && m <= 5 ? 'spring' : m >= 6 && m <= 8 ? 'summer' : m >= 9 && m <= 11 ? 'autumn' : 'winter');
 const typeLabel = (s: Scene) => SCENE_TYPES.find((t) => t.id === s.types[0])?.label ?? '';
 const AUTHOR = '이상호';
+const PEN_NAME = '현곡'; // 작가의 호
 const STORY_URL = 'https://brunch.co.kr/@caed5ea4c3d74d9/1';
 
 const qMonth = Number(new URLSearchParams(location.search).get('m'));
@@ -74,6 +74,10 @@ function toast(msg: string): void {
 
 // ── 뼈대 ──
 const app = document.getElementById('app')!;
+// 머리(10/3 2차 코멘트): 작은 글씨 '현곡 선생의 추천' → 큰 글씨 'N월에 만나는 자연' → 달 띠.
+// 아래로 스크롤하면 'N월에 만나는 자연'만 위에 붙어 있음
+const eyebrow = h('p', { class: 'eyebrow', text: `${PEN_NAME} 선생의 추천` });
+const pageTitle = h('h1', { class: 'ttl' });
 const months = h('nav', { class: 'months', 'aria-label': '달 고르기' });
 for (let m = 1; m <= 12; m++) {
   const b = h('button', { class: 'mchip', type: 'button', 'aria-pressed': String(m === month), text: `${m}월` });
@@ -86,10 +90,8 @@ for (let m = 1; m <= 12; m++) {
   months.append(b);
 }
 
-const seasonLabel = h('span', { class: 'season-label' });
-const peakTitle = h('h2', {});
 const rail = h('div', { class: 'rail', role: 'list', 'aria-label': '제철 명장면' });
-const peakSec = h('section', { class: 'peak' }, h('div', { class: 'sec-head' }, seasonLabel, peakTitle), rail);
+const peakSec = h('section', { class: 'peak', 'aria-label': '제철 명장면' }, rail);
 
 const mapbox = h('div', { class: 'mapbox' }, h('div', { class: 'kmap', id: 'kmap' }));
 const legend = h('div', { class: 'legend', 'aria-hidden': 'true' }, h('span', { text: '제철' }), h('span', { class: 'r', text: '다녀온 기록' }));
@@ -114,7 +116,7 @@ const homeAdd = h(
 (homeAdd.firstChild as HTMLElement).innerHTML =
   '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M12 9v6M9 12h6"/></svg>';
 homeAdd.addEventListener('click', () => toast('시안에서는 안내 화면 자리만 보여요'));
-const storyLink = h('a', { class: 'story-link', href: STORY_URL, target: '_blank', rel: 'noopener' }, h('span', {}, h('b', { text: '이 앱 이야기' }), ' · 60대 부부의 100곳 약속'), h('span', { 'aria-hidden': 'true', text: '›' }));
+const storyLink = h('a', { class: 'story-link', href: STORY_URL, target: '_blank', rel: 'noopener' }, h('b', { text: '60대 부부의 100곳 여행 약속' }), h('span', { 'aria-hidden': 'true', text: '›' }));
 const extra = h('section', { class: 'extra' }, homeAdd, storyLink);
 
 const tabs = h('nav', { class: 'tabs', 'aria-label': '메뉴' });
@@ -125,7 +127,10 @@ for (const [i, t] of ['지금', '명장면 찾기', '수첩'].entries()) {
 }
 const detail = h('section', { class: 'detail', 'aria-label': '장면 상세', 'aria-hidden': 'true' });
 const toastEl = h('div', { class: 'toast', role: 'status' });
-app.append(months, h('main', {}, h('h1', { class: 'sr', text: '이맘때 자연' }), peakSec, mapSec, recSec, extra), tabs, detail, toastEl);
+// 제목이 페이지 끝까지 위에 붙어 있으려면 같은 부모(main) 안에 있어야 함
+app.append(h('main', {}, eyebrow, pageTitle, months, peakSec, mapSec, recSec, extra), tabs, detail, toastEl);
+// 제목이 위에 붙었는지(작은 글씨가 화면 밖으로 나갔는지) 보고 그림자를 줌
+new IntersectionObserver(([e]) => pageTitle.classList.toggle('stuck', !e!.isIntersecting)).observe(eyebrow);
 
 // 계절 띠 비교용: ?band=split 이면 띠가 제목까지만 (기본은 제철 구역 전체)
 if (new URLSearchParams(location.search).get('band') === 'split') app.dataset.band = 'split';
@@ -142,6 +147,7 @@ function badges(s: Scene): HTMLElement {
 }
 /** 제철 카드는 모두 제철이라 '제철' 딱지는 빼고(10/3 코멘트), 종류만 반투명으로 약하게 */
 function bigCard(s: Scene, i: number): HTMLElement {
+  const tn = timingNotice(s.types);
   const b = h(
     'button',
     { class: 'big', type: 'button' },
@@ -152,16 +158,11 @@ function bigCard(s: Scene, i: number): HTMLElement {
       h('span', { class: 'badges' }, h('span', { class: 'badge on-photo', text: typeLabel(s) })),
       h('span', { class: 'cap' }, h('b', { text: s.name }), h('span', { text: s.region })),
     ),
-    h(
-      'div',
-      { class: 'best' },
-      h('span', { class: 'lbl', text: '가장 좋은 때' }),
-      h('strong', { text: s.best?.season ?? '' }),
-      h('span', { class: 'note', text: s.best?.note ?? '' }),
-    ),
-    timingNotice(s.types) ? h('div', { class: 'vary', text: '해마다 1~2주씩 달라져요' }) : null,
+    // 계절말은 빼고 '추천 시기' + 날짜만, 그 아래 종류별 짧은 안내(10/3 2차 코멘트)
+    h('div', { class: 'best' }, h('span', { class: 'lbl', text: '추천 시기' }), h('strong', { text: s.best?.note ?? '' })),
+    tn ? h('div', { class: 'vary', text: tn.short }) : null,
   );
-  b.setAttribute('aria-label', `제철, ${s.name}, ${s.region}, 가장 좋은 때 ${s.best?.season ?? ''} ${s.best?.note ?? ''}${timingNotice(s.types) ? ', 해마다 달라짐' : ''}`);
+  b.setAttribute('aria-label', `${s.name}, ${s.region}, 추천 시기 ${s.best?.note ?? ''}${tn ? `, ${tn.short}` : ''}`);
   b.addEventListener('click', () => openScene(s.id));
   return h('div', { role: 'listitem', 'data-i': String(i) }, b);
 }
@@ -189,8 +190,7 @@ function render(): void {
   peak = [...r.peak].sort((a, b) => gap(a) - gap(b) || monthsLeft(a, month) - monthsLeft(b, month) || b.visited.localeCompare(a.visited));
   record = r.record;
 
-  seasonLabel.textContent = `${SEASON_NAME[season]} · ${month}월`;
-  peakTitle.replaceChildren(document.createTextNode('지금이 제철인 곳'), h('small', { text: `${peak.length}곳` }));
+  pageTitle.textContent = `${month}월에 만나는 자연`;
   rail.replaceChildren(...peak.map(bigCard));
   rail.scrollLeft = 0;
   peakSec.hidden = peak.length === 0;
@@ -293,14 +293,19 @@ function renderDetail(): void {
     return;
   }
   const isPeak = sceneTier(s) === 'peak';
-  // 사진 넘김 힌트(10/3 코멘트): 양옆 화살표 버튼 + 사진 아래 점. 손가락으로 밀어도 되고 눌러도 됩니다
+  const icon = (d: string, size = 22, fill = 'none') =>
+    `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="${fill}" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${d}"/></svg>`;
+
+  // ── 사진: 위에 얹는 것은 작고 검정 반투명하게(10/3 2차 코멘트). 뒤로 + 넘김 화살표 + 작은 크레딧만 ──
   const n = s.photos.length;
   const slides = h('div', { class: 'rail', tabindex: '0', 'aria-label': `사진 ${n}장, 옆으로 넘겨 보세요` }, ...s.photos.map((p, i) => h('div', { class: 'slide' }, img(p, i === 0 ? `${s.name} 풍경` : ''))));
-  const chevron = (d: string) => `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="${d}"/></svg>`;
-  const prev = h('button', { class: 'round nav prev', type: 'button', 'aria-label': '이전 사진' });
-  prev.innerHTML = chevron('M15 18l-6-6 6-6');
-  const next = h('button', { class: 'round nav next', type: 'button', 'aria-label': '다음 사진' });
-  next.innerHTML = chevron('M9 18l6-6-6-6');
+  const back = h('button', { class: 'ov back', type: 'button', 'aria-label': '뒤로' });
+  back.innerHTML = icon('M15 18l-6-6 6-6', 22);
+  back.addEventListener('click', () => (history.length > 1 ? history.back() : (location.hash = '')));
+  const prev = h('button', { class: 'ov nav prev', type: 'button', 'aria-label': '이전 사진' });
+  prev.innerHTML = icon('M15 18l-6-6 6-6', 18);
+  const next = h('button', { class: 'ov nav next', type: 'button', 'aria-label': '다음 사진' });
+  next.innerHTML = icon('M9 18l6-6-6-6', 18);
   const gdots = h('div', { class: 'gdots', 'aria-hidden': 'true' }, ...s.photos.map((_, i) => h('i', { class: i === 0 ? 'on' : '' })));
   const cur = () => Math.round(slides.scrollLeft / Math.max(1, slides.clientWidth));
   const go = (i: number) => slides.scrollTo({ left: Math.max(0, Math.min(n - 1, i)) * slides.clientWidth, behavior: reduceMotion ? 'auto' : 'smooth' });
@@ -314,11 +319,24 @@ function renderDetail(): void {
   next.addEventListener('click', () => go(cur() + 1));
   slides.addEventListener('scroll', paintNav, { passive: true });
   paintNav();
-  const back = h('button', { class: 'round back', type: 'button', 'aria-label': '뒤로' });
-  back.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>';
-  back.addEventListener('click', () => (history.length > 1 ? history.back() : (location.hash = '')));
-  const share = h('button', { class: 'round share', type: 'button', 'aria-label': '공유' });
-  share.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 8l5-5 5 5M5 13v6a2 2 0 002 2h10a2 2 0 002-2v-6"/></svg>';
+  const credit = h('span', { class: 'credit' }, `사진·글 ${AUTHOR}`, h('span', { class: 'sign', title: '작가 손글씨 서명 자리', text: '서명' }));
+
+  // ── 아래 붙박이 막대: 가고 싶어요 · 공유 · 길찾기 (사진과 제목 영역에서 버튼을 덜어 냄) ──
+  const want = h('button', { class: 'dact', type: 'button' });
+  const paintWant = () => {
+    const on = wanted.has(s.id);
+    want.setAttribute('aria-pressed', String(on));
+    want.innerHTML = `${icon('M6 3h12v18l-6-4.5L6 21z', 24, on ? 'currentColor' : 'none')}<span>${on ? '담았어요' : '가고 싶어요'}</span>`;
+  };
+  paintWant();
+  want.addEventListener('click', () => {
+    if (wanted.has(s.id)) wanted.delete(s.id);
+    else wanted.add(s.id);
+    paintWant();
+    toast(wanted.has(s.id) ? '가고 싶은 곳에 담았어요' : '가고 싶은 곳에서 뺐어요');
+  });
+  const share = h('button', { class: 'dact', type: 'button' });
+  share.innerHTML = `${icon('M12 3v12M7 8l5-5 5 5M5 13v6a2 2 0 002 2h10a2 2 0 002-2v-6', 24)}<span>공유</span>`;
   share.addEventListener('click', async () => {
     try {
       if (navigator.share) await navigator.share({ title: `${s.name} · 이맘때 자연`, text: s.oneLiner, url: location.href });
@@ -330,75 +348,48 @@ function renderDetail(): void {
       /* 사용자가 취소 */
     }
   });
-  // 봤어요 → 가고 싶어요(10/3 코멘트): 앱을 여는 때는 여행 전이라 '점 찍어 두기'가 맞는 자리
-  const want = h('button', { class: 'want', type: 'button' });
-  const paintWant = () => {
-    const on = wanted.has(s.id);
-    want.setAttribute('aria-pressed', String(on));
-    want.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="${on ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-6-4.5L6 21z"/></svg><span>${on ? '담았어요' : '가고 싶어요'}</span>`;
-  };
-  paintWant();
-  want.addEventListener('click', () => {
-    if (wanted.has(s.id)) wanted.delete(s.id);
-    else wanted.add(s.id);
-    paintWant();
-    toast(wanted.has(s.id) ? '가고 싶은 곳에 담았어요' : '가고 싶은 곳에서 뺐어요');
-  });
+  const bar = h(
+    'div',
+    { class: 'dbar' },
+    want,
+    share,
+    h('a', { class: 'go', href: naviUrl('kakao', s.dest), target: '_blank', rel: 'noopener', text: '길찾기 (카카오맵)' }),
+  );
 
+  // ── 본문: 꼬리표 → 제목 → 지역 → 한 줄 소개 → 추천 시기 → 작가 글 ──
   const draft = () => h('span', { class: 'draft', text: '초안' });
   const vm = visitedMonth(s.visited);
   const recNote = isPeak
     ? null
-    : h('p', { class: 'recnote', text: s.best && !isYearRound(s.best) ? `작가 부부가 ${vm}월에 다녀온 모습이에요. 가장 좋은 때는 ${s.best.season ? `${s.best.season}(${s.best.note})` : s.best.note}이에요.` : `작가 부부가 ${vm}월에 다녀온 모습이에요. 일 년 내내 볼 수 있는 풍경이에요.` });
+    : h('p', { class: 'recnote', text: s.best && !isYearRound(s.best) ? `작가 부부가 ${vm}월에 다녀온 모습이에요.` : `작가 부부가 ${vm}월에 다녀온 모습이에요. 일 년 내내 볼 수 있는 풍경이에요.` });
   const tn = s.best && !isYearRound(s.best) ? timingNotice(s.types) : null;
-  const vary = tn
+  // '가는 곳'은 칸에서 뺌(제목과 겹침, 10/3 2차 코멘트). 길찾기는 여전히 주차장·입구 좌표로 엶
+  const when = s.best
     ? h(
         'div',
-        { class: 'varybox' },
-        h('p', { text: tn.text }),
-        h('a', { href: newsSearchUrl(s.name, tn.keyword), target: '_blank', rel: 'noopener', text: `올해 ${tn.keyword} 소식 찾아보기 ›` }),
+        { class: 'when-box' },
+        h('p', { class: 'when-row' }, h('span', { class: 'lbl', text: '추천 시기' }), h('b', { text: s.best.note }), s.review.best === 'draft' ? draft() : null),
+        tn ? h('p', { class: 'when-vary', text: tn.text }) : null,
+        tn ? h('a', { class: 'when-link', href: newsSearchUrl(s.name, tn.keyword), target: '_blank', rel: 'noopener', text: `올해 ${tn.keyword} 소식 찾아보기 ›` }) : null,
       )
     : null;
-  const credit = h('span', { class: 'credit' }, `사진·글 ${AUTHOR}`, h('span', { class: 'sign', title: '작가 손글씨 서명 자리', text: '서명' }));
   detail.replaceChildren(
-    h('div', { class: 'gallery' }, slides, back, share, ...(n > 1 ? [prev, next] : []), credit),
+    h('div', { class: 'gallery' }, slides, back, ...(n > 1 ? [prev, next] : []), credit),
     ...(n > 1 ? [gdots] : []),
     h(
       'div',
       { class: 'body' },
-      h('div', { class: 'row' }, badges(s), want),
+      badges(s),
       h('h2', { class: 'title', text: s.name }),
       h('p', { class: 'region', text: s.region }),
       h('p', { class: 'one' }, s.oneLiner, s.review.oneLiner === 'draft' ? draft() : null),
       recNote,
-      h(
-        'dl',
-        { class: 'facts' },
-        s.best
-          ? h(
-              'div',
-              {},
-              h('dt', { text: '가장 좋은 때' }),
-              h('dd', {}, h('b', { text: s.best.season ?? '' }), s.review.best === 'draft' ? draft() : null, h('small', { text: s.best.note })),
-            )
-          : null,
-        h('div', {}, h('dt', { text: '가는 곳' }), h('dd', {}, s.dest.name, s.review.dest === 'draft' ? draft() : null)),
-      ),
-      vary,
-      // 다녀온 날은 칸에서 빼고 작가 글 출처 끝에 작게(10/3 코멘트)
-      h(
-        'blockquote',
-        { class: 'quote' },
-        h('p', { text: s.excerpt }),
-        h('cite', {}, `— ${AUTHOR}${s.trip ? `, ${s.trip}` : ''}`, h('span', { class: 'when', text: ` · ${fmtDate(s.visited.slice(0, 7))}에 다녀옴` })),
-      ),
-      h(
-        'div',
-        { class: 'actions' },
-        h('a', { class: 'btn primary', href: naviUrl('kakao', s.dest), target: '_blank', rel: 'noopener', text: '길찾기 (카카오맵)' }),
-        h('a', { class: 'btn line', href: s.brunchUrl, target: '_blank', rel: 'noopener', text: '브런치에서 전체 이야기 읽기' }),
-      ),
+      when,
+      // 작가 이름·몇 번째 여행은 반복하지 않고 다녀온 날짜만(10/3 2차 코멘트)
+      h('blockquote', { class: 'quote' }, h('p', { text: s.excerpt }), h('cite', { text: fmtDate(s.visited) })),
+      h('a', { class: 'btn line', href: s.brunchUrl, target: '_blank', rel: 'noopener', text: '브런치에서 전체 이야기 읽기' }),
     ),
+    bar,
   );
   detail.scrollTop = 0;
   detail.setAttribute('aria-hidden', 'false');
