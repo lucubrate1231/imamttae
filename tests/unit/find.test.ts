@@ -1,15 +1,10 @@
-import { beforeEach, describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { ContentFile } from '../../shared/schema/content';
 import appData from '../../public/data/scenes.json';
 import { MONTHS } from '../../src/domain/month';
 import { SCENE_TYPES } from '../../src/domain/sceneTypes';
+import * as find from '../../src/domain/find';
 import type { FindInput } from '../../src/domain/find';
-
-// 매 테스트에서 불러와 구현 파일이 없을 때도 각 규칙의 실패 수를 확인합니다.
-let find: typeof import('../../src/domain/find');
-beforeEach(async () => {
-  find = await import('../../src/domain/find');
-});
 
 function scene(id: string, patch: Partial<FindInput> = {}) {
   return {
@@ -271,14 +266,14 @@ describe('findScenes: 제철과 작가 부부 방문 정렬 (F3-AC3)', () => {
 
 describe('실제 앱 데이터의 풍경 찾기 규칙 (F3-AC2·AC3·AC4·AC7)', () => {
   it('모든 공개 이야기의 권역이 있고 칩 수의 합은 이야기 수와 같음', () => {
-    const stories = ContentFile.parse(appData).scenes.filter((s) => s.kind === 'story' && !s.hidden);
+    const stories = ContentFile.parse(appData).scenes.filter((s) => s.kind === 'story').filter((s) => !s.hidden);
     expect(stories.length).toBeGreaterThan(0);
     expect(stories.every((s) => find.regionOf(s.region) !== null)).toBe(true);
     expect(find.regionCounts(stories).reduce((sum, r) => sum + r.count, 0)).toBe(stories.length);
   });
 
   it('모든 달에서 누락·중복 없이 나누고 풍경 수와 고른 이야기 수가 같음', () => {
-    const stories = ContentFile.parse(appData).scenes.filter((s) => s.kind === 'story' && !s.hidden);
+    const stories = ContentFile.parse(appData).scenes.filter((s) => s.kind === 'story').filter((s) => !s.hidden);
     const counts = find.typeCounts(stories);
     for (const month of MONTHS) {
       const all = find.findScenes(stories, { month });
