@@ -68,13 +68,13 @@ for (let m = 1; m <= 12; m++) {
 }
 
 const mapbox = h('div', { class: 'mapbox' }, h('div', { class: 'kmap', id: 'kmap' }));
-const rail = h('div', { class: 'rail', role: 'list', 'aria-label': '이달의 명장면' });
+const rail = h('div', { class: 'rail', role: 'list', 'aria-label': '이달의 풍경' });
 const dots = h('div', { class: 'dots', 'aria-hidden': 'true' });
 const empty = h('div', { class: 'empty', role: 'status', hidden: '' });
 const headline = h('div', { class: 'headline' }, h('h2', { text: '' }), h('span', { text: '' }));
 
 const tabs = h('nav', { class: 'tabs', 'aria-label': '메뉴' });
-for (const [i, t] of ['지금', '명장면 찾기', '수첩'].entries()) {
+for (const [i, t] of ['지금', '풍경 찾기', '수첩'].entries()) {
   const b = h('button', { type: 'button', text: t, ...(i === 0 ? { 'aria-current': 'page' } : {}) });
   if (i > 0) b.addEventListener('click', () => toast('시안에서는 첫 화면만 볼 수 있어요'));
   tabs.append(b);
@@ -125,7 +125,7 @@ function renderMonth(): void {
   rail.hidden = list.length === 0;
   dots.hidden = list.length === 0;
   empty.hidden = list.length > 0;
-  empty.replaceChildren(h('b', { text: `${month}월 명장면은 준비 중이에요` }), document.createTextNode('시안에는 10월만 채워 두었어요. 10월을 눌러 보세요.'));
+  empty.replaceChildren(h('b', { text: `${month}월 풍경은 준비 중이에요` }), document.createTextNode('시안에는 10월만 채워 두었어요. 10월을 눌러 보세요.'));
   (headline.firstChild as HTMLElement).textContent = `${month}월, 지금 가면 좋은 곳`;
   (headline.lastChild as HTMLElement).textContent = list.length ? `${list.length}곳` : '';
   sel = 0;

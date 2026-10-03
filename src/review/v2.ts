@@ -93,8 +93,8 @@ for (let m = 1; m <= 12; m++) {
   months.append(b);
 }
 
-const rail = h('div', { class: 'rail', role: 'list', 'aria-label': '제철 명장면' });
-const peakSec = h('section', { class: 'peak', 'aria-label': '제철 명장면' }, rail);
+const rail = h('div', { class: 'rail', role: 'list', 'aria-label': '제철 풍경' });
+const peakSec = h('section', { class: 'peak', 'aria-label': '제철 풍경' }, rail);
 
 const mapbox = h('div', { class: 'mapbox' }, h('div', { class: 'kmap', id: 'kmap' }));
 const legend = h('div', { class: 'legend', 'aria-hidden': 'true' }, h('span', { text: '제철' }), h('span', { class: 'r', text: '다녀온 기록' }));
@@ -123,7 +123,7 @@ const storyLink = h('a', { class: 'story-link', href: STORY_URL, target: '_blank
 const extra = h('section', { class: 'extra' }, homeAdd, storyLink);
 
 const tabs = h('nav', { class: 'tabs', 'aria-label': '메뉴' });
-for (const [i, t] of ['지금', '명장면 찾기', '수첩'].entries()) {
+for (const [i, t] of ['지금', '풍경 찾기', '수첩'].entries()) {
   const b = h('button', { type: 'button', text: t, ...(i === 0 ? { 'aria-current': 'page' } : {}) });
   if (i > 0) b.addEventListener('click', () => toast('시안에서는 첫 화면만 볼 수 있어요'));
   tabs.append(b);
@@ -403,10 +403,10 @@ function renderDetail(): void {
       h('h2', { class: 'title', text: s.name }),
       h('p', { class: 'region', text: s.region }),
       h('p', { class: 'one' }, s.oneLiner, s.review.oneLiner === 'draft' ? draft() : null),
+      // 작가의 한마디: 한 줄 소개 바로 아래, 명조로('장면 확인표'처럼). 작가 이름·몇 번째 여행 없이 다녀온 날짜만
+      h('blockquote', { class: 'quote' }, h('p', { text: s.excerpt }), h('cite', { text: fmtDate(s.visited) })),
       recNote,
       when,
-      // 작가 이름·몇 번째 여행은 반복하지 않고 다녀온 날짜만(10/3 2차 코멘트)
-      h('blockquote', { class: 'quote' }, h('p', { text: s.excerpt }), h('cite', { text: fmtDate(s.visited) })),
       h('a', { class: 'btn line', href: s.brunchUrl, target: '_blank', rel: 'noopener', text: '브런치에서 전체 이야기 읽기' }),
     ),
     bar,

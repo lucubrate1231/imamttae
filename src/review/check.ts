@@ -78,7 +78,7 @@ function item(s: Scene, no: number): HTMLElement {
       h(
         'dl',
         {},
-        h('div', {}, h('dt', { text: '명장면 종류' }), h('dd', {}, s.types.map(label).join(', '), draft(s.review.types === 'draft'))),
+        h('div', {}, h('dt', { text: '풍경 종류' }), h('dd', {}, s.types.map(label).join(', '), draft(s.review.types === 'draft'))),
         h('div', {}, h('dt', { text: '가장 좋은 때' }), h('dd', {}, bestText, draft(s.review.best === 'draft'), h('small', { text: tierText }))),
         h('div', {}, h('dt', { text: '한 줄 소개' }), h('dd', {}, s.oneLiner, draft(s.review.oneLiner === 'draft'))),
         h('div', {}, h('dt', { text: '가는 곳(길찾기 목적지)' }), h('dd', {}, s.dest.name, draft(s.review.dest === 'draft'))),

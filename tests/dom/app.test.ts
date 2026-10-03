@@ -30,7 +30,7 @@ describe('앱 뼈대', () => {
   it('핀이 없으면 안내 문구', async () => {
     const root = document.getElementById('app')!;
     await startApp({ root, map: createListMap(), pins: [], now: new Date('2026-10-03T00:00:00Z') });
-    expect(root.querySelector('.empty')?.textContent).toContain('10월 명장면');
+    expect(root.querySelector('.empty')?.textContent).toContain('10월 풍경');
   });
 
   it('지도를 못 불러왔으면 목록으로 보여 준다고 알린다', async () => {

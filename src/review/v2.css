@@ -7,6 +7,7 @@
   --bg: #ffffff;
   --bg-soft: #f3f5f2;
   --ink: #17201b;
+  --font-display: 'Gowun Batang', 'Nanum Myeongjo', serif; /* 제목·작가 글: 고운바탕(10/3 사용자 선택) */
   --ink-title: #2e221d; /* 제목 글자: 검정에 가까운 고동색. 계절마다 그 계절 색이 아주 살짝 섞인 검정으로 바뀜(아래) */
   --ink-2: #4b5650;
   --ink-3: #5f6963;
@@ -43,7 +44,7 @@ body {
   margin: 0;
   color: var(--ink);
   background: var(--bg);
-  font: var(--fs-body) / 1.6 'Pretendard Variable', Pretendard, system-ui, -apple-system, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  font: var(--fs-body) / 1.6 'IBM Plex Sans KR', system-ui, -apple-system, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
   letter-spacing: -0.01em;
   -webkit-font-smoothing: antialiased;
   -webkit-text-size-adjust: 100%;
@@ -197,7 +198,7 @@ h1, h2, h3, p { margin: 0; }
 .when-row b { font-size: 19px; color: var(--season); }
 .when-vary { font-size: 16px; color: var(--ink-2); }
 .when-link { display: inline-flex; align-items: center; min-height: var(--tap); font-size: 16.5px; font-weight: 800; color: var(--season); text-decoration: none; }
-.quote { margin: 22px 0 0; padding: 2px 0 2px 16px; border-left: 4px solid color-mix(in srgb, var(--season) 35%, #fff); }
+.quote { margin: 18px 0 0; padding: 4px 0 4px 16px; border-left: 3px solid color-mix(in srgb, var(--season) 35%, #fff); }
 .quote p { font-size: 18px; line-height: 1.75; }
 .quote cite { display: block; margin-top: 6px; font-style: normal; font-size: 15px; color: var(--ink-3); }
 .btn { display: flex; align-items: center; justify-content: center; gap: 8px; height: var(--btn); border-radius: var(--r-pill); font-size: 18px; font-weight: 800; text-decoration: none; }
@@ -215,5 +216,8 @@ h1, h2, h3, p { margin: 0; }
   * { transition: none !important; scroll-behavior: auto !important; }
 }
 
-/* 제목 글자 색: 어두운 고동색 */
+/* 제목 글자 색: 계절 색이 살짝 섞인 검정 */
 .ttl, .mini-ttl, .title { color: var(--ink-title); }
+/* 글꼴 규칙('장면 확인표'와 같음): 제목과 작가의 한마디는 고운바탕 굵게(명조), 나머지 정보·버튼은 IBM Plex Sans KR(고딕) */
+.ttl, .mini-ttl, .title, .big .cap b, .records h2, .rec b { font-family: var(--font-display); font-weight: 700; letter-spacing: -0.01em; }
+.quote p { font-family: var(--font-display); font-weight: 700; font-size: 18px; line-height: 1.8; letter-spacing: 0; }
