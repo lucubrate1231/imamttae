@@ -377,11 +377,17 @@ loadKakaoSdk(import.meta.env.VITE_KAKAO_JS_KEY ?? '')
       const kr = new kakao.maps.LatLngBounds(new kakao.maps.LatLng(33.15, 125.6), new kakao.maps.LatLng(38.45, 129.6));
       map.setBounds(kr, 6, 6, 6, 6);
       national = { level: map.getLevel(), center: map.getCenter() };
-      kakao.maps.event.addListener(map, 'tilesloaded', function onFirst() {
-        kakao.maps.event.removeListener(map, 'tilesloaded', onFirst);
+      // 첫 지도 그림이 뜨면(늦어도 2.5초 뒤에는) 움직이기 시작
+      const start = () => {
+        if (ready) return;
         ready = true;
         window.setTimeout(() => { const s = visibleScenes()[sel]; if (s) flyTo(s); }, 600);
+      };
+      kakao.maps.event.addListener(map, 'tilesloaded', function onFirst() {
+        kakao.maps.event.removeListener(map, 'tilesloaded', onFirst);
+        start();
       });
+      window.setTimeout(start, 2500);
     } else ready = true;
     if (variant === 'b') {
       mapbox.append(locBtn);
