@@ -13,7 +13,6 @@ export default defineConfig({
       input: {
         main: resolve(__dirname, 'index.html'),
         review: resolve(__dirname, '_review/index.html'),
-        proto: resolve(__dirname, '_review/proto.html'),
         v2: resolve(__dirname, '_review/v2.html'),
         check: resolve(__dirname, '_review/check.html'),
       },
