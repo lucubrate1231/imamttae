@@ -1,22 +1,23 @@
 import { expect, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
-test('첫 화면: 앱 이름, 이번 달 선택, 오류 없음', async ({ page }) => {
+test('첫 화면: 이번 달 제목, 이번 달 선택, 오류 없음', async ({ page }) => {
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));
   page.on('console', (m) => m.type() === 'error' && errors.push(m.text()));
   await page.goto('./?map=fake');
-  await expect(page.getByRole('heading', { name: '이맘때 자연' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(/^\d{1,2}월에 만나는 자연$/);
+  await expect(page).toHaveTitle('이맘때 자연');
   await expect(page.locator('.mchip[aria-pressed="true"]')).toHaveCount(1);
   expect(errors).toEqual([]);
 });
 
 test('달을 누르면 주소가 바뀌고, 그 주소로 다시 열어도 같은 달', async ({ page }) => {
   await page.goto('./?map=fake');
-  await page.getByRole('button', { name: '12월' }).click();
+  await page.getByRole('button', { name: '12월', exact: true }).click();
   await expect(page).toHaveURL(/#\/month\/12$/);
   await page.reload();
-  await expect(page.getByRole('button', { name: '12월' })).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.getByRole('button', { name: '12월', exact: true })).toHaveAttribute('aria-pressed', 'true');
 });
 
 test('가로 스크롤 없음(320px 폭)', async ({ page }) => {

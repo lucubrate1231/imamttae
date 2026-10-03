@@ -80,26 +80,35 @@ describe('디자인 토큰 원본(tokens.css)', () => {
     expect(rootVar(css, '--tabs-h')).toBe('68px');
   });
 
-  it('옛 첫 화면이 쓰는 옛 이름(--c-*)은 새 토큰에 연결만 해 둠(값을 따로 적지 않음)', () => {
-    const css = tokens();
-    for (const old of ['--c-page', '--c-ink', '--c-ink-2', '--c-ink-3', '--c-line', '--c-surface', '--c-brand', '--c-accent', '--c-draft', '--c-draft-bg', '--c-sea']) {
-      expect(rootVar(css, old), old).toMatch(/^var\(--/);
-    }
+  it('옛 첫 화면의 옛 이름(--c-*)은 옛 화면과 함께 지움(기능 ①을 실제 앱으로 옮길 때)', () => {
+    expect(tokens()).not.toMatch(/--c-[a-z]/);
   });
 });
 
-describe('시안 v2는 토큰을 가져다 쓰기만 함', () => {
-  it('v2.css에 색·크기 원본(:root, [data-season])이 남아 있지 않고 tokens.css를 가져옴', () => {
+describe('시안 v2와 실제 앱은 같은 토큰·같은 모양 파일을 씀', () => {
+  const appcss = () => read('src/styles/app.css');
+
+  it('v2.css에 색·크기 원본(:root, [data-season])이 남아 있지 않고 tokens.css와 app.css를 가져옴', () => {
     const css = v2css();
     expect(css).toMatch(/@import\s+['"]\.\.\/styles\/tokens\.css['"]/);
+    expect(css).toMatch(/@import\s+['"]\.\.\/styles\/app\.css['"]/);
     expect(css).not.toMatch(/:root\s*\{/);
     expect(css).not.toMatch(/\[data-season=/);
   });
 
-  it('v2.css의 글꼴은 이름을 직접 적지 않고 토큰(--font-body)을 씀', () => {
-    const css = v2css();
+  it('모양 파일(app.css)에도 색·크기 원본이 없고, 글꼴은 이름 대신 토큰(--font-body)을 씀', () => {
+    const css = appcss();
+    expect(css).not.toMatch(/:root\s*\{/);
+    expect(css).not.toMatch(/\[data-season=/);
     expect(css).not.toMatch(/'IBM Plex Sans KR'/);
     expect(css).toMatch(/var\(--font-body\)/);
+  });
+
+  it('실제 앱도 같은 두 파일을 가져옴(옛 base.css 없음)', () => {
+    const main = read('src/main.ts');
+    expect(main).toMatch(/import ['"]\.\/styles\/tokens\.css['"]/);
+    expect(main).toMatch(/import ['"]\.\/styles\/app\.css['"]/);
+    expect(main).not.toMatch(/base\.css/);
   });
 
   it('v2.html에는 구글 글꼴 링크가 없음(토큰 파일이 내려받음)', () => {

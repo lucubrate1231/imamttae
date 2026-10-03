@@ -1,4 +1,4 @@
-/** 카카오 지도 SDK 불러오기. 실패하거나 너무 오래 걸리면 거절(reject)해서 앱이 목록 화면으로 넘어가게 합니다. */
+/** 카카오 지도 SDK 불러오기. 실패하거나 너무 오래 걸리면 거절(reject)해서 앱이 '지도를 불러오지 못했어요'로 넘어가게 합니다. */
 declare global {
   interface Window {
     kakao?: KakaoNS;
@@ -12,20 +12,32 @@ export interface KakaoLatLng {
 }
 export interface KakaoMapInst {
   setCenter(ll: KakaoLatLng): void;
-  setLevel(level: number): void;
-  setBounds(b: unknown): void;
+  setLevel(level: number, opts?: { animate?: { duration: number }; anchor?: KakaoLatLng }): void;
+  getLevel(): number;
+  getCenter(): KakaoLatLng;
+  panTo(ll: KakaoLatLng): void;
+  setBounds(b: unknown, top?: number, right?: number, bottom?: number, left?: number): void;
+  setZoomable(z: boolean): void;
   relayout(): void;
 }
 export interface KakaoOverlay {
   setMap(m: KakaoMapInst | null): void;
+  setZIndex(z: number): void;
 }
 export interface KakaoNS {
   maps: {
     load(cb: () => void): void;
     LatLng: new (lat: number, lng: number) => KakaoLatLng;
-    LatLngBounds: new () => { extend(ll: KakaoLatLng): void; isEmpty?(): boolean };
-    Map: new (el: HTMLElement, opts: { center: KakaoLatLng; level: number }) => KakaoMapInst;
+    LatLngBounds: new (sw?: KakaoLatLng, ne?: KakaoLatLng) => { extend(ll: KakaoLatLng): void; isEmpty?(): boolean };
+    Map: new (
+      el: HTMLElement,
+      opts: { center: KakaoLatLng; level: number; draggable?: boolean; scrollwheel?: boolean; disableDoubleClickZoom?: boolean; keyboardShortcuts?: boolean },
+    ) => KakaoMapInst;
     CustomOverlay: new (opts: { position: KakaoLatLng; content: HTMLElement; yAnchor?: number; xAnchor?: number; clickable?: boolean; zIndex?: number }) => KakaoOverlay;
+    event: {
+      addListener(target: unknown, type: string, fn: () => void): void;
+      removeListener(target: unknown, type: string, fn: () => void): void;
+    };
   };
 }
 
