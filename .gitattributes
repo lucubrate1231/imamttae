@@ -1,0 +1,5 @@
+# 줄바꿈을 LF로 통일 (Windows의 Codex 앱과 리눅스 CI가 같은 파일을 보도록)
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.bundle binary

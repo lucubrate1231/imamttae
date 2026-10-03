@@ -26,12 +26,21 @@
 
 ## 코드를 GitHub에 올리는 길 (Cowork 작업 공간)
 Claude의 클라우드 작업 공간은 GitHub에 바로 올릴 수 없어서, 사용자 컴퓨터를 거쳐 올립니다.
-1. 클라우드에서 개발·테스트한 뒤 바뀐 내용을 꾸러미 파일 하나(git bundle)로 만듭니다.
-2. 그 파일을 사용자 폴더 `band-to-brunch/imamttae-app/.sync/incoming.bundle`에 내려놓습니다. 매번 같은 파일을 덮어씁니다.
-3. 사용자 컴퓨터 작업 공간(Cowork가 쓰는 리눅스 공간)의 git 저장소(`~/imamttae`)가 꾸러미를 합친 뒤 GitHub에 올립니다.
-   - 실행하는 것은 `~/bin/imamttae-sync.sh push`입니다.
-   - GitHub 로그인은 이 공간에 저장되어 있습니다(gh CLI).
-4. 마지막으로 `band-to-brunch/imamttae-app/` 폴더에 최신 파일을 펼쳐 둡니다.
+중계는 사용자 컴퓨터 작업 공간(Cowork가 쓰는 리눅스 공간)의 git 저장소(`~/imamttae`)와 `~/bin/imamttae-sync.sh`가 맡습니다.
+- 스크립트 원본은 저장소의 `scripts/relay/imamttae-sync.sh`입니다.
+- GitHub 로그인은 이 공간에 저장되어 있습니다(gh CLI).
+
+**Codex와 함께 일하는 지금의 순서 (10/3부터, `AGENTS.md` 규칙)**
+1. **작업 전에 최신본 받기:** `imamttae-sync.sh pull`
+   - GitHub main(Codex가 합친 것 포함)을 꾸러미로 만들어 `band-to-brunch/imamttae-app/.sync/outgoing.bundle`에 둡니다.
+   - Claude는 그 꾸러미를 받아 그 위에서 작업합니다.
+2. **작업은 `claude/<주제>` 가지에서** 하고, 검사(`npm run check`, `npm run e2e`)를 통과시킵니다.
+3. **꾸러미로 내려놓기:** 가지를 꾸러미로 만들어 `.sync/incoming.bundle`에 둡니다. PR 설명은 `.sync/pr-body.md`에 둡니다.
+4. **PR 만들기:** `imamttae-sync.sh pr claude/<주제> "제목"`
+   - 가지를 GitHub에 올리고 PR을 만듭니다.
+   - 사용자가 GitHub에서 PR을 보고 **Merge**를 누르면 main에 들어가고 `/next/`에 배포됩니다.
+5. 사용자가 허락한 작은 변경만 `imamttae-sync.sh push`로 main에 바로 올립니다.
+6. 어느 경우든 마지막에 `band-to-brunch/imamttae-app/` 폴더를 GitHub main 기준으로 갱신합니다.
 
 - `imamttae-app/` 폴더는 GitHub 저장소와 같은 파일을 담은 **사본**입니다(.git 없음).
   - 연결된 폴더에서는 파일을 지울 수 없어서, git이 자기 임시 파일을 지우지 못합니다. 그래서 git 저장소 자체는 그 폴더에 두지 않습니다.
