@@ -27,8 +27,8 @@ const RECOMMENDER = '이상호 작가'; // 맨 위 작은 글씨(10/3: '현곡 �
 const STORY_URL = 'https://brunch.co.kr/@caed5ea4c3d74d9/1';
 
 const qMonth = Number(new URLSearchParams(location.search).get('m'));
-/** 사진 움직임 비교안(10/3 사용자 요청): 주소에 ?motion=1 을 붙였을 때만 장면 상세 사진이 천천히 움직임 */
-const MOTION = new URLSearchParams(location.search).get('motion') === '1';
+/** 사진 움직임: 장면 상세 사진이 아주 천천히 움직임. 기본으로 켬(10/3 사용자 확정 — "모션이 들어가니까 너무 좋다"). ?motion=0 이면 끔(비교·점검용) */
+const MOTION = new URLSearchParams(location.search).get('motion') !== '0';
 if (MOTION) document.documentElement.dataset.motion = 'on';
 let month: Month = qMonth >= 1 && qMonth <= 12 ? qMonth : monthInSeoul();
 let scenes: Scene[] = [];
@@ -331,7 +331,7 @@ function renderDetail(): void {
 
   // ── 사진: 위에 얹는 것은 작고 검정 반투명하게(10/3 2차 코멘트). 뒤로 + 넘김 화살표 + 작은 크레딧만 ──
   const n = s.photos.length;
-  // 사진 움직임(비교안): 사진을 틀(.kb)로 감싸 틀째 움직임. 옆으로 긴 사진은 좌우 밀기, 그 밖은 살짝 확대(src/domain/kenBurns.ts)
+  // 사진 움직임: 사진을 틀(.kb)로 감싸 틀째 움직임. 옆으로 긴 사진은 좌우 밀기, 그 밖은 살짝 확대(src/domain/kenBurns.ts)
   const photoEl = (p: Photo, i: number): HTMLElement => {
     const pic = img(p, i === 0 ? `${s.name} 풍경` : '');
     if (!MOTION) return pic;
