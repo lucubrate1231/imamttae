@@ -1,42 +1,8 @@
 /*
  * 시안 v2 — 스크롤 한 페이지, 제철 강조 / 기록은 낮은 톤, 계절 색.
- * 라이트 모드만, 블러 없음. 정해지면 src/styles/tokens.css 로 옮깁니다.
+ * 라이트 모드만, 블러 없음. 색·글꼴·크기 값은 src/styles/tokens.css 에서 가져옵니다(10/3 디자인 확정 뒤 옮김).
  */
-:root {
-  color-scheme: light;
-  --bg: #ffffff;
-  --bg-soft: #f3f5f2;
-  --ink: #3a3d3b; /* 본문 글자: 검정보다 한 톤 밝게(10/3 코멘트 — 너무 셈) */
-  --font-display: 'Gowun Batang', 'Nanum Myeongjo', serif; /* 제목·작가 글: 고운바탕(10/3 사용자 선택) */
-  --ink-title: #2e221d; /* 제목 글자: 검정에 가까운 고동색. 계절마다 그 계절 색이 아주 살짝 섞인 검정으로 바뀜(아래) */
-  --ink-2: #4f5753;
-  --ink-3: #5f6963;
-  --line: #e2e7e1;
-  --rec: #5f6963; /* 기록: 계절 색 없이 회색 */
-  --rec-bg: #eef0ed;
-  --draft: #7a5a1f;
-  --draft-bg: #f6edd9;
-  --map-sea: #eaf0ef;
-
-  /* 계절 색 (흰 바탕 대비 5.2 이상). 기본값은 가을 */
-  --season: #b0502a;
-  --season-soft: #fbefe8;
-
-  --r-card: 28px;
-  --r-photo: 24px;
-  --r-pill: 999px;
-  --fs-body: 18px;
-  --fs-meta: 16px;
-  --tap: 48px;
-  --btn: 56px;
-  --gutter: 16px;
-  --tabs-h: 68px;
-  --shadow: 0 10px 30px -14px rgba(23, 32, 27, 0.35);
-}
-[data-season='spring'] { --season: #b0466b; --season-soft: #fbeef3; --ink-title: #2e1f26; } /* 제목: 자줏빛이 살짝 섞인 검정 */
-[data-season='summer'] { --season: #2e6b4a; --season-soft: #e9f3ed; --ink-title: #1c2a22; } /* 제목: 초록빛이 살짝 섞인 검정 */
-[data-season='autumn'] { --season: #b0502a; --season-soft: #fbefe8; --ink-title: #2e221d; } /* 제목: 고동빛 검정(10/3 사용자 선택 C) */
-[data-season='winter'] { --season: #466a86; --season-soft: #edf3f8; --ink-title: #1e2632; } /* 서리 낀 듯한 바탕, 제목: 남빛 검정 */
+@import '../styles/tokens.css';
 
 * { box-sizing: border-box; }
 html { background: var(--bg); }
@@ -44,7 +10,7 @@ body {
   margin: 0;
   color: var(--ink);
   background: var(--bg);
-  font: var(--fs-body) / 1.6 'IBM Plex Sans KR', system-ui, -apple-system, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  font: var(--fs-body) / 1.6 var(--font-body);
   letter-spacing: -0.01em;
   -webkit-font-smoothing: antialiased;
   -webkit-text-size-adjust: 100%;
