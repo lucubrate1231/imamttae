@@ -174,53 +174,6 @@
    "hidden": false
   },
   {
-   "id": "s-005-towangseong-observatory",
-   "kind": "story",
-   "brunchNo": 5,
-   "brunchUrl": "https://brunch.co.kr/@caed5ea4c3d74d9/5",
-   "name": "토왕성폭포 전망대",
-   "region": "강원 속초",
-   "types": [
-    "danpung"
-   ],
-   "visited": "2019-10-13",
-   "best": {
-    "from": 10,
-    "to": 10,
-    "note": "10월 중순~하순",
-    "season": "가을"
-   },
-   "oneLiner": "바위 병풍 사이로 떨어지는 토왕성폭포를 마주하는 곳",
-   "excerpt": "드디어 전망대에 오르니 병풍처럼 펼쳐진 바위산과 하얀 물줄기를 떨구는 토왕성폭포가 장관이었다. 가을 하늘의 구름도 폭포를 구경하듯 멈춰 있어 한 폭의 동양화를 완성시켰다.",
-   "photos": [
-    {
-     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/E3nITlUU-UhBWZelTr8pA-JSBUw.jpg",
-     "w": 1280,
-     "h": 960,
-     "cap": "",
-     "focus": "40% 50%"
-    }
-   ],
-   "spot": {
-    "lat": 0,
-    "lng": 0
-   },
-   "dest": {
-    "name": "설악산 소공원 주차장",
-    "lat": 0,
-    "lng": 0,
-    "kind": "parking"
-   },
-   "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
-   },
-   "contestEntry": false,
-   "hidden": false
-  },
-  {
    "id": "s-006-baekgil-beach",
    "kind": "story",
    "brunchNo": 6,
@@ -262,137 +215,6 @@
    },
    "dest": {
     "name": "백길해수욕장 주차장",
-    "lat": 0,
-    "lng": 0,
-    "kind": "parking"
-   },
-   "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
-   },
-   "contestEntry": false,
-   "hidden": false
-  },
-  {
-   "id": "s-007-deogyusan-hyangjeokbong",
-   "kind": "story",
-   "brunchNo": 7,
-   "brunchUrl": "https://brunch.co.kr/@caed5ea4c3d74d9/7",
-   "name": "덕유산 향적봉 설화",
-   "region": "전북 무주",
-   "types": [
-    "seolgyeong"
-   ],
-   "visited": "2020-01-31",
-   "best": {
-    "from": 12,
-    "to": 2,
-    "note": "12월~2월",
-    "season": "한겨울",
-    "tip": "눈·비 내린 뒤"
-   },
-   "oneLiner": "곤돌라로 올라 걷는 눈꽃 터널, 향적봉 설화",
-   "excerpt": "나는 만개된 설화를 볼 때마다 바닷속의 산호를 생각하는데 오늘 피어 있는 설화는 아무리 아름다운 산호도 여기 설화만큼을 아름답지 않을 것이란 생각이 든다.",
-   "photos": [
-    {
-     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/mhfFtYjdRZrrLip43y7vi1F4G0w.jpg",
-     "w": 1280,
-     "h": 960,
-     "cap": "",
-     "focus": "50% 45%"
-    },
-    {
-     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/qRImVSx3qL0C4sh4zwA-lMky3zw.jpg",
-     "w": 1280,
-     "h": 960,
-     "cap": "",
-     "focus": "50% 50%"
-    },
-    {
-     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/wzu0LiCN9nwWFTtwtt_MVm-w0BE.jpg",
-     "w": 1280,
-     "h": 829,
-     "cap": "",
-     "focus": "50% 50%"
-    },
-    {
-     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/yXfLDHJAW7xKp9KVEB5YsfL9Ih0.jpg",
-     "w": 1280,
-     "h": 960,
-     "cap": "",
-     "focus": "50% 55%"
-    }
-   ],
-   "spot": {
-    "lat": 0,
-    "lng": 0
-   },
-   "dest": {
-    "name": "무주덕유산리조트 관광곤도라 주차장",
-    "lat": 0,
-    "lng": 0,
-    "kind": "parking"
-   },
-   "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
-   },
-   "contestEntry": false,
-   "hidden": false
-  },
-  {
-   "id": "s-008-hwangmaesan-cheoljjuk",
-   "kind": "story",
-   "brunchNo": 8,
-   "brunchUrl": "https://brunch.co.kr/@caed5ea4c3d74d9/8",
-   "name": "황매산 철쭉군락",
-   "region": "경남 합천",
-   "types": [
-    "jindallae"
-   ],
-   "visited": "2020-05-14",
-   "best": {
-    "from": 4,
-    "to": 5,
-    "note": "4월 말~5월 중순",
-    "season": "늦봄",
-    "tip": "산 위쪽은 늦게 피어요"
-   },
-   "oneLiner": "산자락을 분홍빛으로 덮은 철쭉 군락",
-   "excerpt": "전망대에 올라서 사방을 내려다본다. 지천의 만개된 철쭉들도 아름답지만 조금 멀리 보이는 산들도 내려다보니 아름답다.",
-   "photos": [
-    {
-     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/NTwC7A2eDR1-3-dI29ehizvuOfU.jpg",
-     "w": 1353,
-     "h": 640,
-     "cap": "",
-     "focus": "45% 50%"
-    },
-    {
-     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/9qyigdzrwtcc9kvO1Z4uRrkmR90.jpg",
-     "w": 1349,
-     "h": 640,
-     "cap": "",
-     "focus": "40% 50%"
-    },
-    {
-     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/9gEI6UhaclZbkm0yhoA_QfLQyJs.jpg",
-     "w": 1280,
-     "h": 785,
-     "cap": "",
-     "focus": "50% 50%"
-    }
-   ],
-   "spot": {
-    "lat": 0,
-    "lng": 0
-   },
-   "dest": {
-    "name": "황매산 정상주차장",
     "lat": 0,
     "lng": 0,
     "kind": "parking"
@@ -4611,6 +4433,65 @@
    "hidden": false
   },
   {
+   "id": "s-062-towangseong-falls",
+   "kind": "story",
+   "brunchNo": 62,
+   "brunchUrl": "https://brunch.co.kr/@caed5ea4c3d74d9/62",
+   "name": "토왕성폭포 전망대",
+   "region": "강원 속초",
+   "types": [
+    "gyegok"
+   ],
+   "visited": "2024-09-17",
+   "best": {
+    "from": 7,
+    "to": 9,
+    "note": "7~9월",
+    "season": "여름",
+    "tip": "비 온 뒤 물 많을 때"
+   },
+   "oneLiner": "계단 900개 끝에서 마주하는 거대한 토왕성폭포",
+   "excerpt": "전망대에 올라 수량이 많은 거대한 토왕성폭포와 주변의 암봉들을 감상했다.",
+   "photos": [
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/w2cN0GxlPb0vmptel-mOXKtw5i8.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": "토왕성폭포 전망대"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/i5KshihTNovZhsgn1Kz6_wuvCSc.jpg",
+     "w": 640,
+     "h": 1370,
+     "cap": "우리나라 최대의 토왕성폭포"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/lIEnG3wNx2uZpYWR_ZGMpBMdGnI.jpg",
+     "w": 640,
+     "h": 1370,
+     "cap": "육담폭포"
+    }
+   ],
+   "spot": {
+    "lat": 0,
+    "lng": 0
+   },
+   "dest": {
+    "name": "설악산 소공원 주차장",
+    "lat": 0,
+    "lng": 0,
+    "kind": "parking"
+   },
+   "review": {
+    "best": "draft",
+    "dest": "draft",
+    "oneLiner": "draft",
+    "types": "draft"
+   },
+   "contestEntry": false,
+   "hidden": false
+  },
+  {
    "id": "s-063-danyanggang-jando",
    "kind": "story",
    "brunchNo": 63,
@@ -4712,6 +4593,71 @@
     "lat": 0,
     "lng": 0,
     "kind": "entrance"
+   },
+   "review": {
+    "best": "draft",
+    "dest": "draft",
+    "oneLiner": "draft",
+    "types": "draft"
+   },
+   "contestEntry": false,
+   "hidden": false
+  },
+  {
+   "id": "s-064-deogyusan-hyangjeokbong",
+   "kind": "story",
+   "brunchNo": 64,
+   "brunchUrl": "https://brunch.co.kr/@caed5ea4c3d74d9/64",
+   "name": "덕유산 향적봉 설화",
+   "region": "전북 무주",
+   "types": [
+    "seolgyeong"
+   ],
+   "visited": "2025-02-02",
+   "best": {
+    "from": 12,
+    "to": 2,
+    "note": "12월~2월",
+    "season": "한겨울",
+    "tip": "눈·비 내린 뒤"
+   },
+   "oneLiner": "곤돌라로 올라 걷는 눈꽃 터널, 향적봉 설화",
+   "excerpt": "나무와 바위는 모두가 겨울꽃을 하얗게 피웠고, 산은 모두가 두터운 하얀 솜이불을 덮고 있었다.",
+   "photos": [
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/G0hUMoi2WhqNBMFPYbNGNlePyy0.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/Yi26goO-1p8REpddNfjHyxcbgv8.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/37wwcCSf6kVrJPtpke_AvPtGKng.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/8IUgffbWIIzjcVAmoz_mnJe2tIs.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": ""
+    }
+   ],
+   "spot": {
+    "lat": 0,
+    "lng": 0
+   },
+   "dest": {
+    "name": "무주덕유산리조트 관광곤도라 주차장",
+    "lat": 0,
+    "lng": 0,
+    "kind": "parking"
    },
    "review": {
     "best": "draft",
@@ -5252,6 +5198,71 @@
    },
    "dest": {
     "name": "지리산국립공원 대원사주차장",
+    "lat": 0,
+    "lng": 0,
+    "kind": "parking"
+   },
+   "review": {
+    "best": "draft",
+    "dest": "draft",
+    "oneLiner": "draft",
+    "types": "draft"
+   },
+   "contestEntry": true,
+   "hidden": false
+  },
+  {
+   "id": "s-070-hwangmaesan-cheoljjuk",
+   "kind": "story",
+   "brunchNo": 70,
+   "brunchUrl": "https://brunch.co.kr/@caed5ea4c3d74d9/70",
+   "name": "황매산 철쭉군락",
+   "region": "경남 합천",
+   "types": [
+    "jindallae"
+   ],
+   "visited": "2025-05-04",
+   "best": {
+    "from": 4,
+    "to": 5,
+    "note": "4월 말~5월 중순",
+    "season": "늦봄",
+    "tip": "해 뜰 무렵"
+   },
+   "oneLiner": "산자락을 분홍빛으로 덮은 철쭉 군락",
+   "excerpt": "구름 사이로 솟아오르는 태양의 황홀한 미소에 활짝 핀 철쭉들도 더 밝게 웃는 화려한 아침이다.",
+   "photos": [
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/EFO8xb9MG9Zi-rE7i0Juqjka_Wg.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/p3RjwWW_Y3KK9nCTtWxvwWa9pPg.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/UKH8SKvUwWW-dU7NVD9VYXzM9cI.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/cUshC5w_iKJ29MW5_qJcnQyd94k.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": ""
+    }
+   ],
+   "spot": {
+    "lat": 0,
+    "lng": 0
+   },
+   "dest": {
+    "name": "황매산 정상주차장",
     "lat": 0,
     "lng": 0,
     "kind": "parking"
