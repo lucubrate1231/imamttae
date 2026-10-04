@@ -6,15 +6,13 @@
  * 완성 기준: docs/features/F3-풍경-찾기.md · 모양: docs/design-guide.md 8장
  */
 import type { Scene, StoryScene } from '../../shared/schema/content';
-import { REGIONS, regionCounts, regionOf, type RegionId } from '../domain/find';
+import { REGIONS, findScenes, regionCounts, regionOf, typeGroups, typeWhen, whenStatus, type RegionId, type TypeWhen } from '../domain/find';
 import { inWindow, type Month } from '../domain/month';
 import { routeHref } from '../domain/router';
 import { isYearRound, sceneTier, visitedMonth } from '../domain/sceneTier';
 import { SCENE_TYPES, type SceneTypeId } from '../domain/sceneTypes';
 import type { MapAdapter, MapPin } from '../map/types';
 import { h, photoImg, thumb } from './dom';
-// ⚠ 임시: Codex 일 3이 합쳐지면 '../domain/find'에서 가져옴(src/ui/findCalcTemp.ts 머리말)
-import { sortNowGroup, typeGroups, typeWhen, whenStatus, type TypeWhen } from './findCalcTemp';
 
 export interface FindDeps {
   win: Window;
@@ -64,6 +62,8 @@ export function createFind(d: FindDeps): Find {
 
   const ofType = (t: SceneTypeId | null) => (t ? stories.filter((s) => s.types.includes(t)) : stories);
   const yearRound = (s: StoryScene) => !!s.best && isYearRound(s.best);
+  /** '지금 좋아요' 묶음 순서(D23): 추천 시기가 먼저 끝나는 곳, 같으면 이름순 — Codex 일 3 findScenes */
+  const sortNow = (xs: StoryScene[]) => findScenes(xs, { month: today }).peak;
 
   /**
    * 풍경의 대표 사진 = 그 풍경 화면 목록의 맨 위 장면(지금 제철 묶음은 D23 순서 → 일 년 내내 → 곧·그 뒤 → 다녀온 곳).
@@ -72,7 +72,7 @@ export function createFind(d: FindDeps): Find {
   function coverOf(t: SceneTypeId): StoryScene | undefined {
     const list = ofType(t);
     const timed = list.filter((s) => s.best && !yearRound(s) && sceneTier(s) === 'peak');
-    const now = sortNowGroup(timed.filter((s) => inWindow(today, s.best!)), today);
+    const now = sortNow(timed.filter((s) => inWindow(today, s.best!)));
     const yr = list.filter(yearRound).sort((a, b) => a.name.localeCompare(b.name, 'ko'));
     const rest = timed.filter((s) => !now.includes(s)).sort((a, b) => ahead(next(today), a.best!.from) - ahead(next(today), b.best!.from) || a.name.localeCompare(b.name, 'ko'));
     return now[0] ?? yr[0] ?? rest[0] ?? list[0];
@@ -196,7 +196,7 @@ export function createFind(d: FindDeps): Find {
     const dotHead = (cls: string, text: string) => h('p', { class: 'group-head' }, h('span', { class: `dot ${cls}`, 'aria-hidden': 'true' }), h('b', { text }));
     const yrGroup: Group | null = yr.length ? { head: h('p', { class: 'group-head', text: '언제나 좋아요' }), more: '<b>언제나</b> 좋은 곳 더 보기', rows: yr } : null;
     if (yrGroup && w?.kind === 'always') groups.push(yrGroup);
-    if (now.length) groups.push({ head: dotHead('now', '지금 좋아요'), more: `<b>${today}월</b>에 좋은 곳 더 보기`, rows: sortNowGroup(now, today) });
+    if (now.length) groups.push({ head: dotHead('now', '지금 좋아요'), more: `<b>${today}월</b>에 좋은 곳 더 보기`, rows: sortNow(now) });
     if (soon.length) groups.push({ head: dotHead('soon', '곧'), more: `<b>${next(today)}월</b>에 좋은 곳 더 보기`, rows: [...soon].sort(byName) });
     const starts = [...new Set(later.map((s) => s.best!.from))].sort((a, b) => ahead(next(today), a) - ahead(next(today), b));
     for (const m of starts) groups.push({ head: h('p', { class: 'group-head', text: `${m}월부터` }), more: `<b>${m}월</b>에 좋은 곳 더 보기`, rows: later.filter((s) => s.best!.from === m).sort(byName) });
