@@ -31,15 +31,18 @@ export interface Tracker {
   track(name: EventName, data?: EventData): void;
 }
 
-/** 웹사이트 ID(비밀 키 아님). 사용자가 Umami에 가입한 뒤 줌(7-4). 비어 있으면 아무것도 보내지 않음 */
-export const SITE_IDS = { alpha: '', preview: '' };
+/**
+ * 웹사이트 ID(비밀 키 아님, 10/4 사용자가 줌). 무료 계정은 사이트가 1개라 알파·미리보기가 같이 쓰고,
+ * 꼬리표(data-tag)로 나눠 대시보드에서 거릅니다: 미리보기(/next/) = preview, 알파 = alpha.
+ */
+export const SITE_ID = '84ee01a2-a3bf-43cc-aec5-9368dcd23fa7';
 const SCRIPT_SRC = 'https://cloud.umami.is/script.js';
 const DOMAINS = 'lucubrate1231.github.io'; // 이 주소에서만 보냄 → 내 컴퓨터·화면 테스트는 저절로 빠짐
 const QUEUE_MAX = 50;
 
-/** 주소가 /imamttae/next/ 로 시작하면 미리보기 ID, 아니면 알파 ID */
-export function siteIdFor(pathname: string, ids: { alpha: string; preview: string } = SITE_IDS): string {
-  return /^\/imamttae\/next(\/|$)/.test(pathname) ? ids.preview : ids.alpha;
+/** 주소가 /imamttae/next/ 로 시작하면 preview, 아니면 alpha */
+export function tagFor(pathname: string): 'preview' | 'alpha' {
+  return /^\/imamttae\/next(\/|$)/.test(pathname) ? 'preview' : 'alpha';
 }
 
 /** 열린 방식: 홈 화면 앱 / 카카오톡 안 브라우저 / 그 밖 */
@@ -92,11 +95,13 @@ export function applyMeParam(win: Window, say: (msg: string) => void): void {
 type Umami = { track: (...args: unknown[]) => void };
 
 /** attach: 스크립트를 문서에 붙이는 방법(테스트에서 가짜로 바꿈) */
-export function createUmamiTracker(win: Window, opts: { siteId: string; attach?: (s: HTMLScriptElement) => void }): Tracker {
+/** host: 지금 주소의 호스트(테스트에서 바꿈). github.io가 아니면 스크립트를 부르지도 않음(내 컴퓨터·화면 테스트) */
+export function createUmamiTracker(win: Window, opts: { siteId: string; tag: string; host?: string; attach?: (s: HTMLScriptElement) => void }): Tracker {
   let attached = false;
   type Item = { kind: 'page'; url: string } | { kind: 'event'; name: EventName; data?: EventData };
   let queue: Item[] = [];
-  let state: 'off' | 'waiting' | 'ready' | 'failed' = opts.siteId ? 'waiting' : 'off';
+  const host = opts.host ?? win.location.hostname;
+  let state: 'off' | 'waiting' | 'ready' | 'failed' = opts.siteId && host === DOMAINS ? 'waiting' : 'off';
   let referrer = '';
 
   const umami = () => (win as unknown as { umami?: Umami }).umami;
@@ -128,6 +133,7 @@ export function createUmamiTracker(win: Window, opts: { siteId: string; attach?:
       s.setAttribute('data-website-id', opts.siteId);
       s.setAttribute('data-domains', DOMAINS);
       s.setAttribute('data-auto-track', 'false');
+      s.setAttribute('data-tag', opts.tag); // 알파·미리보기 나누기
       s.addEventListener('load', () => {
         state = umami() ? 'ready' : 'failed';
         const q = queue;

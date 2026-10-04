@@ -1,6 +1,6 @@
 // @vitest-environment happy-dom
 import { beforeEach, describe, expect, it } from 'vitest';
-import { applyMeParam, createUmamiTracker, firstMonth, launchMode, shareUrl, siteIdFor } from '../../src/analytics';
+import { applyMeParam, createUmamiTracker, firstMonth, launchMode, shareUrl, SITE_ID, tagFor } from '../../src/analytics';
 import { createSafeStore } from '../../src/storage/safeStorage';
 
 /** 사용 통계(Umami) — docs/analytics.md, 기획 측정 계획 7장 */
@@ -24,15 +24,14 @@ const blocked: Storage = {
   setItem() { throw new Error('blocked'); },
 };
 
-describe('웹사이트 ID 고르기', () => {
-  const ids = { alpha: 'A-ID', preview: 'P-ID' };
-  it('주소가 /imamttae/next/ 로 시작하면 미리보기 ID, 아니면 알파 ID', () => {
-    expect(siteIdFor('/imamttae/next/', ids)).toBe('P-ID');
-    expect(siteIdFor('/imamttae/next/index.html', ids)).toBe('P-ID');
-    expect(siteIdFor('/imamttae/', ids)).toBe('A-ID');
+describe('웹사이트 ID와 꼬리표(무료 계정은 사이트 1개 — 10/4 사용자)', () => {
+  it('알파·미리보기가 ID 하나를 같이 씀', () => {
+    expect(SITE_ID).toBe('84ee01a2-a3bf-43cc-aec5-9368dcd23fa7');
   });
-  it('ID가 비어 있으면 빈 값(아무것도 안 보냄)', () => {
-    expect(siteIdFor('/imamttae/', { alpha: '', preview: '' })).toBe('');
+  it('주소가 /imamttae/next/ 로 시작하면 꼬리표 preview, 아니면 alpha(대시보드에서 거름)', () => {
+    expect(tagFor('/imamttae/next/')).toBe('preview');
+    expect(tagFor('/imamttae/next/index.html')).toBe('preview');
+    expect(tagFor('/imamttae/')).toBe('alpha');
   });
 });
 
@@ -105,15 +104,21 @@ describe('Umami 추적기', () => {
   });
 
   it('웹사이트 ID가 없으면 스크립트를 부르지 않고, 무엇을 불러도 조용함', () => {
-    const t = createUmamiTracker(window, { siteId: '', attach });
+    const t = createUmamiTracker(window, { siteId: '', tag: 'preview', host: 'lucubrate1231.github.io', attach });
     t.pageview('/imamttae/#/find');
     t.track('navi', { app: 'tmap' });
     t.load();
     expect(script).toBeNull();
   });
 
+  it('github.io가 아닌 곳(내 컴퓨터·화면 테스트)에서는 ID가 있어도 스크립트를 부르지 않음', () => {
+    const t2 = createUmamiTracker(window, { siteId: 'P-ID', tag: 'alpha', host: 'localhost', attach });
+    t2.load();
+    expect(script).toBeNull();
+  });
+
   it('ID가 있으면 늦게(defer) 스크립트를 붙임: github.io에서만, 자동 화면 조회는 끔', () => {
-    const t = createUmamiTracker(window, { siteId: 'P-ID', attach });
+    const t = createUmamiTracker(window, { siteId: 'P-ID', tag: 'preview', host: 'lucubrate1231.github.io', attach });
     t.load();
     const s = script!;
     expect(s.src).toBe('https://cloud.umami.is/script.js');
@@ -121,11 +126,12 @@ describe('Umami 추적기', () => {
     expect(s.getAttribute('data-website-id')).toBe('P-ID');
     expect(s.getAttribute('data-domains')).toBe('lucubrate1231.github.io');
     expect(s.getAttribute('data-auto-track')).toBe('false');
+    expect(s.getAttribute('data-tag')).toBe('preview');
   });
 
   it('스크립트가 오기 전 사건은 줄 세웠다가, 오면 순서대로 보냄(app-open이 사라지지 않게)', () => {
     const sent: unknown[][] = [];
-    const t = createUmamiTracker(window, { siteId: 'P-ID', attach });
+    const t = createUmamiTracker(window, { siteId: 'P-ID', tag: 'preview', host: 'lucubrate1231.github.io', attach });
     t.load();
     t.pageview('/imamttae/#/month/10');
     t.track('app-open', { mode: 'browser' });
@@ -137,7 +143,7 @@ describe('Umami 추적기', () => {
   });
 
   it('스크립트를 못 불러오면(광고 차단 등) 줄을 비우고 앱은 그대로', () => {
-    const t = createUmamiTracker(window, { siteId: 'P-ID', attach });
+    const t = createUmamiTracker(window, { siteId: 'P-ID', tag: 'preview', host: 'lucubrate1231.github.io', attach });
     t.load();
     t.track('app-open', {});
     script!.dispatchEvent(new Event('error'));
