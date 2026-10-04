@@ -1,6 +1,6 @@
 /**
  * 작가 확인용 장면 목록 (_review/check.html)
- * 휴대폰에서 장면 55곳을 번호 순서로 훑어보고, 고칠 곳을 번호로 카톡에 알려 주시도록 만든 페이지입니다.
+ * 휴대폰에서 장면을 번호 순서로 훑어보고, 고칠 곳을 번호로 카톡에 알려 주시도록 만든 페이지입니다.
  * 저장 기능은 없습니다. 확인 결과는 '장면 확인표'에 사용자가 옮겨 적습니다.
  */
 import './check.css';
@@ -10,6 +10,15 @@ import { SCENE_TYPES } from '../domain/sceneTypes';
 
 type Scene = StoryScene;
 type Filter = 'all' | 'ask' | 'peak' | 'record';
+/** 작가님께 여쭐 법규 문장(D20) — content/review/legal.json */
+interface LegalPost {
+  brunchNo: number;
+  title: string;
+  url: string;
+  status: 'open' | 'fixed';
+  scenes: string[];
+  items: { why: string; where: string; sentence: string }[];
+}
 
 function h<K extends keyof HTMLElementTagNameMap>(tag: K, attrs: Record<string, string> = {}, ...kids: (Node | string | null)[]): HTMLElementTagNameMap[K] {
   const el = document.createElement(tag);
@@ -35,6 +44,8 @@ document.getElementById('app')!.append(main);
 
 let scenes: Scene[] = [];
 let notes: Record<string, string> = {};
+let legal: LegalPost[] = [];
+const legalOpen = new Set<string>();
 let filter: Filter = 'all';
 
 function item(s: Scene, no: number): HTMLElement {
@@ -56,6 +67,7 @@ function item(s: Scene, no: number): HTMLElement {
         h('br', {}),
         h('span', { class: `tag ${peak ? 'peak' : 'rec'}`, text: peak ? '제철' : '작가 부부 방문' }),
         ask ? h('span', { class: 'tag ask', text: '메모' }) : null,
+        legalOpen.has(s.id) ? h('span', { class: 'tag ask', text: '문장 확인' }) : null,
       ),
       h('span', { class: 'chev', 'aria-hidden': 'true', text: '›' }),
     ),
@@ -119,15 +131,52 @@ function renderList(): void {
   list.replaceChildren(...(nodes.length ? nodes : [h('p', { class: 'empty', text: '해당하는 장면이 없어요.' })]));
 }
 
+/** 맨 위 '여쭤볼 문장' 상자: 아직 남은 글(open)은 위치와 문장, 고치신 글(fixed)은 한 줄로 */
+function legalSection(): HTMLElement | null {
+  if (!legal.length) return null;
+  const open = legal.filter((p) => p.status === 'open');
+  const fixed = legal.filter((p) => p.status === 'fixed');
+  const byId = new Map(scenes.map((s, i) => [s.id, i + 1]));
+  const sceneRef = (p: LegalPost) =>
+    p.scenes
+      .filter((id) => byId.has(id))
+      .map((id) => `${byId.get(id)}번 ${scenes[byId.get(id)! - 1]!.name}`)
+      .join(', ');
+  return h(
+    'section',
+    { class: 'legal', 'aria-labelledby': 'legal-h' },
+    h('h2', { id: 'legal-h', text: '글에서 여쭤볼 문장' }),
+    h('p', { text: '주차장에서 텐트·차박처럼 규칙에 어긋나 보일 수 있는 문장이에요. 고치실지는 작가님이 정해 주세요. 그대로 두시면 이 글의 장면은 앱에서 잠시 빼 둘게요.' }),
+    ...open.map((p) =>
+      h(
+        'div',
+        { class: 'legal-post' },
+        h('h3', {}, h('a', { href: p.url, target: '_blank', rel: 'noopener', text: `브런치 #${p.brunchNo}(${p.title})` })),
+        sceneRef(p) ? h('p', { class: 'scenes', text: `앱 장면: ${sceneRef(p)}` }) : null,
+        ...p.items.map((it) =>
+          h('div', { class: 'legal-item' }, h('p', { class: 'where', text: `${it.where} · ${it.why}` }), h('blockquote', { text: it.sentence })),
+        ),
+      ),
+    ),
+    fixed.length ? h('p', { class: 'fixed', text: `고쳐 주신 글: ${fixed.map((p) => `브런치 #${p.brunchNo}(${p.title})`).join(', ')} — 확인했어요. 감사합니다.` }) : null,
+  );
+}
+
 async function start(): Promise<void> {
   try {
-    const [a, n] = await Promise.all([fetch(new URL('../data/scenes.json', location.href)), fetch(new URL('./notes.json', location.href))]);
+    const [a, n, l] = await Promise.all([
+      fetch(new URL('../data/scenes.json', location.href)),
+      fetch(new URL('./notes.json', location.href)),
+      fetch(new URL('./legal.json', location.href)).catch(() => null),
+    ]);
     scenes = ((await a.json()) as ContentFile).scenes.filter((s): s is Scene => s.kind === 'story');
     notes = n.ok ? ((await n.json()) as Record<string, string>) : {};
+    legal = l?.ok ? ((await l.json()) as { posts: LegalPost[] }).posts : [];
   } catch {
     main.append(h('p', { class: 'empty', text: '장면을 불러오지 못했어요. 잠시 뒤 다시 열어 주세요.' }));
     return;
   }
+  for (const p of legal) if (p.status === 'open') for (const id of p.scenes) legalOpen.add(id);
   for (const s of scenes) {
     counts.all++;
     if (notes[s.id]) counts.ask++;
@@ -138,7 +187,7 @@ async function start(): Promise<void> {
     h(
       'header',
       { class: 'intro' },
-      h('h1', { text: '이맘때 자연 · 장면 확인' }),
+      h('h1', { text: '이맘때 풍경 · 장면 확인' }),
       h('p', { text: `작가님 브런치 글에서 고른 장면 ${counts.all}곳입니다. 앱에 이렇게 들어갑니다.` }),
       h(
         'div',
@@ -176,6 +225,8 @@ async function start(): Promise<void> {
     });
     filters.append(b);
   }
+  const legalBox = legalSection();
+  if (legalBox) main.append(legalBox);
   main.append(filters, list, h('p', { class: 'foot', text: '가장 좋은 때는 해마다 1~2주씩 달라질 수 있어요. 앱에서는 꽃·단풍·억새·눈 장면에 "올해 소식을 확인하세요" 안내를 붙입니다.' }));
   renderList();
   if (location.hash) document.getElementById(decodeURIComponent(location.hash.slice(1)))?.setAttribute('open', '');

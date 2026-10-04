@@ -70,6 +70,11 @@ export const StoryScene = z.object({
   trip: z.string().max(30).optional(),
   contestEntry: z.boolean().default(false),
   hidden: z.boolean().default(false),
+  /**
+   * 입장료·운영 시간 확인 안내를 붙일 장면(민간 정원·유료 수목원 등, D4). 없으면 false로 봅니다.
+   * 데이터에는 표시만 둡니다. 안내 문구와 자리는 화면 쪽(design-guide)에서 정합니다.
+   */
+  checkAdmission: z.boolean().optional(),
   /** 작가 확인 때 볼 메모(앱에는 안 보임) */
   notes: z.string().max(300).optional(),
 });
