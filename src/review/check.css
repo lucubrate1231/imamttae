@@ -79,3 +79,16 @@ blockquote { margin: 12px 0 0; padding-left: 14px; border-left: 4px solid var(--
 .links a.main { border-color: var(--brand); background: var(--brand); color: #fff; }
 .empty { margin-top: 24px; color: var(--ink-2); }
 .foot { margin-top: 28px; font-size: 15px; color: var(--ink-3); }
+
+/* 글에서 여쭤볼 문장(D20) */
+.legal { margin-top: 16px; padding: 16px; border-radius: var(--r); background: var(--ask-bg); }
+.legal h2 { font-size: 20px; color: var(--ask); }
+.legal > p { margin-top: 6px; font-size: 17px; color: var(--ink-2); }
+.legal-post { margin-top: 14px; }
+.legal-post h3 { margin: 0; font-size: 18px; line-height: 1.4; }
+.legal-post a { display: inline-block; min-height: var(--tap); padding: 10px 0; }
+.legal-post .scenes { font-size: 16px; color: var(--ink-2); }
+.legal-item { margin-top: 8px; }
+.legal-item .where { font-size: 16px; font-weight: 700; color: var(--ask); }
+.legal-item blockquote { margin: 6px 0 0; padding: 10px 14px; border-left: 4px solid var(--ask); background: #fff; border-radius: 0 14px 14px 0; font-size: 17px; }
+.legal .fixed { margin-top: 12px; font-size: 16px; color: var(--ink-2); }
