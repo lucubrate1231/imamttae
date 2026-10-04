@@ -5,7 +5,7 @@ import { createListMap } from '../../src/map/listMap';
 import { createSafeStore } from '../../src/storage/safeStorage';
 import { inWindow } from '../../src/domain/month';
 import { isYearRound } from '../../src/domain/sceneTier';
-import { createTempSavedStore, type SavedStore } from '../../src/ui/savedTemp';
+import { createSavedStore, type SavedStore } from '../../src/storage/saved';
 import type { ContentFile, StoryScene } from '../../shared/schema/content';
 import appData from '../../public/data/scenes.json';
 
@@ -56,7 +56,7 @@ beforeEach(() => {
   document.body.innerHTML = '<div id="app"></div>';
   root = document.getElementById('app')!;
   opened = [];
-  saved = createTempSavedStore(memory(), () => OCT);
+  saved = createSavedStore(memory(), () => OCT);
 });
 afterEach(() => apps.forEach((a) => a.destroy()));
 
@@ -87,7 +87,7 @@ describe('저장한 곳 탭 열기', () => {
   });
 
   it('F4-AC16: 저장이 막힌 브라우저면 맨 위에 "이 브라우저에서는 저장되지 않아요."', async () => {
-    saved = createTempSavedStore(createSafeStore(() => { throw new Error('blocked'); }), () => OCT);
+    saved = createSavedStore(createSafeStore(() => { throw new Error('blocked'); }), () => OCT);
     await start('#/saved');
     expect(q('.sv-warn')!.textContent).toBe('이 브라우저에서는 저장되지 않아요.');
   });

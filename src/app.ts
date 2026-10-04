@@ -20,7 +20,7 @@ import { createNavi } from './ui/navi';
 import type { WantedLike } from './ui/wanted';
 import { applyMeParam, firstMonth, launchMode, type EventData, type Tracker } from './analytics';
 import { createSaved } from './ui/saved';
-import { createTempSavedStore, seoulDate, type SavedStore } from './ui/savedTemp';
+import { createSavedStore, type SavedStore } from './storage/saved';
 
 export interface AppDeps {
   root: HTMLElement;
@@ -41,7 +41,7 @@ export interface AppDeps {
   store?: SafeStore;
   /** 가고 싶어요 저장. Codex 일 2 전까지는 임시(화면을 닫으면 사라짐) */
   wanted?: WantedLike;
-  /** 저장한 곳(F4). 없으면 임시 저장(Codex 일 4가 오면 바뀜, src/ui/savedTemp.ts) */
+  /** 저장한 곳(F4). 없으면 휴대폰 저장소(Codex 일 4, src/storage/saved.ts) */
   saved?: SavedStore;
   /** 사용 통계(Umami). 없으면 아무것도 보내지 않음 */
   tracker?: Tracker;
@@ -121,7 +121,7 @@ export async function startApp(deps: AppDeps): Promise<AppHandle> {
     return { render() {}, destroy() {} };
   }
 
-  const savedStore = deps.saved ?? createTempSavedStore(store, () => deps.now ?? new Date());
+  const savedStore = deps.saved ?? createSavedStore(store, () => deps.now ?? new Date());
   const map = deps.mapFailed ? createFailedMap() : deps.map;
   if (map.kind === 'failed') tracker.track('error', { kind: 'map-fail' });
   let sceneFrom: string | null = null; // 통계 scene-open: 앱 안에서 연 곳(없으면 주소로 바로 = link)
@@ -172,7 +172,7 @@ export async function startApp(deps: AppDeps): Promise<AppHandle> {
     win,
     scenes: deps.content.scenes,
     today: thisMonth,
-    year: Number(seoulDate(deps.now ?? new Date()).slice(0, 4)),
+    year: Number(new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Seoul', year: 'numeric' }).format(deps.now ?? new Date())),
     store: savedStore,
     navi,
     openScene: (id, from) => {
