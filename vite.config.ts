@@ -15,6 +15,7 @@ export default defineConfig({
         review: resolve(__dirname, '_review/index.html'),
         v2: resolve(__dirname, '_review/v2.html'),
         check: resolve(__dirname, '_review/check.html'),
+        a2hsLab: resolve(__dirname, '_review/a2hs-lab.html'), // 홈 화면에 추가 실기기 확인(D33)
       },
     },
   },
