@@ -14,7 +14,7 @@ import { createSafeStore, type SafeStore } from './storage/safeStorage';
 import { dateInSeoul, seasonOf } from './domain/home';
 import { createDetail } from './ui/detail';
 import { createFind } from './ui/find';
-import { h } from './ui/dom';
+import { h, paintBrowserBar } from './ui/dom';
 import { createHome } from './ui/home';
 import { createNavi } from './ui/navi';
 import { applyMeParam, firstMonth, launchMode, type EventData, type Tracker } from './analytics';
@@ -221,8 +221,7 @@ export async function startApp(deps: AppDeps): Promise<AppHandle> {
     tabButtons.forEach((b, i) => (i === tab ? b.setAttribute('aria-current', 'page') : b.removeAttribute('aria-current')));
     const m = next === 'home' ? (shown ?? thisMonth) : thisMonth;
     root.dataset.season = seasonOf(m);
-    const soft = getComputedStyle(root).getPropertyValue('--season-soft').trim();
-    win.document.querySelector('meta[name=theme-color]')?.setAttribute('content', soft || '#ffffff');
+    paintBrowserBar(win, root);
   }
 
   let shown: Month | null = null;

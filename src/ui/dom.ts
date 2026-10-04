@@ -61,3 +61,14 @@ export function fmtDate(iso: string): string {
   const [y, m, d] = iso.split('-').map(Number);
   return d ? `${y}년 ${m}월 ${d}일` : `${y}년 ${m}월`;
 }
+
+/**
+ * 브라우저 주소창·상태 막대 뒤 색을 그 화면 머리의 계절 색(--season-soft)으로.
+ * - 안드로이드 크롬·옛 사파리: <meta name="theme-color">
+ * - iOS 26 사파리: theme-color를 쓰지 않고 페이지 바깥(html) 배경색을 씀(10/4 사용자 아이폰 확인). 본문은 #app의 흰 바탕이라 그대로
+ */
+export function paintBrowserBar(win: Window, root: HTMLElement | null): void {
+  const soft = (root ? getComputedStyle(root).getPropertyValue('--season-soft').trim() : '') || '#ffffff';
+  win.document.querySelector('meta[name=theme-color]')?.setAttribute('content', soft);
+  win.document.documentElement.style.backgroundColor = soft;
+}

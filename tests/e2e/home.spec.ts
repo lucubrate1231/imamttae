@@ -96,3 +96,20 @@ test('C-1: 320px 폭에서 가로로 밀리지 않음(모든 달)', async ({ pag
     expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(0);
   }
 });
+
+test('아이폰 사파리 주소창 뒤 색: 페이지 바깥(html) 배경이 그 화면 머리의 계절 색(iOS 26은 theme-color 대신 이 색을 씀, 10/4 사용자)', async ({ page }) => {
+  const soft = () => page.$eval('#app', (el) => getComputedStyle(el).getPropertyValue('--season-soft').trim().toLowerCase());
+  const htmlBg = () => page.evaluate(() => getComputedStyle(document.documentElement).backgroundColor);
+  const hex = (rgb: string) => '#' + rgb.match(/\d+/g)!.slice(0, 3).map((n) => Number(n).toString(16).padStart(2, '0')).join('');
+  const meta = () => page.$eval('meta[name=theme-color]', (m) => m.getAttribute('content')!.toLowerCase());
+  await open(page, '#/month/4');
+  expect(hex(await htmlBg())).toBe(await soft()); // 봄
+  expect(await meta()).toBe(await soft());
+  await page.getByRole('button', { name: '풍경 찾기', exact: true }).click();
+  await expect(page).toHaveURL(/#\/find$/);
+  await expect.poll(async () => hex(await htmlBg())).toBe(await soft()); // 오늘의 계절
+  await page.getByRole('button', { name: '저장한 곳', exact: true }).click();
+  await expect.poll(async () => hex(await htmlBg())).toBe(await soft());
+  // 바깥 배경을 칠해도 화면 본문은 흰 바탕 그대로
+  expect(await page.$eval('#app', (el) => getComputedStyle(el).backgroundColor)).toBe('rgb(255, 255, 255)');
+});

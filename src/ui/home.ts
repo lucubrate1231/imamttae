@@ -10,7 +10,7 @@ import { routeHref } from '../domain/router';
 import { SCENE_TYPES } from '../domain/sceneTypes';
 import { timingNotice } from '../domain/timingNotice';
 import type { MapAdapter, MapPin } from '../map/types';
-import { calIcon, fmtDate, h, infoIcon, phoneIcon, photoImg, thumb } from './dom';
+import { calIcon, fmtDate, h, infoIcon, paintBrowserBar, phoneIcon, photoImg, thumb } from './dom';
 
 const RECOMMENDER = '이상호 작가'; // 맨 위 작은 글씨(10/3 사용자 결정)
 const STORY_URL = 'https://brunch.co.kr/@caed5ea4c3d74d9/1'; // 이 앱 이야기
@@ -175,8 +175,7 @@ export function createHome(d: HomeDeps): Home {
     view = homeView(d.scenes, month);
     const root = main.parentElement;
     if (root) root.dataset.season = seasonOf(month);
-    const soft = root ? getComputedStyle(root).getPropertyValue('--season-soft').trim() : '';
-    win.document.querySelector('meta[name=theme-color]')?.setAttribute('content', soft || '#ffffff');
+    paintBrowserBar(win, root ?? null);
 
     for (const c of chips) c.setAttribute('aria-pressed', String(c.textContent === `${month}월`));
     title.textContent = `${month}월에 만나는 풍경`;
