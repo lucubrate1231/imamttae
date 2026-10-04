@@ -210,7 +210,7 @@ export async function startApp(deps: AppDeps): Promise<AppHandle> {
 
   const tabButtons = [...tabs.querySelectorAll('button')];
   let screen: 'home' | 'find' | 'saved' = 'home';
-  /** 첫 화면 ↔ 풍경 찾기 바꾸기. 풍경 찾기는 늘 오늘의 계절 색 */
+  /** 탭 바꾸기(첫 화면·풍경 찾기·저장한 곳). 색은 세 탭 모두 첫 화면에서 고른 달(design-guide 3장, PR #48) */
   function showScreen(next: 'home' | 'find' | 'saved'): void {
     if (next !== screen) win.scrollTo?.({ top: 0 });
     screen = next;
@@ -219,7 +219,7 @@ export async function startApp(deps: AppDeps): Promise<AppHandle> {
     saved.el.hidden = next !== 'saved';
     const tab = { home: 0, find: 1, saved: 2 }[next];
     tabButtons.forEach((b, i) => (i === tab ? b.setAttribute('aria-current', 'page') : b.removeAttribute('aria-current')));
-    const m = next === 'home' ? (shown ?? thisMonth) : thisMonth;
+    const m = shown ?? thisMonth; // 세 탭 모두 첫 화면에서 고른 달의 색(PR #48). 글자·상태는 오늘 기준 그대로
     root.dataset.season = seasonOf(m);
     paintBrowserBar(win, root);
   }
