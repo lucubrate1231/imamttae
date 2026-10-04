@@ -68,12 +68,13 @@ export function createSavedStore(store?: SafeStore, now?: () => Date): SavedStor
 import type { Scene, StoryScene } from '../../shared/schema/content';
 import type { Month } from './month';
 
-/** 가고 싶은 곳 줄 하나의 상태(F4-AC2 상태 한 줄): 지금 좋아요 · N월까지 / 언제나 좋아요 / 곧 · N월부터 / N월부터 / 볼 수 없음 */
+/** 가고 싶은 곳 줄 하나의 상태(F4-AC2 상태 한 줄): 지금 좋아요 · N월까지 / 언제나 좋아요 / 곧 · N월부터 / N월부터 / 추천 시기 없음 / 볼 수 없음 */
 export type SavedStatus =
   | { kind: 'now'; until: Month }     // 오늘이 추천 시기 안 — until = 추천 시기가 끝나는 달
   | { kind: 'always' }                // 일 년 내내
   | { kind: 'soon'; from: Month }     // 추천 시기가 다음 달에 시작
-  | { kind: 'later'; from: Month }    // 그 밖(추천 시기가 없는 장면은 여기 넣지 않고 'always'도 아니면 'later'의 맨 뒤 — 아래 규칙)
+  | { kind: 'later'; from: Month }    // 그 밖: 추천 시기가 빨리 오는 순
+  | { kind: 'none' }                  // 추천 시기가 없는 장면(데이터 규칙상 비워 둘 수 있음, 10/4 예: s-065-amisan-ridge). 화면은 상태 한 줄을 비움
   | { kind: 'missing' };              // 장면이 숨겨지거나 없어짐(F4-AC12)
 
 export interface SavedRow { sceneId: string; scene: StoryScene | null; status: SavedStatus }
@@ -102,8 +103,9 @@ export function alertScenes(scenes: readonly Scene[], wantedIds: readonly string
 1. **지금**(오늘이 추천 시기 안, 일 년 내내가 아닌 장면): 추천 시기가 **먼저 끝나는 곳** 먼저, 같으면 이름순(D23과 같은 규칙).
 2. **일 년 내내**(`isYearRound`): 이름순.
 3. **곧**(추천 시기가 다음 달에 시작): 이름순.
-4. **그 밖**: 추천 시기가 **빨리 오는 순**(다음 달부터 가까운 시작 달), 같으면 이름순. 추천 시기가 없는 장면은 그 밖의 맨 뒤(이름순).
-5. **볼 수 없음**(데이터에 없거나 `hidden`, 또는 준비 중 장면): 맨 뒤, 저장한 순서대로(`wantedIds` 순서).
+4. **그 밖**: 추천 시기가 **빨리 오는 순**(다음 달부터 가까운 시작 달), 같으면 이름순.
+5. **추천 시기 없음**(`none`): 이름순. *(10/4 개발 리드 결정 — Codex 질문으로 처음 문서의 빈칸을 채움: 'later'는 시작 달이 꼭 있어야 해서 따로 둠)*
+6. **볼 수 없음**(데이터에 없거나 `hidden`, 또는 준비 중 장면): 맨 뒤, 저장한 순서대로(`wantedIds` 순서).
 - 해를 넘는 추천 시기(예: 12~2월)도 맞게 셉니다(`inWindow`).
 - `until`·`from`은 화면의 '10월까지'·'11월부터'에 씁니다.
 
