@@ -3,7 +3,7 @@ import './styles/app.css';
 import type { ContentFile } from '../shared/schema/content';
 import { startApp } from './app';
 import { createMap, pickMapMode } from './map';
-import { createUmamiTracker, siteIdFor } from './analytics';
+import { createUmamiTracker, SITE_ID, tagFor } from './analytics';
 
 /** 장면 데이터 불러오기. 실패하면 null(화면이 쉬운 말로 알림) */
 async function loadContent(): Promise<ContentFile | null> {
@@ -24,8 +24,8 @@ async function main(): Promise<void> {
   // 첫 화면과 풍경 찾기가 지도를 하나씩 씀(카카오 SDK는 한 번만 불러옴)
   const [content, { map, fallbackReason }, { map: findMap }] = await Promise.all([loadContent(), createMap(mode, key), createMap(mode, key)]);
   if (fallbackReason) console.warn('[imamttae] 지도 대체:', fallbackReason);
-  // 사용 통계: 웹사이트 ID가 비어 있으면 아무것도 보내지 않음(docs/analytics.md)
-  const tracker = createUmamiTracker(window, { siteId: siteIdFor(location.pathname) });
+  // 사용 통계(docs/analytics.md): github.io에서만 보내고, 미리보기·알파는 꼬리표로 나눔
+  const tracker = createUmamiTracker(window, { siteId: SITE_ID, tag: tagFor(location.pathname) });
   await startApp({ root, map, findMap, content, tracker });
 }
 
