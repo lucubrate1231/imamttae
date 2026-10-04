@@ -211,8 +211,7 @@ export function createFind(d: FindDeps): Find {
     const mapSec = h(
       'section',
       { class: 'find-map', 'aria-label': '지도' },
-      mapbox,
-      !few && h('div', { class: 'legend', 'aria-hidden': 'true' }, h('span', { text: '좋은 때 다녀온 곳' }), h('span', { class: 'r', text: '다른 때 다녀온 곳' })),
+      mapbox, // 범례는 두지 않고 색 구분만(D31) — 회색 점의 뜻은 아래 '작가가 다녀온 곳' 구역이 알려 줌
     );
 
     // 목록: 첫 묶음만 펼치고 나머지는 'N월에 좋은 곳 더 보기'
@@ -239,7 +238,13 @@ export function createFind(d: FindDeps): Find {
     }
     const recSec =
       !few && records.length
-        ? h('section', { class: 'find-records' }, h('h2', { text: '다른 때 다녀온 곳' }), ...records.map((s) => row(s, true)))
+        ? h(
+            'section',
+            { class: 'find-records' },
+            h('h2', {}, h('span', { class: 'dot rec', 'aria-hidden': 'true' }), '작가가 다녀온 곳'),
+            h('p', { class: 'sub' }, h('span', { class: 'nowrap', text: '가장 좋은 때는 아니지만' }), ' ', h('span', { class: 'nowrap', text: '다녀온 모습을 볼 수 있어요.' })),
+            ...records.map((s) => row(s, true)),
+          )
         : null;
     const together =
       few && type

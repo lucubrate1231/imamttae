@@ -78,6 +78,8 @@ describe('제철 카드와 작가 부부가 다녀온 곳', () => {
     await start();
     expect(text('.records h2')).toBe('10월, 작가가 다녀온 곳');
     expect(text('.records .sub')).toBe('가장 좋은 때는 아니지만 이맘때 모습을 볼 수 있어요.');
+    // 좁은 폭에서는 '아니지만' 뒤에서만 줄을 바꿈(8-1, D31)
+    expect([...root.querySelectorAll('.records .sub .nowrap')].map((e) => e.textContent)).toEqual(['가장 좋은 때는 아니지만', '이맘때 모습을 볼 수 있어요.']);
     expect(root.querySelector('.rail')!.getAttribute('aria-label')).toBe('10월에 좋은 풍경');
     expect(all('.rec').map((r) => r.querySelector('b')?.textContent)).toEqual(['동해 추암 촛대바위']);
     window.location.hash = '#/month/11';

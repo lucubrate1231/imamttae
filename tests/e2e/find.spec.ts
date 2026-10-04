@@ -21,7 +21,11 @@ test('타일 → 풍경 화면 → 목록 줄 → 장면 상세 → 뒤로 → �
   await open(page);
   await page.locator('.sec-good .tile').first().click();
   await expect(page).toHaveURL(/#\/find\/[a-z]+$/);
-  const title = await page.getByRole('heading', { level: 1 }).textContent();
+  // 주소가 먼저 바뀌고 화면은 그 뒤에 바뀜 → 결과 화면 제목이 뜬 뒤에 읽음(전에는 고르기 화면 제목을 읽어 가끔 실패)
+  const resultTitle = page.locator('.find-head.result h1');
+  await expect(resultTitle).toBeVisible();
+  await expect(page.getByRole('heading', { level: 1 })).not.toHaveText('어떤 풍경이 보고 싶으세요?');
+  const title = await resultTitle.textContent();
   await page.locator('.find-list .row').first().click();
   await expect(page.locator('.detail.open')).toBeVisible();
   await page.locator('.detail .back').click();

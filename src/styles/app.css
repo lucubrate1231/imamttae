@@ -325,7 +325,12 @@ h1, h2, h3, p { margin: 0; }
 .rec-row .row-name { color: var(--ink); }
 .more { display: flex; align-items: center; justify-content: space-between; min-height: var(--btn); margin-top: 14px; padding: 0 18px; border-radius: 18px; background: var(--bg-soft); font-size: 17px; color: var(--season); }
 .find-records { display: flex; flex-direction: column; padding: 32px var(--gutter) 20px; }
-.find-records h2 { padding-bottom: 4px; font-family: var(--font-display); font-weight: 700; font-size: 19px; line-height: 1.4; color: var(--ink-2); }
+.find-records h2 { display: flex; align-items: center; gap: 12px; padding: 0 0 0 4px; font-family: var(--font-display); font-weight: 700; font-size: 19px; line-height: 1.4; color: var(--ink-2); }
 .find-records .row img { width: 80px; height: 80px; border-radius: 18px; }
 .few-note { margin: 0 0 4px; padding: 14px 16px; border-radius: 18px; background: var(--rec-bg); font-size: 17px; line-height: 1.55; color: var(--ink-2); }
 .together { padding-bottom: 24px; }
+
+/* 풍경 찾기 아래 구역(D31): 회색 점(지도의 회색 점과 같은 색) + 설명 한 줄 */
+.dot.rec { background: var(--pin-rec); box-shadow: 0 0 0 4px var(--line); }
+.find-records .sub { margin: 2px 0 6px; font-size: 16px; color: var(--ink-3); }
+.find-records h2 + .sub + .row { border-top: 0; }
