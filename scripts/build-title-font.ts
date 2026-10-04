@@ -29,6 +29,8 @@ export const UI_TEXT = [
   '월에 만나는 풍경',
   '월, 작가 부부가 다녀온 곳',
   '어떤 풍경이 보고 싶으세요?',
+  '월, 작가가 다녀온 곳', // D30
+  '다른 때 다녀온 곳', // 풍경 찾기 아래 구역(8-1)
   ...SCENE_TYPES.map((t) => t.label),
   ...REGIONS.map((r) => r.label),
 ];

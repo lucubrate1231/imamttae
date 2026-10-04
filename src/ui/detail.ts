@@ -1,9 +1,10 @@
 /**
  * 장면 상세(F2) — 확정 시안 v2를 실제 앱으로 옮기고 10/4 기획 결정을 반영
  * - 구역 순서: 제목 → 추천 시기 → 작가의 한마디 → 브런치 전체 이야기
- * - 꼬리표는 오늘(한국 날짜) 기준: [지금 제철] · [일 년 내내] · 철이 아니면 풍경 종류만
- * - 철이 아니면 추천 시기 칸 맨 위에 "지금은 철이 아니에요 · N월부터"
- * - 사진 안내 "사진은 작가 부부가 N월에 다녀온 모습이에요"는 모든 장면에
+ * - 꼬리표는 오늘(한국 날짜) 기준: [지금 좋아요] · [일 년 내내] · 그 밖은 풍경 종류만
+ * - 추천 시기 밖이면 추천 시기 칸 맨 위에 "N월부터 가기 좋아요"
+ * - 사진 안내 "사진은 작가가 N월에 다녀온 모습이에요."는 모든 장면에
+ * - 글자는 design-guide 10장 '화면 글자 표'가 기준(D28~D30)
  * 화면 규칙: docs/design-guide.md 6장 · 완성 기준: docs/features/F2-장면-카드와-길찾기.md
  */
 import type { PlaceholderScene, Scene, StoryScene } from '../../shared/schema/content';
@@ -211,11 +212,11 @@ export function createDetail(d: DetailDeps): Detail {
 
   function storyDetail(s: StoryScene): HTMLElement[] {
     const state = seasonNow(s.best, d.today);
-    // 꼬리표: 오늘 기준(10/4 결정). '작가 부부 방문' 꼬리표는 두지 않음
+    // 꼬리표: 오늘 기준(10/4 결정). '작가가 다녀온 곳' 꼬리표는 두지 않음
     const badges = h(
       'span',
       { class: 'badges' },
-      state === 'now' && h('span', { class: 'badge peak-b', text: '지금 제철' }),
+      state === 'now' && h('span', { class: 'badge peak-b', text: '지금 좋아요' }),
       state === 'yearRound' && h('span', { class: 'badge', text: '일 년 내내' }),
       h('span', { class: 'badge', text: typeLabel(s) }),
     );
@@ -224,28 +225,29 @@ export function createDetail(d: DetailDeps): Detail {
       ? h(
           'div',
           { class: 'when-box' },
-          state === 'off' && h('p', { class: 'when-off', text: `지금은 철이 아니에요 · ${s.best.from}월부터` }),
+          state === 'off' && h('p', { class: 'when-off', text: `${s.best.from}월부터 가기 좋아요` }),
           h('p', { class: 'when-row' }, h('span', { class: 'lbl', text: '추천 시기' }), h('b', { text: s.best.note }), s.review.best === 'draft' && draft()),
           s.best.tip && h('p', { class: 'when-tip' }, h('span', { class: 'lbl', text: '이럴 때 더 좋아요' }), h('span', { text: s.best.tip })),
           tn && h('p', { class: 'when-vary' }, infoIcon(), h('span', { text: tn.text })),
           tn && newsAnchor(s.name, tn, s.id),
         )
       : null;
-    const recNote = h('p', { class: 'recnote', text: `사진은 작가 부부가 ${visitedMonth(s.visited)}월에 다녀온 모습이에요.` });
+    const recNote = h('p', { class: 'recnote', text: `사진은 작가가 ${visitedMonth(s.visited)}월에 다녀온 모습이에요.` });
 
-    // ── 아래 붙박이 막대: 가고 싶어요 · 공유 · 길찾기(티맵) ──
+    // ── 아래 붙박이 막대: 저장 · 공유 · 길찾기(티맵) (D28) ──
     const want = h('button', { class: 'dact', type: 'button' });
     const paintWant = () => {
       const on = d.wanted.isWanted(s.id);
       want.setAttribute('aria-pressed', String(on));
-      want.innerHTML = `${svg('M6 3h12v18l-6-4.5L6 21z', 24, on ? 'currentColor' : 'none')}<span>${on ? '담았어요' : '가고 싶어요'}</span>`;
+      want.innerHTML = `${svg('M6 3h12v18l-6-4.5L6 21z', 24, on ? 'currentColor' : 'none')}<span>${on ? '저장됨' : '저장'}</span>`;
     };
     paintWant();
     want.addEventListener('click', () => {
       const on = d.wanted.toggleWanted(s.id);
       d.track('save', { scene: s.id, on });
       paintWant();
-      d.toast(on ? '가고 싶은 곳에 담았어요' : '가고 싶은 곳에서 뺐어요');
+      // [보기 ›]는 '저장한 곳' 화면이 생기면 붙임(F4-AC3)
+      d.toast(on ? "저장했어요 · '저장한 곳'에서 볼 수 있어요" : '저장한 곳에서 뺐어요');
     });
     const share = h('button', { class: 'dact', type: 'button' });
     share.innerHTML = `${svg('M12 3v12M7 8l5-5 5 5M5 13v6a2 2 0 002 2h10a2 2 0 002-2v-6', 24)}<span>공유</span>`;

@@ -40,10 +40,10 @@ test('카드의 참고사항(해마다 달라져요 등) 앞에 작은 안내 �
   await expect(page.locator('.big .vary').first().locator('svg')).toHaveCount(1);
 });
 
-test('지도 범례는 "제철 풍경 · 작가 부부 방문"', async ({ page }) => {
+test('지도 범례는 "N월에 좋은 풍경 · 작가가 다녀온 곳"(D29·D30)', async ({ page }) => {
   await open(page, '#/month/10');
-  await expect(page.locator('.legend span').first()).toHaveText('제철 풍경');
-  await expect(page.locator('.legend span.r')).toHaveText('작가 부부 방문');
+  await expect(page.locator('.legend span').first()).toHaveText('10월에 좋은 풍경');
+  await expect(page.locator('.legend span.r')).toHaveText('작가가 다녀온 곳');
 });
 
 test('F1-AC9: 달을 바꾸고 뒤로 가기를 누르면 이전 달로 돌아감', async ({ page }) => {

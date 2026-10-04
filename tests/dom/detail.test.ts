@@ -81,15 +81,15 @@ describe('내용', () => {
 
   it('꼬리표는 오늘(한국 날짜) 기준: 오늘이 추천 시기 안이면 [지금 제철] + 풍경 종류(10/4 결정)', async () => {
     await start('#/scene/s-detail');
-    expect([...root.querySelectorAll('.detail .body .badges .badge')].map((b) => b.textContent)).toEqual(['지금 제철', '단풍·은행']);
+    expect([...root.querySelectorAll('.detail .body .badges .badge')].map((b) => b.textContent)).toEqual(['지금 좋아요', '단풍·은행']);
     expect(q('.detail .when-off')).toBeNull();
   });
 
-  it('철이 아니면 풍경 종류만, 추천 시기 칸 맨 위에 "지금은 철이 아니에요 · N월부터"', async () => {
+  it('추천 시기 밖이면 풍경 종류만, 추천 시기 칸 맨 위에 "N월부터 가기 좋아요"(D29)', async () => {
     await start('#/scene/s-sanggodae');
     expect([...root.querySelectorAll('.detail .body .badges .badge')].map((b) => b.textContent)).toEqual(['설경·상고대']);
     const box = q('.detail .when-box')!;
-    expect(box.firstElementChild!.textContent).toBe('지금은 철이 아니에요 · 1월부터');
+    expect(box.firstElementChild!.textContent).toBe('1월부터 가기 좋아요');
   });
 
   it('일 년 내내 볼 수 있는 곳은 [일 년 내내] + 풍경 종류', async () => {
@@ -102,7 +102,7 @@ describe('내용', () => {
     await start('#/month/1');
     window.location.hash = '#/scene/s-detail';
     hashChange();
-    expect(text('.detail .body .badges')).toContain('지금 제철');
+    expect(text('.detail .body .badges')).toContain('지금 좋아요');
   });
 
   it('F2-AC2b: 사진 장 수만큼 점, 첫 장에서는 왼쪽 화살표 숨김, 사진 위에는 뒤로·넘김·크레딧만', async () => {
@@ -130,11 +130,11 @@ describe('내용', () => {
 
   it('F2-AC13: 사진 안내 "사진은 작가 부부가 N월에 다녀온 모습이에요"는 모든 장면에, "작가 부부 방문" 꼬리표는 없음', async () => {
     await start('#/scene/s-sea');
-    expect(text('.detail .recnote')).toBe('사진은 작가 부부가 10월에 다녀온 모습이에요.');
+    expect(text('.detail .recnote')).toBe('사진은 작가가 10월에 다녀온 모습이에요.');
     expect(text('.detail .body .badges')).not.toContain('작가 부부 방문');
     window.location.hash = '#/scene/s-detail';
     hashChange();
-    expect(text('.detail .recnote')).toBe('사진은 작가 부부가 10월에 다녀온 모습이에요.');
+    expect(text('.detail .recnote')).toBe('사진은 작가가 10월에 다녀온 모습이에요.');
   });
 
   it('F2-AC8: 준비 중 장면은 이름·다녀온 날·안내만. 사진·본문·길찾기 없음', async () => {
@@ -154,14 +154,14 @@ describe('내용', () => {
 });
 
 describe('아래 붙박이 막대', () => {
-  it('F2-AC2c: 가고 싶어요 → 담았어요(다시 누르면 뺌), 상세를 다시 열어도 그대로', async () => {
+  it('F2-AC2c·F4-AC3: [저장] → [저장됨](다시 누르면 뺌), 상세를 다시 열어도 그대로(D28)', async () => {
     await start('#/scene/s-detail');
     const want = () => q('.detail .dact')!;
     expect(want().getAttribute('aria-pressed')).toBe('false');
     want().click();
     expect(want().getAttribute('aria-pressed')).toBe('true');
-    expect(want().textContent).toContain('담았어요');
-    expect(text('.toast')).toBe('가고 싶은 곳에 담았어요');
+    expect(want().textContent).toBe('저장됨');
+    expect(text('.toast')).toBe("저장했어요 · '저장한 곳'에서 볼 수 있어요");
     window.location.hash = '#/month/10';
     hashChange();
     window.location.hash = '#/scene/s-detail';
@@ -169,6 +169,8 @@ describe('아래 붙박이 막대', () => {
     expect(want().getAttribute('aria-pressed')).toBe('true');
     want().click();
     expect(want().getAttribute('aria-pressed')).toBe('false');
+    expect(want().textContent).toBe('저장');
+    expect(text('.toast')).toBe('저장한 곳에서 뺐어요');
   });
 
   it('F2-AC9: 공유 창이 없는 브라우저에서는 주소를 복사하고 알림', async () => {
