@@ -169,3 +169,23 @@ test('C-3: 장면 상세도 접근성 검사(axe) 위반 0', async ({ page }) =>
   const r = await new AxeBuilder({ page }).include('.detail').analyze();
   expect(r.violations.map((v) => `${v.id}: ${v.help}`)).toEqual([]);
 });
+
+test('작가 서명 그림이 실제로 뜨고(높이 22), 장면 상세를 연 동안 휴대폰 위쪽 띠는 사진 찍은 달의 색(PR #46)', async ({ page }) => {
+  await page.clock.setFixedTime(new Date('2026-10-04T03:00:00Z'));
+  await page.goto('./?map=fake&motion=0#/month/1'); // 겨울
+  await page.locator('#app main.home:not([hidden])').waitFor();
+  const bar = () => page.evaluate(() => [document.querySelector('meta[name=theme-color]')!.getAttribute('content')!.toLowerCase(), getComputedStyle(document.documentElement).backgroundColor]);
+  expect((await bar())[0]).toBe('#edf3f8');
+  await page.evaluate(() => (location.hash = '#/scene/s-017-boriam')); // 6월 사진 → 여름
+  await expect(page.locator('.detail.open')).toBeVisible();
+  const sign = page.locator('.detail .credit img.sign');
+  await expect.poll(() => sign.evaluate((i: HTMLImageElement) => i.complete && i.naturalWidth > 0)).toBe(true);
+  expect(Math.round((await sign.boundingBox())!.height)).toBe(22);
+  expect(await bar()).toEqual(['#e9f3ed', 'rgb(233, 243, 237)']);
+  await page.locator('.detail .back').click();
+  await expect(page.locator('.detail.open')).toHaveCount(0);
+  // 닫으면 아래에 보이는 화면(첫 화면)의 머리 색으로 돌아감
+  const under = await page.$eval('#app', (el) => getComputedStyle(el).getPropertyValue('--season-soft').trim().toLowerCase());
+  expect((await bar())[0]).toBe(under);
+  expect(under).not.toBe('#e9f3ed');
+});

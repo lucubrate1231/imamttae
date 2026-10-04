@@ -6,16 +6,17 @@
  * - 사진 안내 "사진은 작가가 N월에 다녀온 모습이에요."는 모든 장면에
  * - 글자는 design-guide 10장 '화면 글자 표'가 기준(D28~D30)
  * - 저장한 장면은 제목 구역 아래 [다녀왔어요] 상자(F4, src/ui/visited.ts)
+ * - 색은 사진 찍은 달(visited)의 계절 — 어디서 열어도 같음. 상세 밖의 길찾기 판과 휴대폰 위쪽 띠도(design-guide 3장, PR #46)
  * 화면 규칙: docs/design-guide.md 6장 · 완성 기준: docs/features/F2-장면-카드와-길찾기.md
  */
 import type { PlaceholderScene, Scene, StoryScene } from '../../shared/schema/content';
-import { seasonNow } from '../domain/home';
+import { seasonNow, seasonOf } from '../domain/home';
 import { kenBurnsPlan } from '../domain/kenBurns';
 import { isYearRound, visitedMonth } from '../domain/sceneTier';
 import { SCENE_TYPES } from '../domain/sceneTypes';
 import { newsLink, timingNotice, type TimingNotice } from '../domain/timingNotice';
 import type { Month } from '../domain/month';
-import { fmtDate, h, infoIcon, photoImg } from './dom';
+import { fmtDate, h, infoIcon, paintBrowserBar, photoImg } from './dom';
 import type { Navi } from './navi';
 import { shareUrl, type EventData, type EventName } from '../analytics';
 import type { SavedStore } from '../storage/saved';
@@ -133,7 +134,7 @@ export function createDetail(d: DetailDeps): Detail {
     next.addEventListener('click', () => go(cur() + 1));
     slides.addEventListener('scroll', paintNav, { passive: true });
     paintNav();
-    const credit = h('span', { class: 'credit' }, `사진·글 ${AUTHOR}`, h('span', { class: 'sign', title: '작가 손글씨 서명 자리', text: '서명' }));
+    const credit = h('span', { class: 'credit' }, `사진·글 ${AUTHOR}`, h('img', { class: 'sign', src: './brand/sign-white.png', alt: '', width: '37', height: '22' }));
     const node = h('div', { class: 'gallery ov-wait' }, slides, backBtn('ov back'), ...(n > 1 ? [prev, next] : []), credit);
 
     // 사진 위 버튼이 나타나는 규칙(docs/design-guide.md 6장)
@@ -344,6 +345,9 @@ export function createDetail(d: DetailDeps): Detail {
       el.replaceChildren(...(s.kind === 'story' ? storyDetail(s) : placeholderDetail(s)));
       ignoreScrollUntil = performance.now() + 700;
       el.scrollTop = 0;
+      el.dataset.season = seasonOf(visitedMonth(s.visited));
+      d.navi.sheet.dataset.season = el.dataset.season;
+      paintBrowserBar(win, el);
       el.setAttribute('aria-hidden', 'false');
       doc.body.style.overflow = 'hidden';
       el.classList.add('open');
@@ -356,6 +360,8 @@ export function createDetail(d: DetailDeps): Detail {
       revealOverlay = null;
       el.classList.remove('open');
       el.setAttribute('aria-hidden', 'true');
+      delete d.navi.sheet.dataset.season; // 아래 화면(고른 달)의 색으로 돌아감
+      paintBrowserBar(win, el.parentElement);
       doc.body.style.overflow = '';
     },
   };
