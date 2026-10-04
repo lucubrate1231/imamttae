@@ -1,12 +1,10 @@
-import { beforeEach, describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { ContentFile, type StoryScene } from '../../shared/schema/content';
 import appData from '../../public/data/scenes.json';
 import { story, placeholder } from '../fixtures/homeScenes';
 import { MONTHS } from '../../src/domain/month';
 
-let savedOrder: typeof import('../../src/domain/saved').savedOrder;
-let alertScenes: typeof import('../../src/domain/saved').alertScenes;
-beforeEach(async () => { ({ savedOrder, alertScenes } = await import('../../src/domain/saved')); });
+import { savedOrder, alertScenes } from '../../src/domain/saved';
 function scene(id: string, from: number, to: number, name = id): StoryScene {
   return story(id, { name, visited: '2020-08-01', best: { from, to, note: '' } });
 }
@@ -40,10 +38,22 @@ describe('지금 가기 좋은 순과 상태 (F4-AC2·12)', () => {
     const scenes = [scene('spring', 3, 4), scene('b', 12, 12, '나무'), scene('a', 12, 12, '가을')];
     expect(savedOrder(scenes, ['spring', 'b', 'a'], 10).map((row) => row.sceneId)).toEqual(['a', 'b', 'spring']);
   });
+  it('추천 시기 없음은 none이며 그 밖 뒤·볼 수 없음 앞에서 이름순이고 알림에서 제외한다', () => {
+    const a = story('no-date-a', { name: '가을 산', visited: '2020-08-01' });
+    const b = story('no-date-b', { name: '나무 숲', visited: '2020-08-01' });
+    const scenes = [b, scene('spring', 3, 4), a];
+    const wanted = ['missing', b.id, 'spring', a.id];
+    const rows = savedOrder(scenes, wanted, 10);
+    expect(rows.map((row) => row.sceneId)).toEqual(['spring', a.id, b.id, 'missing']);
+    expect(rows[1]?.status).toEqual({ kind: 'none' });
+    expect(rows[2]?.status).toEqual({ kind: 'none' });
+    expect(rows[1]?.scene).toBe(a);
+    expect(alertScenes(scenes, wanted, 10)).toEqual([]);
+  });
   it.each([
     [12, { kind: 'now', until: 2 }], [1, { kind: 'now', until: 2 }], [2, { kind: 'now', until: 2 }],
     [11, { kind: 'soon', from: 12 }], [3, { kind: 'later', from: 12 }],
-  ])('%s월: 해를 넘는 12~2월 추천 시기를 맞게 분류한다', (month, status) => {
+  ] as const)('%s월: 해를 넘는 12~2월 추천 시기를 맞게 분류한다', (month, status) => {
     expect(savedOrder([scene('winter', 12, 2)], ['winter'], month)[0]?.status).toEqual(status);
   });
   it('12월의 곧은 1월이고 겨울의 지금은 끝 달까지 남은 달로 정렬한다', () => {
@@ -83,8 +93,12 @@ describe('지금 좋은 저장 장소 알림 (F4-AC10)', () => {
     const scenes = ContentFile.parse(appData).scenes;
     const wanted = [...scenes.map((s) => s.id), 'deleted-scene'];
     expect(scenes.length).toBeGreaterThan(0);
+    const amisan = scenes.find((s) => s.id === 's-065-amisan-ridge');
+    expect(amisan?.kind).toBe('story');
+    expect((amisan as StoryScene).best).toBeUndefined();
     for (const month of MONTHS) {
       const rows = savedOrder(scenes, wanted, month);
+      expect(rows.find((row) => row.sceneId === 's-065-amisan-ridge')?.status).toEqual({ kind: 'none' });
       expect(new Set(rows.map((r) => r.sceneId))).toEqual(new Set(wanted));
       expect(rows).toHaveLength(wanted.length);
       const now = rows.filter((r) => r.status.kind === 'now');
