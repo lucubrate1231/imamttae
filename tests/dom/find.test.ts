@@ -131,7 +131,7 @@ describe('풍경을 고른 뒤(#/find/<풍경>)', () => {
     const rec = q('.find-records')!; // 단풍·은행에는 철 지나 다녀온 곳이 있음(실제 데이터)
     expect(rec).not.toBeNull();
     expect(rec.querySelector('h2')!.textContent).toBe('작가가 다녀온 곳');
-    expect(rec.querySelector('h2 .dot.rec')).not.toBeNull();
+    expect(rec.querySelector('h2 .dot.recdot')).not.toBeNull();
     expect(rec.querySelector('.sub')!.textContent).toBe('가장 좋은 때는 아니지만 다녀온 모습을 볼 수 있어요.');
     expect(rec.querySelector('.row-meta')!.textContent).toMatch(/ · \d+월에 다녀온 모습$/);
   });

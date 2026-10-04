@@ -132,9 +132,12 @@ h1, h2, h3, p { margin: 0; }
 
 /* ── 장면 상세 ── */
 /* 옆으로 밀리지 않게: 가로 넘침은 자르고, 끝까지 스크롤해도 뒤 화면으로 번지지 않게(10/3 4차 코멘트) */
-.detail { position: fixed; inset: 0; z-index: 20; max-width: 520px; margin: 0 auto; background: #fff; overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; display: flex; flex-direction: column; transform: translateY(100%); transition: transform .28s ease; visibility: hidden; }
+.detail { position: fixed; inset: 0; z-index: 20; max-width: 520px; margin: 0 auto; background: linear-gradient(#fff, #fff) var(--season-soft); overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; display: flex; flex-direction: column; transform: translateY(100%); transition: transform .28s ease; visibility: hidden; opacity: 0; }
+/* iOS 26 사파리 주소창 뒤 색(10/5): 맨 위 고정 요소의 배경색을 가져감
+   - 열린 상세: 배경색 값은 사진 찍은 달의 계절 색, 눈에 보이는 바탕은 흰 그림(linear-gradient)으로 덮어 흰색 그대로
+   - 닫힌 상세: 투명도 0 — 숨김(visibility)이어도 사파리가 색을 가져가서 */
 .detail > * { flex-shrink: 0; }
-.detail.open { transform: none; visibility: visible; }
+.detail.open { transform: none; visibility: visible; opacity: 1; }
 .gallery { position: relative; overflow: hidden; }
 .gallery .rail { padding: 0; gap: 0; scroll-padding: 0; overscroll-behavior-x: contain; }
 .gallery .rail > * { flex: 0 0 100%; }
@@ -277,21 +280,30 @@ h1, h2, h3, p { margin: 0; }
 .sv-h2 { margin: 0; font-family: var(--font-display); font-weight: 700; font-size: 21px; line-height: 1.35; letter-spacing: -0.01em; color: var(--ink-title); }
 .sv-sub { margin-top: 2px; font-size: 16px; line-height: 1.5; color: var(--ink-3); }
 .sv-wishes { margin-top: 8px; }
-.sv-wish { padding: 14px 0 12px; border-top: 1px solid var(--line); }
+/* 가고 싶은 곳 줄(9-1, #54): 한 덩어리 — 사진·글 | 오른쪽 한 칸([길찾기] 또는 편집 중 [빼기]) */
+.sv-headrow { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.sv-edit { min-width: 56px; min-height: 48px; padding: 0 4px 0 12px; text-align: right; font-size: 16px; font-weight: 800; color: var(--ink-2); }
+.sv-edit[aria-pressed='true'] { color: var(--season); }
+.sv-wish { display: grid; grid-template-columns: 1fr 56px; align-items: center; gap: 14px; padding: 14px 0; border-top: 1px solid var(--line); }
 .sv-wish:first-child { border-top: 0; padding-top: 6px; }
-.sv-wtop { display: flex; align-items: center; gap: 14px; width: 100%; text-align: left; }
-.sv-wtop img, .sv-ph { flex: none; width: 84px; height: 84px; border-radius: 18px; object-fit: cover; background: var(--photo-empty); }
+.sv-wtop { display: grid; grid-template-columns: 72px 1fr; align-items: center; gap: 14px; min-width: 0; text-align: left; }
+.sv-wtop img, .sv-ph { width: 72px; height: 72px; border-radius: 16px; object-fit: cover; background: var(--photo-empty); }
 .sv-ph { display: grid; place-items: center; color: #9aa49d; }
 .sv-text { display: flex; flex-direction: column; min-width: 0; }
-.sv-name { display: block; font-family: var(--font-display); font-weight: 700; font-size: 19px; line-height: 1.3; color: var(--ink-title); }
+.sv-name { display: -webkit-box; overflow: hidden; -webkit-line-clamp: 2; -webkit-box-orient: vertical; font-family: var(--font-display); font-weight: 700; font-size: 18px; line-height: 1.3; color: var(--ink-title); }
 .sv-wish.gone .sv-name { color: var(--ink-2); }
-.sv-region { display: block; margin-top: 1px; font-size: 16px; line-height: 1.45; color: var(--ink-3); }
-.sv-stat { display: flex; align-items: center; gap: 12px; margin-top: 4px; font-size: 16px; line-height: 1.45; color: var(--ink); }
+.sv-region { display: block; margin-top: 1px; font-size: 15px; line-height: 1.45; color: var(--ink-3); }
+.sv-stat { display: flex; align-items: center; gap: 10px; margin-top: 3px; font-size: 15px; line-height: 1.45; color: var(--ink); }
 .sv-stat b { color: var(--season); font-weight: 700; }
-.sv-wact { display: flex; gap: 6px; align-items: center; margin-top: 10px; padding-left: 98px; }
-.sv-wish.gone .sv-wact { padding-left: 98px; }
-.sv-go { display: inline-flex; align-items: center; gap: 6px; height: var(--tap); padding: 0 18px 0 14px; border-radius: var(--r-pill); background: #fff; color: var(--season); box-shadow: inset 0 0 0 2px var(--season); font-size: 17px; font-weight: 700; }
-.sv-del { height: var(--tap); padding: 0 12px; font-size: 16px; font-weight: 600; color: var(--ink-3); }
+.sv-go { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; width: 56px; min-height: 64px; font-size: 13px; font-weight: 800; color: var(--season); }
+.sv-go-ic { display: grid; place-items: center; width: 44px; height: 44px; border: 2px solid var(--season); border-radius: 50%; background: #fff; }
+.sv-del { justify-self: end; min-width: 56px; height: 48px; padding: 0 10px; border: 2px solid var(--line); border-radius: var(--r-pill); background: #fff; font-size: 15px; font-weight: 800; color: var(--ink-2); }
+@media (max-width: 359px) {
+  .sv-wish { grid-template-columns: 1fr 52px; gap: 12px; }
+  .sv-wtop { grid-template-columns: 64px 1fr; gap: 12px; }
+  .sv-wtop img, .sv-ph { width: 64px; height: 64px; }
+  .sv-go { width: 52px; }
+}
 .sv-stamps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px 8px; margin-top: 14px; padding: 18px 8px 16px; border-radius: 22px; background: var(--bg-soft); }
 .sv-stamps[hidden] { display: none; }
 .sv-stamp { display: flex; flex-direction: column; align-items: center; gap: 2px; min-height: var(--tap); text-align: center; }
@@ -485,6 +497,6 @@ h1, h2, h3, p { margin: 0; }
 .together { padding-bottom: 24px; }
 
 /* 풍경 찾기 아래 구역(D31): 회색 점(지도의 회색 점과 같은 색) + 설명 한 줄 */
-.dot.rec { background: var(--pin-rec); box-shadow: 0 0 0 4px var(--line); }
+.dot.recdot { background: var(--pin-rec); box-shadow: 0 0 0 4px var(--line); }
 .find-records .sub { margin: 2px 0 6px; font-size: 16px; color: var(--ink-3); }
 .find-records h2 + .sub + .row { border-top: 0; }

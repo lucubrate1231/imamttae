@@ -58,6 +58,7 @@ const md = (date: string) => `${Number(date.slice(5, 7))}월 ${Number(date.slice
 export function createSaved(d: SavedDeps): Saved {
   const el = h('section', { class: 'saved', 'aria-label': '저장한 곳' });
   const openFolds = new Set<number>(); // 펼친 지난해(다시 그려도 그대로)
+  let editing = false; // 가고 싶은 곳 [편집] — 화면을 떠나면 풀림(저장하지 않음, #54)
 
   function statusLine(r: SavedRow): HTMLElement | null {
     const s = r.status;
@@ -77,32 +78,35 @@ export function createSaved(d: SavedDeps): Saved {
     }
   }
 
+  /** 가고 싶은 곳 줄(design-guide 9-1, #54): 사진·글 버튼 + 오른쪽 한 칸([길찾기], 편집 중이면 [빼기]) */
   function wishRow(r: SavedRow): HTMLElement {
-    const del = h('button', { type: 'button', class: 'sv-del', text: '빼기' });
+    const name = r.scene?.name ?? '볼 수 없는 곳';
+    const del = h('button', { type: 'button', class: 'sv-del', 'aria-label': `${name} 빼기`, text: '빼기' });
     del.addEventListener('click', () => {
       d.store.toggleWanted(r.sceneId);
       d.track('save', { scene: r.sceneId, on: false });
       d.toast('저장한 곳에서 뺐어요');
-      render();
+      draw(true);
     });
     if (!r.scene) {
-      // F4-AC12: 숨겨지거나 없어진 곳
+      // F4-AC12: 숨겨지거나 없어진 곳 — 길찾기가 없으니 오른쪽 칸은 처음부터 [빼기]
       const ph = h('span', { class: 'sv-ph' });
       ph.innerHTML = ICON.hidden;
-      return h('div', { class: 'sv-wish gone' }, h('div', { class: 'sv-wtop' }, ph, h('span', {}, h('b', { class: 'sv-name' }), h('span', { class: 'sv-region', text: '지금은 볼 수 없는 곳이에요' }))), h('div', { class: 'sv-wact' }, del));
+      return h('div', { class: 'sv-wish gone' }, h('div', { class: 'sv-wtop' }, ph, h('span', { class: 'sv-text' }, h('b', { class: 'sv-name' }), h('span', { class: 'sv-region', text: '지금은 볼 수 없는 곳이에요' }))), del);
     }
-    const s = r.scene;
+    const sc = r.scene;
     const top = h(
       'button',
       { type: 'button', class: 'sv-wtop' },
-      photoImg(s.photos[0]!, '', { src: thumb(s.photos[0]!.src, 240) }),
-      h('span', { class: 'sv-text' }, h('b', { class: 'sv-name', text: s.name }), h('span', { class: 'sv-region', text: s.region }), statusLine(r)),
+      photoImg(sc.photos[0]!, '', { src: thumb(sc.photos[0]!.src, 240) }),
+      h('span', { class: 'sv-text' }, h('b', { class: 'sv-name', text: sc.name }), h('span', { class: 'sv-region', text: sc.region }), editing ? null : statusLine(r)),
     );
-    top.addEventListener('click', () => d.openScene(s.id, 'saved'));
-    const go = h('button', { type: 'button', class: 'sv-go' });
-    go.innerHTML = `${ICON.go}<span>길찾기</span>`;
-    go.addEventListener('click', () => d.navi.openFor(s.dest, s.id, 'saved'));
-    return h('div', { class: 'sv-wish' }, top, h('div', { class: 'sv-wact' }, go, del));
+    top.addEventListener('click', () => d.openScene(sc.id, 'saved'));
+    if (editing) return h('div', { class: 'sv-wish editing' }, top, del);
+    const go = h('button', { type: 'button', class: 'sv-go', 'aria-label': `${sc.name} 길찾기` });
+    go.innerHTML = `<span class="sv-go-ic">${ICON.go}</span><span>길찾기</span>`;
+    go.addEventListener('click', () => d.navi.openFor(sc.dest, sc.id, 'saved'));
+    return h('div', { class: 'sv-wish' }, top, go);
   }
 
   function stamp(v: Visit): HTMLElement {
@@ -121,7 +125,9 @@ export function createSaved(d: SavedDeps): Saved {
     return b;
   }
 
-  function render(): void {
+  /** keepEdit: 편집 중에 빼기 등으로 다시 그릴 때만 true. 탭을 열 때(render)는 편집을 풂 */
+  function draw(keepEdit: boolean): void {
+    if (!keepEdit) editing = false;
     d.alert?.render();
     const rows = savedOrder(d.scenes, d.store.wanted(), d.today);
     const years = d.store.visitsByYear();
@@ -129,7 +135,17 @@ export function createSaved(d: SavedDeps): Saved {
     const past = years.filter((y) => y.year !== d.year);
 
     // 가고 싶은 곳
-    const wishSec = h('section', { class: 'sv-sec' }, h('h2', { class: 'sv-h2', text: '가고 싶은 곳' }));
+    const wishHead = h('div', { class: 'sv-headrow' }, h('h2', { class: 'sv-h2', text: '가고 싶은 곳' }));
+    if (rows.length) {
+      const edit = h('button', { type: 'button', class: 'sv-edit', 'aria-pressed': String(editing), text: editing ? '완료' : '편집' });
+      edit.addEventListener('click', () => {
+        editing = !editing;
+        draw(true);
+        el.querySelector<HTMLElement>('.sv-edit')?.focus(); // 다시 그린 뒤에도 같은 버튼에 초점
+      });
+      wishHead.append(edit);
+    }
+    const wishSec = h('section', { class: 'sv-sec' }, wishHead);
     if (rows.length) {
       wishSec.append(h('p', { class: 'sv-sub', text: '지금 가기 좋은 순서예요.' }), h('div', { class: 'sv-wishes' }, ...rows.map(wishRow)));
     } else {
@@ -178,5 +194,5 @@ export function createSaved(d: SavedDeps): Saved {
     );
   }
 
-  return { el, render };
+  return { el, render: () => draw(false) };
 }

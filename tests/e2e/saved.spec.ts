@@ -60,13 +60,14 @@ test('F4-AC3·AC2: [저장] → 안내 줄의 [보기 ›] → 저장한 곳에 
   await expect(page.locator('.sv-wish .sv-name')).toHaveText(['내장산 우화정']);
 });
 
-test('F4-AC14: 새로고침해도 가고 싶은 곳이 남고, [빼기]로 빼면 빈 안내로', async ({ page }) => {
+test('F4-AC14: 새로고침해도 가고 싶은 곳이 남고, [편집] → [빼기]로 빼면 빈 안내로', async ({ page }) => {
   await save(page, 's-005-biryong');
   await open(page);
   await page.reload();
   await page.locator('.saved:not([hidden])').waitFor();
   await expect(page.locator('.sv-wish .sv-name')).toHaveText(['설악산 비룡폭포']);
-  await page.getByRole('button', { name: '빼기' }).click();
+  await page.getByRole('button', { name: '편집' }).click();
+  await page.getByRole('button', { name: '설악산 비룡폭포 빼기' }).click();
   await expect(page.locator('.toast')).toContainText('저장한 곳에서 뺐어요');
   await expect(page.locator('.sv-wish-empty')).toBeVisible();
   await page.reload();
@@ -113,6 +114,10 @@ test('C-3: 저장한 곳 접근성 검사(axe) 위반 0 — 빈 화면과 줄이
   await open(page);
   r = await new AxeBuilder({ page }).include('.saved').analyze();
   expect(r.violations.map((v) => `줄 ${v.id}: ${v.help}`)).toEqual([]);
+  await page.getByRole('button', { name: '편집' }).click(); // 편집 중(#54): 오른쪽 칸이 [빼기]
+  await expect(page.getByRole('button', { name: '내장산 우화정 빼기' })).toBeVisible();
+  r = await new AxeBuilder({ page }).include('.saved').analyze();
+  expect(r.violations.map((v) => `편집 ${v.id}: ${v.help}`)).toEqual([]);
 });
 
 test('#/stamps 옛 주소도 저장한 곳으로 열림', async ({ page }) => {

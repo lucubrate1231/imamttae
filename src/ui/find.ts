@@ -241,7 +241,7 @@ export function createFind(d: FindDeps): Find {
         ? h(
             'section',
             { class: 'find-records' },
-            h('h2', {}, h('span', { class: 'dot rec', 'aria-hidden': 'true' }), '작가가 다녀온 곳'),
+            h('h2', {}, h('span', { class: 'dot recdot', 'aria-hidden': 'true' }), '작가가 다녀온 곳'),
             h('p', { class: 'sub' }, h('span', { class: 'nowrap', text: '가장 좋은 때는 아니지만' }), ' ', h('span', { class: 'nowrap', text: '다녀온 모습을 볼 수 있어요.' })),
             ...records.map((s) => row(s, true)),
           )

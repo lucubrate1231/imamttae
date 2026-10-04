@@ -115,7 +115,7 @@ describe('가고 싶은 곳(F4-AC2)', () => {
     expect(all('.sv-wish')[3]!.querySelector('.dot.soon')).not.toBeNull();
   });
 
-  it('F4-AC12: 볼 수 없는 곳은 회색 칸 + "지금은 볼 수 없는 곳이에요" + 빼기만', async () => {
+  it('F4-AC12: 볼 수 없는 곳은 회색 칸 + "지금은 볼 수 없는 곳이에요" + 오른쪽 칸이 처음부터 [빼기](#54)', async () => {
     await start('#/saved');
     const gone = all('.sv-wish').at(-1)!;
     expect(gone.textContent).toContain('지금은 볼 수 없는 곳이에요');
@@ -123,7 +123,43 @@ describe('가고 싶은 곳(F4-AC2)', () => {
     expect(gone.querySelector('.sv-del')).not.toBeNull();
   });
 
-  it('줄을 누르면 장면 상세, [길찾기]는 티맵(좌표), [빼기]는 목록에서 빠지고 알림', async () => {
+  it('F4-AC2(#54): 줄 하나 = 한 덩어리 — 사진·글 버튼 + 오른쪽 [길찾기] 한 칸(읽기 "○○ 길찾기"), 줄에는 빼기가 없음', async () => {
+    await start('#/saved');
+    const row = all('.sv-wish')[0]!;
+    expect([...row.children].map((c) => c.className)).toEqual(['sv-wtop', 'sv-go']);
+    expect(row.querySelector('.sv-go')!.getAttribute('aria-label')).toBe(`${nowOct.name} 길찾기`);
+    expect(row.querySelector('.sv-go')!.textContent).toBe('길찾기');
+    expect(row.querySelector('.sv-del')).toBeNull();
+  });
+
+  it('[편집] → 오른쪽 칸이 [빼기](읽기 "○○ 빼기"), 상태 한 줄은 숨김, [완료]로 돌아옴. 탭을 다시 열면 편집은 풀림', async () => {
+    await start('#/saved');
+    const edit = () => q('.sv-edit')!;
+    expect(edit().textContent).toBe('편집');
+    edit().click();
+    expect(edit().textContent).toBe('완료');
+    expect(edit().getAttribute('aria-pressed')).toBe('true');
+    const row = all('.sv-wish')[0]!;
+    expect(row.querySelector('.sv-go')).toBeNull();
+    expect(row.querySelector('.sv-del')!.getAttribute('aria-label')).toBe(`${nowOct.name} 빼기`);
+    expect(row.querySelector('.sv-stat')).toBeNull();
+    edit().click();
+    expect(all('.sv-wish')[0]!.querySelector('.sv-go')).not.toBeNull();
+    edit().click();
+    window.location.hash = '#/';
+    hashChange();
+    window.location.hash = '#/saved';
+    hashChange();
+    expect(edit().textContent).toBe('편집');
+  });
+
+  it('가고 싶은 곳이 없으면 [편집]이 없음', async () => {
+    for (const id of saved.wanted()) saved.toggleWanted(id);
+    await start('#/saved');
+    expect(q('.sv-edit')).toBeNull();
+  });
+
+  it('줄을 누르면 장면 상세, [길찾기]는 티맵(좌표), [편집]의 [빼기]는 목록에서 빠지고 알림', async () => {
     await start('#/saved');
     all('.sv-wish')[0]!.querySelector<HTMLElement>('.sv-wtop')!.click();
     expect(window.location.hash).toBe(`#/scene/${nowOct.id}`);
@@ -131,8 +167,10 @@ describe('가고 싶은 곳(F4-AC2)', () => {
     hashChange();
     all('.sv-wish')[0]!.querySelector<HTMLElement>('.sv-go')!.click();
     expect(new URL(opened[0]!).protocol).toBe('tmap:');
+    q('.sv-edit')!.click();
     all('.sv-wish')[0]!.querySelector<HTMLElement>('.sv-del')!.click();
     expect(all('.sv-wish .sv-name').map((e) => e.textContent)).not.toContain(nowOct.name);
+    expect(q('.sv-edit')!.textContent).toBe('완료'); // 빼도 편집은 이어짐
     expect(q('.toast')!.textContent).toBe('저장한 곳에서 뺐어요');
     expect(saved.isWanted(nowOct.id)).toBe(false);
   });

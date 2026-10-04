@@ -91,3 +91,11 @@ test('D28~D30: 첫 화면·풍경 찾기에 "제철"·"작가 부부"·"가고 �
     expect(words, hash).toEqual([]);
   }
 });
+
+test('"작가가 다녀온 곳" 앞 회색 점은 10px 동그라미(첫 화면 줄 이름표 .rec와 겹쳐 길쭉해지던 것, 10/5 사용자)', async ({ page }) => {
+  await page.goto('./?map=fake&motion=0#/find/gyegok');
+  const dot = page.locator('.find-records h2 .dot');
+  await dot.waitFor();
+  const box = (await dot.boundingBox())!;
+  expect([Math.round(box.width), Math.round(box.height)]).toEqual([10, 10]);
+});
