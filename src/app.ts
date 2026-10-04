@@ -19,6 +19,7 @@ import { createHome } from './ui/home';
 import { createNavi } from './ui/navi';
 import { applyMeParam, firstMonth, launchMode, type EventData, type Tracker } from './analytics';
 import { createSaved } from './ui/saved';
+import { createAlertCard, type AlertCard } from './ui/alertCard';
 import { createSavedStore, type SavedStore } from './storage/saved';
 
 export interface AppDeps {
@@ -123,16 +124,38 @@ export async function startApp(deps: AppDeps): Promise<AppHandle> {
   if (map.kind === 'failed') tracker.track('error', { kind: 'map-fail' });
   let sceneFrom: string | null = null; // 통계 scene-open: 앱 안에서 연 곳(없으면 주소로 바로 = link)
   let openedInApp = false; // 앱 안에서 상세를 열었으면 뒤로 = 이전 화면, 주소로 바로 열었으면 뒤로 = 첫 화면
+  const openSceneFrom = (id: string, from: string) => {
+    openedInApp = true;
+    sceneFrom = from;
+    win.location.hash = routeHref({ name: 'scene', id });
+  };
+  // 제철 알림 카드(F4-AC10): 첫 화면과 저장한 곳 두 자리. 한쪽에서 닫으면 둘 다 다시 그림
+  const alerts: AlertCard[] = [];
+  const allScenes = deps.content.scenes;
+  const alertFor = (where: 'home' | 'saved') => {
+    const a = createAlertCard({
+      scenes: allScenes,
+      store: savedStore,
+      today: thisMonth,
+      monthKey: dateInSeoul(deps.now ?? new Date()).slice(0, 7),
+      where,
+      openScene: (id) => openSceneFrom(id, 'alert-card'),
+      openSaved: () => (win.location.hash = routeHref({ name: 'saved' })),
+      onClose: () => alerts.forEach((x) => x.render()),
+      track: tracker.track,
+    });
+    alerts.push(a);
+    return a;
+  };
+  const homeAlert = alertFor('home');
+  const savedAlert = alertFor('saved');
   const home = createHome({
     win,
     map,
     scenes: deps.content.scenes,
-    openScene: (id, from) => {
-      openedInApp = true;
-      sceneFrom = from;
-      win.location.hash = routeHref({ name: 'scene', id });
-    },
+    openScene: openSceneFrom,
     toast,
+    alert: homeAlert.el,
   });
   const navi = createNavi({ win, ua: deps.ua ?? win.navigator.userAgent, openUrl: deps.openUrl ?? ((u) => win.location.assign(u)), store, track: tracker.track });
   const detail = createDetail({
@@ -179,6 +202,7 @@ export async function startApp(deps: AppDeps): Promise<AppHandle> {
     },
     toast,
     track: tracker.track,
+    alert: savedAlert,
   });
   saved.el.hidden = true;
   root.replaceChildren(...home.nodes, find.el, saved.el, tabs, detail.el, navi.sheet, toastEl);
@@ -222,6 +246,7 @@ export async function startApp(deps: AppDeps): Promise<AppHandle> {
         shown = month;
         home.render(month);
       }
+      homeAlert.render(); // 상세에서 저장·빼기를 했을 수 있어 첫 화면에 올 때마다
       showScreen('home');
     } else if (shown === null) {
       shown = thisMonth;

@@ -314,6 +314,18 @@ h1, h2, h3, p { margin: 0; }
 .toast.act.on { pointer-events: auto; }
 .toast-go { flex: none; min-height: 44px; padding: 0 12px; border-radius: 12px; color: #ffd9c7; font-weight: 700; }
 
+/* ── 제철 알림 카드(F4-AC10) — design-guide 9-1 ── */
+.home > .acslot { padding: 0 var(--gutter) 12px; background: var(--season-soft); transition: background-color .3s; }
+.sv-head .acslot { margin-top: 14px; }
+.acard { display: flex; align-items: center; border: 1px solid var(--season-line); border-radius: 18px; background: #fff; }
+.ac-go { display: flex; flex: 1; align-items: center; gap: 12px; min-width: 0; min-height: 80px; padding: 12px 0 12px 12px; text-align: left; }
+.ac-go img, .ac-ph { flex-shrink: 0; width: 56px; height: 56px; border-radius: 14px; object-fit: cover; background: var(--bg-soft); }
+.ac-text { display: flex; flex-direction: column; min-width: 0; }
+.ac-msg { font-size: 17px; font-weight: 800; line-height: 1.4; color: var(--ink); }
+.ac-msg b { color: var(--season); }
+.ac-sub { margin-top: 2px; font-size: 15px; line-height: 1.4; color: var(--ink-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ac-x { display: grid; flex-shrink: 0; place-items: center; width: 48px; height: 48px; margin-right: 4px; color: var(--ink-3); }
+
 /* ── 장면 상세의 [다녀왔어요](F4) — design-guide 6-2 ── */
 .vslot:empty { display: none; }
 .vbox { display: flex; align-items: center; gap: 12px; margin-top: 18px; padding: 10px 10px 10px 16px; border-radius: 18px; background: var(--season-soft); }

@@ -1,6 +1,6 @@
 /**
  * 저장한 곳(F4, D24~D26) — 디자인 캔버스 ④줄 '저장한 곳 탭', design-guide 9장, 글자는 10-5
- * 위에서부터: 저장한 곳(제목) → [알림 카드: 다음 PR] → 가고 싶은 곳(지금 가기 좋은 순) → 다녀온 곳 = 도장 모음 → 이 휴대폰에만 저장 안내 → 홈 화면에 두기
+ * 위에서부터: 저장한 곳(제목) → 제철 알림 카드(있을 때, src/ui/alertCard.ts) → 가고 싶은 곳(지금 가기 좋은 순) → 다녀온 곳 = 도장 모음 → 이 휴대폰에만 저장 안내 → 홈 화면에 두기
  * 저장은 src/storage/saved.ts, 순서 계산은 src/domain/saved.ts(Codex 일 4)를 씁니다.
  */
 import type { Scene, StoryScene } from '../../shared/schema/content';
@@ -9,6 +9,7 @@ import { routeHref } from '../domain/router';
 import type { EventData, EventName } from '../analytics';
 import { h, phoneIcon, photoImg, thumb } from './dom';
 import type { Navi } from './navi';
+import type { AlertCard } from './alertCard';
 import { savedOrder, type SavedRow } from '../domain/saved';
 import type { SavedStore, Visit } from '../storage/saved';
 
@@ -23,6 +24,8 @@ export interface SavedDeps {
   openScene(id: string, from: string): void;
   toast(msg: string): void;
   track(name: EventName, data?: EventData): void;
+  /** 제철 알림 카드(F4-AC10) — 머리(계절 바탕) 안 큰 제목 아래 */
+  alert?: AlertCard;
 }
 
 export interface Saved {
@@ -117,6 +120,7 @@ export function createSaved(d: SavedDeps): Saved {
   }
 
   function render(): void {
+    d.alert?.render();
     const rows = savedOrder(d.scenes, d.store.wanted(), d.today);
     const years = d.store.visitsByYear();
     const thisYear = years.find((y) => y.year === d.year)?.visits ?? [];
@@ -165,7 +169,7 @@ export function createSaved(d: SavedDeps): Saved {
     homeAdd.addEventListener('click', () => d.toast('곧 열려요'));
 
     el.replaceChildren(
-      h('header', { class: 'sv-head' }, h('h1', { class: 'sv-ttl', text: '저장한 곳' })),
+      h('header', { class: 'sv-head' }, h('h1', { class: 'sv-ttl', text: '저장한 곳' }), d.alert?.el ?? null),
       ...(d.store.saved ? [] : [h('p', { class: 'sv-warn', role: 'status', text: '이 브라우저에서는 저장되지 않아요.' })]),
       wishSec,
       visitSec,
