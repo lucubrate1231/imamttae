@@ -1,8 +1,6 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { createSafeStore } from '../../src/storage/safeStorage';
-
-let createSavedStore: typeof import('../../src/storage/saved').createSavedStore;
-beforeEach(async () => { ({ createSavedStore } = await import('../../src/storage/saved')); });
+import { createSavedStore } from '../../src/storage/saved';
 afterEach(() => vi.unstubAllGlobals());
 
 function memoryStorage(): Storage {
@@ -173,6 +171,19 @@ describe('방문 날짜 변경과 취소 (F4-AC6)', () => {
     expect(saved.wantedPlaces()).toEqual([{ sceneId: place.id, savedOn: '2026-10-04' }]);
     saved.markVisited(place); saved.toggleWanted(place.id); saved.removeVisit(place.id, 2026);
     expect(saved.wanted()).toEqual([place.id]);
+  });
+  it('새로고침 뒤 도장을 취소해도 처음 저장한 날을 복원하고 방문 반환값은 그대로다', () => {
+    let date = new Date('2026-09-01T00:00:00Z');
+    const storage = memoryStorage();
+    const saved = createSavedStore(createSafeStore(() => storage), () => date);
+    saved.toggleWanted(place.id);
+    date = today();
+    saved.markVisited(place);
+    const reloaded = createSavedStore(createSafeStore(() => storage), () => date);
+    expect(reloaded.visitOf(place.id)).toEqual({ sceneId: place.id, date: '2026-10-04', name: place.name, type: 'gyegok' });
+    reloaded.changeVisitDate(place.id, 2026, '2025-12-31');
+    reloaded.removeVisit(place.id, 2025);
+    expect(reloaded.wantedPlaces()).toEqual([{ sceneId: place.id, savedOn: '2026-09-01' }]);
   });
   it('한 해 도장을 지워도 다른 해의 같은 장소 도장은 남는다', () => {
     const { saved } = setup(); saved.markVisited(place, '2025-12-31'); saved.markVisited(place);
