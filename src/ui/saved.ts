@@ -1,7 +1,7 @@
 /**
  * 저장한 곳(F4, D24~D26) — 디자인 캔버스 ④줄 '저장한 곳 탭', design-guide 9장, 글자는 10-5
  * 위에서부터: 저장한 곳(제목) → [알림 카드: 다음 PR] → 가고 싶은 곳(지금 가기 좋은 순) → 다녀온 곳 = 도장 모음 → 이 휴대폰에만 저장 안내 → 홈 화면에 두기
- * 저장·순서 계산은 Codex 일 4. 그전까지는 src/ui/savedTemp.ts(같은 함수 이름)를 씁니다.
+ * 저장은 src/storage/saved.ts, 순서 계산은 src/domain/saved.ts(Codex 일 4)를 씁니다.
  */
 import type { Scene, StoryScene } from '../../shared/schema/content';
 import type { Month } from '../domain/month';
@@ -9,7 +9,8 @@ import { routeHref } from '../domain/router';
 import type { EventData, EventName } from '../analytics';
 import { h, phoneIcon, photoImg, thumb } from './dom';
 import type { Navi } from './navi';
-import { savedOrder, type SavedRow, type SavedStore, type Visit } from './savedTemp';
+import { savedOrder, type SavedRow } from '../domain/saved';
+import type { SavedStore, Visit } from '../storage/saved';
 
 export interface SavedDeps {
   win: Window;
