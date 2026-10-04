@@ -146,7 +146,9 @@ function legalSection(): HTMLElement | null {
     'section',
     { class: 'legal', 'aria-labelledby': 'legal-h' },
     h('h2', { id: 'legal-h', text: '글에서 여쭤볼 문장' }),
-    h('p', { text: '주차장에서 텐트·차박처럼 규칙에 어긋나 보일 수 있는 문장이에요. 고치실지는 작가님이 정해 주세요. 그대로 두시면 이 글의 장면은 앱에서 잠시 빼 둘게요.' }),
+    open.length
+      ? h('p', { text: '주차장에서 텐트·차박처럼 규칙에 어긋나 보일 수 있는 문장이에요. 고치실지는 작가님이 정해 주세요. 그대로 두시면 이 글의 장면은 앱에서 잠시 빼 둘게요.' })
+      : h('p', { text: '지금은 여쭤볼 문장이 없어요.' }),
     ...open.map((p) =>
       h(
         'div',
