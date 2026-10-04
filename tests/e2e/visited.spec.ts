@@ -1,6 +1,11 @@
 import { expect, test, type Page } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
+// 크롬의 처음 [저장] 판(F5-AC6)은 이미 본 것으로 — 여기서는 저장 뒤 흐름을 봄(판은 a2hs.spec.ts)
+test.beforeEach(async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem('imamttae:a2hs', JSON.stringify({ sheetShown: true })));
+});
+
 /** [다녀왔어요] → 도장 찍히는 순간 → 저장한 곳 도장 모음(F4-AC4~AC7·AC14) — 가짜 지도 */
 const ID = 's-020-naejangsan-uhwajeong';
 const NAME = '내장산 우화정';

@@ -1,6 +1,11 @@
 import { expect, test, type Page } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
+// 크롬의 처음 [저장] 판(F5-AC6)은 이미 본 것으로 — 여기서는 저장 뒤 흐름을 봄(판은 a2hs.spec.ts)
+test.beforeEach(async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem('imamttae:a2hs', JSON.stringify({ sheetShown: true })));
+});
+
 /** 제철 알림 카드(F4-AC10) — 오늘을 2026년 10월 4일(한국)로 고정. 내장산 우화정(10~11월)·설악산 비룡폭포(10월)가 지금 좋음 */
 const NOW = new Date('2026-10-04T03:00:00Z');
 

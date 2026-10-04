@@ -13,7 +13,7 @@ test('F5-AC1: 앱이 매니페스트와 아이콘을 내놓음(같은 폴더 기
     const icons = await Promise.all(j.icons.map((i: { src: string }) => fetch(new URL(i.src, url)).then((x) => x.status)));
     return { status: r.status, name: j.name, icons };
   }, href);
-  expect(m).toEqual({ status: 200, name: '이맘때 풍경', icons: [200, 200, 200] });
+  expect(m).toEqual({ status: 200, name: '이맘때 풍경', icons: [200, 200, 200, 200] }); // 디자인 아이콘 192·512 + maskable 192·512
 });
 
 test('F5-AC2: 내 컴퓨터(localhost)에서는 서비스 워커를 등록하지 않음', async ({ page }) => {

@@ -328,6 +328,46 @@ h1, h2, h3, p { margin: 0; }
 .ac-sub { margin-top: 2px; font-size: 15px; line-height: 1.4; color: var(--ink-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .ac-x { display: grid; flex-shrink: 0; place-items: center; width: 48px; height: 48px; margin-right: 4px; color: var(--ink-3); }
 
+/* ── 홈 화면에 두기(F5) — design-guide 11장 ── */
+/* 카톡 안 첫 화면 맨 위 띠(11-2): 화면을 덮지 않고 내용과 함께 스크롤 */
+.kband { display: flex; align-items: center; padding-top: env(safe-area-inset-top); background: var(--bg-soft); border-bottom: 1px solid var(--line); }
+.kband + .eyebrow { padding-top: 14px; }
+.kb-go { display: flex; flex: 1; flex-direction: column; justify-content: center; min-width: 0; min-height: 60px; padding: 10px 0 10px 16px; text-align: left; }
+.kb-l1 { font-size: 15px; line-height: 1.4; color: var(--ink); }
+.kb-l2 { margin-top: 2px; font-size: 16px; font-weight: 800; color: var(--season); }
+.kb-x { display: grid; flex: none; place-items: center; width: 48px; height: 48px; margin-right: 4px; color: var(--ink-3); }
+/* 판(날짜 변경 창과 같은 틀) — 화면보다 길면 판 안에서 스크롤, 맨 위 24px는 남김 */
+.a2sheet { max-height: calc(100dvh - 24px); overflow-y: auto; }
+.a2-icon { align-self: center; width: 64px; height: 64px; border-radius: 16px; box-shadow: 0 2px 10px rgba(0, 0, 0, .12); }
+.a2-ok { display: flex; align-self: center; align-items: center; gap: 6px; margin-top: 14px; font-size: 16px; font-weight: 800; color: var(--season); }
+.a2-ttl { margin-top: 6px; font-size: 19px; font-weight: 800; line-height: 1.45; text-align: center; color: var(--ink); }
+.a2-later { align-self: center; min-height: 48px; margin-top: 4px; padding: 0 16px; font-size: 16px; font-weight: 800; color: var(--ink-3); }
+.a2-gttl { font-size: 19px; font-weight: 800; color: var(--ink); }
+.a2-desc { margin-top: 4px; font-size: 16px; color: var(--ink-3); }
+.a2-steps { display: flex; flex-direction: column; gap: 16px; margin: 18px 0 0; padding: 0; list-style: none; }
+.a2-step { display: grid; grid-template-columns: 28px 1fr 76px; align-items: start; gap: 12px; }
+.a2-num { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: var(--season); color: #fff; font-size: 15px; font-weight: 800; }
+.a2-body { display: flex; flex-direction: column; min-width: 0; }
+.a2-txt { font-size: 17px; line-height: 1.5; color: var(--ink); }
+.a2-txt b { font-weight: 800; }
+.a2-sub { margin-top: 2px; font-size: 15px; line-height: 1.45; color: var(--ink-3); }
+.a2-done { margin-top: 22px; }
+/* 작은 그림(장식): 누를 곳만 흰 바탕 + 계절 색 테두리 */
+.a2-pic { position: relative; display: flex; flex-direction: column; justify-content: center; gap: 5px; width: 76px; height: 58px; padding: 6px; border-radius: 14px; background: var(--bg-soft); overflow: hidden; }
+.a2-bar { position: absolute; left: 0; right: 0; height: 12px; background: #dfe4de; }
+.a2-pic.tr .a2-bar { top: 0; }
+.a2-pic.br .a2-bar { bottom: 0; }
+.a2-hit { display: block; overflow: hidden; padding: 1px 4px; border: 2.5px solid var(--season); border-radius: 7px; background: #fff; font-size: 11px; font-weight: 800; line-height: 1.4; text-align: center; white-space: nowrap; text-overflow: ellipsis; color: var(--ink); }
+.a2-pic.key .a2-hit { position: absolute; right: 5px; width: 26px; height: 26px; padding: 0; font-size: 15px; line-height: 21px; }
+.a2-pic.tr .a2-hit { top: 4px; }
+.a2-pic.br .a2-hit { bottom: 4px; }
+.a2-line { display: block; height: 6px; border-radius: 3px; background: #d5dbd4; }
+.a2-line.short { width: 60%; }
+@media (max-width: 359px) {
+  .a2-step { grid-template-columns: 28px 1fr; }
+  .a2-pic { grid-column: 2; }
+}
+
 /* ── 장면 상세의 [다녀왔어요](F4) — design-guide 6-2 ── */
 .vslot:empty { display: none; }
 .vbox { display: flex; align-items: center; gap: 12px; margin-top: 18px; padding: 10px 10px 10px 16px; border-radius: 18px; background: var(--season-soft); }

@@ -7,7 +7,7 @@ import type { Scene, StoryScene } from '../../shared/schema/content';
 import type { Month } from '../domain/month';
 import { routeHref } from '../domain/router';
 import type { EventData, EventName } from '../analytics';
-import { h, phoneIcon, photoImg, thumb } from './dom';
+import { h, photoImg, thumb } from './dom';
 import type { Navi } from './navi';
 import type { AlertCard } from './alertCard';
 import { savedOrder, type SavedRow } from '../domain/saved';
@@ -26,6 +26,8 @@ export interface SavedDeps {
   track(name: EventName, data?: EventData): void;
   /** 제철 알림 카드(F4-AC10) — 머리(계절 바탕) 안 큰 제목 아래 */
   alert?: AlertCard;
+  /** [홈 화면에 두기] 카드(F5, src/ui/a2hs.ts) */
+  homeAdd(): HTMLElement;
 }
 
 export interface Saved {
@@ -162,11 +164,10 @@ export function createSaved(d: SavedDeps): Saved {
       }
     }
 
-    // 맨 아래: 이 휴대폰에만 저장(F4-AC15) · 홈 화면에 두기(F5 — 곧 열려요)
+    // 맨 아래: 이 휴대폰에만 저장(F4-AC15) · 홈 화면에 두기(F5)
     const note = h('p', { class: 'sv-note' }, h('span', { class: 'info', 'aria-hidden': 'true' }), '저장한 곳은 이 휴대폰에만 저장돼요. 로그인은 필요 없지만, 휴대폰을 바꾸거나 인터넷 사용 기록을 지우면 함께 지워져요.');
     (note.firstChild as HTMLElement).innerHTML = ICON.info;
-    const homeAdd = h('button', { class: 'home-add', type: 'button' }, phoneIcon(), h('span', {}, h('b', { text: '홈 화면에 두기' }), h('span', { text: '앱처럼 바로 열려요. 설치는 필요 없어요.' })));
-    homeAdd.addEventListener('click', () => d.toast('곧 열려요'));
+    const homeAdd = d.homeAdd();
 
     el.replaceChildren(
       h('header', { class: 'sv-head' }, h('h1', { class: 'sv-ttl', text: '저장한 곳' }), d.alert?.el ?? null),

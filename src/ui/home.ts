@@ -10,7 +10,7 @@ import { routeHref } from '../domain/router';
 import { SCENE_TYPES } from '../domain/sceneTypes';
 import { timingNotice } from '../domain/timingNotice';
 import type { MapAdapter, MapPin } from '../map/types';
-import { calIcon, fmtDate, h, infoIcon, paintBrowserBar, phoneIcon, photoImg, thumb } from './dom';
+import { calIcon, fmtDate, h, infoIcon, paintBrowserBar, photoImg, thumb } from './dom';
 
 const RECOMMENDER = '이상호 작가'; // 맨 위 작은 글씨(10/3 사용자 결정)
 const STORY_URL = 'https://brunch.co.kr/@caed5ea4c3d74d9/1'; // 이 앱 이야기
@@ -24,6 +24,9 @@ export interface HomeDeps {
   toast(msg: string): void;
   /** 제철 알림 카드 자리(F4-AC10) — 큰 제목 아래·달 띠 위 */
   alert?: HTMLElement;
+  /** 홈 화면에 두기(F5, src/ui/a2hs.ts): 카톡 안 띠(맨 위)와 [홈 화면에 두기] 카드 */
+  band?: HTMLElement | null;
+  homeAdd(): HTMLElement;
 }
 
 export interface Home {
@@ -76,14 +79,8 @@ export function createHome(d: HomeDeps): Home {
   const recList = h('ul', { class: 'reclist' });
   const recSec = h('section', { class: 'records' }, recTitle, h('p', { class: 'sub' }, h('span', { class: 'nowrap', text: '가장 좋은 때는 아니지만' }), ' ', h('span', { class: 'nowrap', text: '이맘때 모습을 볼 수 있어요.' })), recList);
 
-  // ── 아래: 홈 화면에 두기(F5, 곧 열림) · 이 앱 이야기 ──
-  const homeAdd = h(
-    'button',
-    { class: 'home-add', type: 'button' },
-    phoneIcon(),
-    h('span', {}, h('b', { text: '홈 화면에 두기' }), h('span', { text: '앱처럼 바로 열려요. 설치는 필요 없어요.' })),
-  );
-  homeAdd.addEventListener('click', () => d.toast('곧 열려요'));
+  // ── 아래: 홈 화면에 두기(F5) · 이 앱 이야기 ──
+  const homeAdd = d.homeAdd();
   const storyLink = h(
     'a',
     { class: 'story-link', href: STORY_URL, target: '_blank', rel: 'noopener' },
@@ -92,7 +89,7 @@ export function createHome(d: HomeDeps): Home {
   );
   const extra = h('section', { class: 'extra' }, homeAdd, storyLink);
 
-  const main = h('main', { class: 'home' }, eyebrow, title, d.alert ?? null, months, peakSec, mapSec, recSec, extra);
+  const main = h('main', { class: 'home' }, d.band ?? null, eyebrow, title, d.alert ?? null, months, peakSec, mapSec, recSec, extra);
 
   // 큰 제목이 화면 위로 나가면 작은 제목 막대를 보임
   const io = typeof IntersectionObserver === 'function' ? new IntersectionObserver(([e]) => mini.classList.toggle('on', !e!.isIntersecting && e!.boundingClientRect.top < 0)) : null;

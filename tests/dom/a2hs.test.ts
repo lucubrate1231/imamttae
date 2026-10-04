@@ -1,0 +1,268 @@
+// @vitest-environment happy-dom
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { startApp, type AppDeps } from '../../src/app';
+import { createListMap } from '../../src/map/listMap';
+import { createSafeStore, type SafeStore } from '../../src/storage/safeStorage';
+import { createSavedStore, type SavedStore } from '../../src/storage/saved';
+import type { EventData, EventName, Tracker } from '../../src/analytics';
+import type { InstallEvent } from '../../src/pwa';
+import { HOME_SCENES } from '../fixtures/homeScenes';
+
+/**
+ * 홈 화면에 두기(F5, D33) — design-guide 11장, 글자 10-6
+ * 오늘 = 한국 날짜 2026년 10월 1일
+ */
+const OCT1 = new Date('2026-09-30T16:00:00Z');
+const UA = {
+  kakaoAndroid: 'Mozilla/5.0 (Linux; Android 14; SM-S918N) AppleWebKit/537.36 Chrome/140 Mobile Safari/537.36 KAKAOTALK/25.8.0',
+  kakaoIos: 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_6 like Mac OS X) AppleWebKit/605.1.15 Mobile/15E148 KAKAOTALK 25.8.0',
+  chrome: 'Mozilla/5.0 (Linux; Android 14; Pixel 7) AppleWebKit/537.36 Chrome/140 Mobile Safari/537.36',
+  samsung: 'Mozilla/5.0 (Linux; Android 14; SM-S918N) AppleWebKit/537.36 SamsungBrowser/27.0 Chrome/125 Mobile Safari/537.36',
+  safari: 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_6 like Mac OS X) AppleWebKit/605.1.15 Version/18.6 Mobile/15E148 Safari/604.1',
+};
+
+function memoryStorage(): Storage {
+  const m = new Map<string, string>();
+  return { getItem: (k: string) => m.get(k) ?? null, setItem: (k: string, v: string) => void m.set(k, v), removeItem: (k: string) => void m.delete(k), clear: () => m.clear(), key: () => null, length: 0 } as Storage;
+}
+
+let root: HTMLElement;
+let storage: Storage;
+let store: SafeStore;
+let saved: SavedStore;
+let opened: string[];
+let events: [EventName, EventData | undefined][];
+let prompt: InstallEvent | null;
+const tracker: Tracker = { load() {}, pageview() {}, track: (n, d) => void events.push([n, d]) };
+
+function fakePrompt(outcome = 'accepted'): InstallEvent & { prompt: ReturnType<typeof vi.fn> } {
+  return Object.assign(new Event('beforeinstallprompt'), { prompt: vi.fn(async () => {}), userChoice: Promise.resolve({ outcome }) });
+}
+
+async function start(ua: string, hash = '#/', o: Partial<AppDeps> = {}) {
+  window.location.hash = hash;
+  return startApp({
+    root,
+    map: createListMap(),
+    content: HOME_SCENES,
+    now: OCT1,
+    ua,
+    openUrl: (u) => void opened.push(u),
+    store,
+    saved,
+    tracker,
+    motion: false,
+    installPrompt: () => prompt,
+    kakaoWaitMs: 0,
+    ...o,
+  });
+}
+const q = <T extends HTMLElement = HTMLElement>(sel: string) => root.querySelector<T>(sel);
+const text = (sel: string) => q(sel)?.textContent?.trim() ?? '';
+const btn = (scope: string, label: string) => [...root.querySelectorAll<HTMLButtonElement>(`${scope} button`)].find((b) => b.textContent?.trim() === label);
+const go = (hash: string) => {
+  window.location.hash = hash;
+  window.dispatchEvent(new Event('hashchange'));
+};
+const saveIn = (id: string) => {
+  go(`#/scene/${id}`);
+  q<HTMLButtonElement>('.detail .dact[aria-pressed]')!.click();
+};
+const tick = () => new Promise((r) => setTimeout(r, 5));
+const a2hsEvents = () => events.filter(([n]) => n === 'a2hs').map(([, d]) => d);
+
+beforeEach(() => {
+  document.body.innerHTML = '<div id="app"></div>';
+  window.history.replaceState(null, '', '/');
+  window.location.hash = '';
+  root = document.getElementById('app')!;
+  storage = memoryStorage();
+  store = createSafeStore(() => storage);
+  saved = createSavedStore(store, () => OCT1);
+  opened = [];
+  events = [];
+  prompt = null;
+});
+afterEach(() => {
+  Object.defineProperty(navigator, 'standalone', { value: undefined, configurable: true });
+});
+
+describe('F5-AC4: 카톡 안 첫 화면 맨 위 띠', () => {
+  it('안드로이드: 머리 바로 위에 "크롬으로 열면 앱처럼 쓸 수 있어요 / 크롬으로 열기 ›" — 첫 화면에만', async () => {
+    await start(UA.kakaoAndroid);
+    const band = q('main.home .kband')!;
+    expect(band).not.toBeNull();
+    expect(band.nextElementSibling!.matches('.eyebrow')).toBe(true);
+    expect(text('.kband .kb-l1')).toBe('크롬으로 열면 앱처럼 쓸 수 있어요');
+    expect(text('.kband .kb-l2')).toBe('크롬으로 열기 ›');
+    expect(q('.kband .kb-go')!.getAttribute('aria-label')).toBe('크롬으로 열기 안내');
+    expect(q('.kband .kb-x')!.getAttribute('aria-label')).toBe('안내 닫기');
+    expect(root.querySelectorAll('.kband')).toHaveLength(1);
+  });
+
+  it('아이폰: "사파리로 열면 … / 사파리로 열기 ›"', async () => {
+    await start(UA.kakaoIos);
+    expect(text('.kband .kb-l1')).toBe('사파리로 열면 앱처럼 쓸 수 있어요');
+    expect(text('.kband .kb-l2')).toBe('사파리로 열기 ›');
+  });
+
+  it('안드로이드에서 띠를 누르면 크롬 intent 주소(저장한 장면 번호를 붙임), 넘어가지 못하면 "크롬이 열리지 않았나요?"', async () => {
+    saved.toggleWanted('s-naejang');
+    await start(UA.kakaoAndroid);
+    q('.kband .kb-go')!.click();
+    expect(opened).toHaveLength(1);
+    expect(opened[0]).toMatch(/^intent:\/\/[^#]+carry=s-naejang[^#]*#Intent;scheme=https;package=com\.android\.chrome;/);
+    await tick();
+    const s = q('.a2sheet')!;
+    expect(s.getAttribute('role')).toBe('dialog');
+    expect(s.getAttribute('aria-label')).toBe('크롬이 열리지 않았나요?');
+    expect(text('.a2sheet .a2-desc')).toBe('카카오톡 메뉴로 열 수 있어요.');
+    expect(root.querySelectorAll('.a2sheet .a2-step')).toHaveLength(2);
+    expect(text('.a2sheet .a2-step:nth-child(1) .a2-txt')).toContain("화면 오른쪽 [⋮] 버튼을 누르세요");
+    btn('.a2sheet', '알겠어요')!.click();
+    expect(q('.a2sheet')).toBeNull();
+    expect(a2hsEvents()).toEqual([{ action: 'band', env: 'kakao-android' }, { action: 'guide', env: 'kakao-android' }]);
+  });
+
+  it('아이폰에서 띠를 누르면 카톡 바깥 브라우저 주소(사파리)', async () => {
+    await start(UA.kakaoIos);
+    q('.kband .kb-go')!.click();
+    expect(opened[0]).toMatch(/^kakaotalk:\/\/web\/openExternal\?url=https?%3A/);
+    await tick();
+    expect(q('.a2sheet')!.getAttribute('aria-label')).toBe('사파리가 열리지 않았나요?');
+  });
+
+  it('✕로 닫으면 이 브라우저에서는 다시 띄우지 않음(새로 열어도)', async () => {
+    const app = await start(UA.kakaoAndroid);
+    q('.kband .kb-x')!.click();
+    expect(q('.kband')).toBeNull();
+    app.destroy();
+    document.body.innerHTML = '<div id="app"></div>';
+    root = document.getElementById('app')!;
+    await start(UA.kakaoAndroid);
+    expect(q('.kband')).toBeNull();
+  });
+
+  it('카톡 안에서 [홈 화면에 두기] 카드를 눌러도 같은 안내', async () => {
+    await start(UA.kakaoAndroid);
+    q('main.home .home-add')!.click();
+    expect(q('.a2sheet')!.getAttribute('aria-label')).toBe('크롬이 열리지 않았나요?');
+  });
+
+  it('카톡 안에서 저장하면 지금 주소에 장면 번호를 붙여 둠(카톡 메뉴로 넘어가도 함께 가게) — 안내 줄은 그대로', async () => {
+    await start(UA.kakaoAndroid);
+    saveIn('s-naejang');
+    expect(window.location.search).toBe('?carry=s-naejang');
+    expect(text('.toast')).toContain('저장했어요');
+    q<HTMLButtonElement>('.detail .dact[aria-pressed]')!.click(); // 다시 눌러 뺌
+    expect(window.location.search).toBe('');
+  });
+
+  it('크롬 쪽에서 받은 장면 번호는 저장한 곳에 합치고 주소에서 지움', async () => {
+    window.history.replaceState(null, '', '/?carry=s-naejang,s-baekmu,%3Cx%3E');
+    await start(UA.chrome);
+    expect(saved.wanted().sort()).toEqual(['s-baekmu', 's-naejang']);
+    expect(window.location.search).toBe('');
+  });
+});
+
+describe('F5-AC6: 크롬·삼성 인터넷에서 처음 [저장] 직후 한 번', () => {
+  it('크롬: 안내 줄 대신 판 — 앱 아이콘 · 저장했어요 · 문장 · [홈 화면에 두기] · [괜찮아요]', async () => {
+    await start(UA.chrome);
+    saveIn('s-naejang');
+    const s = q('.a2sheet')!;
+    expect(s.getAttribute('aria-label')).toBe('저장했어요');
+    expect(s.querySelector<HTMLImageElement>('img.a2-icon')!.getAttribute('src')).toBe('./brand/icon-192.png');
+    expect(text('.a2sheet .a2-ok')).toBe('저장했어요');
+    expect(text('.a2sheet .a2-ttl')).toBe('홈 화면에 두면 저장한 곳을 바로 열 수 있어요');
+    expect(btn('.a2sheet', '홈 화면에 두기')).toBeTruthy();
+    expect(btn('.a2sheet', '괜찮아요')).toBeTruthy();
+    expect(q('.toast.on')).toBeNull();
+    btn('.a2sheet', '괜찮아요')!.click();
+    expect(q('.a2sheet')).toBeNull();
+    saveIn('s-baekmu'); // 두 번째는 안내 줄
+    expect(q('.a2sheet')).toBeNull();
+    expect(text('.toast')).toContain('저장했어요');
+  });
+
+  it('[홈 화면에 두기]: 크롬 설치 창이 준비돼 있으면 그 창, 설치하면 "홈 화면에 \'이맘때\'를 두었어요"', async () => {
+    const p = fakePrompt();
+    prompt = p;
+    await start(UA.chrome);
+    saveIn('s-naejang');
+    btn('.a2sheet', '홈 화면에 두기')!.click();
+    expect(p.prompt).toHaveBeenCalledTimes(1);
+    window.dispatchEvent(new Event('appinstalled'));
+    expect(text('.toast')).toBe("홈 화면에 '이맘때'를 두었어요");
+    expect(a2hsEvents()).toContainEqual({ action: 'installed', env: 'chrome' });
+  });
+
+  it('[홈 화면에 두기]: 설치 창이 없으면 크롬 그림 안내(세 단계)', async () => {
+    await start(UA.chrome);
+    saveIn('s-naejang');
+    btn('.a2sheet', '홈 화면에 두기')!.click();
+    expect(q('.a2sheet')!.getAttribute('aria-label')).toBe('홈 화면에 두는 방법');
+    expect(text('.a2sheet .a2-desc')).toBe('크롬 메뉴로 할 수 있어요.');
+    expect(root.querySelectorAll('.a2sheet .a2-step')).toHaveLength(3);
+  });
+
+  it('삼성 인터넷도 처음 저장 직후 판, 버튼은 삼성 인터넷 그림 안내', async () => {
+    await start(UA.samsung);
+    saveIn('s-naejang');
+    btn('.a2sheet', '홈 화면에 두기')!.click();
+    expect(text('.a2sheet .a2-desc')).toBe('삼성 인터넷 메뉴로 할 수 있어요.');
+  });
+
+  it('아이폰 사파리에서는 판을 띄우지 않음(안내 줄), 카드는 사파리 그림 안내', async () => {
+    await start(UA.safari);
+    saveIn('s-naejang');
+    expect(q('.a2sheet')).toBeNull();
+    expect(text('.toast')).toContain('저장했어요');
+    go('#/');
+    q('main.home .home-add')!.click();
+    expect(text('.a2sheet .a2-desc')).toBe('사파리 메뉴로 할 수 있어요.');
+  });
+
+  it('덮개를 눌러 닫아도 다시 띄우지 않음(새로 열어도)', async () => {
+    const app = await start(UA.chrome);
+    saveIn('s-naejang');
+    q('.a2scrim')!.click();
+    expect(q('.a2sheet')).toBeNull();
+    app.destroy();
+    document.body.innerHTML = '<div id="app"></div>';
+    root = document.getElementById('app')!;
+    await start(UA.chrome);
+    saveIn('s-baekmu');
+    expect(q('.a2sheet')).toBeNull();
+  });
+});
+
+describe('F5-AC5·11-5: 카드와 홈 화면 아이콘으로 연 경우', () => {
+  it('카드: 앱 아이콘 + "홈 화면에 두기 / 앱처럼 바로 열려요." — 첫 화면 맨 아래와 저장한 곳 맨 아래', async () => {
+    await start(UA.chrome);
+    const card = q('main.home .home-add')!;
+    expect(card.querySelector<HTMLImageElement>('img')!.getAttribute('src')).toBe('./brand/icon-192.png');
+    expect(card.textContent).toBe('홈 화면에 두기앱처럼 바로 열려요.');
+    go('#/saved');
+    expect(q('.saved .home-add')!.textContent).toBe('홈 화면에 두기앱처럼 바로 열려요.');
+  });
+
+  it('홈 화면 아이콘으로 열면 띠·판·카드가 모두 없음', async () => {
+    Object.defineProperty(navigator, 'standalone', { value: true, configurable: true });
+    await start(UA.kakaoAndroid);
+    expect(q('.kband')).toBeNull();
+    expect(q<HTMLElement>('main.home .home-add')!.hidden).toBe(true);
+    saveIn('s-naejang');
+    expect(q('.a2sheet')).toBeNull();
+    go('#/saved');
+    expect(q<HTMLElement>('.saved .home-add')!.hidden).toBe(true);
+  });
+
+  it('그림 안내 판은 Esc로 닫히고, 열리면 판에 초점', async () => {
+    await start(UA.safari);
+    q('main.home .home-add')!.click();
+    expect(document.activeElement).toBe(q('.a2sheet'));
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+    expect(q('.a2sheet')).toBeNull();
+  });
+});

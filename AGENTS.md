@@ -72,7 +72,7 @@ Cowork(기획·콘텐츠·디자인 세션), Claude Code(개발 리드), Codex�
 |---|---|---|
 | 지금 | 기능 ① 첫 화면·장면 상세를 실제 앱으로(F1·F2) → 사용 통계(Umami) 설계 | **일 1** 풍경 찾기 계산(F3, PR #13): [`docs/tasks/codex-1-풍경찾기-계산.md`](docs/tasks/codex-1-풍경찾기-계산.md) → **일 2** 가고 싶어요 저장(F2-AC2c): [`docs/tasks/codex-2-가고싶어요-저장.md`](docs/tasks/codex-2-가고싶어요-저장.md) → **일 3** 풍경 찾기 볼 수 있는 때·묶음 계산(D16·D17·D22·D23): [`docs/tasks/codex-3-풍경찾기-묶음-계산.md`](docs/tasks/codex-3-풍경찾기-묶음-계산.md) · 틈틈이 Claude PR 검토 |
 | 그다음 | 일 3이 합쳐지면 풍경 찾기 화면(F3, PR #22)의 임시 계산을 일 3 함수로 바꾸기 → 저장한 곳 화면(F4, 디자인 #24 기준) | **일 4** 저장한 곳: 저장과 순서 계산(F4, D24~D26): [`docs/tasks/codex-4-저장한곳-저장.md`](docs/tasks/codex-4-저장한곳-저장.md) — 일 3 PR을 올린 뒤 시작 |
-| 그다음 | 홈 화면에 추가(F5, D33): **준비 파일(매니페스트·서비스 워커·임시 아이콘, F5-AC1·2)과 실기기 확인 페이지는 Claude**(10/4 개발 리드 결정 — 앱 껍데기 파일이고 Codex는 일 3 중). 띠·설치 안내 화면은 디자인 세션 F5 PR 뒤 | 저장한 곳 넘기기·안내 띠 닫음 기억 등 F5 저장·계산은 디자인 F5 PR과 실기기 확인 결과가 나온 뒤 작업 문서로 정함 · 길찾기 앱 기억하기(F2-AC5) |
+| 그다음 | 홈 화면에 추가(F5, D33): 준비 파일(매니페스트·서비스 워커·앱 아이콘)·화면(띠·처음 저장 판·그림 안내·카드)·실기기 확인 페이지는 **Claude**(10/4 개발 리드 결정 — 앱 껍데기와 화면이고, 기억할 것이 작아 화면과 함께 함) | 길찾기 앱 기억하기(F2-AC5) |
 
 - **계획·디자인이 정해지지 않은 기능의 저장·계산은 맡기지 않습니다(10/3 사용자 결정).** 무엇을 저장할지가 디자인에 따라 바뀌어 다시 만들게 되기 때문입니다.
 
@@ -86,7 +86,7 @@ Cowork(기획·콘텐츠·디자인 세션), Claude Code(개발 리드), Codex�
 - 화면 전부 (Claude Code)
   - `src/styles/`, `index.html`, `src/main.ts`, `src/app.ts`, 앞으로 만들 `src/ui/`, `src/map/`
   - 확정 시안 `_review/`, `src/review/`와 화면 테스트 `tests/e2e/`, `tests/dom/`
-  - 홈 화면에 추가(F5) 준비: `public/manifest.webmanifest`, `public/sw.js`, `public/icons/`, `src/pwa.ts`, 실기기 확인 페이지 `_review/a2hs-lab.html`(`src/review/a2hsLab.ts`) — 확인 순서와 결과는 `docs/f5-device-check.md`
+  - 홈 화면에 추가(F5): `public/manifest.webmanifest`, `public/sw.js`, `src/pwa.ts`, 화면 `src/ui/a2hs.ts`(띠·처음 저장 판·그림 안내·카드, 기억 3가지는 휴대폰 저장소 `a2hs` 한 칸 — 작아서 화면과 함께 Claude가 함, 10/4), 실기기 확인 페이지 `_review/a2hs-lab.html`(`src/review/a2hsLab.ts`) — 확인 순서와 결과는 `docs/f5-device-check.md`
   - 예외: 기능 ①(F1·F2)에 필요한 계산(F1-AC3 정렬, F1-AC8 가까운 달 등)은 화면 작업과 함께 Claude가 새 파일(`src/domain/home.ts`)로 만듭니다. Codex가 맡은 파일은 건드리지 않습니다.
 - 맡은 일이 바뀌면 이 목록을 고칩니다.
 

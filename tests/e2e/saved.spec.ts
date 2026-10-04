@@ -1,6 +1,11 @@
 import { expect, test, type Page } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
+// 크롬의 처음 [저장] 판(F5-AC6)은 이미 본 것으로 — 여기서는 저장 뒤 흐름을 봄(판은 a2hs.spec.ts)
+test.beforeEach(async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem('imamttae:a2hs', JSON.stringify({ sheetShown: true })));
+});
+
 /** 저장한 곳(F4) 사용 흐름 — 가짜 지도(?map=fake). 다녀온 곳(도장)은 다음 PR([다녀왔어요])에서 흐름으로 확인 */
 async function open(page: Page, hash = '#/saved'): Promise<void> {
   await page.goto(`./?map=fake&motion=0${hash}`);

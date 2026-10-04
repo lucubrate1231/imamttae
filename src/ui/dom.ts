@@ -33,13 +33,6 @@ export const infoIcon = () =>
     'info',
     '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.6v.01"/></svg>',
   );
-/** 휴대폰에 + 표시(홈 화면에 두기) */
-export const phoneIcon = () =>
-  svgIcon(
-    'ic',
-    '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M12 9v6M9 12h6"/></svg>',
-  );
-
 type Photo = StoryScene['photos'][number];
 
 /** 브런치(카카오) 사진의 작은 썸네일 주소 */
