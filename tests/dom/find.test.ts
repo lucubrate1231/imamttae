@@ -126,11 +126,13 @@ describe('풍경을 고른 뒤(#/find/<풍경>)', () => {
     expect(all('.group').filter((g) => g.hidden).length).toBe(hiddenBefore - 1);
   });
 
-  it('다른 때 다녀온 곳은 아래에 "○월에 다녀온 모습"과 함께(D30)', async () => {
+  it('아래 구역은 회색 점 + "작가가 다녀온 곳" + 설명 한 줄, 줄마다 "○월에 다녀온 모습"(D31)', async () => {
     await start('#/find/danpung');
     const rec = q('.find-records')!; // 단풍·은행에는 철 지나 다녀온 곳이 있음(실제 데이터)
     expect(rec).not.toBeNull();
-    expect(rec.querySelector('h2')!.textContent).toBe('다른 때 다녀온 곳');
+    expect(rec.querySelector('h2')!.textContent).toBe('작가가 다녀온 곳');
+    expect(rec.querySelector('h2 .dot.rec')).not.toBeNull();
+    expect(rec.querySelector('.sub')!.textContent).toBe('가장 좋은 때는 아니지만 다녀온 모습을 볼 수 있어요.');
     expect(rec.querySelector('.row-meta')!.textContent).toMatch(/ · \d+월에 다녀온 모습$/);
   });
 
@@ -161,9 +163,9 @@ describe('풍경을 고른 뒤(#/find/<풍경>)', () => {
     expect(q('.find .legend')).toBeNull();
   });
 
-  it('풍경 화면 지도 범례는 "좋은 때 다녀온 곳 · 다른 때 다녀온 곳"(8-1, D29·D30)', async () => {
+  it('풍경 화면 지도에는 범례를 두지 않음 — 색 구분만(D31)', async () => {
     await start('#/find/danpung');
-    expect(all('.find .legend span').map((s) => s.textContent)).toEqual(['좋은 때 다녀온 곳', '다른 때 다녀온 곳']);
+    expect(q('.find .legend')).toBeNull();
   });
 
   it('F3-AC6: "‹ 풍경 찾기"를 누르면 고르기 화면으로', async () => {

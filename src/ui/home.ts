@@ -72,7 +72,7 @@ export function createHome(d: HomeDeps): Home {
   // ── 작가가 다녀온 곳(F1-AC11, D30) ──
   const recTitle = h('h2', {});
   const recList = h('ul', { class: 'reclist' });
-  const recSec = h('section', { class: 'records' }, recTitle, h('p', { class: 'sub', text: '가장 좋은 때는 아니지만 이맘때 모습을 볼 수 있어요.' }), recList);
+  const recSec = h('section', { class: 'records' }, recTitle, h('p', { class: 'sub' }, h('span', { class: 'nowrap', text: '가장 좋은 때는 아니지만' }), ' ', h('span', { class: 'nowrap', text: '이맘때 모습을 볼 수 있어요.' })), recList);
 
   // ── 아래: 홈 화면에 두기(F5, 곧 열림) · 이 앱 이야기 ──
   const homeAdd = h(
