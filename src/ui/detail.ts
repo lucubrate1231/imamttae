@@ -35,7 +35,7 @@ export interface DetailDeps {
   track(name: EventName, data?: EventData): void;
   /** 사진 움직임(기본 켬, ?motion=0이면 끔) */
   motion: boolean;
-  toast(msg: string): void;
+  toast(msg: string, action?: { label: string; run(): void }): void;
   /** 뒤로: 앱 안에서 열었으면 이전 화면으로, 주소로 바로 열었으면 첫 화면으로 */
   back(): void;
 }
@@ -246,8 +246,9 @@ export function createDetail(d: DetailDeps): Detail {
       const on = d.wanted.toggleWanted(s.id);
       d.track('save', { scene: s.id, on });
       paintWant();
-      // [보기 ›]는 '저장한 곳' 화면이 생기면 붙임(F4-AC3)
-      d.toast(on ? "저장했어요 · '저장한 곳'에서 볼 수 있어요" : '저장한 곳에서 뺐어요');
+      // F4-AC3: 저장하면 몇 초 동안 안내 줄 + [보기 ›](저장한 곳으로)
+      if (on) d.toast("저장했어요 · '저장한 곳'에서 볼 수 있어요", { label: '보기 ›', run: () => (win.location.hash = '#/saved') });
+      else d.toast('저장한 곳에서 뺐어요');
     });
     const share = h('button', { class: 'dact', type: 'button' });
     share.innerHTML = `${svg('M12 3v12M7 8l5-5 5 5M5 13v6a2 2 0 002 2h10a2 2 0 002-2v-6', 24)}<span>공유</span>`;

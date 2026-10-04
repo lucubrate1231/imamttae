@@ -126,10 +126,9 @@ describe('작은 지도', () => {
 });
 
 describe('아래 메뉴와 실패할 때', () => {
-  it('아직 없는 화면(저장한 곳·홈 화면에 두기)은 누르면 "곧 열려요"', async () => {
+  it('아직 없는 화면(홈 화면에 두기, F5)은 누르면 "곧 열려요" — 저장한 곳은 이제 열림(F4)', async () => {
     await start();
-    const tab = all('.tabs button').find((b) => b.textContent === '저장한 곳')!;
-    tab.click();
+    root.querySelector<HTMLElement>('main.home .home-add')!.click();
     expect(text('.toast')).toBe('곧 열려요');
     expect(all('.tabs button').map((b) => b.textContent)).toEqual(['지금 풍경', '풍경 찾기', '저장한 곳']);
   });

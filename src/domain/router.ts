@@ -6,7 +6,7 @@ export type Route =
   | { name: 'month'; month: number | null }
   | { name: 'find'; type: SceneTypeId | null; region: RegionId | null }
   | { name: 'scene'; id: string }
-  | { name: 'stamps' };
+  | { name: 'saved' }; // 저장한 곳(F4, D24 — 옛 '내 수첩' #/stamps)
 
 const SCENE_ID = /^[a-z0-9-]{3,80}$/;
 
@@ -33,8 +33,9 @@ export function parseRoute(hash: string): Route {
     case 'scene':
       if (arg && SCENE_ID.test(arg)) return { name: 'scene', id: arg };
       return { name: 'month', month: null };
-    case 'stamps':
-      return { name: 'stamps' };
+    case 'saved':
+    case 'stamps': // 옛 주소도 저장한 곳으로
+      return { name: 'saved' };
     default:
       return { name: 'month', month: null };
   }
@@ -49,7 +50,7 @@ export function routeHref(r: Route): string {
       return r.type ? `#/find/${r.type}` : '#/find';
     case 'scene':
       return `#/scene/${r.id}`;
-    case 'stamps':
-      return '#/stamps';
+    case 'saved':
+      return '#/saved';
   }
 }

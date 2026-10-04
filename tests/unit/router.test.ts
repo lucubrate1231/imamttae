@@ -11,10 +11,15 @@ describe('parseRoute: 카카오톡으로 받은 링크가 해당 화면으로 �
     ['#/find/danpung', { name: 'find', type: 'danpung', region: null }],
     ['#/find/없는장면', { name: 'find', type: null, region: null }],
     ['#/scene/s-019-buseoksa', { name: 'scene', id: 's-019-buseoksa' }],
-    ['#/stamps', { name: 'stamps' }],
+    ['#/saved', { name: 'saved' }], // 저장한 곳(F4, D24)
+    ['#/stamps', { name: 'saved' }], // 옛 주소(내 수첩)도 저장한 곳으로
     ['#/이상한주소', { name: 'month', month: null }],
   ])('%j', (hash, want) => {
     expect(parseRoute(hash)).toEqual(want);
+  });
+
+  it('저장한 곳 주소는 #/saved', () => {
+    expect(routeHref({ name: 'saved' })).toBe('#/saved');
   });
 
   it('routeHref ↔ parseRoute 왕복', () => {

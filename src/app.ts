@@ -19,7 +19,8 @@ import { createHome } from './ui/home';
 import { createNavi } from './ui/navi';
 import type { WantedLike } from './ui/wanted';
 import { applyMeParam, firstMonth, launchMode, type EventData, type Tracker } from './analytics';
-import { createWantedStore } from './storage/wanted';
+import { createSaved } from './ui/saved';
+import { createTempSavedStore, seoulDate, type SavedStore } from './ui/savedTemp';
 
 export interface AppDeps {
   root: HTMLElement;
@@ -40,6 +41,8 @@ export interface AppDeps {
   store?: SafeStore;
   /** 가고 싶어요 저장. Codex 일 2 전까지는 임시(화면을 닫으면 사라짐) */
   wanted?: WantedLike;
+  /** 저장한 곳(F4). 없으면 임시 저장(Codex 일 4가 오면 바뀜, src/ui/savedTemp.ts) */
+  saved?: SavedStore;
   /** 사용 통계(Umami). 없으면 아무것도 보내지 않음 */
   tracker?: Tracker;
   /** 사진 움직임. 기본 켬, 주소에 ?motion=0이면 끔 */
@@ -59,11 +62,21 @@ export async function startApp(deps: AppDeps): Promise<AppHandle> {
   // 잠깐 뜨는 알림
   const toastEl = h('div', { class: 'toast', role: 'status' });
   let toastTimer = 0;
-  const toast = (msg: string) => {
-    toastEl.textContent = msg;
+  /** action: 알림 오른쪽 버튼(예: 저장 뒤 [보기 ›], F4-AC3). 있으면 몇 초 더 오래 보임 */
+  const toast = (msg: string, action?: { label: string; run(): void }) => {
+    toastEl.replaceChildren(h('span', { text: msg }));
+    toastEl.classList.toggle('act', !!action);
+    if (action) {
+      const b = h('button', { type: 'button', class: 'toast-go', text: action.label });
+      b.addEventListener('click', () => {
+        toastEl.classList.remove('on');
+        action.run();
+      });
+      toastEl.append(b);
+    }
     toastEl.classList.add('on');
     win.clearTimeout(toastTimer);
-    toastTimer = win.setTimeout(() => toastEl.classList.remove('on'), 1800);
+    toastTimer = win.setTimeout(() => toastEl.classList.remove('on'), action ? 3500 : 1800);
   };
 
   // ── 사용 통계(docs/analytics.md) ──
@@ -94,7 +107,7 @@ export async function startApp(deps: AppDeps): Promise<AppHandle> {
     b.addEventListener('click', () => {
       if (i === 0) win.location.hash = routeHref({ name: 'month', month: null });
       else if (i === 1) win.location.hash = routeHref({ name: 'find', type: null, region: null });
-      else toast('곧 열려요');
+      else win.location.hash = routeHref({ name: 'saved' });
     });
     tabs.append(b);
   }
@@ -108,6 +121,7 @@ export async function startApp(deps: AppDeps): Promise<AppHandle> {
     return { render() {}, destroy() {} };
   }
 
+  const savedStore = deps.saved ?? createTempSavedStore(store, () => deps.now ?? new Date());
   const map = deps.mapFailed ? createFailedMap() : deps.map;
   if (map.kind === 'failed') tracker.track('error', { kind: 'map-fail' });
   let sceneFrom: string | null = null; // 통계 scene-open: 앱 안에서 연 곳(없으면 주소로 바로 = link)
@@ -130,7 +144,7 @@ export async function startApp(deps: AppDeps): Promise<AppHandle> {
     today: thisMonth,
     navi,
     // 저장은 휴대폰에 남김(Codex 일 2 createWantedStore). 테스트는 임시 저장을 끼울 수 있음
-    wanted: deps.wanted ?? createWantedStore(store),
+    wanted: deps.wanted ?? savedStore,
     track: tracker.track,
     motion: deps.motion ?? new URLSearchParams(win.location.search).get('motion') !== '0',
     toast,
@@ -154,18 +168,36 @@ export async function startApp(deps: AppDeps): Promise<AppHandle> {
     },
   });
   find.el.hidden = true;
-  root.replaceChildren(...home.nodes, find.el, tabs, detail.el, navi.sheet, toastEl);
+  const saved = createSaved({
+    win,
+    scenes: deps.content.scenes,
+    today: thisMonth,
+    year: Number(seoulDate(deps.now ?? new Date()).slice(0, 4)),
+    store: savedStore,
+    navi,
+    openScene: (id, from) => {
+      openedInApp = true;
+      sceneFrom = from;
+      win.location.hash = routeHref({ name: 'scene', id });
+    },
+    toast,
+    track: tracker.track,
+  });
+  saved.el.hidden = true;
+  root.replaceChildren(...home.nodes, find.el, saved.el, tabs, detail.el, navi.sheet, toastEl);
   await Promise.all([map.mount(home.mapHost), findMap.mount(find.mapHost)]);
 
   const tabButtons = [...tabs.querySelectorAll('button')];
-  let screen: 'home' | 'find' = 'home';
+  let screen: 'home' | 'find' | 'saved' = 'home';
   /** 첫 화면 ↔ 풍경 찾기 바꾸기. 풍경 찾기는 늘 오늘의 계절 색 */
-  function showScreen(next: 'home' | 'find'): void {
+  function showScreen(next: 'home' | 'find' | 'saved'): void {
     if (next !== screen) win.scrollTo?.({ top: 0 });
     screen = next;
     for (const n of home.nodes) n.hidden = next !== 'home';
     find.el.hidden = next !== 'find';
-    tabButtons.forEach((b, i) => (i === (next === 'home' ? 0 : 1) ? b.setAttribute('aria-current', 'page') : b.removeAttribute('aria-current')));
+    saved.el.hidden = next !== 'saved';
+    const tab = { home: 0, find: 1, saved: 2 }[next];
+    tabButtons.forEach((b, i) => (i === tab ? b.setAttribute('aria-current', 'page') : b.removeAttribute('aria-current')));
     const m = next === 'home' ? (shown ?? thisMonth) : thisMonth;
     root.dataset.season = seasonOf(m);
     const soft = getComputedStyle(root).getPropertyValue('--season-soft').trim();
@@ -183,6 +215,9 @@ export async function startApp(deps: AppDeps): Promise<AppHandle> {
         win.scrollTo?.({ top: 0 }); // 풍경 찾기 안에서 화면이 바뀌면 맨 위부터(상세에서 돌아올 때는 그대로)
       }
       showScreen('find');
+    } else if (route.name === 'saved') {
+      saved.render(); // 상세에서 저장·빼기를 했을 수 있어 들어올 때마다 새로 그림
+      showScreen('saved');
     } else if (route.name !== 'scene') {
       // 장면 상세를 여는 동안에도 아래 화면은 보던 그대로
       const month = route.name === 'month' ? (route.month ?? thisMonth) : (shown ?? thisMonth);

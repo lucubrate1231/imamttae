@@ -34,6 +34,8 @@ export interface NaviDeps {
 export interface Navi {
   /** 장면 상세 아래 막대의 길찾기 버튼과 작은 '다른 앱으로 길찾기' */
   controls(dest: NaviDest, sceneId: string): { go: HTMLElement; other: HTMLElement | null };
+  /** 장면 상세 밖에서 길찾기(저장한 곳 줄의 [길찾기], F4-AC2): 장면 상세 버튼과 같은 동작(기본 티맵, 안 열리면 안내) */
+  openFor(dest: NaviDest, sceneId: string, where: 'detail' | 'saved'): void;
   /** 화면에 한 번 붙여 두는 고르기 안내 */
   sheet: HTMLElement;
 }
@@ -64,8 +66,9 @@ export function createNavi(d: NaviDeps): Navi {
 
   /** 앱 주소를 열고, 앱이 안 열리면(화면이 그대로면) 다른 길을 안내 */
   let scene = '';
+  let where: 'detail' | 'saved' = 'detail';
   function launch(app: NaviAppId, dest: NaviDest, how: 'main' | 'other'): void {
-    d.track('navi', { app, how, scene, where: 'detail' });
+    d.track('navi', { app, how, scene, where });
     d.openUrl(url(app, dest));
     if (app === 'kakao') return; // 카카오맵은 웹 주소라 앱이 없어도 열림
     let left = false;
@@ -108,16 +111,24 @@ export function createNavi(d: NaviDeps): Navi {
       go.textContent = `길찾기(${NAVI_LABEL[mobile ? pref() : 'kakao']})`;
     };
     paint();
-    go.addEventListener('click', () => {
-      if (mobile) return launch(pref(), dest, 'main');
-      d.track('navi', { app: 'kakao', how: 'main', scene, where: 'detail' });
-      d.openUrl(url('kakao', dest));
-    });
+    go.addEventListener('click', () => openFor(dest, sceneId, 'detail'));
     if (!mobile) return { go, other: null };
     const other = h('button', { type: 'button', class: 'navi-other', text: '다른 앱으로 길찾기' });
-    other.addEventListener('click', () => openSheet('어느 앱으로 길을 찾을까요?', others(pref(), dest, true)));
+    other.addEventListener('click', () => {
+      scene = sceneId;
+      where = 'detail';
+      openSheet('어느 앱으로 길을 찾을까요?', others(pref(), dest, true));
+    });
     return { go, other };
   }
 
-  return { controls, sheet };
+  function openFor(dest: NaviDest, sceneId: string, w: 'detail' | 'saved'): void {
+    scene = sceneId;
+    where = w;
+    if (mobile) return launch(pref(), dest, 'main');
+    d.track('navi', { app: 'kakao', how: 'main', scene, where });
+    d.openUrl(url('kakao', dest));
+  }
+
+  return { controls, openFor, sheet };
 }
