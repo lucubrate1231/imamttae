@@ -5,6 +5,7 @@
  * - 추천 시기 밖이면 추천 시기 칸 맨 위에 "N월부터 가기 좋아요"
  * - 사진 안내 "사진은 작가가 N월에 다녀온 모습이에요."는 모든 장면에
  * - 글자는 design-guide 10장 '화면 글자 표'가 기준(D28~D30)
+ * - 저장한 장면은 제목 구역 아래 [다녀왔어요] 상자(F4, src/ui/visited.ts)
  * 화면 규칙: docs/design-guide.md 6장 · 완성 기준: docs/features/F2-장면-카드와-길찾기.md
  */
 import type { PlaceholderScene, Scene, StoryScene } from '../../shared/schema/content';
@@ -17,7 +18,8 @@ import type { Month } from '../domain/month';
 import { fmtDate, h, infoIcon, photoImg } from './dom';
 import type { Navi } from './navi';
 import { shareUrl, type EventData, type EventName } from '../analytics';
-import type { WantedLike } from './wanted';
+import type { SavedStore } from '../storage/saved';
+import { createVisitBox, type VisitBox } from './visited';
 
 const AUTHOR = '이상호';
 const APP_NAME = '이맘때 풍경';
@@ -30,7 +32,10 @@ export interface DetailDeps {
   /** 오늘(한국 날짜)의 달 — 꼬리표 기준 */
   today: Month;
   navi: Navi;
-  wanted: WantedLike;
+  /** 저장·다녀온 곳(F4, src/storage/saved.ts) */
+  saved: SavedStore;
+  /** 오늘(한국 날짜) 'YYYY-MM-DD' — 다녀온 날 기준 */
+  todayDate(): string;
   /** 사용 통계(docs/analytics.md) */
   track(name: EventName, data?: EventData): void;
   /** 사진 움직임(기본 켬, ?motion=0이면 끔) */
@@ -58,6 +63,7 @@ export function createDetail(d: DetailDeps): Detail {
   const reduceMotion = win.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
   const el = h('section', { class: 'detail', 'aria-label': '장면 상세', 'aria-hidden': 'true' });
   let revealOverlay: (() => void) | null = null;
+  let visitBox: VisitBox | null = null; // 지금 연 장면의 [다녀왔어요] 상자
   let ignoreScrollUntil = 0; // 이 시각 전의 스크롤은 사람 손이 아님(열며 맨 위로 되돌린 것)
   let timers: number[] = [];
   const later = (fn: () => void, ms: number) => {
@@ -237,36 +243,49 @@ export function createDetail(d: DetailDeps): Detail {
     // ── 아래 붙박이 막대: 저장 · 공유 · 길찾기(티맵) (D28) ──
     const want = h('button', { class: 'dact', type: 'button' });
     const paintWant = () => {
-      const on = d.wanted.isWanted(s.id);
+      const on = d.saved.isWanted(s.id);
       want.setAttribute('aria-pressed', String(on));
       want.innerHTML = `${svg('M6 3h12v18l-6-4.5L6 21z', 24, on ? 'currentColor' : 'none')}<span>${on ? '저장됨' : '저장'}</span>`;
     };
     paintWant();
     want.addEventListener('click', () => {
-      const on = d.wanted.toggleWanted(s.id);
+      const on = d.saved.toggleWanted(s.id);
       d.track('save', { scene: s.id, on });
       paintWant();
+      visitBox?.paint();
       // F4-AC3: 저장하면 몇 초 동안 안내 줄 + [보기 ›](저장한 곳으로)
       if (on) d.toast("저장했어요 · '저장한 곳'에서 볼 수 있어요", { label: '보기 ›', run: () => (win.location.hash = '#/saved') });
       else d.toast('저장한 곳에서 뺐어요');
     });
     const share = h('button', { class: 'dact', type: 'button' });
     share.innerHTML = `${svg('M12 3v12M7 8l5-5 5 5M5 13v6a2 2 0 002 2h10a2 2 0 002-2v-6', 24)}<span>공유</span>`;
-    share.addEventListener('click', async () => {
+    /** 공유 창(없으면 주소 복사). where: detail(아래 막대) / stamp(도장 순간의 카톡으로 알리기, F4-AC9) */
+    const doShare = async (where: 'detail' | 'stamp', title: string, text: string) => {
       const nav = win.navigator;
       const url = shareUrl(win.location, s.id); // 받은 사람이 열면 from=share로 셈(통계)
       try {
         if (nav.share) {
-          d.track('share', { scene: s.id, where: 'detail', how: 'share-sheet' });
-          await nav.share({ title: `${s.name} · ${APP_NAME}`, text: s.oneLiner, url });
+          d.track('share', { scene: s.id, where, how: 'share-sheet' });
+          await nav.share({ title, text, url });
         } else {
-          d.track('share', { scene: s.id, where: 'detail', how: 'copy' });
+          d.track('share', { scene: s.id, where, how: 'copy' });
           await nav.clipboard.writeText(url);
           d.toast('주소를 복사했어요');
         }
       } catch {
         /* 사용자가 취소 */
       }
+    };
+    share.addEventListener('click', () => void doShare('detail', `${s.name} · ${APP_NAME}`, s.oneLiner));
+    visitBox = createVisitBox({
+      win,
+      scene: s,
+      store: d.saved,
+      todayDate: d.todayDate,
+      track: d.track,
+      share: (text) => void doShare('stamp', text, text),
+      host: el,
+      onChange: paintWant,
     });
     const { go, other } = d.navi.controls(s.dest, s.id);
     const bar = h('div', { class: 'dbar' }, want, share, go);
@@ -278,7 +297,7 @@ export function createDetail(d: DetailDeps): Detail {
       h(
         'div',
         { class: 'body' },
-        h('section', { class: 'dsec', 'aria-label': '제목' }, badges, h('h2', { class: 'title', text: s.name }), h('p', { class: 'region', text: s.region }), h('p', { class: 'one' }, s.oneLiner, s.review.oneLiner === 'draft' && draft())),
+        h('section', { class: 'dsec', 'aria-label': '제목' }, badges, h('h2', { class: 'title', text: s.name }), h('p', { class: 'region', text: s.region }), h('p', { class: 'one' }, s.oneLiner, s.review.oneLiner === 'draft' && draft()), visitBox.slot),
         h('section', { class: 'dsec when-sec', 'aria-label': '추천 시기' }, recNote, when),
         h('section', { class: 'dsec', 'aria-label': '작가의 한마디' }, h('h3', { class: 'dlbl', text: '작가의 한마디' }), h('blockquote', { class: 'quote' }, h('p', { text: s.excerpt }), h('cite', { text: fmtDate(s.visited) }))),
         h('section', { class: 'dsec', 'aria-label': '브런치 전체 이야기' }, brunchLink(s)),
@@ -320,6 +339,8 @@ export function createDetail(d: DetailDeps): Detail {
       const s = d.scenes.find((x) => x.id === id && !(x.kind === 'story' && x.hidden));
       if (!s) return false;
       clearTimers();
+      visitBox?.close();
+      visitBox = null;
       el.replaceChildren(...(s.kind === 'story' ? storyDetail(s) : placeholderDetail(s)));
       ignoreScrollUntil = performance.now() + 700;
       el.scrollTop = 0;
@@ -331,6 +352,7 @@ export function createDetail(d: DetailDeps): Detail {
     hide() {
       if (el.getAttribute('aria-hidden') === 'true') return;
       clearTimers();
+      visitBox?.close();
       revealOverlay = null;
       el.classList.remove('open');
       el.setAttribute('aria-hidden', 'true');

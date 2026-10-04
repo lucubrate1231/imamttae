@@ -88,3 +88,10 @@ export function seasonNow(best: { from: Month; to: Month } | undefined | null, t
   if (isYearRound(best)) return 'yearRound';
   return inWindow(today, best) ? 'now' : 'off';
 }
+
+/** 한국 날짜 'YYYY-MM-DD'(휴대폰 시간대와 상관없이) — 다녀온 날·올해 기준 */
+export function dateInSeoul(now: Date = new Date()): string {
+  const p = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(now);
+  const v = (t: string) => p.find((x) => x.type === t)!.value;
+  return `${v('year')}-${v('month')}-${v('day')}`;
+}

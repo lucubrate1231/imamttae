@@ -11,13 +11,12 @@ import { parseRoute, routeHref, type Route } from './domain/router';
 import { createFailedMap } from './map/failedMap';
 import type { MapAdapter } from './map/types';
 import { createSafeStore, type SafeStore } from './storage/safeStorage';
-import { seasonOf } from './domain/home';
+import { dateInSeoul, seasonOf } from './domain/home';
 import { createDetail } from './ui/detail';
 import { createFind } from './ui/find';
 import { h } from './ui/dom';
 import { createHome } from './ui/home';
 import { createNavi } from './ui/navi';
-import type { WantedLike } from './ui/wanted';
 import { applyMeParam, firstMonth, launchMode, type EventData, type Tracker } from './analytics';
 import { createSaved } from './ui/saved';
 import { createSavedStore, type SavedStore } from './storage/saved';
@@ -39,8 +38,6 @@ export interface AppDeps {
   openUrl?: (url: string) => void;
   /** 휴대폰 저장소(고른 길찾기 앱 기억) */
   store?: SafeStore;
-  /** 가고 싶어요 저장. Codex 일 2 전까지는 임시(화면을 닫으면 사라짐) */
-  wanted?: WantedLike;
   /** 저장한 곳(F4). 없으면 휴대폰 저장소(Codex 일 4, src/storage/saved.ts) */
   saved?: SavedStore;
   /** 사용 통계(Umami). 없으면 아무것도 보내지 않음 */
@@ -143,8 +140,8 @@ export async function startApp(deps: AppDeps): Promise<AppHandle> {
     scenes: deps.content.scenes,
     today: thisMonth,
     navi,
-    // 저장은 휴대폰에 남김(Codex 일 2 createWantedStore). 테스트는 임시 저장을 끼울 수 있음
-    wanted: deps.wanted ?? savedStore,
+    saved: savedStore,
+    todayDate: () => dateInSeoul(deps.now ?? new Date()),
     track: tracker.track,
     motion: deps.motion ?? new URLSearchParams(win.location.search).get('motion') !== '0',
     toast,

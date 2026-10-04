@@ -314,6 +314,57 @@ h1, h2, h3, p { margin: 0; }
 .toast.act.on { pointer-events: auto; }
 .toast-go { flex: none; min-height: 44px; padding: 0 12px; border-radius: 12px; color: #ffd9c7; font-weight: 700; }
 
+/* ── 장면 상세의 [다녀왔어요](F4) — design-guide 6-2 ── */
+.vslot:empty { display: none; }
+.vbox { display: flex; align-items: center; gap: 12px; margin-top: 18px; padding: 10px 10px 10px 16px; border-radius: 18px; background: var(--season-soft); }
+.vbox-icon { display: flex; color: var(--season); }
+.vbox-msg { flex: 1; min-width: 0; font-size: 16px; line-height: 1.4; color: var(--ink-2); }
+.vbox-go { display: flex; align-items: center; gap: 6px; min-height: 48px; padding: 0 18px; border-radius: var(--r-pill); background: var(--season); color: #fff; font-size: 17px; font-weight: 800; white-space: nowrap; }
+.vbox.done { padding-left: 10px; }
+.vbox-stamp { flex-shrink: 0; width: 60px; height: 60px; transform: rotate(-6deg); }
+.vbox.done .vbox-msg { font-size: 17px; color: var(--ink); }
+.vbox.done .vbox-msg b { color: var(--season); }
+/* 자주 쓰지 않아 작게(14 굵게). 누르는 높이는 앱 규칙 48 */
+.vbox-change { min-height: 48px; padding: 0 8px; font-size: 14px; font-weight: 800; color: var(--ink-2); white-space: nowrap; }
+
+/* 덮개(검정 52%) — 도장 찍히는 순간(가운데 카드)·다녀온 날 변경(아래 판) */
+.vscrim { position: fixed; inset: 0; z-index: 40; display: flex; justify-content: center; background: rgba(0, 0, 0, .52); }
+.vscrim.center { align-items: center; padding: 16px; }
+.vscrim.bottom { align-items: flex-end; }
+.stamp-moment { display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 440px; max-height: calc(100dvh - 32px); overflow-y: auto; padding: 30px 20px 18px; border-radius: 28px; background: #fff; text-align: center; }
+.sm-stamp { position: relative; flex-shrink: 0; width: 168px; height: 168px; transform: rotate(-8deg); }
+.sm-stamp img { display: block; width: 168px; height: 168px; }
+.sm-line { position: absolute; left: 50%; top: 50%; width: 3px; height: 13px; margin: -6px 0 0 -1.5px; border-radius: 2px; background: color-mix(in srgb, var(--season) 45%, transparent); transform: rotate(var(--a)) translateY(-100px); }
+.thud img { animation: thud .4s cubic-bezier(.2, .8, .3, 1.15) both; }
+.thud .sm-line { animation: thud-line .25s .3s ease-out both; }
+@keyframes thud { 0% { transform: scale(1.35); opacity: 0; } 65% { transform: scale(.95); opacity: 1; } 100% { transform: scale(1); } }
+@keyframes thud-line { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .thud img, .thud .sm-line { animation: none; } }
+.sm-ttl { margin-top: 18px; font-family: var(--font-display); font-weight: 700; font-size: 25px; line-height: 1.35; color: var(--ink-title); }
+.sm-daterow { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px 10px; margin-top: 12px; }
+.sm-date { font-size: 17px; color: var(--ink-2); }
+.sm-date b { color: var(--season); }
+.sm-change { min-height: 48px; padding: 0 16px; border: 1.5px solid var(--line); border-radius: var(--r-pill); font-size: 15px; font-weight: 800; color: var(--ink-2); }
+.sm-talk { width: 100%; margin-top: 20px; }
+.sm-ok { margin-top: 10px; }
+.sm-note { margin-top: 12px; font-size: 15px; color: var(--ink-3); }
+.vsheet { display: flex; flex-direction: column; width: 100%; max-width: 520px; padding: 10px 20px calc(16px + env(safe-area-inset-bottom)); border-radius: 28px 28px 0 0; background: #fff; outline: none; }
+.vs-handle { align-self: center; width: 40px; height: 5px; margin-bottom: 18px; border-radius: 3px; background: var(--line); }
+.vs-ttl { font-size: 19px; font-weight: 800; color: var(--ink); }
+.vs-name, .vs-desc { margin-top: 4px; font-size: 16px; line-height: 1.5; color: var(--ink-3); }
+.vs-desc { color: var(--ink-2); }
+.vs-field { position: relative; display: flex; align-items: center; justify-content: space-between; height: 56px; margin-top: 16px; padding: 0 16px; border: 1.5px solid var(--line); border-radius: 16px; font-size: 18px; color: var(--ink); }
+.vs-field:focus-within { border-color: var(--season); }
+.vs-cal { display: flex; color: var(--ink-3); }
+.vs-input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+.vs-err { margin-top: 8px; font-size: 16px; color: #a8322a; }
+.vs-err:empty { display: none; }
+.vsheet > .btn.fill { margin-top: 16px; }
+.vs-remove { align-self: center; min-height: 48px; margin-top: 6px; padding: 0 12px; font-size: 16px; font-weight: 800; color: var(--ink-3); text-decoration: underline; }
+.vs-two { display: flex; gap: 10px; margin-top: 20px; }
+.vs-two .btn { flex: 1; }
+.btn.fill.dark { background: var(--ink); }
+
 .find { padding-bottom: 8px; }
 .find-head { padding: calc(14px + env(safe-area-inset-top)) 0 20px; background: var(--season-soft); }
 .find-head .eyebrow { padding-top: 0; background: none; }
