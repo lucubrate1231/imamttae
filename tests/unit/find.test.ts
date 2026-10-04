@@ -456,7 +456,7 @@ describe('findScenes: 제철과 작가 부부 방문 정렬 (F3-AC3)', () => {
 
 describe('실제 앱 데이터의 풍경 찾기 규칙 (F3-AC2·AC3·AC4·AC7)', () => {
   it('실제 추천 시기는 단풍·억새 10~11, 운해 4~11, 설경 11~2, 일출·바다 언제나다', () => {
-    const scenes = ContentFile.parse(appData).scenes;
+    const scenes = ContentFile.parse(appData).scenes.filter((s) => s.kind === 'story');
     expect(find.typeWhen(scenes, 'danpung')).toEqual({ kind: 'range', from: 10, to: 11 });
     expect(find.typeWhen(scenes, 'eoksae')).toEqual({ kind: 'range', from: 10, to: 11 });
     expect(find.typeWhen(scenes, 'unhae')).toEqual({ kind: 'range', from: 4, to: 11 });
@@ -465,14 +465,15 @@ describe('실제 앱 데이터의 풍경 찾기 규칙 (F3-AC2·AC3·AC4·AC7)',
     expect(find.typeWhen(scenes, 'bada')).toEqual({ kind: 'always' });
   });
   it('10월 첫 풍경은 단풍이며 언제나는 일출·바다, 다른 때는 겨울부터다', () => {
-    const g = find.typeGroups(ContentFile.parse(appData).scenes, 10);
+    const scenes = ContentFile.parse(appData).scenes.filter((s) => s.kind === 'story');
+    const g = find.typeGroups(scenes, 10);
     expect(g.good.map((x) => x.type)).toEqual(['danpung', 'unhae', 'eoksae', 'gyegok']);
     expect(g.always).toEqual(['ilchul', 'bada']);
     expect(g.other).toEqual(['seolgyeong', 'maehwa', 'beotkkot', 'jindallae', 'sinrok', 'yeoreumkkot', 'kkotmureut']);
   });
   it('모든 달에서 모든 풍경은 정확히 한 묶음에 들어가고 good 수는 실제 추천 시기 장면 수다', () => {
-    const scenes = ContentFile.parse(appData).scenes;
-    const stories = scenes.filter((s) => s.kind === 'story' && !s.hidden);
+    const scenes = ContentFile.parse(appData).scenes.filter((s) => s.kind === 'story');
+    const stories = scenes.filter((s) => !s.hidden);
     const allTypes = SCENE_TYPES.map((t) => t.id);
     for (const month of MONTHS) {
       const g = find.typeGroups(scenes, month);

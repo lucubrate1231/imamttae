@@ -90,10 +90,10 @@ Cowork(기획·콘텐츠·디자인 세션), Claude Code(개발 리드), Codex�
 - 맡은 일이 바뀌면 이 목록을 고칩니다.
 
 ### 지금 Codex가 맡고 있는 것
-- **일 4 저장한 곳: 저장과 순서 계산(F4, D24~D26)** — 가지 `codex/saved`
-  - 새로 만듦: `src/storage/saved.ts`, `tests/unit/saved.test.ts`, `src/domain/saved.ts`, `tests/unit/savedOrder.test.ts`
-  - 그대로 가져다 씀: `src/storage/safeStorage.ts`, `src/domain/month.ts`, `src/domain/sceneTier.ts`
-  - 자세한 내용: [`docs/tasks/codex-4-저장한곳-저장.md`](docs/tasks/codex-4-저장한곳-저장.md)
+- **일 3 풍경 찾기: 볼 수 있는 때·묶음·목록 순서(F3, D16·D17·D22·D23)** — 가지 `codex/find-groups`
+  - 고침: `src/domain/find.ts`, `tests/unit/find.test.ts`
+  - 그대로 가져다 씀: `src/domain/sceneTier.ts`, `src/domain/month.ts`, `src/domain/sceneTypes.ts`
+  - 자세한 내용: [`docs/tasks/codex-3-풍경찾기-묶음-계산.md`](docs/tasks/codex-3-풍경찾기-묶음-계산.md)
 - 일이 끝나 PR이 합쳐지면 이 칸을 다음 일로 바꿉니다.
 
 ### 같은 컴퓨터에서 동시에 일할 때 (Claude Code와 Codex)
