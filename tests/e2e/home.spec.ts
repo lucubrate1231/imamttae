@@ -74,6 +74,21 @@ test('F1-AC13: 아래로 스크롤해 큰 제목이 사라지면 작은 제목 �
   await expect(mini).not.toHaveClass(/\bon\b/);
 });
 
+test('작은 제목 막대는 첫 화면에만 — 스크롤한 채로 풍경 찾기·저장한 곳으로 가도 남지 않음(10/4 사용자 휴대폰 확인)', async ({ page }) => {
+  await open(page, '#/month/10');
+  const mini = page.locator('.mini-ttl');
+  for (const tab of ['풍경 찾기', '저장한 곳']) {
+    await page.mouse.wheel(0, 900);
+    await expect(mini).toBeVisible();
+    await expect(mini).toHaveCSS('opacity', '1');
+    await page.getByRole('button', { name: tab, exact: true }).click();
+    await expect(page.getByRole('heading', { level: 1 })).not.toHaveText('10월에 만나는 풍경');
+    await expect(mini, tab).toBeHidden();
+    await page.getByRole('button', { name: '지금 풍경', exact: true }).click();
+    await expect(page.getByRole('heading', { level: 1, name: /월에 만나는 풍경/ })).toBeVisible();
+  }
+});
+
 test('C-1: 320px 폭에서 가로로 밀리지 않음(모든 달)', async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 640 });
   for (const m of [1, 5, 8, 10]) {
