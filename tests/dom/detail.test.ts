@@ -161,7 +161,8 @@ describe('아래 붙박이 막대', () => {
     want().click();
     expect(want().getAttribute('aria-pressed')).toBe('true');
     expect(want().textContent).toBe('저장됨');
-    expect(text('.toast')).toBe("저장했어요 · '저장한 곳'에서 볼 수 있어요");
+    expect(text('.toast')).toContain("저장했어요 · '저장한 곳'에서 볼 수 있어요");
+    expect(text('.toast .toast-go')).toBe('보기 ›');
     window.location.hash = '#/month/10';
     hashChange();
     window.location.hash = '#/scene/s-detail';
