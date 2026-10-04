@@ -72,7 +72,7 @@ Cowork(기획·콘텐츠·디자인 세션), Claude Code(개발 리드), Codex�
 |---|---|---|
 | 지금 | 기능 ① 첫 화면·장면 상세를 실제 앱으로(F1·F2) → 사용 통계(Umami) 설계 | **일 1** 풍경 찾기 계산(F3, PR #13): [`docs/tasks/codex-1-풍경찾기-계산.md`](docs/tasks/codex-1-풍경찾기-계산.md) → **일 2** 가고 싶어요 저장(F2-AC2c): [`docs/tasks/codex-2-가고싶어요-저장.md`](docs/tasks/codex-2-가고싶어요-저장.md) → **일 3** 풍경 찾기 볼 수 있는 때·묶음 계산(D16·D17·D22·D23): [`docs/tasks/codex-3-풍경찾기-묶음-계산.md`](docs/tasks/codex-3-풍경찾기-묶음-계산.md) · 틈틈이 Claude PR 검토 |
 | 그다음 | 일 3이 합쳐지면 풍경 찾기 화면(F3, PR #22)의 임시 계산을 일 3 함수로 바꾸기 → 저장한 곳 화면(F4, 디자인 #24 기준) | **일 4** 저장한 곳: 저장과 순서 계산(F4, D24~D26): [`docs/tasks/codex-4-저장한곳-저장.md`](docs/tasks/codex-4-저장한곳-저장.md) — 일 3 PR을 올린 뒤 시작 |
-| 그다음 | 홈 화면에 추가(F5, D33): **준비 파일(매니페스트·서비스 워커·임시 아이콘, F5-AC1·2)과 실기기 확인 페이지는 Claude**(10/4 개발 리드 결정 — 앱 껍데기 파일이고 Codex는 일 3 중). 띠·설치 안내 화면은 디자인 세션 F5 PR 뒤 | 저장한 곳 넘기기·안내 띠 닫음 기억 등 F5 저장·계산은 디자인 F5 PR과 실기기 확인 결과가 나온 뒤 작업 문서로 정함 · 길찾기 앱 기억하기(F2-AC5) |
+| 그다음 | 홈 화면에 추가 화면(F5), 사용 통계 붙이기 | 홈 화면에 추가 준비 파일(F5-AC1·2·6), 길찾기 앱 기억하기(F2-AC5) |
 
 - **계획·디자인이 정해지지 않은 기능의 저장·계산은 맡기지 않습니다(10/3 사용자 결정).** 무엇을 저장할지가 디자인에 따라 바뀌어 다시 만들게 되기 때문입니다.
 
@@ -86,14 +86,14 @@ Cowork(기획·콘텐츠·디자인 세션), Claude Code(개발 리드), Codex�
 - 화면 전부 (Claude Code)
   - `src/styles/`, `index.html`, `src/main.ts`, `src/app.ts`, 앞으로 만들 `src/ui/`, `src/map/`
   - 확정 시안 `_review/`, `src/review/`와 화면 테스트 `tests/e2e/`, `tests/dom/`
-  - 홈 화면에 추가(F5) 준비: `public/manifest.webmanifest`, `public/sw.js`, `public/icons/`, `src/pwa.ts`, 실기기 확인 페이지 `_review/a2hs-lab.html`(`src/review/a2hsLab.ts`) — 확인 순서와 결과는 `docs/f5-device-check.md`
   - 예외: 기능 ①(F1·F2)에 필요한 계산(F1-AC3 정렬, F1-AC8 가까운 달 등)은 화면 작업과 함께 Claude가 새 파일(`src/domain/home.ts`)로 만듭니다. Codex가 맡은 파일은 건드리지 않습니다.
 - 맡은 일이 바뀌면 이 목록을 고칩니다.
 
 ### 지금 Codex가 맡고 있는 것
-- **일 3 풍경 찾기: 볼 수 있는 때·고르기 묶음·목록 순서(F3, D16·D17·D22·D23)** — 가지 `codex/find-groups`
-  - 자세한 내용(고칠 파일·함수 이름·끝났다고 보는 조건): [`docs/tasks/codex-3-풍경찾기-묶음-계산.md`](docs/tasks/codex-3-풍경찾기-묶음-계산.md)
-  - 일 4(저장한 곳, PR #38)는 10/4 합쳐짐. 일 3은 아직 시작 전이라 이어서 합니다.
+- **일 3 풍경 찾기: 볼 수 있는 때·묶음·목록 순서(F3, D16·D17·D22·D23)** — 가지 `codex/find-groups`
+  - 고침: `src/domain/find.ts`, `tests/unit/find.test.ts`
+  - 그대로 가져다 씀: `src/domain/sceneTier.ts`, `src/domain/month.ts`, `src/domain/sceneTypes.ts`
+  - 자세한 내용: [`docs/tasks/codex-3-풍경찾기-묶음-계산.md`](docs/tasks/codex-3-풍경찾기-묶음-계산.md)
 - 일이 끝나 PR이 합쳐지면 이 칸을 다음 일로 바꿉니다.
 
 ### 같은 컴퓨터에서 동시에 일할 때 (Claude Code와 Codex)

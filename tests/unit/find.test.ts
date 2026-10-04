@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { ContentFile } from '../../shared/schema/content';
 import appData from '../../public/data/scenes.json';
-import { MONTHS } from '../../src/domain/month';
+import { inWindow, MONTHS } from '../../src/domain/month';
 import { SCENE_TYPES } from '../../src/domain/sceneTypes';
 import * as find from '../../src/domain/find';
 import type { FindInput } from '../../src/domain/find';
@@ -123,32 +123,198 @@ describe('typeCounts: 풍경 13가지 이야기 수 (F3-AC4·AC5)', () => {
   });
 });
 
-describe('monthsForType: 사진의 계절에 맞는 달 표시 (F3-AC2·AC4)', () => {
-  it('제철 기간을 합쳐 겹치는 달을 한 번만 오름차순으로 표시', () => {
-    const scenes = [
-      scene('겨울', { visited: '2024-01', best: { from: 12, to: 2 }, types: ['seolgyeong'] }),
-      scene('늦겨울', { visited: '2024-02-10', best: { from: 2, to: 3 }, types: ['seolgyeong'] }),
-      scene('단풍'),
-    ];
-    expect(find.monthsForType(scenes, 'seolgyeong')).toEqual([1, 2, 3, 12]);
+describe('typeWhen: 추천 시기로 볼 수 있는 때 계산 (D16·D17, F3-AC2)', () => {
+  it('다녀온 달이 달라도 추천 시기를 합치며 null·생략한 추천 시기는 뺀다', () => {
+    expect(find.typeWhen([
+      scene('여름 사진', { visited: '2020-08', best: { from: 10, to: 10 } }),
+      scene('봄 사진', { visited: '2020-03', best: { from: 11, to: 11 } }),
+      scene('기간 없음', { best: null }), scene('기간 생략', { best: undefined }),
+    ], 'danpung')).toEqual({ kind: 'range', from: 10, to: 11 });
   });
-
-  it('철 지나 방문·일 년 내내·기간 없음은 다녀온 달로 표시', () => {
-    expect(find.monthsForType([
-      scene('여름 방문', { visited: '2020-08', best: { from: 10, to: 11 } }),
-      scene('연중', { visited: '2020-06-01', best: { from: 1, to: 12 } }),
-      scene('기간 없음', { visited: '2020-04', best: null }),
-      scene('기간 생략', { visited: '2020-03', best: undefined }),
-    ], 'danpung')).toEqual([3, 4, 6, 8]);
+  it('겹치거나 맞닿은 추천 시기를 범위 하나로 합친다', () => {
+    expect(find.typeWhen([
+      scene('봄', { best: { from: 3, to: 5 } }),
+      scene('늦봄', { best: { from: 5, to: 6 } }),
+      scene('여름', { best: { from: 7, to: 8 } }),
+    ], 'danpung')).toEqual({ kind: 'range', from: 3, to: 8 });
   });
-
-  it('다른 풍경·준비 중·숨긴 장면은 달 표시에서 뺌', () => {
-    expect(find.monthsForType([
+  it('해를 넘는 추천 시기도 하나로 합친다', () => {
+    expect(find.typeWhen([
+      scene('겨울', { best: { from: 11, to: 1 } }),
+      scene('늦겨울', { best: { from: 1, to: 2 } }),
+    ], 'danpung')).toEqual({ kind: 'range', from: 11, to: 2 });
+  });
+  it('다른 풍경·숨긴 장면·준비 중·미발행 장면은 분자와 분모에서 모두 뺀다', () => {
+    expect(find.typeWhen([
+      scene('연중', { best: { from: 1, to: 12 } }),
       scene('다른 풍경', { types: ['bada'] }),
-      scene('준비 중', { kind: 'placeholder' }),
-      scene('숨김', { hidden: true }),
-    ], 'danpung')).toEqual([]);
-    expect(find.monthsForType([], 'danpung')).toEqual([]);
+      scene('숨김', { hidden: true }), scene('준비 중', { kind: 'placeholder' }),
+      scene('미발행', { kind: 'draft' }),
+    ], 'danpung')).toEqual({ kind: 'always' });
+  });
+  it('일 년 내내가 절반 넘으면 언제나이며 해를 넘는 연중 범위도 센다', () => {
+    expect(find.typeWhen([
+      scene('연중 1', { best: { from: 1, to: 12 } }),
+      scene('연중 2', { best: { from: 3, to: 2 } }), scene('가을'),
+    ], 'danpung')).toEqual({ kind: 'always' });
+  });
+  it('정확히 절반이면 언제나가 아니고 연중 장면은 합친 달에서 뺀다', () => {
+    expect(find.typeWhen([
+      scene('연중', { best: { from: 1, to: 12 } }), scene('가을'),
+    ], 'danpung')).toEqual({ kind: 'range', from: 10, to: 11 });
+  });
+  it('추천 시기 없는 장면도 전체 장면 분모에 포함한다', () => {
+    expect(find.typeWhen([
+      scene('연중', { best: { from: 1, to: 12 } }), scene('가을'),
+      scene('추천 없음', { best: null }),
+    ], 'danpung')).toEqual({ kind: 'range', from: 10, to: 11 });
+  });
+  it('연중이 소수이며 나머지 추천 시기가 없으면 none이다', () => {
+    expect(find.typeWhen([
+      scene('연중', { best: { from: 1, to: 12 } }),
+      scene('없음 1', { best: null }), scene('없음 2', { best: undefined }),
+    ], 'danpung')).toEqual({ kind: 'none' });
+  });
+  it('추천 시기를 합쳐 12달을 모두 덮으면 언제나다', () => {
+    expect(find.typeWhen([
+      scene('상반기', { best: { from: 1, to: 6 } }),
+      scene('하반기', { best: { from: 7, to: 12 } }),
+    ], 'danpung')).toEqual({ kind: 'always' });
+  });
+  it('끊긴 달은 달별 합계가 아니라 겹치는 장면 수가 많은 범위를 고른다', () => {
+    expect(find.typeWhen([
+      scene('긴 범위 한 곳', { best: { from: 3, to: 6 } }),
+      scene('짧은 범위 1', { best: { from: 10, to: 10 } }),
+      scene('짧은 범위 2', { best: { from: 10, to: 10 } }),
+    ], 'danpung')).toEqual({ kind: 'range', from: 10, to: 10 });
+  });
+  it('끊긴 범위의 장면 수가 같으면 달 수가 긴 범위를 고른다', () => {
+    expect(find.typeWhen([
+      scene('짧은 봄', { best: { from: 3, to: 3 } }),
+      scene('긴 가을', { best: { from: 9, to: 11 } }),
+    ], 'danpung')).toEqual({ kind: 'range', from: 9, to: 11 });
+  });
+  it('장면 수와 달 수가 모두 같으면 시작 달이 1월에 가까운 범위를 고른다', () => {
+    expect(find.typeWhen([
+      scene('가을', { best: { from: 9, to: 10 } }),
+      scene('봄', { best: { from: 3, to: 4 } }),
+    ], 'danpung')).toEqual({ kind: 'range', from: 3, to: 4 });
+  });
+  it('끊긴 범위에서도 겨울을 12월·1월로 나누지 않고 장면 한 곳을 한 번 센다', () => {
+    expect(find.typeWhen([
+      scene('겨울 1', { best: { from: 12, to: 2 } }),
+      scene('겨울 2', { best: { from: 1, to: 2 } }),
+      scene('여름', { best: { from: 6, to: 9 } }),
+    ], 'danpung')).toEqual({ kind: 'range', from: 12, to: 2 });
+  });
+  it('이야기나 추천 시기가 없으면 none이며 빈 배열도 처리한다', () => {
+    expect(find.typeWhen([], 'danpung')).toEqual({ kind: 'none' });
+    expect(find.typeWhen([scene('추천 없음', { best: null })], 'danpung')).toEqual({ kind: 'none' });
+    expect(find.typeWhen([scene('다른 종류')], 'bada')).toEqual({ kind: 'none' });
+  });
+});
+
+describe('whenStatus: 이번 달과 추천 범위의 관계 (F3-AC2)', () => {
+  it.each([
+    [{ kind: 'always' }, 10, 'always'], [{ kind: 'none' }, 10, 'none'],
+    [{ kind: 'range', from: 10, to: 11 }, 10, 'now'],
+    [{ kind: 'range', from: 10, to: 11 }, 11, 'now'],
+    [{ kind: 'range', from: 11, to: 2 }, 10, 'soon'],
+    [{ kind: 'range', from: 11, to: 2 }, 12, 'now'],
+    [{ kind: 'range', from: 11, to: 2 }, 1, 'now'],
+    [{ kind: 'range', from: 11, to: 2 }, 2, 'now'],
+    [{ kind: 'range', from: 11, to: 2 }, 3, 'later'],
+    [{ kind: 'range', from: 3, to: 3 }, 10, 'later'],
+    [{ kind: 'range', from: 1, to: 1 }, 12, 'soon'],
+    [{ kind: 'range', from: 3, to: 3 }, 3, 'now'],
+  ] as const)('%j, %i월 → %s', (w, month, status) => {
+    expect(find.whenStatus(w, month)).toBe(status);
+  });
+});
+
+describe('typeGroups: 고르기 화면 묶음 (D22, F3-AC1·AC5)', () => {
+  it('지금 좋은 장면 수 내림차순, 같으면 표 순서로 놓고 여러 풍경도 각각 센다', () => {
+    const g = find.typeGroups([
+      scene('단풍 1'), scene('단풍 2'),
+      scene('매화와 단풍', { types: ['maehwa', 'danpung', 'danpung'] }),
+      scene('벚꽃', { types: ['beotkkot'] }),
+      scene('억새 다른 계절 사진', { types: ['eoksae'], visited: '2020-08' }),
+      scene('숨김', { hidden: true }), scene('준비 중', { kind: 'placeholder' }),
+    ], 10);
+    expect(g.good).toEqual([
+      { type: 'danpung', count: 3 }, { type: 'maehwa', count: 1 },
+      { type: 'beotkkot', count: 1 }, { type: 'eoksae', count: 1 },
+    ]);
+  });
+  it('언제나 풍경은 good에 넣지 않고 표 순서로 둔다', () => {
+    const g = find.typeGroups([
+      scene('바다', { types: ['bada'], best: { from: 1, to: 12 } }),
+      scene('일출 1', { types: ['ilchul'], best: { from: 3, to: 2 } }),
+      scene('일출 2', { types: ['ilchul'], best: { from: 1, to: 12 } }),
+      scene('겨울 일출', { types: ['ilchul'], best: { from: 10, to: 11 } }),
+      scene('상반기', { types: ['unhae'], best: { from: 1, to: 6 } }),
+      scene('하반기', { types: ['unhae'], best: { from: 7, to: 12 } }),
+    ], 10);
+    expect(g.good).toEqual([]);
+    expect(g.always).toEqual(['unhae', 'ilchul', 'bada']);
+  });
+  it('연중 장면은 good 수에서 빼고 추천 없는 이야기·이야기 없는 풍경을 구별한다', () => {
+    const g = find.typeGroups([
+      scene('연중', { types: ['sinrok'], best: { from: 1, to: 12 } }),
+      scene('신록 봄', { types: ['sinrok'], best: { from: 5, to: 6 } }),
+      scene('단풍 연중', { best: { from: 1, to: 12 } }), scene('단풍 가을'),
+      scene('없는 시기', { types: ['yeoreumkkot'], best: undefined }),
+      scene('없는 시기 2', { types: ['eoksae'], best: null }),
+      scene('숨긴 매화', { types: ['maehwa'], hidden: true }),
+      scene('준비 중 벚꽃', { types: ['beotkkot'], kind: 'placeholder' }),
+    ], 10);
+    expect(g.good).toEqual([{ type: 'danpung', count: 1 }]);
+    expect(g.always).toEqual([]);
+    expect(g.other).toEqual(['sinrok', 'yeoreumkkot', 'eoksae']);
+    expect(g.empty).toContain('maehwa'); expect(g.empty).toContain('beotkkot');
+  });
+  it('다른 때는 다음 달부터 가까운 시작 달 순이고 같은 달은 표 순서다', () => {
+    const g = find.typeGroups([
+      scene('벚꽃', { types: ['beotkkot'], best: { from: 3, to: 4 } }),
+      scene('매화', { types: ['maehwa'], best: { from: 3, to: 3 } }),
+      scene('겨울', { types: ['seolgyeong'], best: { from: 11, to: 2 } }),
+      scene('여름꽃', { types: ['yeoreumkkot'], best: { from: 7, to: 8 } }),
+    ], 10);
+    expect(g.other).toEqual(['seolgyeong', 'maehwa', 'beotkkot', 'yeoreumkkot']);
+  });
+  it('12월에는 다음 1월부터 가까운 시작 달 순서로 둔다', () => {
+    const g = find.typeGroups([
+      scene('여름', { types: ['yeoreumkkot'], best: { from: 7, to: 8 } }),
+      scene('1월', { types: ['seolgyeong'], best: { from: 1, to: 2 } }),
+      scene('봄', { types: ['maehwa'], best: { from: 3, to: 3 } }),
+    ], 12);
+    expect(g.other).toEqual(['seolgyeong', 'maehwa', 'yeoreumkkot']);
+  });
+  it('대표로 고른 범위 밖이라도 이번 달에 좋은 실제 장면이 있으면 good에 넣는다', () => {
+    const scenes = [
+      scene('봄 1', { best: { from: 3, to: 4 } }), scene('봄 2', { best: { from: 3, to: 4 } }),
+      scene('가을', { best: { from: 10, to: 11 } }),
+    ];
+    expect(find.typeWhen(scenes, 'danpung')).toEqual({ kind: 'range', from: 3, to: 4 });
+    expect(find.typeGroups(scenes, 10).good).toEqual([{ type: 'danpung', count: 1 }]);
+  });
+  it('빈 목록이면 모든 풍경이 표 순서로 empty에만 들어간다', () => {
+    expect(find.typeGroups([], 10)).toEqual({
+      good: [], always: [], other: [], empty: SCENE_TYPES.map((t) => t.id),
+    });
+  });
+  it('계산은 동결한 입력과 추천 기간을 바꾸지 않으며 결과를 고쳐도 다음 계산에 영향이 없다', () => {
+    const a = Object.freeze(scene('봄', { best: Object.freeze({ from: 3, to: 4 }) }));
+    const b = Object.freeze(scene('가을'));
+    const scenes = Object.freeze([b, a]);
+    const expected = find.typeGroups(scenes, 10);
+    const w = find.typeWhen(scenes, 'danpung');
+    if (w.kind === 'range') w.from = 12;
+    const changed = find.typeGroups(scenes, 10); changed.good[0]!.count = 99;
+    changed.empty.pop();
+    expect(find.typeGroups(scenes, 10)).toEqual(expected);
+    expect(find.typeWhen(scenes, 'danpung')).toEqual({ kind: 'range', from: 3, to: 4 });
+    expect(scenes).toEqual([b, a]);
   });
 });
 
@@ -203,13 +369,37 @@ describe('findScenes: 제철과 작가 부부 방문 정렬 (F3-AC3)', () => {
     expect(ids(find.findScenes(scenes, { type: 'danpung', month: 10 }).peak)).toEqual(['seorak', 'naejang']);
   });
 
-  it('이미 제철인 곳은 0개월, 같으면 이름 가나다순', () => {
+  it('지금 좋은 곳은 곧 시작하는 곳보다 앞이며 같은 끝 달이면 이름 가나다순', () => {
     const scenes = [
       scene('next', { name: '가장 빠른 이름', visited: '2020-12', best: { from: 12, to: 12 } }),
       scene('b', { name: '나무', best: { from: 10, to: 11 } }),
       scene('a', { name: '가을', visited: '2020-09', best: { from: 9, to: 11 } }),
     ];
     expect(ids(find.findScenes(scenes, { month: 11 }).peak)).toEqual(['a', 'b', 'next']);
+  });
+
+  it('지금 좋은 곳 안에서는 이름보다 추천 시기가 먼저 끝나는 곳이 앞이다', () => {
+    const scenes = [
+      scene('late', { name: '가장 앞 이름', best: { from: 10, to: 11 } }),
+      scene('early', { name: '나중 이름', best: { from: 10, to: 10 } }),
+      scene('soon', { name: '가을', visited: '2020-11', best: { from: 11, to: 11 } }),
+    ];
+    expect(ids(find.findScenes(scenes, { month: 10 }).peak)).toEqual(['early', 'late', 'soon']);
+  });
+  it.each([12, 1])('%i월: 겨울의 지금 좋은 곳도 끝 달까지 남은 달 수로 정렬한다', (month) => {
+    const scenes = [
+      scene('feb', { name: '가장 앞 이름', visited: '2020-12', best: { from: 11, to: 2 } }),
+      scene('jan', { name: '나중 이름', visited: '2020-12', best: { from: 12, to: 1 } }),
+    ];
+    expect(ids(find.findScenes(scenes, { month }).peak)).toEqual(['jan', 'feb']);
+  });
+  it('그 밖의 제철 장면은 끝 달이 아니라 시작까지 가까운 순, 같으면 이름순이다', () => {
+    const scenes = [
+      scene('late', { visited: '2020-01', best: { from: 1, to: 1 } }),
+      scene('b', { name: '나무', visited: '2020-12', best: { from: 11, to: 2 } }),
+      scene('a', { name: '가을', visited: '2020-11', best: { from: 11, to: 11 } }),
+    ];
+    expect(ids(find.findScenes(scenes, { month: 10 }).peak)).toEqual(['a', 'b', 'late']);
   });
 
   it.each([
@@ -265,6 +455,46 @@ describe('findScenes: 제철과 작가 부부 방문 정렬 (F3-AC3)', () => {
 });
 
 describe('실제 앱 데이터의 풍경 찾기 규칙 (F3-AC2·AC3·AC4·AC7)', () => {
+  it('실제 추천 시기는 단풍·억새 10~11, 운해 4~11, 설경 11~2, 일출·바다 언제나다', () => {
+    const scenes = ContentFile.parse(appData).scenes.filter((s) => s.kind === 'story');
+    expect(find.typeWhen(scenes, 'danpung')).toEqual({ kind: 'range', from: 10, to: 11 });
+    expect(find.typeWhen(scenes, 'eoksae')).toEqual({ kind: 'range', from: 10, to: 11 });
+    expect(find.typeWhen(scenes, 'unhae')).toEqual({ kind: 'range', from: 4, to: 11 });
+    expect(find.typeWhen(scenes, 'seolgyeong')).toEqual({ kind: 'range', from: 11, to: 2 });
+    expect(find.typeWhen(scenes, 'ilchul')).toEqual({ kind: 'always' });
+    expect(find.typeWhen(scenes, 'bada')).toEqual({ kind: 'always' });
+  });
+  it('10월 첫 풍경은 단풍이며 언제나는 일출·바다, 다른 때는 겨울부터다', () => {
+    const scenes = ContentFile.parse(appData).scenes.filter((s) => s.kind === 'story');
+    const g = find.typeGroups(scenes, 10);
+    expect(g.good.map((x) => x.type)).toEqual(['danpung', 'unhae', 'eoksae', 'gyegok']);
+    expect(g.always).toEqual(['ilchul', 'bada']);
+    expect(g.other).toEqual(['seolgyeong', 'maehwa', 'beotkkot', 'jindallae', 'sinrok', 'yeoreumkkot', 'kkotmureut']);
+  });
+  it('모든 달에서 모든 풍경은 정확히 한 묶음에 들어가고 good 수는 실제 추천 시기 장면 수다', () => {
+    const scenes = ContentFile.parse(appData).scenes.filter((s) => s.kind === 'story');
+    const stories = scenes.filter((s) => !s.hidden);
+    const allTypes = SCENE_TYPES.map((t) => t.id);
+    for (const month of MONTHS) {
+      const g = find.typeGroups(scenes, month);
+      const grouped = [...g.good.map((x) => x.type), ...g.always, ...g.other, ...g.empty];
+      expect(grouped).toHaveLength(allTypes.length);
+      expect(new Set(grouped)).toEqual(new Set(allTypes));
+      expect(g.empty).toEqual(allTypes.filter((type) => !stories.some((s) => s.types.includes(type))));
+      for (const row of g.good) {
+        const expected = stories.filter((s) => s.types.includes(row.type) && s.best
+          && !MONTHS.every((m) => inWindow(m, s.best!)) && inWindow(month, s.best));
+        expect(row.count).toBe(expected.length); expect(row.count).toBeGreaterThan(0);
+        expect(find.typeWhen(scenes, row.type).kind).not.toBe('always');
+      }
+      for (const { id: type } of SCENE_TYPES) {
+        const peak = find.findScenes(scenes, { type, month }).peak;
+        const now = peak.filter((s) => inWindow(month, s.best!));
+        const until = now.map((s) => (s.best!.to - month + 12) % 12);
+        expect(until).toEqual([...until].sort((a, b) => a - b));
+      }
+    }
+  });
   it('모든 공개 이야기의 권역이 있고 칩 수의 합은 이야기 수와 같음', () => {
     const stories = ContentFile.parse(appData).scenes.filter((s) => s.kind === 'story').filter((s) => !s.hidden);
     expect(stories.length).toBeGreaterThan(0);
