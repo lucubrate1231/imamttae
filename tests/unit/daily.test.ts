@@ -25,7 +25,7 @@ describe('매일 동기화: 글 내용이 바뀐 경우에만 검사와 PR 준�
   it('생성 시각·글 순서·객체 속성 순서만 달라지면 변경이 아니다', async () => {
     const { compareIndexes } = await import('../../pipeline/daily');
     const before = index([story(1), story(2)]);
-    const after = index([story(2), { ...story(1), title: '글 1' }], 'after');
+    const after = index([story(2), { contentHash: 'hash-1', url: 'https://brunch.co.kr/@writer/1', title: '글 1', no: 1 }], 'after');
     expect(compareIndexes(before, after).changed).toBe(false);
   });
   it('새 글과 바뀐 글을 번호순으로 나눈다', async () => {
@@ -78,6 +78,7 @@ describe('매일 동기화: 글 내용이 바뀐 경우에만 검사와 PR 준�
     } });
     expect(calls).toEqual(['npx tsx pipeline/sync.ts', 'npx tsx pipeline/scenes/check-cli.ts content/scenes/drafts.json', 'npx tsx pipeline/scenes/build.ts', 'npm run check']);
     expect(result.changed).toBe(true);
+    if (!result.changed) throw new Error('복원한 새 글이 있어야 합니다.');
     expect(result.title).toBe('브런치 새 글 1편 (2026-10-06)');
     expect(result.body).toContain('1번');
   });
