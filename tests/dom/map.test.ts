@@ -120,6 +120,26 @@ describe('카카오 지도 어댑터 (가짜 SDK로 확인)', () => {
     expect(stub.log.calls.some((c) => c.startsWith('level'))).toBe(false);
   });
 
+  it('첫 화면 지도(10/5 사용자 — 9단계): 9단계로 시작하고, 고르면 움직임 없이 그곳을 가운데로(단계는 그대로)', async () => {
+    vi.useFakeTimers();
+    try {
+      const stub = createKakaoStub();
+      const m = createKakaoMap(stub.kakao, { focusLevel: 9 });
+      await m.mount(document.createElement('div'));
+      expect(stub.log.maps[0]!.level).toBe(9);
+      expect(stub.log.calls.some((c) => c.startsWith('bounds'))).toBe(false); // 전국 맞추기를 하지 않음(쓰지 않을 지도 그림을 받지 않게)
+      m.setPins(pins);
+      const before = stub.log.calls.length;
+      m.select('s-sea');
+      expect(stub.log.overlays[1]!.el.classList.contains('on')).toBe(true);
+      m.select('s-005-jujeongol');
+      vi.advanceTimersByTime(5000);
+      expect(stub.log.calls.slice(before)).toEqual(['center 37.47,129.16', 'center 38.0825,128.4282']); // 확대·옮기기 움직임 없음
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
   it("풍경 찾기: fit()은 올린 핀이 모두 보이게 지도를 맞춤(한 곳으로 확대하지 않음)", async () => {
     const { log, m, fire } = await mount();
     m.setPins(pins);

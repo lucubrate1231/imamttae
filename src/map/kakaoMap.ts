@@ -2,8 +2,10 @@
  * 카카오 지도 어댑터(확정 시안 v2와 같은 동작)
  * - 작은 지도는 손으로 움직이지 않습니다(페이지 스크롤과 다투지 않게).
  * - 핀은 화면 요소(CustomOverlay)로 그립니다: 제철은 계절 색 점, 다녀온 곳은 작은 회색 점, 준비 중은 점선 점.
- * - 장소를 고르면 그 핀만 이름표를 보이고 맨 앞으로 올립니다. 확대는 하지 않습니다(F1-AC5, D39 —
- *   확대하면 지도 그림을 다시 받느라 늦게 떠서 뺌, #77). 고른 곳이 칸 밖이면 확대 없이 옮기기만 합니다.
+ * - 장소를 고르면 그 핀만 이름표를 보이고 맨 앞으로 올립니다(F1-AC5).
+ * - 첫 화면 지도(focusLevel)는 9단계로 시작하고, 고른 곳을 움직임 없이 가운데로 둡니다(10/5 사용자).
+ *   단계는 바꾸지 않습니다 — 전국 → 확대 움직임은 지도 그림을 두 번 받아 늦게 떠서 뺐습니다(D39, #77).
+ * - 풍경 찾기 지도는 우리나라 전체로 시작해 fit()으로 맞추고, 고른 곳이 칸 밖이면 옮기기만 합니다.
  */
 import type { KakaoMapInst, KakaoNS, KakaoOverlay } from './kakaoSdk';
 import type { MapAdapter, MapPin, PinKind } from './types';
@@ -12,7 +14,12 @@ const KOREA = { center: { lat: 36.4, lng: 127.9 }, sw: { lat: 33.15, lng: 125.6 
 const CLASS: Record<PinKind, string> = { peak: 'p', record: 'r', placeholder: 'ph' };
 const BASE_Z: Record<PinKind, number> = { peak: 2, record: 1, placeholder: 1 };
 
-export function createKakaoMap(kakao: KakaoNS): MapAdapter {
+/**
+ * focusLevel: 첫 화면 지도. 이 단계로 시작하고, 고른 곳을 움직임 없이 가운데로 둡니다(10/5 사용자 — 9단계).
+ *   없으면(풍경 찾기) 우리나라 전체로 시작하고 fit()으로 맞춥니다.
+ */
+export function createKakaoMap(kakao: KakaoNS, opts: { focusLevel?: number } = {}): MapAdapter {
+  const { focusLevel } = opts;
   const K = kakao.maps;
   let map: KakaoMapInst | null = null;
   let pins: { p: MapPin; o: KakaoOverlay; el: HTMLElement }[] = [];
@@ -26,7 +33,9 @@ export function createKakaoMap(kakao: KakaoNS): MapAdapter {
       o.setZIndex(on ? 10 : BASE_Z[p.kind]);
     }
     const cur = pins.find((x) => x.p.id === selected);
-    if (cur) reveal(cur.p);
+    if (!cur || !map) return;
+    if (focusLevel) map.setCenter(new K.LatLng(cur.p.lat, cur.p.lng)); // 움직임 없이 — 그 단계의 지도 그림만 받음
+    else reveal(cur.p);
   }
 
   /**
@@ -52,14 +61,14 @@ export function createKakaoMap(kakao: KakaoNS): MapAdapter {
     async mount(el) {
       const m = new K.Map(el, {
         center: new K.LatLng(KOREA.center.lat, KOREA.center.lng),
-        level: 13,
+        level: focusLevel ?? 13,
         draggable: false,
         scrollwheel: false,
         disableDoubleClickZoom: true,
         keyboardShortcuts: false,
       });
       m.setZoomable(false);
-      m.setBounds(new K.LatLngBounds(new K.LatLng(KOREA.sw.lat, KOREA.sw.lng), new K.LatLng(KOREA.ne.lat, KOREA.ne.lng)), 4, 4, 4, 4);
+      if (!focusLevel) m.setBounds(new K.LatLngBounds(new K.LatLng(KOREA.sw.lat, KOREA.sw.lng), new K.LatLng(KOREA.ne.lat, KOREA.ne.lng)), 4, 4, 4, 4);
       map = m;
     },
     setPins(list: readonly MapPin[]) {
