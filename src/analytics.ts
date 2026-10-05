@@ -16,6 +16,7 @@ export type EventName =
   | 'save'
   | 'brunch'
   | 'news'
+  | 'admission'
   | 'feedback'
   | 'error'
   | 'alert-card'

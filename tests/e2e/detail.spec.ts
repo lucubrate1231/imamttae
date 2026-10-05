@@ -89,30 +89,34 @@ test('넘김 화살표로 다음 사진에 가면 버튼이 숨었다가 약 0.5
   await expect(page.locator('.gdots i').nth(1)).toHaveClass(/on/);
 });
 
-test('추천 시기 칸의 안내 글은 내어쓰기 없이 "올해 ○○ 찾아보기"와 왼쪽이 맞음', async ({ page }) => {
-  await page.setViewportSize({ width: 360, height: 740 });
-  await openFirst(page);
+test("'떠나기 전에 확인하세요' 카드(#61): 추천 시기 상자 바로 아래, 줄 높이 68 이상, 320px에서 넘치지 않고 접근성 위반 0", async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 640 });
+  await page.goto('./?map=fake&motion=0#/scene/s-056-grace-garden-hydrangea'); // 시기 줄 + 입장료 줄
+  await expect(page.locator('.detail.open')).toBeVisible();
+  const card = page.locator('.detail .precheck');
+  await expect(card.locator('a.pc-row')).toHaveCount(2);
   const r = await page.evaluate(() => {
-    const vary = document.querySelector('.when-vary')!;
-    const range = document.createRange();
-    range.selectNodeContents(vary);
-    const lines = [...range.getClientRects()].filter((x) => x.width > 4);
-    const last = lines[lines.length - 1]!;
-    const link = document.querySelector('.when-link')!.getBoundingClientRect();
-    const row = document.querySelector('.when-row')!.getBoundingClientRect();
-    return { lastLeft: Math.round(last.left), linkLeft: Math.round(link.left), rowLeft: Math.round(row.left), multi: new Set(lines.map((x) => Math.round(x.top))).size > 1 };
+    const box = document.querySelector('.when-box')!.getBoundingClientRect();
+    const c = document.querySelector('.precheck')!;
+    return { gap: Math.round(c.getBoundingClientRect().top - box.bottom), heights: [...c.querySelectorAll('.pc-row')].map((x) => Math.round(x.getBoundingClientRect().height)), over: c.scrollWidth - c.clientWidth };
   });
-  expect(r.multi).toBe(true);
-  expect(Math.abs(r.lastLeft - r.linkLeft)).toBeLessThanOrEqual(1);
-  expect(Math.abs(r.linkLeft - r.rowLeft)).toBeLessThanOrEqual(1);
+  expect(r.gap).toBe(12);
+  expect(r.heights.every((hh) => hh >= 68)).toBe(true);
+  expect(r.over).toBeLessThanOrEqual(0);
+  const a = await new AxeBuilder({ page }).include('.precheck').analyze();
+  expect(a.violations.map((v) => `${v.id}: ${v.help}`)).toEqual([]);
 });
 
-test('올해 소식 찾아보기: 단풍 장면은 "올해 + 단풍지도"로 검색', async ({ page }) => {
+test('카드 줄의 검색: 단풍은 "올해 + 단풍지도", 입장료는 "{장면 이름} 입장료"(금액은 적지 않음)', async ({ page }) => {
   await openFirst(page);
-  const link = page.locator('.when-link');
-  await expect(link).toHaveText('올해 단풍지도 찾아보기 ›');
-  const q = new URL((await link.getAttribute('href'))!).searchParams.get('query');
-  expect(q).toBe(`${new Date().getFullYear()} 단풍지도`);
+  const news = page.locator('.precheck .pc-row.news');
+  await expect(news.locator('.pc-go')).toHaveText('올해 단풍지도 찾아보기');
+  expect(new URL((await news.getAttribute('href'))!).searchParams.get('query')).toBe(`${new Date().getFullYear()} 단풍지도`);
+  await page.goto('./?map=fake&motion=0#/scene/s-056-grace-garden-hydrangea');
+  const adm = page.locator('.precheck .pc-row.admission');
+  await expect(adm.locator('.pc-msg')).toHaveText('입장료와 운영 시간은 미리 확인하세요');
+  expect(new URL((await adm.getAttribute('href'))!).searchParams.get('query')).toBe('그레이스정원 수국 입장료');
+  await expect(page.locator('.detail .precheck')).not.toContainText('원');
 });
 
 test('사진 안내는 모든 장면에("사진은 작가가 …"), 화면에 "제철"·"작가 부부"라는 말이 없음(D29·D30)', async ({ page }) => {
@@ -122,6 +126,7 @@ test('사진 안내는 모든 장면에("사진은 작가가 …"), 화면에 "�
   await expect(page.locator('.detail')).not.toContainText('제철');
   await expect(page.locator('.detail')).not.toContainText('작가 부부');
   await expect(page.locator('.detail .recnote')).toContainText('사진은 작가가');
+  await expect(page.locator('.detail .dsec[aria-label="제목"] .region + .recnote')).toBeVisible(); // 지역 바로 아래(#61)
   await page.goBack();
   await page.locator('.rail .big').first().click();
   await expect(page.locator('.detail .recnote')).toContainText('사진은 작가가');

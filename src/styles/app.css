@@ -185,22 +185,29 @@ h1, h2, h3, p { margin: 0; }
 .region { margin-top: 4px; font-size: 16px; color: var(--ink-3); }
 .one { margin-top: 16px; font-size: 18px; line-height: 1.6; font-weight: 500; color: var(--ink); }
 .draft { display: inline-block; vertical-align: 2px; margin-left: 6px; font-size: 14px; font-weight: 800; padding: 1px 8px; border-radius: 8px; background: var(--draft-bg); color: var(--draft); }
-.recnote { padding: 14px 16px; border-radius: 18px; background: var(--rec-bg); font-size: 17px; color: var(--ink-2); }
+/* 사진 안내(디자인 #61): 제목 구역 지역 바로 아래, 배경 없이 사진기 아이콘 + 글자만 */
+.recnote { display: flex; align-items: center; gap: 6px; margin-top: 8px; font-size: 15px; line-height: 1.45; color: var(--ink-3); }
+.rn-ic { display: flex; flex: none; }
 /* 장면 상세의 구역: 선 없이 넉넉한 위아래 여백으로 나눔(10/3 3차 결정) */
 .dsec + .dsec { margin-top: 40px; }
 .dlbl { margin: 0 0 12px; font-size: 15px; font-weight: 600; color: var(--ink-3); }
-.when-sec .recnote + .when-box { margin-top: 12px; }
-/* 추천 시기 + 해마다 달라짐 안내를 한 상자에 */
-.when-box { padding: 14px 16px 6px; border-radius: 18px; background: var(--bg-soft); }
+/* 추천 시기 상자: 세 가지만(N월부터 가기 좋아요 · 추천 시기 · 이럴 때 더 좋아요, 디자인 #61) */
+.when-box { padding: 14px 16px 4px; border-radius: 18px; background: var(--bg-soft); }
 .when-row { margin: 0; padding-bottom: 8px; font-size: 18px; line-height: 1.5; color: var(--season); }
 .when-row .lbl { font-weight: 400; margin-right: 6px; }
 .when-row b { font-weight: 700; }
 .when-tip { margin: 0 0 10px; font-size: 17px; line-height: 1.5; color: var(--ink); }
 .when-tip .lbl { margin-right: 8px; font-weight: 600; color: var(--ink-2); }
-/* 안내 글: ⓘ 아이콘을 글 안에 넣어 둘째 줄이 들여써지지 않게(내어쓰기 없음) — 위 '추천 시기', 아래 '소식 찾아보기'와 왼쪽을 맞춤(10/3 5차 코멘트) */
-.when-vary { font-size: 16px; color: var(--ink-2); }
-.when-vary .info { vertical-align: -2px; margin-right: 5px; }
-.when-link { display: inline-flex; align-items: center; min-height: var(--tap); font-size: 16.5px; font-weight: 800; color: var(--season); text-decoration: none; }
+/* '떠나기 전에 확인하세요' 카드(디자인 #61): 줄 하나 = 아이콘 · 안내/찾아보기 · '›', 줄 전체가 새 창 링크 */
+.precheck { margin-top: 12px; padding-top: 14px; border: 1.5px solid var(--line); border-radius: 18px; background: #fff; overflow: hidden; }
+.pc-ttl { padding: 0 16px 4px; font-size: 15px; font-weight: 800; color: var(--ink-2); }
+.pc-row { display: grid; grid-template-columns: 22px 1fr auto; align-items: center; gap: 12px; min-height: 68px; padding: 12px 16px; border-top: 1px solid var(--line); color: inherit; text-decoration: none; }
+.pc-ttl + .pc-row { border-top: 0; }
+.pc-ic { display: flex; color: var(--season); }
+.pc-txt { display: flex; flex-direction: column; min-width: 0; }
+.pc-msg { font-size: 16px; font-weight: 600; line-height: 1.45; color: var(--ink); }
+.pc-go { margin-top: 2px; font-size: 15.5px; font-weight: 800; color: var(--season); }
+.pc-arrow { font-size: 20px; color: var(--ink-3); }
 /* 작가의 한마디: 계절색을 옅게 섞은 왼쪽 세로선으로 인용임을 알림(10/3 3차 결정, 예전 방식 유지) */
 .quote { margin: 0; padding: 4px 0 4px 16px; border-left: 3px solid color-mix(in srgb, var(--season) 35%, #fff); }
 .quote p { font-size: 18px; line-height: 1.75; }

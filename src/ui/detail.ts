@@ -16,7 +16,7 @@ import { isYearRound, visitedMonth } from '../domain/sceneTier';
 import { SCENE_TYPES } from '../domain/sceneTypes';
 import { newsLink, timingNotice, type TimingNotice } from '../domain/timingNotice';
 import type { Month } from '../domain/month';
-import { fmtDate, h, infoIcon, paintBrowserBar, photoImg } from './dom';
+import { fmtDate, h, paintBrowserBar, photoImg } from './dom';
 import type { Navi } from './navi';
 import { shareUrl, type EventData, type EventName } from '../analytics';
 import type { SavedStore } from '../storage/saved';
@@ -58,6 +58,13 @@ export interface Detail {
 const svg = (d: string, size = 22, fill = 'none') =>
   `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="${fill}" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${d}"/></svg>`;
 const BACK = 'M15 18l-6-6 6-6';
+/** '떠나기 전에 확인하세요' 카드·사진 안내 아이콘(디자인 #61) */
+const ic = (body: string, size: number) => `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${body}</svg>`;
+const ICONS = {
+  cal: ic('<rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/>', 22),
+  ticket: ic('<path d="M4 7.5A1.5 1.5 0 015.5 6h13A1.5 1.5 0 0120 7.5V10a2 2 0 000 4v2.5a1.5 1.5 0 01-1.5 1.5h-13A1.5 1.5 0 014 16.5V14a2 2 0 000-4z"/><path d="M14 6v12" stroke-dasharray="2 2"/>', 22),
+  camera: ic('<path d="M4 8.5A1.5 1.5 0 015.5 7h2l1.5-2h6l1.5 2h2A1.5 1.5 0 0120 8.5v9a1.5 1.5 0 01-1.5 1.5h-13A1.5 1.5 0 014 17.5z"/><circle cx="12" cy="13" r="3.3"/>', 16),
+};
 const NEXT = 'M9 18l6-6-6-6';
 
 export function createDetail(d: DetailDeps): Detail {
@@ -202,15 +209,39 @@ export function createDetail(d: DetailDeps): Detail {
     return { node, dots };
   }
 
-  /** 올해 소식 찾아보기: 해는 누르는 순간 기준 */
-  function newsAnchor(name: string, tn: TimingNotice, sceneId: string): HTMLElement {
-    const first = newsLink(name, tn);
-    const a = h('a', { class: 'when-link', href: first.url, target: '_blank', rel: 'noopener', text: first.label });
-    a.addEventListener('click', () => {
-      a.setAttribute('href', newsLink(name, tn, new Date()).url);
-      d.track('news', { scene: sceneId });
-    });
+  /** '떠나기 전에 확인하세요' 카드의 줄 하나(디자인 #61): 줄 전체가 새 창 링크 — 아이콘 · 안내 / 찾아보기 · '›' */
+  function checkRow(cls: string, icon: string, msg: string, go: string, href: string, onClick: (a: HTMLAnchorElement) => void): HTMLAnchorElement {
+    const ic = h('span', { class: 'pc-ic', 'aria-hidden': 'true' });
+    ic.innerHTML = icon;
+    const a = h(
+      'a',
+      { class: `pc-row ${cls}`, href, target: '_blank', rel: 'noopener', 'aria-label': `${msg}. ${go}, 새 창` },
+      ic,
+      h('span', { class: 'pc-txt' }, h('span', { class: 'pc-msg', text: msg }), h('span', { class: 'pc-go', text: go })),
+      h('span', { class: 'pc-arrow', 'aria-hidden': 'true', text: '›' }),
+    );
+    a.addEventListener('click', () => onClick(a));
     return a;
+  }
+
+  /** 떠나기 전에 확인할 것: 시기 줄(꽃·단풍·억새·눈, 일 년 내내 장면은 없음) → 입장료 줄(checkAdmission, D4). 없으면 카드도 없음 */
+  function precheck(s: StoryScene, tn: TimingNotice | null): HTMLElement | null {
+    const rows: HTMLElement[] = [];
+    if (tn) {
+      const first = newsLink(s.name, tn);
+      // 올해 소식은 누르는 순간의 해로 검색
+      rows.push(checkRow('news', ICONS.cal, tn.line, first.go, first.url, (a) => {
+        a.setAttribute('href', newsLink(s.name, tn, new Date()).url);
+        d.track('news', { scene: s.id });
+      }));
+    }
+    if (s.checkAdmission) {
+      // 금액·시간은 적지 않음(보는 때에 따라 틀려짐) — 네이버 '{장면 이름} 입장료'
+      const url = `https://search.naver.com/search.naver?query=${encodeURIComponent(`${s.name} 입장료`)}`;
+      rows.push(checkRow('admission', ICONS.ticket, '입장료와 운영 시간은 미리 확인하세요', '입장료·운영 시간 찾아보기', url, () => d.track('admission', { scene: s.id })));
+    }
+    if (!rows.length) return null;
+    return h('section', { class: 'precheck', 'aria-label': '떠나기 전에 확인하세요' }, h('p', { class: 'pc-ttl', 'aria-hidden': 'true', text: '떠나기 전에 확인하세요' }), ...rows);
   }
 
   function brunchLink(s: StoryScene): HTMLElement {
@@ -237,11 +268,11 @@ export function createDetail(d: DetailDeps): Detail {
           state === 'off' && h('p', { class: 'when-off', text: `${s.best.from}월부터 가기 좋아요` }),
           h('p', { class: 'when-row' }, h('span', { class: 'lbl', text: '추천 시기' }), h('b', { text: s.best.note }), s.review.best === 'draft' && draft()),
           s.best.tip && h('p', { class: 'when-tip' }, h('span', { class: 'lbl', text: '이럴 때 더 좋아요' }), h('span', { text: s.best.tip })),
-          tn && h('p', { class: 'when-vary' }, infoIcon(), h('span', { text: tn.text })),
-          tn && newsAnchor(s.name, tn, s.id),
         )
       : null;
-    const recNote = h('p', { class: 'recnote', text: `사진은 작가가 ${visitedMonth(s.visited)}월에 다녀온 모습이에요.` });
+    // 사진 안내: 제목 구역의 지역 바로 아래, 사진기 아이콘 + 글자만(디자인 #61)
+    const recNote = h('p', { class: 'recnote' }, h('span', { class: 'rn-ic', 'aria-hidden': 'true' }), `사진은 작가가 ${visitedMonth(s.visited)}월에 다녀온 모습이에요.`);
+    (recNote.firstChild as HTMLElement).innerHTML = ICONS.camera;
 
     // ── 아래 붙박이 막대: 저장 · 공유 · 길찾기(티맵) (D28) ──
     const want = h('button', { class: 'dact', type: 'button' });
@@ -301,8 +332,8 @@ export function createDetail(d: DetailDeps): Detail {
       h(
         'div',
         { class: 'body' },
-        h('section', { class: 'dsec', 'aria-label': '제목' }, badges, h('h2', { class: 'title', text: s.name }), h('p', { class: 'region', text: s.region }), h('p', { class: 'one' }, s.oneLiner, s.review.oneLiner === 'draft' && draft()), visitBox.slot),
-        h('section', { class: 'dsec when-sec', 'aria-label': '추천 시기' }, recNote, when),
+        h('section', { class: 'dsec', 'aria-label': '제목' }, badges, h('h2', { class: 'title', text: s.name }), h('p', { class: 'region', text: s.region }), recNote, h('p', { class: 'one' }, s.oneLiner, s.review.oneLiner === 'draft' && draft()), visitBox.slot),
+        h('section', { class: 'dsec when-sec', 'aria-label': '추천 시기' }, when, precheck(s, tn)),
         h('section', { class: 'dsec', 'aria-label': '작가의 한마디' }, h('h3', { class: 'dlbl', text: '작가의 한마디' }), h('blockquote', { class: 'quote' }, h('p', { text: s.excerpt }), h('cite', { text: fmtDate(s.visited) }))),
         h('section', { class: 'dsec', 'aria-label': '브런치 전체 이야기' }, brunchLink(s)),
         // 작게 '다른 앱으로 길찾기'(10/4 결정). 아래 막대가 높아지지 않게, 누르는 곳 48px을 지키려고 본문 맨 아래에 둠
