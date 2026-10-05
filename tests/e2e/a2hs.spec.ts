@@ -58,6 +58,19 @@ test.describe('카톡 안(안드로이드)', () => {
 test.describe('크롬(안드로이드)', () => {
   test.use({ userAgent: UA.chrome });
 
+  test('D37: 첫 방문부터 맨 위 "홈 화면에 두기" 띠 — 320px에서 첫 줄 한 줄, 하늘색, 높이 64 이상, 접근성 위반 0', async ({ page }) => {
+    await page.setViewportSize({ width: 320, height: 640 });
+    await page.goto('./?map=fake&motion=0#/');
+    const band = page.locator('main.home > .kband');
+    await expect(band.locator('.kb-l2')).toHaveText('홈 화면에 두기 ›');
+    await page.evaluate(() => document.fonts.ready);
+    expect(await page.locator('.kb-l1').evaluate((e) => e.getClientRects().length === 1 && e.getBoundingClientRect().height < 26)).toBe(true);
+    expect((await page.locator('.kb-go').boundingBox())!.height).toBeGreaterThanOrEqual(64);
+    expect(await band.evaluate((e) => getComputedStyle(e).backgroundColor)).toBe('rgb(220, 234, 246)');
+    expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(0);
+    await axe(page, '.kband', '홈 화면에 두기 띠');
+  });
+
   test('F5-AC6·AC7: 처음 [저장] 직후 판 → [홈 화면에 두기] → 설치 창이 없으면 크롬 그림 안내(320×640 판 안 스크롤, 넘침 없음, 접근성)', async ({ page }) => {
     await page.setViewportSize({ width: 320, height: 640 });
     await page.goto('./?map=fake&motion=0#/scene/s-020-naejangsan-uhwajeong');

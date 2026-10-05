@@ -17,6 +17,8 @@ import { h } from './dom';
 export interface A2hsDeps {
   win: Window;
   env: A2hsEnv;
+  /** 안드로이드 휴대폰·태블릿인가(브라우저 이름표에 Android) — 크롬·삼성 인터넷 첫 방문 띠(D37)는 안드로이드에만 */
+  android: boolean;
   scenes: readonly Scene[];
   store: SafeStore;
   saved: SavedStore;
@@ -42,7 +44,7 @@ export interface A2hs {
   destroy(): void;
 }
 
-type Flags = { bandClosed?: boolean; sheetShown?: boolean; installed?: boolean };
+type Flags = { bandClosed?: boolean; sheetShown?: boolean; installed?: boolean; promptDismissed?: boolean };
 const KEY = 'a2hs';
 const ICON = './brand/icon-192.png';
 
@@ -161,7 +163,10 @@ export function createA2hs(d: A2hsDeps): A2hs {
    * 띠 확인용 주소 ?band=show(10/5 사용자): 닫은 적이 있어도, 카톡이 아니어도 띠를 보여 줌. 닫음 표시는 건드리지 않음.
    * 카톡이 아니면 아이폰 사파리는 아이폰 카톡 띠, 그 밖은 안드로이드 카톡 띠로 흉내 냄
    */
-  const bandPreview = new URLSearchParams(win.location.search).get('band') === 'show';
+  const previewParam = new URLSearchParams(win.location.search).get('band'); // 'show' | 'chrome'(아이폰에서 안드로이드 띠 흉내)
+  const bandPreview = previewParam === 'show';
+  /** D37: 안드로이드 크롬·삼성 인터넷(설치 전)은 첫 방문부터 '홈 화면에 두기' 띠 */
+  const installCapable = (env === 'chrome' || env === 'samsung') && d.android;
   const bandEnv: 'kakao-android' | 'kakao-ios' = kakao ? env : env === 'ios-safari' ? 'kakao-ios' : 'kakao-android';
   const via = bandEnv === 'kakao-ios' ? '사파리로' : '크롬으로';
 
@@ -246,7 +251,9 @@ export function createA2hs(d: A2hsDeps): A2hs {
     track('prompt');
     try {
       await p.prompt();
-      track(`prompt-${(await p.userChoice).outcome}`);
+      const { outcome } = await p.userChoice;
+      track(`prompt-${outcome}`);
+      if (outcome === 'dismissed') setFlag({ promptDismissed: true }); // 띠는 그대로, 저장 직후 판은 다시 묻지 않음(D37)
     } catch {
       guide();
     }
@@ -254,14 +261,55 @@ export function createA2hs(d: A2hsDeps): A2hs {
 
   const onInstalled = () => {
     setFlag({ installed: true });
+    band?.remove(); // 설치를 마치면 띠가 사라짐(D37)
     track('installed');
     d.toast("홈 화면에 '이맘때'를 두었어요");
   };
   win.addEventListener('appinstalled', onInstalled);
 
-  // ── 카톡 안 띠(11-2) ──
+  // ── 맨 위 띠(11-2): 카톡 안 '크롬(사파리)으로 열기' · 안드로이드 크롬·삼성 인터넷 '홈 화면에 두기'(D37) ──
+  const f0 = flags();
+  const bandKind: 'open' | 'install' | null =
+    previewParam === 'chrome'
+      ? 'install'
+      : bandPreview
+        ? installCapable
+          ? 'install'
+          : 'open'
+        : kakao && !f0.bandClosed
+          ? 'open'
+          : installCapable && !f0.bandClosed && !f0.installed
+            ? 'install'
+            : null;
   let band: HTMLElement | null = null;
-  if ((kakao && !flags().bandClosed) || bandPreview) {
+  if (bandKind === 'install') {
+    const go = h(
+      'button',
+      { type: 'button', class: 'kb-go', 'aria-label': '홈 화면에 두기 안내' },
+      h('img', { class: 'kb-ic', src: ICON, alt: '', width: '32', height: '32' }),
+      h(
+        'span',
+        { class: 'kb-txt' },
+        h('span', { class: 'kb-l1' }, h('span', { class: 'nowrap', text: '홈 화면에 두면' }), ' ', h('span', { class: 'nowrap', text: '앱처럼 쓸 수 있어요' })),
+        h('b', { class: 'kb-l2', text: '홈 화면에 두기 ›' }),
+      ),
+    );
+    const x = h('button', { type: 'button', class: 'kb-x', 'aria-label': '안내 닫기' });
+    x.innerHTML = CLOSE;
+    const el = h('div', { class: 'kband' }, go, x);
+    // 누르면 맨 아래 카드와 같음(설치 창 또는 그림 안내). 띠는 ✕로만 닫힘
+    go.addEventListener('click', () => {
+      track('band');
+      if (!installCapable) return guide('chrome'); // ?band=chrome으로 아이폰에서 흉내 낸 띠
+      void install();
+    });
+    x.addEventListener('click', () => {
+      setFlag({ bandClosed: true });
+      track('band-close');
+      el.remove();
+    });
+    band = el;
+  } else if (bandKind === 'open') {
     const go = h(
       'button',
       { type: 'button', class: 'kb-go', 'aria-label': `${via} 열기 안내` },
@@ -311,7 +359,8 @@ export function createA2hs(d: A2hsDeps): A2hs {
       }
       if (!on || (env !== 'chrome' && env !== 'samsung')) return false;
       const f = flags();
-      if (f.sheetShown || f.installed) return false;
+      // 한 번 거절한 사람(띠 ✕, 설치 창 취소)에게는 다시 묻지 않음(D37)
+      if (f.sheetShown || f.installed || f.bandClosed || f.promptDismissed) return false;
       setFlag({ sheetShown: true }); // 한 번만(닫는 방법과 상관없이)
       const ok = h('p', { class: 'a2-ok' });
       ok.innerHTML = `${CHECK}<span>저장했어요</span>`;
