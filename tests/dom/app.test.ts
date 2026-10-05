@@ -142,6 +142,12 @@ describe('아래 메뉴와 실패할 때', () => {
 });
 
 describe('#77 지도를 기다리지 않음', () => {
+  it('#83: 카드 사진은 화면 폭에 맞춘 작은 사진(원본 1MB 대신)', async () => {
+    await start();
+    const src = root.querySelector<HTMLImageElement>('.rail .big .photo img')!.getAttribute('src')!;
+    expect(src).toMatch(/^https:\/\/img1\.daumcdn\.net\/thumb\/R720x0\.q70\/\?fname=/);
+  });
+
   it('지도가 끝내 오지 않아도 사진 카드는 바로 그려짐', async () => {
     const stuck = { ...createListMap(), mount: () => new Promise<void>(() => {}) };
     const r = await Promise.race([start({ map: stuck }).then(() => 'done'), new Promise((ok) => setTimeout(() => ok('stuck'), 300))]);
