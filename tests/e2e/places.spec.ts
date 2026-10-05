@@ -12,8 +12,9 @@ test('지금까지 확인한 값이 들어 있고, 후보를 골라 저장하면
   await context.grantPermissions(['clipboard-read', 'clipboard-write']);
   await page.goto('./_review/places/');
   const prog = page.locator('#prog');
-  await expect(prog).toHaveText(/^확인 \d+ \/ 93곳$/);
-  const before = Number((await prog.textContent())!.match(/확인 (\d+)/)![1]);
+  await expect(prog).toHaveText(/^확인 \d+ \/ \d+곳$/); // 전체 수는 숨긴 장면에 따라 바뀜(10/5 육백마지기 숨김 → 92)
+  const [, b, all] = (await prog.textContent())!.match(/확인 (\d+) \/ (\d+)곳/)!;
+  const before = Number(b);
   expect(before).toBeGreaterThanOrEqual(50); // 10/5 사용자가 확인한 값(tools/places/picked-seed.json)
   await expect(page.locator('#share')).toBeVisible();
 
@@ -29,10 +30,10 @@ test('지금까지 확인한 값이 들어 있고, 후보를 골라 저장하면
   await page.locator('#destName').fill('시험 주차장');
   await page.locator('#save').click();
   await expect(page.locator('#savemsg')).toHaveText('이 브라우저에 저장했어요');
-  await expect(prog).toHaveText(`확인 ${before + 1} / 93곳`);
+  await expect(prog).toHaveText(`확인 ${before + 1} / ${all}곳`);
 
   await page.reload();
-  await expect(prog).toHaveText(`확인 ${before + 1} / 93곳`);
+  await expect(prog).toHaveText(`확인 ${before + 1} / ${all}곳`);
 
   await page.locator('#copy').click();
   await expect(page.locator('#copymsg')).toHaveText(`${before + 1}곳 복사했어요`);
