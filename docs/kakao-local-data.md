@@ -72,7 +72,7 @@
    - 그대로 두기(새 커밋부터 깨끗하게)
 
 ## 4. 정해지면 할 일 (순서)
-1. `pipeline/geocode.ts`를 더 쓰지 않게 막고 `docs/curation-guide.md`를 새 출처로 고침(바로 할 수 있음)
+1. ~~`pipeline/geocode.ts`를 더 쓰지 않게 막고 `docs/curation-guide.md`를 새 출처로 고침~~ **끝(10/5):** `geocode.ts` 지움, 새 방법은 curation-guide
 2. 새 출처로 `spot`·`dest`를 다시 만들기(콘텐츠 세션) — 데이터에 **출처 칸**(`source: 'public-parking' | 'osm' | 'manual'`)을 더해 다시 섞이지 않게 함
 3. 길찾기 목적지 93곳을 티맵에서 하나씩 확인(오안내 0)
 4. `tests/unit/geo.test.ts`의 좌표를 지어낸 값으로 바꾸기

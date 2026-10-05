@@ -13,7 +13,10 @@ Claude(또는 도우미 에이전트)가 이 문서대로 작업하고, `pipelin
 - 점수 원본은 `/home/claude/curation/scores.json`에 있습니다. 키는 `"글번호_순번"`입니다.
 - 사진을 자세히 보려면 `/home/claude/curation/thumbs/NN_ii.jpg`를 엽니다.
 - 사진 순번은 `content/brunch/index.json`의 그 글 `photos` 배열 순서와 같습니다. 주소(src)는 거기서 가져옵니다.
-- 좌표 찾기는 `npx tsx pipeline/geocode.ts "지역명 장소명"`으로 합니다. 키는 환경 변수로만 넣고 출력하지 않습니다.
+- **좌표는 카카오 장소 검색으로 찾지 않아요**(카카오 로컬 API 결과는 저장 금지 — 사람이 고쳤어도 해당, `docs/kakao-local-data.md`, 10/5).
+  1. `npx tsx pipeline/places/candidates.ts` — 장면 이름으로 한국관광공사 관광정보(장면 위치)와 근처 공영주차장(전국주차장정보표준데이터, `.cache/public-data/`)을 후보로 찾아요.
+  2. `npm run places` → http://localhost:8090 — 오픈스트리트맵 지도에서 후보를 고르거나 직접 찍어요. 카카오 지도를 보며 찍지 않아요.
+  3. `npx tsx pipeline/places/apply.ts` — 정한 값을 초안에 넣고 `coordSource`(public-data·manual)와 `coordRef`(tour:번호·parking:번호·manual)를 남겨요.
 
 ## 무엇을 장면으로 고르나
 - **자연 풍경만** 고릅니다. 단풍, 꽃, 운해, 물안개, 일출·낙조, 설경·상고대, 억새, 계곡, 폭포, 숲길, 바다 절경 같은 것들입니다.

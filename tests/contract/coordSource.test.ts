@@ -7,4 +7,10 @@ describe('좌표 출처(계약)', () => {
     const missing = drafts.scenes.filter((s) => !(s as { coordSource?: string }).coordSource).map((s) => s.id);
     expect(missing).toEqual([]);
   });
+  it('카카오가 아닌 좌표(public-data·manual)에는 출처 번호(coordRef)가 있음 — 어디서 왔는지 다시 확인할 수 있게', () => {
+    const bad = drafts.scenes
+      .filter((s) => { const x = s as { coordSource?: string; coordRef?: { spot?: string; dest?: string } }; return x.coordSource && x.coordSource !== 'kakao-search' && !(x.coordRef?.spot && x.coordRef?.dest); })
+      .map((s) => s.id);
+    expect(bad).toEqual([]);
+  });
 });
