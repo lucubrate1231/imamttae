@@ -44,6 +44,8 @@ const hashChange = () => window.dispatchEvent(new Event('hashchange'));
 
 beforeEach(() => {
   document.body.innerHTML = '<div id="app"></div>';
+  // 크롬의 처음 [저장] 판(F5-AC6)은 이미 본 것으로 — 여기서는 안내 줄을 봄(판은 a2hs.test.ts)
+  localStorage.setItem('imamttae:a2hs', JSON.stringify({ sheetShown: true }));
   window.location.hash = '';
   root = document.getElementById('app')!;
   opened = [];

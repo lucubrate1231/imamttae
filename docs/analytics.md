@@ -27,7 +27,7 @@
 | `feedback` | 의견 보내기 버튼(구글 폼) | — | **비공개 베타 때 버튼과 함께**(알파는 의견을 말로 들음, D32 · 6장 ①) |
 | `alert-card` | 제철 알림 카드 | `action`, `where`, `count` | F4 화면과 함께 |
 | `visited` | 다녀왔어요·취소·날짜 고치기 | `scene`, `action` | F4 화면과 함께 |
-| `a2hs` | 홈 화면에 두기 | `action`(tap / guide) | F5와 함께(지금 버튼은 '곧 열려요') |
+| `a2hs` | 홈 화면에 두기(F5, design-guide 11장) | `action`: band(카톡 띠) / band-close / card(홈 화면에 두기 카드) / save-sheet(처음 저장 판이 뜸) / save-sheet-add / guide(그림 안내) / prompt(크롬 설치 창) / prompt-accepted / prompt-dismissed / installed · `env`: kakao-android / kakao-ios / chrome / samsung / ios-safari | 지금 |
 
 - 버튼·문구 글자는 디자인 세션의 design-guide '화면 글자 표'를 따릅니다(D28~D30). 사건은 글자가 아니라 버튼에 달기 때문에 글자가 바뀌어도 사건 이름은 그대로입니다.
 - **화면 조회:** 화면을 옮길 때마다 `#` 뒤까지 포함한 주소로 보냅니다. 예: `/imamttae/#/find/danpung/gangwon`, `/imamttae/#/scene/s-005-biryong`. 풍경·권역·장면 인기는 이 조회로 봅니다(따로 사건 없음).

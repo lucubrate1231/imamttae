@@ -33,13 +33,6 @@ export const infoIcon = () =>
     'info',
     '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.6v.01"/></svg>',
   );
-/** 휴대폰에 + 표시(홈 화면에 두기) */
-export const phoneIcon = () =>
-  svgIcon(
-    'ic',
-    '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M12 9v6M9 12h6"/></svg>',
-  );
-
 type Photo = StoryScene['photos'][number];
 
 /** 브런치(카카오) 사진의 작은 썸네일 주소 */
@@ -65,10 +58,12 @@ export function fmtDate(iso: string): string {
 /**
  * 브라우저 주소창·상태 막대 뒤 색을 그 화면 머리의 계절 색(--season-soft)으로.
  * - 안드로이드 크롬·옛 사파리: <meta name="theme-color">
- * - iOS 26 사파리: theme-color를 쓰지 않고 페이지 바깥(html) 배경색을 씀(10/4 사용자 아이폰 확인). 본문은 #app의 흰 바탕이라 그대로
+ * - iOS 26 사파리: theme-color를 쓰지 않고 **body 배경색**(없으면 html)을 씀. 맨 위에 붙은 고정 요소가 있으면 그 색을 먼저 씀(10/5 사용자 아이폰 확인).
+ *   본문은 #app의 흰 바탕이라 그대로. 닫힌 장면 상세는 투명도 0이라 사파리가 보지 않음(app.css .detail)
  */
 export function paintBrowserBar(win: Window, root: HTMLElement | null): void {
   const soft = (root ? getComputedStyle(root).getPropertyValue('--season-soft').trim() : '') || '#ffffff';
   win.document.querySelector('meta[name=theme-color]')?.setAttribute('content', soft);
   win.document.documentElement.style.backgroundColor = soft;
+  win.document.body.style.backgroundColor = soft;
 }

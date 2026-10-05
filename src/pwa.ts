@@ -37,9 +37,14 @@ const ID = /^[a-z]-[a-z0-9-]{1,80}$/;
 const CARRY_MAX = 100;
 
 /** D33 ②: 저장한 장면 번호를 주소 꼬리표 carry에 붙임(장면 번호뿐) */
+/** 장면이 없으면 carry를 지움(주소에 있던 것도) */
 export function withCarry(url: string, ids: readonly string[]): string {
-  if (!ids.length) return url;
   const u = new URL(url);
+  if (!ids.length) {
+    if (!u.searchParams.has(CARRY)) return url;
+    u.searchParams.delete(CARRY);
+    return u.toString();
+  }
   u.searchParams.set(CARRY, ids.join(','));
   return u.toString();
 }
@@ -49,4 +54,29 @@ export function readCarry(search: string): string[] {
   const raw = new URLSearchParams(search).get(CARRY);
   if (!raw) return [];
   return [...new Set(raw.split(',').filter((x) => ID.test(x)))].slice(0, CARRY_MAX);
+}
+
+/** 크롬의 설치 창 신호(beforeinstallprompt) */
+export type InstallEvent = Event & { prompt(): Promise<void>; userChoice: Promise<{ outcome: string }> };
+
+let captured: InstallEvent | null = null;
+/** 앱보다 먼저 듣기 시작해야 신호를 놓치지 않음(main.ts 맨 앞에서 부름). 돌려주는 함수로 지금 신호를 꺼냄 */
+export function captureInstallPrompt(win: Window): () => InstallEvent | null {
+  win.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault(); // 우리 버튼으로 띄움
+    captured = e as InstallEvent;
+  });
+  win.addEventListener('appinstalled', () => (captured = null));
+  return () => captured;
+}
+
+/** 어디서 열었나(design-guide 11-1). 홈 화면 아이콘으로 열면 standalone */
+export type A2hsEnv = 'standalone' | 'kakao-android' | 'kakao-ios' | 'samsung' | 'ios-safari' | 'chrome';
+export function a2hsEnv(ua: string, standalone: boolean): A2hsEnv {
+  if (standalone) return 'standalone';
+  const ios = /iPhone|iPad|iPod/i.test(ua);
+  if (/KAKAOTALK/i.test(ua)) return ios ? 'kakao-ios' : 'kakao-android';
+  if (/SamsungBrowser/i.test(ua)) return 'samsung';
+  if (ios) return 'ios-safari';
+  return 'chrome'; // 안드로이드 크롬과 그 밖(PC 등)
 }

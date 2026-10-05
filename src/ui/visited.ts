@@ -115,7 +115,7 @@ export function createVisitBox(d: VisitDeps): VisitBox {
   /** 도장 찍히는 순간(F4-AC5) */
   function moment(first: Visit): void {
     let visit = first;
-    const stamp = h('div', { class: 'sm-stamp thud', 'aria-hidden': 'true' }, h('img', { src: `./stamps/${visit.type}-384.webp`, alt: '', width: '168', height: '168' }));
+    const stamp = h('div', { class: 'sm-stamp thud', 'aria-hidden': 'true' }, h('img', { src: `./stamps/${visit.type}-384.webp`, alt: '', width: '148', height: '148' }));
     for (let i = 0; i < 8; i++) stamp.append(h('i', { class: 'sm-line', style: `--a: ${i * 45}deg` }));
     const date = h('p', { class: 'sm-date' });
     const paintDate = () => date.replaceChildren('다녀온 날 ', h('b', { text: md(visit.date) }), visit.date === d.todayDate() ? ' (오늘)' : '');
@@ -138,12 +138,17 @@ export function createVisitBox(d: VisitDeps): VisitBox {
     const card = h(
       'div',
       { class: 'stamp-moment', role: 'dialog', 'aria-modal': 'true', 'aria-label': '도장을 찍었어요' },
-      stamp,
-      h('h2', { class: 'sm-ttl' }, `${s.name}에 `, h('br'), '다녀왔어요'),
-      h('div', { class: 'sm-daterow' }, date, change),
-      talk,
-      ok,
-      h('p', { class: 'sm-note', text: "'저장한 곳 › 다녀온 곳'에 모였어요" }),
+      // 도장이 닿는 순간 카드가 3px 눌렸다 돌아옴(디자인 #54) — 카드 안쪽 감싸개에 검
+      h(
+        'div',
+        { class: 'sm-press' },
+        stamp,
+        h('h2', { class: 'sm-ttl' }, `${s.name}에 `, h('br'), '다녀왔어요'),
+        h('div', { class: 'sm-daterow' }, date, change),
+        talk,
+        ok,
+        h('p', { class: 'sm-note', text: "'저장한 곳 › 다녀온 곳'에 모였어요" }),
+      ),
     );
     const item = layer(card, 'center');
     ok.addEventListener('click', () => item.close());

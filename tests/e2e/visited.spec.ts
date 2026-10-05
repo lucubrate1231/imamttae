@@ -1,6 +1,11 @@
 import { expect, test, type Page } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
+// 크롬의 처음 [저장] 판(F5-AC6)은 이미 본 것으로 — 여기서는 저장 뒤 흐름을 봄(판은 a2hs.spec.ts)
+test.beforeEach(async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem('imamttae:a2hs', JSON.stringify({ sheetShown: true })));
+});
+
 /** [다녀왔어요] → 도장 찍히는 순간 → 저장한 곳 도장 모음(F4-AC4~AC7·AC14) — 가짜 지도 */
 const ID = 's-020-naejangsan-uhwajeong';
 const NAME = '내장산 우화정';
@@ -113,7 +118,13 @@ test('C-3: 상자·도장 순간·날짜 창·지우기 확인 접근성 검사(
 test('도장은 짧게 "쿵" 움직이고(0.4초 안팎), 동작 줄이기가 켜져 있으면 움직이지 않음', async ({ page }) => {
   await saveAndVisit(page);
   const anim = () => page.locator('.sm-stamp img').evaluate((i) => ({ name: getComputedStyle(i).animationName, dur: getComputedStyle(i).animationDuration }));
-  expect(await anim()).toEqual({ name: 'thud', dur: '0.4s' });
+  expect(await anim()).toEqual({ name: 'thud', dur: '0.46s' }); // 디자인 #54 2차: 공중에서 내려와 닿는 순간 '쿵'
+  const extra = await page.evaluate(() => {
+    const cs = (sel: string) => getComputedStyle(document.querySelector(sel)!);
+    const img = document.querySelector<HTMLImageElement>('.sm-stamp img')!;
+    return { size: [img.getAttribute('width'), cs('.sm-stamp img').width], line: [cs('.sm-line').animationName, cs('.sm-line').animationDelay, cs('.sm-line').animationDuration], press: [cs('.sm-press').animationName, cs('.sm-press').animationDelay] };
+  });
+  expect(extra).toEqual({ size: ['148', '148px'], line: ['thud-line', '0.18s', '0.32s'], press: ['sm-press', '0.18s'] });
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.getByRole('button', { name: '확인' }).click();
   await page.locator('.vbox-change').click();
@@ -121,4 +132,15 @@ test('도장은 짧게 "쿵" 움직이고(0.4초 안팎), 동작 줄이기가 �
   await page.getByRole('button', { name: '지우기', exact: true }).click();
   await page.locator('.vbox-go').click();
   expect((await anim()).name).toBe('none');
+  expect(await page.evaluate(() => [getComputedStyle(document.querySelector('.sm-line')!).animationName, getComputedStyle(document.querySelector('.sm-press')!).animationName, getComputedStyle(document.querySelector('.sm-line')!).opacity])).toEqual(['none', 'none', '0']);
+});
+
+test('[저장] 직후 [다녀왔어요]를 눌러도 "저장했어요" 안내 줄이 도장 카드 위에 겹치지 않음(10/5)', async ({ page }) => {
+  await page.goto('./?map=fake&motion=0#/scene/s-020-naejangsan-uhwajeong');
+  await expect(page.locator('.detail.open')).toBeVisible();
+  await page.locator('.detail .dact[aria-pressed]').click();
+  await expect(page.locator('.toast')).toHaveClass(/on/);
+  await page.locator('.vbox-go').click();
+  await expect(page.locator('.stamp-moment')).toBeVisible();
+  await expect(page.locator('.toast')).toBeHidden();
 });

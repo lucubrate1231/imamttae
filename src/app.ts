@@ -3,7 +3,8 @@
  * - #/ 또는 #/month/10 → 첫 화면 '지금 볼 만한 곳'(기능 ①)
  * - #/scene/… → 장면 상세(F2). 첫 화면 위에 올라옴
  * - #/find, #/find/danpung, #/find/all/gangwon → 풍경 찾기(F3)
- * - 저장한 곳은 아직 없음: 아래 메뉴를 누르면 '곧 열려요'(10/3 사용자 결정, 10/4 이름 바꿈 D24)
+ * - #/saved → 저장한 곳(F4)
+ * - 홈 화면에 두기(F5): 카톡 안 띠·처음 저장 판·[홈 화면에 두기] 카드(src/ui/a2hs.ts)
  */
 import type { ContentFile } from '../shared/schema/content';
 import { monthInSeoul, type Month } from './domain/month';
@@ -21,6 +22,8 @@ import { applyMeParam, firstMonth, launchMode, type EventData, type Tracker } fr
 import { createSaved } from './ui/saved';
 import { createAlertCard, type AlertCard } from './ui/alertCard';
 import { createSavedStore, type SavedStore } from './storage/saved';
+import { createA2hs } from './ui/a2hs';
+import { a2hsEnv, type InstallEvent } from './pwa';
 
 export interface AppDeps {
   root: HTMLElement;
@@ -45,6 +48,10 @@ export interface AppDeps {
   tracker?: Tracker;
   /** 사진 움직임. 기본 켬, 주소에 ?motion=0이면 끔 */
   motion?: boolean;
+  /** 크롬 설치 창 신호(F5). main.ts가 앱보다 먼저 듣기 시작함(src/pwa.ts captureInstallPrompt) */
+  installPrompt?: () => InstallEvent | null;
+  /** 카톡 띠를 누른 뒤 이만큼 지나도 이 화면이면 그림 안내(기본 2초, 테스트는 0) */
+  kakaoWaitMs?: number;
 }
 
 export interface AppHandle {
@@ -120,6 +127,21 @@ export async function startApp(deps: AppDeps): Promise<AppHandle> {
   }
 
   const savedStore = deps.saved ?? createSavedStore(store, () => deps.now ?? new Date());
+  const openUrl = deps.openUrl ?? ((u: string) => win.location.assign(u));
+  // 홈 화면에 두기(F5). 넘겨받은 장면 번호를 저장한 곳에 합치므로 화면들보다 먼저 만듦
+  const a2hs = createA2hs({
+    win,
+    env: a2hsEnv(deps.ua ?? win.navigator.userAgent, launchMode(win) === 'home-screen'),
+    scenes: deps.content.scenes,
+    store,
+    saved: savedStore,
+    host: root,
+    installPrompt: deps.installPrompt ?? (() => null),
+    openUrl,
+    waitMs: deps.kakaoWaitMs ?? 2000,
+    toast,
+    track: tracker.track,
+  });
   const map = deps.mapFailed ? createFailedMap() : deps.map;
   if (map.kind === 'failed') tracker.track('error', { kind: 'map-fail' });
   let sceneFrom: string | null = null; // 통계 scene-open: 앱 안에서 연 곳(없으면 주소로 바로 = link)
@@ -156,8 +178,10 @@ export async function startApp(deps: AppDeps): Promise<AppHandle> {
     openScene: openSceneFrom,
     toast,
     alert: homeAlert.el,
+    band: a2hs.band,
+    homeAdd: () => a2hs.card(),
   });
-  const navi = createNavi({ win, ua: deps.ua ?? win.navigator.userAgent, openUrl: deps.openUrl ?? ((u) => win.location.assign(u)), store, track: tracker.track });
+  const navi = createNavi({ win, ua: deps.ua ?? win.navigator.userAgent, openUrl, store, track: tracker.track });
   const detail = createDetail({
     win,
     scenes: deps.content.scenes,
@@ -168,6 +192,7 @@ export async function startApp(deps: AppDeps): Promise<AppHandle> {
     track: tracker.track,
     motion: deps.motion ?? new URLSearchParams(win.location.search).get('motion') !== '0',
     toast,
+    afterSave: (on) => a2hs.afterSave(on),
     back: () => {
       if (openedInApp) {
         openedInApp = false;
@@ -203,6 +228,7 @@ export async function startApp(deps: AppDeps): Promise<AppHandle> {
     toast,
     track: tracker.track,
     alert: savedAlert,
+    homeAdd: () => a2hs.card(),
   });
   saved.el.hidden = true;
   root.replaceChildren(...home.nodes, find.el, saved.el, tabs, detail.el, navi.sheet, toastEl);
@@ -274,6 +300,7 @@ export async function startApp(deps: AppDeps): Promise<AppHandle> {
     render,
     destroy() {
       win.removeEventListener('hashchange', onHash);
+      a2hs.destroy();
       home.destroy();
       find.destroy();
       map.destroy();

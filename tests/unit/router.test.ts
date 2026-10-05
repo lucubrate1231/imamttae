@@ -37,7 +37,7 @@ describe('풍경 찾기 주소의 권역 (F3-AC2·AC7)', () => {
     ['#/find/all/chungcheong', { name: 'find', type: null, region: 'chungcheong' }],
     ['#/find/all/sudogwon', { name: 'find', type: null, region: 'sudogwon' }],
     ['#/find/all', { name: 'find', type: null, region: null }],
-    ['#/find/danpung/jeju', { name: 'find', type: 'danpung', region: null }],
+    ['#/find/danpung/dokdo', { name: 'find', type: 'danpung', region: null }],
     ['#/find/없는풍경/gangwon', { name: 'find', type: null, region: 'gangwon' }],
     ['#/find/없는풍경/없는권역', { name: 'find', type: null, region: null }],
     ['#/find/__proto__/constructor', { name: 'find', type: null, region: null }],

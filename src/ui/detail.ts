@@ -42,6 +42,8 @@ export interface DetailDeps {
   /** 사진 움직임(기본 켬, ?motion=0이면 끔) */
   motion: boolean;
   toast(msg: string, action?: { label: string; run(): void }): void;
+  /** [저장]·빼기 뒤(F5): 처음 저장 판을 띄웠으면 true — 그때는 안내 줄을 띄우지 않음 */
+  afterSave?(on: boolean): boolean;
   /** 뒤로: 앱 안에서 열었으면 이전 화면으로, 주소로 바로 열었으면 첫 화면으로 */
   back(): void;
 }
@@ -254,6 +256,7 @@ export function createDetail(d: DetailDeps): Detail {
       d.track('save', { scene: s.id, on });
       paintWant();
       visitBox?.paint();
+      if (d.afterSave?.(on)) return; // F5-AC6: 크롬·삼성 인터넷의 처음 저장은 홈 화면에 두기 판
       // F4-AC3: 저장하면 몇 초 동안 안내 줄 + [보기 ›](저장한 곳으로)
       if (on) d.toast("저장했어요 · '저장한 곳'에서 볼 수 있어요", { label: '보기 ›', run: () => (win.location.hash = '#/saved') });
       else d.toast('저장한 곳에서 뺐어요');

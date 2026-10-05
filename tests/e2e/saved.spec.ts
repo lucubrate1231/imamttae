@@ -1,6 +1,11 @@
 import { expect, test, type Page } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
+// 크롬의 처음 [저장] 판(F5-AC6)은 이미 본 것으로 — 여기서는 저장 뒤 흐름을 봄(판은 a2hs.spec.ts)
+test.beforeEach(async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem('imamttae:a2hs', JSON.stringify({ sheetShown: true })));
+});
+
 /** 저장한 곳(F4) 사용 흐름 — 가짜 지도(?map=fake). 다녀온 곳(도장)은 다음 PR([다녀왔어요])에서 흐름으로 확인 */
 async function open(page: Page, hash = '#/saved'): Promise<void> {
   await page.goto(`./?map=fake&motion=0${hash}`);
@@ -55,13 +60,14 @@ test('F4-AC3·AC2: [저장] → 안내 줄의 [보기 ›] → 저장한 곳에 
   await expect(page.locator('.sv-wish .sv-name')).toHaveText(['내장산 우화정']);
 });
 
-test('F4-AC14: 새로고침해도 가고 싶은 곳이 남고, [빼기]로 빼면 빈 안내로', async ({ page }) => {
+test('F4-AC14: 새로고침해도 가고 싶은 곳이 남고, [편집] → [빼기]로 빼면 빈 안내로', async ({ page }) => {
   await save(page, 's-005-biryong');
   await open(page);
   await page.reload();
   await page.locator('.saved:not([hidden])').waitFor();
   await expect(page.locator('.sv-wish .sv-name')).toHaveText(['설악산 비룡폭포']);
-  await page.getByRole('button', { name: '빼기' }).click();
+  await page.getByRole('button', { name: '편집' }).click();
+  await page.getByRole('button', { name: '설악산 비룡폭포 빼기' }).click();
   await expect(page.locator('.toast')).toContainText('저장한 곳에서 뺐어요');
   await expect(page.locator('.sv-wish-empty')).toBeVisible();
   await page.reload();
@@ -108,6 +114,10 @@ test('C-3: 저장한 곳 접근성 검사(axe) 위반 0 — 빈 화면과 줄이
   await open(page);
   r = await new AxeBuilder({ page }).include('.saved').analyze();
   expect(r.violations.map((v) => `줄 ${v.id}: ${v.help}`)).toEqual([]);
+  await page.getByRole('button', { name: '편집' }).click(); // 편집 중(#54): 오른쪽 칸이 [빼기]
+  await expect(page.getByRole('button', { name: '내장산 우화정 빼기' })).toBeVisible();
+  r = await new AxeBuilder({ page }).include('.saved').analyze();
+  expect(r.violations.map((v) => `편집 ${v.id}: ${v.help}`)).toEqual([]);
 });
 
 test('#/stamps 옛 주소도 저장한 곳으로 열림', async ({ page }) => {

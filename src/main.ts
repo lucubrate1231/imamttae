@@ -4,7 +4,10 @@ import type { ContentFile } from '../shared/schema/content';
 import { startApp } from './app';
 import { createMap, pickMapMode } from './map';
 import { createUmamiTracker, SITE_ID, tagFor } from './analytics';
-import { registerServiceWorker } from './pwa';
+import { captureInstallPrompt, registerServiceWorker } from './pwa';
+
+// 크롬 설치 창 신호는 앱이 다 그려지기 전에 올 수 있어 가장 먼저 듣기 시작함(F5-AC2)
+const installPrompt = captureInstallPrompt(window);
 
 /** 장면 데이터 불러오기. 실패하면 null(화면이 쉬운 말로 알림) */
 async function loadContent(): Promise<ContentFile | null> {
@@ -28,7 +31,7 @@ async function main(): Promise<void> {
   // 사용 통계(docs/analytics.md): github.io에서만 보내고, 미리보기·알파는 꼬리표로 나눔
   const tracker = createUmamiTracker(window, { siteId: SITE_ID, tag: tagFor(location.pathname) });
   registerServiceWorker(window); // 홈 화면에 추가(F5-AC2) — github.io에서만
-  await startApp({ root, map, findMap, content, tracker });
+  await startApp({ root, map, findMap, content, tracker, installPrompt });
 }
 
 void main();

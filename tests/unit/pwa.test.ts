@@ -24,7 +24,7 @@ describe('F5-AC1: 웹 앱 매니페스트', () => {
     expect(m.scope).toBe('./');
     expect(m.id).toBe('./');
     expect(m.display).toBe('standalone');
-    expect(m.background_color).toMatch(/^#[0-9a-f]{6}$/i);
+    expect(m.background_color.toLowerCase()).toBe('#ddecd9'); // 아이콘 바탕과 같게(design-guide 11-6)
     expect(m.theme_color).toMatch(/^#[0-9a-f]{6}$/i);
   });
 
@@ -36,17 +36,27 @@ describe('F5-AC1: 웹 앱 매니페스트', () => {
       expect(i!.type).toBe('image/png');
       expect(pngSize(pub(i!.src))).toEqual([size, size]);
     }
-    const mask = icons.find((x) => x.purpose === 'maskable');
-    expect(mask).toBeTruthy();
-    expect(pngSize(pub(mask!.src))).toEqual([512, 512]);
+    for (const size of [192, 512]) {
+      const mask = icons.find((x) => x.sizes === `${size}x${size}` && x.purpose === 'maskable');
+      expect(mask, `${size} maskable`).toBeTruthy();
+      expect(pngSize(pub(mask!.src))).toEqual([size, size]);
+    }
+    // 디자인 세션 앱 아이콘('나'안, PR #47) — 임시 아이콘(public/icons)은 지움
+    expect(icons.every((x) => x.src.startsWith('brand/'))).toBe(true);
+    expect(existsSync(pub('icons'))).toBe(false);
   });
 
-  it('index.html이 매니페스트와 아이폰 홈 화면 아이콘(180px)을 가리킴', () => {
+  it('index.html이 매니페스트 · 아이폰 홈 화면 아이콘(180px) · 브라우저 탭 아이콘(32·48px)을 가리킴', () => {
     const html = readFileSync(resolve(__dirname, '../../index.html'), 'utf8');
     expect(html).toContain('<link rel="manifest" href="./manifest.webmanifest" />');
     const apple = /<link rel="apple-touch-icon" href="\.\/([^"]+)" \/>/.exec(html);
     expect(apple).not.toBeNull();
     expect(pngSize(pub(apple![1]!))).toEqual([180, 180]);
+    for (const size of [32, 48]) {
+      const fav = new RegExp(`<link rel="icon" type="image/png" sizes="${size}x${size}" href="\\./([^"]+)" />`).exec(html);
+      expect(fav, `파비콘 ${size}`).not.toBeNull();
+      expect(pngSize(pub(fav![1]!))).toEqual([size, size]);
+    }
   });
 });
 
