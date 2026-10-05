@@ -171,3 +171,15 @@ test('지도 점은 가운데가 그 장소(아래 끝이 아님) — 카카오�
   });
   for (const g of gaps) expect(g).toBeLessThanOrEqual(0.5);
 });
+
+test('카카오가 지도 칸에 position: relative를 박아도 칸 높이는 그대로(10/6 — 화면 스타일보다 지도가 먼저 만들어지면 칸 높이가 0이 되어 지도가 안 뜸)', async ({ page }) => {
+  await page.goto('./?map=fake&motion=0#/month/10');
+  await page.locator('.rail .big').first().waitFor();
+  const h = await page.evaluate(() => {
+    const k = document.querySelector<HTMLElement>('.mapsec .kmap')!;
+    k.setAttribute('style', 'position: relative; overflow: hidden;'); // 카카오 지도 SDK가 하는 것
+    return [k.clientHeight, k.clientWidth, k.parentElement!.clientWidth];
+  });
+  expect(h[0]).toBe(210);
+  expect(h[1]).toBe(h[2]);
+});
