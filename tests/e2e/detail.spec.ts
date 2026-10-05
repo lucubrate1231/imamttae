@@ -119,17 +119,30 @@ test('카드 줄의 검색: 단풍은 "올해 + 단풍지도", 입장료는 "{�
   await expect(page.locator('.detail .precheck')).not.toContainText('원');
 });
 
-test('사진 안내는 모든 장면에("사진은 작가가 …"), 화면에 "제철"·"작가 부부"라는 말이 없음(D29·D30)', async ({ page }) => {
+test('사진 안내는 모든 장면에(사진 바로 아래 "N월 사진"), 크레딧은 "사진 이상호", 화면에 "제철"·"작가 부부"라는 말이 없음(D29·D30·#66·#69)', async ({ page }) => {
   await home(page, '#/month/8');
   await page.locator('.rec').first().click();
   await expect(page.locator('.detail.open')).toBeVisible();
   await expect(page.locator('.detail')).not.toContainText('제철');
   await expect(page.locator('.detail')).not.toContainText('작가 부부');
-  await expect(page.locator('.detail .recnote')).toContainText('사진은 작가가');
-  await expect(page.locator('.detail .dsec[aria-label="제목"] .region + .recnote')).toBeVisible(); // 지역 바로 아래(#61)
+  await expect(page.locator('.detail .gallery + .photo-cap .recnote')).toHaveText(/^\d+월 사진$/); // 사진 바로 아래(#66), 글자는 #69
+  await expect(page.locator('.detail .credit')).toHaveText('사진 이상호'); // 서명 그림은 장식(alt="")
   await page.goBack();
   await page.locator('.rail .big').first().click();
-  await expect(page.locator('.detail .recnote')).toContainText('사진은 작가가');
+  await expect(page.locator('.detail .photo-cap .recnote')).toHaveText(/^\d+월 사진$/);
+});
+
+test('사진 캡션과 사진 점은 320px에서도 한 줄(캡션 왼쪽, 점 오른쪽, #66)', async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 640 });
+  await openFirst(page);
+  await page.evaluate(() => document.fonts.ready);
+  const r = await page.evaluate(() => {
+    const note = document.querySelector('.photo-cap .recnote')!.getBoundingClientRect();
+    const dots = document.querySelector('.photo-cap .gdots')!.getBoundingClientRect();
+    const cap = document.querySelector('.photo-cap')!;
+    return { sameLine: Math.abs(note.top + note.height / 2 - (dots.top + dots.height / 2)) < 6, dotsRight: dots.left > note.right, over: cap.scrollWidth - cap.clientWidth };
+  });
+  expect(r).toEqual({ sameLine: true, dotsRight: true, over: 0 });
 });
 
 const kbState = (page: Page) => page.$$eval('.gallery .kb', (els) => els.map((e) => e.getAnimations().some((a) => a.playState === 'running')));
