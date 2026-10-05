@@ -3,7 +3,7 @@
  * - 구역 순서: 제목 → 추천 시기 → 작가의 한마디 → 브런치 전체 이야기
  * - 꼬리표는 오늘(한국 날짜) 기준: [지금 좋아요] · [일 년 내내] · 그 밖은 풍경 종류만
  * - 추천 시기 밖이면 추천 시기 칸 맨 위에 "N월부터 가기 좋아요"
- * - 사진 안내 "사진은 작가가 N월에 다녀온 모습이에요."는 모든 장면에
+ * - 사진 안내 "작가가 N월에 다녀온 모습"은 모든 장면에 — 사진 바로 아래 캡션, 오른쪽에 사진 점(디자인 #66)
  * - 글자는 design-guide 10장 '화면 글자 표'가 기준(D28~D30)
  * - 저장한 장면은 제목 구역 아래 [다녀왔어요] 상자(F4, src/ui/visited.ts)
  * - 색은 사진 찍은 달(visited)의 계절 — 어디서 열어도 같음. 상세 밖의 길찾기 판과 휴대폰 위쪽 띠도(design-guide 3장, PR #46)
@@ -270,8 +270,8 @@ export function createDetail(d: DetailDeps): Detail {
           s.best.tip && h('p', { class: 'when-tip' }, h('span', { class: 'lbl', text: '이럴 때 더 좋아요' }), h('span', { text: s.best.tip })),
         )
       : null;
-    // 사진 안내: 제목 구역의 지역 바로 아래, 사진기 아이콘 + 글자만(디자인 #61)
-    const recNote = h('p', { class: 'recnote' }, h('span', { class: 'rn-ic', 'aria-hidden': 'true' }), `사진은 작가가 ${visitedMonth(s.visited)}월에 다녀온 모습이에요.`);
+    // 사진 안내 = 사진 캡션: 사진 바로 아래 줄, 사진기 아이콘 + 글자만(디자인 #66)
+    const recNote = h('p', { class: 'recnote' }, h('span', { class: 'rn-ic', 'aria-hidden': 'true' }), `작가가 ${visitedMonth(s.visited)}월에 다녀온 모습`);
     (recNote.firstChild as HTMLElement).innerHTML = ICONS.camera;
 
     // ── 아래 붙박이 막대: 저장 · 공유 · 길찾기(티맵) (D28) ──
@@ -328,11 +328,12 @@ export function createDetail(d: DetailDeps): Detail {
     const g = gallery(s);
     return [
       g.node,
-      ...(g.dots ? [g.dots] : []),
+      // 사진 바로 아래 한 줄: 캡션(왼쪽) + 사진 점(오른쪽, 2장 이상일 때)
+      h('div', { class: 'photo-cap' }, recNote, g.dots),
       h(
         'div',
         { class: 'body' },
-        h('section', { class: 'dsec', 'aria-label': '제목' }, badges, h('h2', { class: 'title', text: s.name }), h('p', { class: 'region', text: s.region }), recNote, h('p', { class: 'one' }, s.oneLiner, s.review.oneLiner === 'draft' && draft()), visitBox.slot),
+        h('section', { class: 'dsec', 'aria-label': '제목' }, badges, h('h2', { class: 'title', text: s.name }), h('p', { class: 'region', text: s.region }), h('p', { class: 'one' }, s.oneLiner, s.review.oneLiner === 'draft' && draft()), visitBox.slot),
         h('section', { class: 'dsec when-sec', 'aria-label': '추천 시기' }, when, precheck(s, tn)),
         h('section', { class: 'dsec', 'aria-label': '작가의 한마디' }, h('h3', { class: 'dlbl', text: '작가의 한마디' }), h('blockquote', { class: 'quote' }, h('p', { text: s.excerpt }), h('cite', { text: fmtDate(s.visited) }))),
         h('section', { class: 'dsec', 'aria-label': '브런치 전체 이야기' }, brunchLink(s)),
