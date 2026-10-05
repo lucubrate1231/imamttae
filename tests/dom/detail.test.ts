@@ -71,6 +71,11 @@ describe('열고 닫기', () => {
 });
 
 describe('내용', () => {
+  it('#83: 상세 사진은 화면 폭에 맞춘 사진(R1080)', async () => {
+    await start('#/scene/s-detail');
+    expect(q<HTMLImageElement>('.detail.open img[alt$="풍경"]')!.getAttribute('src')).toMatch(/^https:\/\/img1\.daumcdn\.net\/thumb\/R1080x0\.q75\/\?fname=/);
+  });
+
   it('F2-AC2: 구역 순서는 제목 → 추천 시기 → 작가의 한마디 → 브런치 전체 이야기(10/4 결정)', async () => {
     await start('#/scene/s-detail');
     const secs = [...root.querySelectorAll(".detail .body > .dsec")].map((s) => s.getAttribute("aria-label"));

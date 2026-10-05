@@ -38,9 +38,17 @@ type Photo = StoryScene['photos'][number];
 /** 브런치(카카오) 사진의 작은 썸네일 주소 */
 export const thumb = (src: string, size = 240) => `https://img1.daumcdn.net/thumb/C${size}x${size}/?fname=${encodeURIComponent(src)}`;
 
-/** 사진: 초점(focus)과 수평 보정(rotate)을 반영 */
+/**
+ * 화면 폭에 맞춘 사진 주소(카카오 썸네일, 비율 그대로, 화질 q). 브런치 원본은 1MB 안팎이라 휴대폰 인터넷에서 느림(#83).
+ * 카드 720(약 100KB), 상세 1080. 브런치 사진이 아니면 그대로.
+ */
+export const sized = (src: string, width: number, q = 70) =>
+  /^https:\/\/t1\.(kakaocdn|daumcdn)\.net\/brunch\//.test(src) ? `https://img1.daumcdn.net/thumb/R${width}x0.q${q}/?fname=${encodeURIComponent(src)}` : src;
+
+/** 사진: 초점(focus)과 수평 보정(rotate)을 반영. eager = 맨 처음 보이는 사진(먼저 받음) */
 export function photoImg(p: Photo, alt: string, opts: { src?: string; eager?: boolean } = {}): HTMLImageElement {
   const i = h('img', { src: opts.src ?? p.src, alt, loading: opts.eager ? 'eager' : 'lazy', decoding: 'async' });
+  if (opts.eager) i.setAttribute('fetchpriority', 'high');
   if (p.focus) i.style.objectPosition = p.focus;
   if (p.rotate) {
     const r = (Math.abs(p.rotate) * Math.PI) / 180;
