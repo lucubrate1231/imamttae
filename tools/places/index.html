@@ -113,7 +113,7 @@
       }
       /** [결과 복사]: 지금까지 확인한 값 전부(처음부터 들어 있던 값 포함) */
       async function copyAll() {
-        const n = Object.keys(picked).filter(done).length;
+        const n = scenes.filter((s) => done(s.id)).length; // 진행 표시와 같은 수(숨긴 장면 값은 글에는 남지만 세지 않음)
         const text = JSON.stringify({ format: 'imamttae-places/1', exportedAt: new Date().toISOString(), count: n, picked }, null, 1);
         const box = $('#copybox');
         try { await navigator.clipboard.writeText(text); $('#copymsg').textContent = `${n}곳 복사했어요`; box.hidden = true; }

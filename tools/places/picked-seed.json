@@ -980,5 +980,167 @@
    "ref": null
   },
   "savedAt": "2026-10-05T14:59:06.706Z"
+ },
+ "s-054-hatdeul-peony": {
+  "spot": {
+   "lat": 35.57514,
+   "lng": 128.169254,
+   "source": "public-data",
+   "ref": "tour:3015558",
+   "title": "핫들생태공원"
+  },
+  "dest": {
+   "name": "핫들 공영주차장",
+   "kind": "parking",
+   "lat": 35.569809,
+   "lng": 128.1663467,
+   "source": "public-data",
+   "ref": "parking:398-2-000180"
+  },
+  "savedAt": "2026-10-05T15:02:10.114Z"
+ },
+ "s-055-daebongsan-cheonwangbong": {
+  "spot": {
+   "lat": 35.5976908,
+   "lng": 127.7051532,
+   "source": "manual",
+   "ref": null,
+   "title": null
+  },
+  "dest": {
+   "name": "대봉스카이랜드 대봉휴양밸리관주차장",
+   "kind": "parking",
+   "lat": 35.5665282,
+   "lng": 127.7161125,
+   "source": "public-data",
+   "ref": "parking:396-2-000041"
+  },
+  "savedAt": "2026-10-05T15:08:37.213Z"
+ },
+ "s-055-sangnim-early-summer": {
+  "spot": {
+   "lat": 35.526946,
+   "lng": 127.718076,
+   "source": "public-data",
+   "ref": "tour:126861",
+   "title": "상림공원"
+  },
+  "dest": {
+   "name": "상림공원주차장",
+   "kind": "parking",
+   "lat": 35.5241191,
+   "lng": 127.7213484,
+   "source": "manual",
+   "ref": null
+  },
+  "savedAt": "2026-10-05T15:11:02.426Z"
+ },
+ "s-056-grace-garden-hydrangea": {
+  "spot": {
+   "lat": 34.974362,
+   "lng": 128.169229,
+   "source": "manual",
+   "ref": null,
+   "title": null
+  },
+  "dest": {
+   "name": "그레이스정원 입구",
+   "kind": "entrance",
+   "lat": 34.9745729,
+   "lng": 128.1690949,
+   "source": "manual",
+   "ref": null
+  },
+  "savedAt": "2026-10-05T15:14:33.730Z"
+ },
+ "s-056-jangsan-forest": {
+  "spot": {
+   "lat": 35.0593221,
+   "lng": 128.3266647,
+   "source": "public-data",
+   "ref": "tour:2613122",
+   "title": "고성 장산숲"
+  },
+  "dest": {
+   "name": "고성잔상숲주차장",
+   "kind": "parking",
+   "lat": 35.0589477,
+   "lng": 128.3263475,
+   "source": "manual",
+   "ref": null
+  },
+  "savedAt": "2026-10-05T15:16:46.586Z"
+ },
+ "s-056-sangjogam": {
+  "spot": {
+   "lat": 34.9091,
+   "lng": 128.1543,
+   "source": "public-data",
+   "ref": "tour:126232",
+   "title": "상족암군립공원"
+  },
+  "dest": {
+   "name": "상족암오토캠핑장",
+   "kind": "parking",
+   "lat": 34.9106332,
+   "lng": 128.1561962,
+   "source": "manual",
+   "ref": null
+  },
+  "savedAt": "2026-10-05T15:19:25.196Z"
+ },
+ "s-057-daehan-dawon": {
+  "spot": {
+   "lat": 34.7156546,
+   "lng": 127.0787962,
+   "source": "public-data",
+   "ref": "tour:127869",
+   "title": "대한다원"
+  },
+  "dest": {
+   "name": "대한다원보성녹차밭제2주차장",
+   "kind": "parking",
+   "lat": 34.7145026,
+   "lng": 127.0808262,
+   "source": "manual",
+   "ref": null
+  },
+  "savedAt": "2026-10-05T15:22:29.664Z"
+ },
+ "s-058-baengnyeonsa-baerong": {
+  "spot": {
+   "lat": 34.5877501,
+   "lng": 126.7480767,
+   "source": "manual",
+   "ref": null,
+   "title": null
+  },
+  "dest": {
+   "name": "백련사주차장",
+   "kind": "parking",
+   "lat": 34.5855861,
+   "lng": 126.749568,
+   "source": "manual",
+   "ref": null
+  },
+  "savedAt": "2026-10-05T15:24:26.853Z"
+ },
+ "s-058-gangjinman-reeds": {
+  "spot": {
+   "lat": 34.6196209,
+   "lng": 126.7725974,
+   "source": "manual",
+   "ref": null,
+   "title": null
+  },
+  "dest": {
+   "name": "강진만생태공원주차장",
+   "kind": "parking",
+   "lat": 34.621007,
+   "lng": 126.7749846,
+   "source": "manual",
+   "ref": null
+  },
+  "savedAt": "2026-10-05T15:25:15.810Z"
  }
 }
