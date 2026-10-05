@@ -107,15 +107,15 @@ test("'떠나기 전에 확인하세요' 카드(#61): 추천 시기 상자 바�
   expect(a.violations.map((v) => `${v.id}: ${v.help}`)).toEqual([]);
 });
 
-test('카드 줄의 검색: 단풍은 "올해 + 단풍지도", 입장료는 "{장면 이름} 입장료"(금액은 적지 않음)', async ({ page }) => {
+test('카드 줄의 검색(구글, D40): 단풍은 "올해 + 단풍지도 + 시기", 입장료는 "{장소 이름} 입장료 운영시간"(금액은 적지 않음)', async ({ page }) => {
   await openFirst(page);
   const news = page.locator('.precheck .pc-row.news');
   await expect(news.locator('.pc-go')).toHaveText('올해 단풍지도 찾아보기');
-  expect(new URL((await news.getAttribute('href'))!).searchParams.get('query')).toBe(`${new Date().getFullYear()} 단풍지도`);
+  expect(new URL((await news.getAttribute('href'))!).searchParams.get('q')).toBe(`${new Date().getFullYear()} 단풍지도 시기`);
   await page.goto('./?map=fake&motion=0#/scene/s-056-grace-garden-hydrangea');
   const adm = page.locator('.precheck .pc-row.admission');
   await expect(adm.locator('.pc-msg')).toHaveText('입장료와 운영 시간은 미리 확인하세요');
-  expect(new URL((await adm.getAttribute('href'))!).searchParams.get('query')).toBe('그레이스정원 수국 입장료');
+  expect(new URL((await adm.getAttribute('href'))!).searchParams.get('q')).toBe('그레이스정원 입장료 운영시간');
   await expect(page.locator('.detail .precheck')).not.toContainText('원');
 });
 

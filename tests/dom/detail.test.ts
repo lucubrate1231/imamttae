@@ -143,13 +143,14 @@ describe('내용', () => {
     expect(rows[0]!.target).toBe('_blank');
   });
 
-  it('F2-AC14(#61, D4): 입장료 확인 장면은 입장료 줄 — 금액 없이 고정 문장, 네이버 "{장면 이름} 입장료"', async () => {
+  it('F2-AC14(#61, D4·D40): 입장료 확인 장면은 입장료 줄 — 금액 없이 고정 문장, 구글 "{장소 이름} 입장료 운영시간"', async () => {
     await start('#/scene/s-garden');
     const rows = [...root.querySelectorAll<HTMLAnchorElement>('.precheck a.pc-row')];
     expect(rows.map((r) => r.className)).toEqual(['pc-row news', 'pc-row admission']); // 시기 줄 → 입장료 줄
     expect(rows[1]!.querySelector('.pc-msg')!.textContent).toBe('입장료와 운영 시간은 미리 확인하세요');
     expect(rows[1]!.querySelector('.pc-go')!.textContent).toBe('입장료·운영 시간 찾아보기');
-    expect(new URL(rows[1]!.href).searchParams.get('query')).toBe('그레이스정원 수국 입장료');
+    expect(new URL(rows[1]!.href).host).toBe('www.google.com');
+    expect(new URL(rows[1]!.href).searchParams.get('q')).toBe('그레이스정원 입장료 운영시간');
     expect(rows[1]!.getAttribute('aria-label')).toBe('입장료와 운영 시간은 미리 확인하세요. 입장료·운영 시간 찾아보기, 새 창');
   });
 

@@ -14,7 +14,7 @@ import { seasonNow, seasonOf } from '../domain/home';
 import { kenBurnsPlan } from '../domain/kenBurns';
 import { isYearRound, visitedMonth } from '../domain/sceneTier';
 import { SCENE_TYPES } from '../domain/sceneTypes';
-import { newsLink, timingNotice, type TimingNotice } from '../domain/timingNotice';
+import { admissionLink, newsLink, timingNotice, type TimingNotice } from '../domain/timingNotice';
 import type { Month } from '../domain/month';
 import { fmtDate, h, paintBrowserBar, photoImg } from './dom';
 import type { Navi } from './navi';
@@ -236,8 +236,8 @@ export function createDetail(d: DetailDeps): Detail {
       }));
     }
     if (s.checkAdmission) {
-      // 금액·시간은 적지 않음(보는 때에 따라 틀려짐) — 네이버 '{장면 이름} 입장료'
-      const url = `https://search.naver.com/search.naver?query=${encodeURIComponent(`${s.name} 입장료`)}`;
+      // 금액·시간은 적지 않음(보는 때에 따라 틀려짐) — 구글 '{장소 이름} 입장료 운영시간'(D40)
+      const url = admissionLink(s.name);
       rows.push(checkRow('admission', ICONS.ticket, '입장료와 운영 시간은 미리 확인하세요', '입장료·운영 시간 찾아보기', url, () => d.track('admission', { scene: s.id })));
     }
     if (!rows.length) return null;
