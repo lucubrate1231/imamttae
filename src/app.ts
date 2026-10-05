@@ -132,6 +132,7 @@ export async function startApp(deps: AppDeps): Promise<AppHandle> {
   const a2hs = createA2hs({
     win,
     env: a2hsEnv(deps.ua ?? win.navigator.userAgent, launchMode(win) === 'home-screen'),
+    android: /Android/i.test(deps.ua ?? win.navigator.userAgent),
     scenes: deps.content.scenes,
     store,
     saved: savedStore,

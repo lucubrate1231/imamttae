@@ -19,6 +19,7 @@ const UA = {
   chrome: 'Mozilla/5.0 (Linux; Android 14; Pixel 7) AppleWebKit/537.36 Chrome/140 Mobile Safari/537.36',
   samsung: 'Mozilla/5.0 (Linux; Android 14; SM-S918N) AppleWebKit/537.36 SamsungBrowser/27.0 Chrome/125 Mobile Safari/537.36',
   safari: 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_6 like Mac OS X) AppleWebKit/605.1.15 Version/18.6 Mobile/15E148 Safari/604.1',
+  pc: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0 Safari/537.36',
 };
 
 function memoryStorage(): Storage {
@@ -194,12 +195,105 @@ describe('띠 확인용 주소 ?band=show(10/5 사용자 — 닫은 뒤에도 �
     expect(text('.kband .kb-l1')).toBe('사파리로 열면 앱처럼 쓸 수 있어요');
   });
 
-  it('카톡이 아닌 곳에서 띠를 누르면 넘어가지 않고 "크롬이 열리지 않았나요?" 안내를 바로 보여 줌', async () => {
+  it('카톡이 아닌 곳(PC)에서 띠를 누르면 넘어가지 않고 "크롬이 열리지 않았나요?" 안내를 바로 보여 줌', async () => {
     window.history.replaceState(null, '', '/?band=show');
-    await start(UA.chrome);
+    await start(UA.pc);
     q('.kband .kb-go')!.click();
     expect(opened).toEqual([]);
     expect(q('.a2sheet')!.getAttribute('aria-label')).toBe('크롬이 열리지 않았나요?');
+  });
+});
+
+describe('D37(디자인 #72): 안드로이드 크롬·삼성 인터넷도 첫 방문부터 "홈 화면에 두기" 띠', () => {
+  it('안드로이드 크롬 첫 화면 맨 위: "홈 화면에 두면 앱처럼 쓸 수 있어요 / 홈 화면에 두기 ›", 모양은 카톡 띠와 같음', async () => {
+    await start(UA.chrome);
+    const band = q('main.home > .kband')!;
+    expect(band).not.toBeNull();
+    expect(band.nextElementSibling!.matches('.eyebrow')).toBe(true);
+    expect(text('.kband .kb-l1')).toBe('홈 화면에 두면 앱처럼 쓸 수 있어요');
+    expect(text('.kband .kb-l2')).toBe('홈 화면에 두기 ›');
+    expect(q('.kband .kb-go')!.getAttribute('aria-label')).toBe('홈 화면에 두기 안내');
+    expect(q('.kband img.kb-ic')).not.toBeNull();
+  });
+
+  it('삼성 인터넷도 같은 띠, PC 크롬·아이폰 사파리에는 없음', async () => {
+    const app = await start(UA.samsung);
+    expect(text('.kband .kb-l2')).toBe('홈 화면에 두기 ›');
+    app.destroy();
+    for (const ua of [UA.pc, UA.safari]) {
+      document.body.innerHTML = '<div id="app"></div>';
+      root = document.getElementById('app')!;
+      const a = await start(ua);
+      expect(q('.kband')).toBeNull();
+      a.destroy();
+    }
+  });
+
+  it('띠를 누르면 설치 창(준비돼 있으면), 없으면 그 브라우저 그림 안내 — 띠는 그대로 남음', async () => {
+    const p = fakePrompt('accepted');
+    prompt = p;
+    await start(UA.chrome);
+    q('.kband .kb-go')!.click();
+    expect(p.prompt).toHaveBeenCalledTimes(1);
+    expect(q('.kband')).not.toBeNull();
+    prompt = null;
+    q('.kband .kb-go')!.click();
+    expect(q('.a2sheet')!.getAttribute('aria-label')).toBe('홈 화면에 두는 방법');
+    btn('.a2sheet', '알겠어요')!.click();
+    expect(q('.kband')).not.toBeNull(); // 그림 안내 [알겠어요]로는 닫히지 않음
+    expect(a2hsEvents()).toContainEqual({ action: 'band', env: 'chrome' });
+  });
+
+  it('설치 창에서 [취소]해도 띠는 남고, 그 뒤 처음 [저장]에는 판을 띄우지 않음(한 번 거절한 사람에게 다시 묻지 않음)', async () => {
+    prompt = fakePrompt('dismissed');
+    await start(UA.chrome);
+    q('.kband .kb-go')!.click();
+    await tick();
+    expect(q('.kband')).not.toBeNull();
+    expect(JSON.parse(storage.getItem('imamttae:a2hs')!).promptDismissed).toBe(true);
+    saveIn('s-naejang');
+    expect(q('.a2sheet')).toBeNull();
+    expect(text('.toast')).toContain('저장했어요');
+  });
+
+  it('✕로 닫으면 다시 안 뜨고, 그 뒤 처음 [저장]에도 판을 띄우지 않음', async () => {
+    const app = await start(UA.chrome);
+    q('.kband .kb-x')!.click();
+    expect(q('.kband')).toBeNull();
+    saveIn('s-naejang');
+    expect(q('.a2sheet')).toBeNull();
+    app.destroy();
+    document.body.innerHTML = '<div id="app"></div>';
+    root = document.getElementById('app')!;
+    await start(UA.chrome);
+    expect(q('.kband')).toBeNull();
+  });
+
+  it('설치를 마치면 띠가 사라지고, 다음에 열어도 없음', async () => {
+    const app = await start(UA.chrome);
+    window.dispatchEvent(new Event('appinstalled'));
+    expect(q('.kband')).toBeNull();
+    expect(text('.toast')).toBe("홈 화면에 '이맘때'를 두었어요");
+    app.destroy();
+    document.body.innerHTML = '<div id="app"></div>';
+    root = document.getElementById('app')!;
+    await start(UA.chrome);
+    expect(q('.kband')).toBeNull();
+  });
+
+  it('확인용 주소: ?band=show는 닫은 새 띠도 보여 주고, ?band=chrome은 아이폰에서도 새 띠를 흉내(누르면 크롬 그림 안내)', async () => {
+    storage.setItem('imamttae:a2hs', JSON.stringify({ bandClosed: true }));
+    window.history.replaceState(null, '', '/?band=show');
+    const app = await start(UA.chrome);
+    expect(text('.kband .kb-l2')).toBe('홈 화면에 두기 ›');
+    app.destroy();
+    document.body.innerHTML = '<div id="app"></div>';
+    root = document.getElementById('app')!;
+    window.history.replaceState(null, '', '/?band=chrome');
+    await start(UA.safari);
+    expect(text('.kband .kb-l2')).toBe('홈 화면에 두기 ›');
+    q('.kband .kb-go')!.click();
+    expect(text('.a2sheet .a2-desc')).toBe('크롬 메뉴로 할 수 있어요.');
   });
 });
 

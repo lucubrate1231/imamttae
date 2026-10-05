@@ -3,7 +3,7 @@
  * - 구역 순서: 제목 → 추천 시기 → 작가의 한마디 → 브런치 전체 이야기
  * - 꼬리표는 오늘(한국 날짜) 기준: [지금 좋아요] · [일 년 내내] · 그 밖은 풍경 종류만
  * - 추천 시기 밖이면 추천 시기 칸 맨 위에 "N월부터 가기 좋아요"
- * - 사진 안내 "N월 사진"은 모든 장면에 — 사진 바로 아래 캡션, 오른쪽에 사진 점(디자인 #66·#69). 사진 위 크레딧은 "사진 이상호" + 서명(#69)
+ * - 사진 안내 "N월에 찍은 사진"은 모든 장면에 — 사진 바로 아래 캡션, 오른쪽에 사진 점(디자인 #66·#69·#73). 사진 위 크레딧은 "사진 이상호" + 서명(#69)
  * - 글자는 design-guide 10장 '화면 글자 표'가 기준(D28~D30)
  * - 저장한 장면은 제목 구역 아래 [다녀왔어요] 상자(F4, src/ui/visited.ts)
  * - 색은 사진 찍은 달(visited)의 계절 — 어디서 열어도 같음. 상세 밖의 길찾기 판과 휴대폰 위쪽 띠도(design-guide 3장, PR #46)
@@ -271,7 +271,7 @@ export function createDetail(d: DetailDeps): Detail {
         )
       : null;
     // 사진 안내 = 사진 캡션: 사진 바로 아래 줄, 사진기 아이콘 + 글자만(디자인 #66)
-    const recNote = h('p', { class: 'recnote' }, h('span', { class: 'rn-ic', 'aria-hidden': 'true' }), `${visitedMonth(s.visited)}월 사진`);
+    const recNote = h('p', { class: 'recnote' }, h('span', { class: 'rn-ic', 'aria-hidden': 'true' }), `${visitedMonth(s.visited)}월에 찍은 사진`);
     (recNote.firstChild as HTMLElement).innerHTML = ICONS.camera;
 
     // ── 아래 붙박이 막대: 저장 · 공유 · 길찾기(티맵) (D28) ──
