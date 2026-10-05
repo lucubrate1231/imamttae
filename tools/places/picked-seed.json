@@ -926,5 +926,59 @@
    "title": null
   },
   "savedAt": "2026-10-05T14:49:52.186Z"
+ },
+ "s-053-biseulsan-azalea": {
+  "spot": {
+   "lat": 35.6972467,
+   "lng": 128.529675,
+   "source": "manual",
+   "ref": null,
+   "title": null
+  },
+  "dest": {
+   "name": "비슬산자연휴양림공영주차장1",
+   "kind": "parking",
+   "lat": 35.6942581,
+   "lng": 128.5052079,
+   "source": "manual",
+   "ref": null
+  },
+  "savedAt": "2026-10-05T14:54:13.705Z"
+ },
+ "s-054-haeinsa-green-valley": {
+  "spot": {
+   "lat": 35.8001854,
+   "lng": 128.0946422,
+   "source": "manual",
+   "ref": null,
+   "title": null
+  },
+  "dest": {
+   "name": "해인사주차장",
+   "kind": "parking",
+   "lat": 35.7995001,
+   "lng": 128.0974048,
+   "source": "manual",
+   "ref": null
+  },
+  "savedAt": "2026-10-05T14:56:43.260Z"
+ },
+ "s-054-hapcheon-auxiliary-dam": {
+  "spot": {
+   "lat": 35.548473,
+   "lng": 128.0738068,
+   "source": "manual",
+   "ref": null,
+   "title": null
+  },
+  "dest": {
+   "name": "합천영상테마파크주차장",
+   "kind": "parking",
+   "lat": 35.5481675,
+   "lng": 128.0719078,
+   "source": "manual",
+   "ref": null
+  },
+  "savedAt": "2026-10-05T14:59:06.706Z"
  }
 }
