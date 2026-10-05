@@ -1,5 +1,5 @@
 // @vitest-environment happy-dom
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { startApp, type AppDeps } from '../../src/app';
 import { createListMap } from '../../src/map/listMap';
 import { HOME_SCENES } from '../fixtures/homeScenes';
@@ -138,5 +138,30 @@ describe('아래 메뉴와 실패할 때', () => {
   it('C-4: 장면 데이터를 못 불러오면 쉬운 말로 알림', async () => {
     await start({ content: null });
     expect(root.textContent).toContain('장면을 불러오지 못했어요');
+  });
+});
+
+describe('#77 지도를 기다리지 않음', () => {
+  it('지도가 끝내 오지 않아도 사진 카드는 바로 그려짐', async () => {
+    const stuck = { ...createListMap(), mount: () => new Promise<void>(() => {}) };
+    const r = await Promise.race([start({ map: stuck }).then(() => 'done'), new Promise((ok) => setTimeout(() => ok('stuck'), 300))]);
+    expect(r).toBe('done');
+    expect(all('.rail .big').length).toBeGreaterThan(0);
+  });
+
+  it('풍경 찾기 지도는 풍경 찾기를 처음 열 때 한 번만 만듦', async () => {
+    const findMap = createListMap();
+    const mount = vi.spyOn(findMap, 'mount');
+    await start({ findMap });
+    expect(mount).not.toHaveBeenCalled();
+    window.location.hash = '#/find';
+    hashChange();
+    expect(mount).toHaveBeenCalledTimes(1);
+    expect(mount.mock.calls[0]![0].className).toBe('kmap'); // 풍경 찾기 지도 칸
+    window.location.hash = '#/';
+    hashChange();
+    window.location.hash = '#/find/all/gangwon';
+    hashChange();
+    expect(mount).toHaveBeenCalledTimes(1);
   });
 });

@@ -3,6 +3,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { createMap, pickMapMode } from '../../src/map';
 import { createKakaoMap } from '../../src/map/kakaoMap';
 import { createListMap } from '../../src/map/listMap';
+import { createLazyMap } from '../../src/map/lazyMap';
 import { createKakaoStub } from '../fixtures/kakaoStub';
 import type { MapPin } from '../../src/map/types';
 
@@ -57,7 +58,7 @@ describe('목록 지도(가짜 지도)', () => {
 describe('카카오 지도 어댑터 (가짜 SDK로 확인)', () => {
   const mount = async () => {
     const stub = createKakaoStub();
-    const m = createKakaoMap(stub.kakao, { reduceMotion: true });
+    const m = createKakaoMap(stub.kakao);
     await m.mount(document.createElement('div'));
     return { ...stub, m };
   };
@@ -86,14 +87,23 @@ describe('카카오 지도 어댑터 (가짜 SDK로 확인)', () => {
     expect(got).toBe('s-sea');
   });
 
-  it('F1-AC5·AC6: 고르면 그 핀만 이름표(on)와 맨 위, "움직임 줄이기"면 바로 그 장소로 확대', async () => {
-    const { log, m, fire } = await mount();
-    m.setPins(pins);
-    fire('tilesloaded');
-    m.select('s-sea');
-    expect(log.overlays.map((o) => o.el.classList.contains('on'))).toEqual([false, true, false]);
-    expect(log.overlays[1]!.z).toBeGreaterThan(log.overlays[0]!.z);
-    expect(log.calls.slice(-2)).toEqual(['level 10', 'center 37.47,129.16']);
+  it('F1-AC5·AC6(D39): 고르면 그 핀만 이름표(on)와 맨 위, 지도는 전국 그대로(확대·이동 없음)', async () => {
+    vi.useFakeTimers();
+    try {
+      const stub = createKakaoStub();
+      const m = createKakaoMap(stub.kakao);
+      await m.mount(document.createElement('div'));
+      m.setPins(pins);
+      const before = stub.log.calls.length;
+      m.select('s-sea'); // 지도 조각이 뜨기 전에 골라도 바로 이름표
+      expect(stub.log.overlays.map((o) => o.el.classList.contains('on'))).toEqual([false, true, false]);
+      expect(stub.log.overlays[1]!.z).toBeGreaterThan(stub.log.overlays[0]!.z);
+      stub.fire('tilesloaded');
+      vi.advanceTimersByTime(10_000);
+      expect(stub.log.calls.slice(before)).toEqual([]); // 확대·가운데 옮기기를 부르지 않음 → 지도 그림을 다시 받지 않음
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it("풍경 찾기: fit()은 올린 핀이 모두 보이게 지도를 맞춤(한 곳으로 확대하지 않음)", async () => {
@@ -110,5 +120,58 @@ describe("지도 없이도 fit()을 불러도 멈추지 않음", () => {
     const l = createListMap();
     await l.mount(document.createElement("div"));
     expect(() => l.fit()).not.toThrow();
+  });
+});
+
+describe('#77 기다리지 않는 지도(createLazyMap)', () => {
+  it('지도가 오기 전에 올린 핀·고른 곳·누르기를 기억했다가, 지도가 오면 그대로 옮김', async () => {
+    let give!: (m: ReturnType<typeof createListMap>) => void;
+    const lazy = createLazyMap(() => new Promise((r) => (give = r)));
+    const el = document.createElement('div');
+    const mounted = lazy.mount(el);
+    const clicked: string[] = [];
+    lazy.onPinClick((id) => clicked.push(id));
+    lazy.setPins(pins);
+    lazy.select('s-sea');
+    expect(el.querySelector('button')).toBeNull();
+    give(createListMap());
+    await mounted;
+    const buttons = [...el.querySelectorAll<HTMLButtonElement>('button[data-pin-id]')];
+    expect(buttons).toHaveLength(3);
+    expect(buttons[1]!.getAttribute('aria-current')).toBe('true');
+    buttons[0]!.click();
+    expect(clicked).toEqual(['s-005-jujeongol']);
+    lazy.setPins(pins.slice(0, 1)); // 지도가 온 뒤에는 바로 넘김
+    expect(el.querySelectorAll('button[data-pin-id]')).toHaveLength(1);
+  });
+
+  it('mount 전에는 지도를 만들지 않음(풍경 찾기 지도는 그 탭을 처음 열 때)', async () => {
+    const make = vi.fn(async () => createListMap());
+    const lazy = createLazyMap(make);
+    lazy.setPins(pins);
+    lazy.fit();
+    expect(make).not.toHaveBeenCalled();
+    await lazy.mount(document.createElement('div'));
+    expect(make).toHaveBeenCalledTimes(1);
+  });
+
+  it('만들기가 실패하면 "지도를 불러오지 못했어요"', async () => {
+    const lazy = createLazyMap(() => Promise.reject(new Error('막힘')));
+    const el = document.createElement('div');
+    await lazy.mount(el);
+    expect(lazy.kind).toBe('failed');
+    expect(el.querySelector('.mapfail')?.textContent).toBe('지도를 불러오지 못했어요.');
+  });
+
+  it('지도가 오기 전에 화면을 닫으면, 온 지도도 정리함', async () => {
+    const inner = createListMap();
+    const destroy = vi.spyOn(inner, 'destroy');
+    let give!: (m: typeof inner) => void;
+    const lazy = createLazyMap(() => new Promise((r) => (give = r)));
+    const mounted = lazy.mount(document.createElement('div'));
+    lazy.destroy();
+    give(inner);
+    await mounted;
+    expect(destroy).toHaveBeenCalled();
   });
 });

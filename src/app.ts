@@ -32,7 +32,7 @@ export interface AppDeps {
   content: ContentFile | null;
   now?: Date;
   win?: Window;
-  /** 풍경 찾기의 지도(첫 화면 지도와 따로). 없으면 '지도를 불러오지 못했어요' */
+  /** 풍경 찾기의 지도(첫 화면 지도와 따로). 풍경 찾기를 처음 열 때 붙임(#77). 없으면 '지도를 불러오지 못했어요' */
   findMap?: MapAdapter;
   /** 지도를 못 불러왔음(테스트에서 실패를 흉내 낼 때) */
   mapFailed?: boolean;
@@ -144,7 +144,6 @@ export async function startApp(deps: AppDeps): Promise<AppHandle> {
     track: tracker.track,
   });
   const map = deps.mapFailed ? createFailedMap() : deps.map;
-  if (map.kind === 'failed') tracker.track('error', { kind: 'map-fail' });
   let sceneFrom: string | null = null; // 통계 scene-open: 앱 안에서 연 곳(없으면 주소로 바로 = link)
   let openedInApp = false; // 앱 안에서 상세를 열었으면 뒤로 = 이전 화면, 주소로 바로 열었으면 뒤로 = 첫 화면
   const openSceneFrom = (id: string, from: string) => {
@@ -233,7 +232,15 @@ export async function startApp(deps: AppDeps): Promise<AppHandle> {
   });
   saved.el.hidden = true;
   root.replaceChildren(...home.nodes, find.el, saved.el, tabs, detail.el, navi.sheet, toastEl);
-  await Promise.all([map.mount(home.mapHost), findMap.mount(find.mapHost)]);
+  // 지도를 기다리지 않고 화면부터 그림(#77). 카카오 SDK가 늦거나 막혀도 사진 카드는 바로 나옴
+  const mapFail = () => tracker.track('error', { kind: 'map-fail' });
+  const isFailed = (): boolean => map.kind === 'failed'; // 기다리는 지도(lazyMap)는 붙은 뒤에 바뀜
+  const failedAtStart = isFailed();
+  if (failedAtStart) mapFail();
+  void map.mount(home.mapHost).then(() => {
+    if (!failedAtStart && isFailed()) mapFail(); // 카카오가 늦게 실패함
+  });
+  let findMounted = false;
 
   const tabButtons = [...tabs.querySelectorAll('button')];
   let screen: 'home' | 'find' | 'saved' = 'home';
@@ -255,6 +262,10 @@ export async function startApp(deps: AppDeps): Promise<AppHandle> {
   let findKey = '';
   function render(route: Route): void {
     if (route.name === 'find') {
+      if (!findMounted) {
+        findMounted = true; // 풍경 찾기 지도는 그 탭을 처음 열 때 붙임(#77)
+        void findMap.mount(find.mapHost);
+      }
       const key = `${route.type}/${route.region}`;
       if (key !== findKey) {
         findKey = key;
