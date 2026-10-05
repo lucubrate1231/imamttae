@@ -35,7 +35,8 @@ export function createKakaoMap(kakao: KakaoNS): MapAdapter {
    */
   function reveal(p: MapPin): void {
     if (!map) return;
-    const b = map.getBounds();
+    const b = map.getBounds?.();
+    if (!b) return; // 지도가 아직 크기를 모름
     const s = b.getSouthWest().getLat();
     const w = b.getSouthWest().getLng();
     const n = b.getNorthEast().getLat();
