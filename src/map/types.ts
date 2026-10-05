@@ -15,7 +15,7 @@ export interface MapAdapter {
   readonly kind: 'kakao' | 'list' | 'failed' | 'loading';
   mount(el: HTMLElement): Promise<void>;
   setPins(pins: readonly MapPin[]): void;
-  /** 장소 고르기: 그 핀만 이름표를 보이고 맨 앞으로. 지도는 우리나라 전체 그대로 — 확대하지 않음(F1-AC5·AC6, D39) */
+  /** 장소 고르기: 그 핀만 이름표를 보이고 맨 앞으로. 첫 화면 지도는 그곳을 움직임 없이 가운데로(9단계 그대로, F1-AC5·AC6) */
   select(id: string | null): void;
   /** 풍경 찾기: 올린 핀이 모두 보이게 지도를 맞춤(F3-AC2·AC7) */
   fit(): void;

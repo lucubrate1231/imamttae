@@ -120,12 +120,56 @@ describe('카카오 지도 어댑터 (가짜 SDK로 확인)', () => {
     expect(stub.log.calls.some((c) => c.startsWith('level'))).toBe(false);
   });
 
+  it('첫 화면 지도(10/5 사용자 — 9단계): 9단계로 시작하고, 고르면 움직임 없이 그곳을 가운데로(단계는 그대로)', async () => {
+    vi.useFakeTimers();
+    try {
+      const stub = createKakaoStub();
+      const m = createKakaoMap(stub.kakao, { focusLevel: 9 });
+      await m.mount(document.createElement('div'));
+      m.setPins(pins);
+      expect(stub.log.maps).toHaveLength(0); // 처음 고를 때까지 지도를 만들지 않음(다른 곳 지도 그림을 먼저 받지 않게)
+      const before = stub.log.calls.length;
+      m.select('s-sea');
+      const made = stub.log.maps[0]!;
+      expect(made.level).toBe(9);
+      expect([(made.opts.center as { getLat(): number }).getLat(), (made.opts.center as { getLng(): number }).getLng()]).toEqual([37.47, 129.16]); // 첫 카드 장소에서 바로 시작
+      expect(stub.log.overlays.filter((o) => o.onMap)).toHaveLength(3);
+      expect(stub.log.calls.some((c) => c.startsWith('bounds'))).toBe(false); // 전국 맞추기를 하지 않음
+      expect(stub.log.overlays[1]!.el.classList.contains('on')).toBe(true);
+      m.select('s-005-jujeongol');
+      vi.advanceTimersByTime(5000);
+      expect(stub.log.calls.slice(before)).toEqual(['center 37.47,129.16', 'center 38.0825,128.4282']); // 확대·옮기기 움직임 없음
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
   it("풍경 찾기: fit()은 올린 핀이 모두 보이게 지도를 맞춤(한 곳으로 확대하지 않음)", async () => {
     const { log, m, fire } = await mount();
     m.setPins(pins);
     fire("tilesloaded");
     m.fit();
     expect(log.calls.at(-1)).toBe("bounds 3");
+  });
+});
+
+describe('어느 화면도 9단계보다 가까이 가지 않음(메시지 V 1-1 — 7·8단계는 등고선이 빽빽함)', () => {
+  it('풍경 찾기 fit()이 핀이 하나뿐이거나 모여 있어 9보다 가까이 맞추면 9로', async () => {
+    const stub = createKakaoStub();
+    const m = createKakaoMap(stub.kakao);
+    await m.mount(document.createElement('div'));
+    m.setPins(pins.slice(0, 1));
+    stub.log.fitLevel = 6; // 핀 하나에 맞추면 카카오가 6단계까지 당김
+    m.fit();
+    expect(stub.log.calls.at(-1)).toBe('level 9');
+  });
+  it('핀이 퍼져 있어 9보다 멀면 그대로', async () => {
+    const stub = createKakaoStub();
+    const m = createKakaoMap(stub.kakao);
+    await m.mount(document.createElement('div'));
+    m.setPins(pins);
+    m.fit();
+    expect(stub.log.calls.at(-1)).toBe('bounds 3');
   });
 });
 
