@@ -60,6 +60,23 @@ export function createKakaoMap(kakao: KakaoNS, opts: { focusLevel?: number } = {
   }
 
   let host: HTMLElement | null = null;
+  let watcher: ResizeObserver | null = null;
+  let lastSize = '';
+  /**
+   * 칸이 보이거나 크기가 바뀌면 지도를 다시 맞춤. 숨은 칸(0×0 — 다른 탭에 있을 때)에서 만들거나 옮긴 지도는
+   * 카카오가 크기를 0으로 기억해 지도 그림이 안 뜸(10/5 — 저장한 곳에서 열고 첫 화면으로 가면 깨짐)
+   */
+  function onResize(): void {
+    if (!host || !map) return;
+    const w = host.clientWidth;
+    const h = host.clientHeight;
+    const size = `${w}x${h}`;
+    if (!w || !h || size === lastSize) return;
+    lastSize = size;
+    map.relayout();
+    const cur = focusLevel ? pins.find((x) => x.p.id === selected) : undefined;
+    if (cur) map.setCenter(new K.LatLng(cur.p.lat, cur.p.lng));
+  }
   let waiting: readonly MapPin[] | null = null; // 첫 화면 지도: 처음 고를 때까지 기다리는 핀
 
   /** 지도 만들기. 첫 화면 지도는 처음 고른 곳에서 바로 시작(다른 곳 지도 그림을 먼저 받지 않게 — 메시지 V 2) */
@@ -100,6 +117,10 @@ export function createKakaoMap(kakao: KakaoNS, opts: { focusLevel?: number } = {
     kind: 'kakao',
     async mount(el) {
       host = el;
+      if (typeof ResizeObserver === 'function') {
+        watcher = new ResizeObserver(onResize);
+        watcher.observe(el);
+      }
       if (!focusLevel) create(KOREA.center);
     },
     setPins(list: readonly MapPin[]) {
@@ -133,6 +154,8 @@ export function createKakaoMap(kakao: KakaoNS, opts: { focusLevel?: number } = {
       handler = cb;
     },
     destroy() {
+      watcher?.disconnect();
+      watcher = null;
       for (const { o } of pins) o.setMap(null);
       pins = [];
       map = null;
