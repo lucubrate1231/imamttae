@@ -173,6 +173,36 @@ describe('F5-AC4: 카톡 안 첫 화면 맨 위 띠', () => {
   });
 });
 
+describe('띠 확인용 주소 ?band=show(10/5 사용자 — 닫은 뒤에도 띠를 다시 보려고)', () => {
+  it('카톡 안에서 띠를 닫았어도 ?band=show로 열면 다시 보이고, 닫음 표시는 그대로', async () => {
+    storage.setItem('imamttae:a2hs', JSON.stringify({ bandClosed: true }));
+    window.history.replaceState(null, '', '/?band=show');
+    await start(UA.kakaoAndroid);
+    expect(text('.kband .kb-l1')).toBe('크롬으로 열면 앱처럼 쓸 수 있어요');
+    expect(JSON.parse(storage.getItem('imamttae:a2hs')!).bandClosed).toBe(true);
+  });
+
+  it('?band=show 없이 열면 닫은 띠는 그대로 숨음', async () => {
+    storage.setItem('imamttae:a2hs', JSON.stringify({ bandClosed: true }));
+    await start(UA.kakaoAndroid);
+    expect(q('.kband')).toBeNull();
+  });
+
+  it('카톡이 아닌 브라우저에서도 ?band=show면 띠 모양을 보여 줌 — 아이폰은 사파리, 그 밖은 크롬', async () => {
+    window.history.replaceState(null, '', '/?band=show');
+    await start(UA.safari);
+    expect(text('.kband .kb-l1')).toBe('사파리로 열면 앱처럼 쓸 수 있어요');
+  });
+
+  it('카톡이 아닌 곳에서 띠를 누르면 넘어가지 않고 "크롬이 열리지 않았나요?" 안내를 바로 보여 줌', async () => {
+    window.history.replaceState(null, '', '/?band=show');
+    await start(UA.chrome);
+    q('.kband .kb-go')!.click();
+    expect(opened).toEqual([]);
+    expect(q('.a2sheet')!.getAttribute('aria-label')).toBe('크롬이 열리지 않았나요?');
+  });
+});
+
 describe('F5-AC6: 크롬·삼성 인터넷에서 처음 [저장] 직후 한 번', () => {
   it('크롬: 안내 줄 대신 판 — 앱 아이콘 · 저장했어요 · 문장 · [홈 화면에 두기] · [괜찮아요]', async () => {
     await start(UA.chrome);
