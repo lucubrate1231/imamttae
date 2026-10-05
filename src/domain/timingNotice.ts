@@ -6,9 +6,9 @@
 import type { SceneTypeId } from './sceneTypes';
 
 /**
- * 올해 소식 찾아보기 검색 방법(10/3 6차 코멘트)
- * - map: 장소가 아니라 '누른 해 + ○○지도'(예: 2026 단풍지도). 꽃·단풍은 전국 지도로 보는 게 맞음
- * - place: '장소 + 키워드'(예: 발왕산 상고대 눈). 눈은 그곳 CCTV·눈 소식이 나와서 장소가 맞음
+ * 올해 소식 찾아보기 검색 방법(10/3 6차 코멘트 → D40 구글, 맨 끝에 '시기')
+ * - map: 장소가 아니라 '누른 해 + ○○지도 + 시기'(예: 2026 단풍지도 시기). 꽃·단풍은 전국 지도로 보는 게 맞음
+ * - place: '장소 이름(풍경 말 빼고) + 누른 해 + 키워드 + 시기'(예: 발왕산 2026 눈 시기). 억새·갈대·눈은 그곳 소식이 맞음
  */
 export type NewsSearch = { kind: 'map'; word: string } | { kind: 'place'; word: string };
 
@@ -52,10 +52,32 @@ export function timingNotice(types: readonly SceneTypeId[]): TimingNotice | null
   return null;
 }
 
-/** 올해 소식 찾아보기 링크(네이버 검색)와 글자. now는 누른 때(해를 정함). label은 옛 링크(시안 v2), go는 카드 줄('›'는 줄 화살표가 대신) */
+/**
+ * 검색할 때 장면 이름 끝의 풍경 말을 뺍니다(D40). 예: '천리포수목원 봄 연못' → '천리포수목원'.
+ * 구글 AI 개요는 장소 이름만 있어야 그 장소를 잘 찾습니다. 데이터 칸을 늘리지 않고 끝말 목록으로 뺍니다 —
+ * 새 장면 이름에 다른 풍경 말이 붙으면 이 목록에 더합니다(tests/unit/timingNotice.test.ts).
+ */
+const SCENERY_WORDS = new Set(['봄', '여름', '가을', '겨울', '연못', '수국', '홍매화', '이끼정원', '둘레길', '상고대', '설경', '설화', '조망', '갈대', '갈대숲', '데크길', '억새', '억새평원']);
+export function placeName(name: string): string {
+  const words = name.trim().split(/\s+/);
+  while (words.length > 1 && SCENERY_WORDS.has(words[words.length - 1]!)) words.pop();
+  return words.join(' ');
+}
+
+const google = (q: string) => `https://www.google.com/search?q=${encodeURIComponent(q)}`;
+
+/** 입장료·운영 시간 찾아보기(D4 → D40 구글): '장소 이름 + 입장료 운영시간'. 금액·시간은 앱에 적지 않음(보는 때에 따라 틀려짐) */
+export function admissionLink(name: string): string {
+  return google(`${placeName(name)} 입장료 운영시간`);
+}
+
+/** 올해 소식 찾아보기 링크(구글 검색, D40)와 글자. now는 누른 때(해를 정함). label은 옛 링크(시안 v2), go는 카드 줄('›'는 줄 화살표가 대신) */
 export function newsLink(name: string, n: TimingNotice, now: Date = new Date()): { url: string; label: string; go: string } {
   const { kind, word } = n.search;
-  const q = kind === 'map' ? `${now.getFullYear()} ${word}` : name.includes(word) ? name : `${name} ${word}`;
+  const year = now.getFullYear();
+  // 갈대 장면은 종류가 '억새·갈대'(eoksae)라도 '갈대'로 찾음(D40)
+  const w = kind === 'place' && name.includes('갈대') ? '갈대' : word;
+  const q = kind === 'map' ? `${year} ${word} 시기` : `${placeName(name)} ${year} ${w} 시기`;
   const go = kind === 'map' ? `올해 ${word} 찾아보기` : `올해 ${n.keyword} 소식 찾아보기`;
-  return { url: `https://search.naver.com/search.naver?query=${encodeURIComponent(q)}`, label: `${go} ›`, go };
+  return { url: google(q), label: `${go} ›`, go };
 }

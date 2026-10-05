@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { timingNotice, newsLink } from '../../src/domain/timingNotice';
+import { timingNotice, newsLink, placeName, admissionLink } from '../../src/domain/timingNotice';
 
 /**
  * 사용자 요청(10/3): 꽃·단풍처럼 해마다 기온에 따라 달라지는 장면은
@@ -60,34 +60,62 @@ describe("timingNotice.line · newsLink.go: '떠나기 전에 확인하세요' �
   });
 });
 
-describe('newsLink: 올해 소식 찾아보기 링크 (10/3 6차 코멘트)', () => {
-  const q = (u: string) => new URL(u).searchParams.get('query');
+describe('newsLink: 올해 소식 찾아보기 링크 — 구글 검색, 맨 끝에 "시기"(D40)', () => {
+  const q = (u: string) => new URL(u).searchParams.get('q');
   const oct2026 = new Date(2026, 9, 3);
 
-  it('단풍은 장소가 아니라 "누른 해 + 단풍지도"로 검색', () => {
+  it('단풍은 장소가 아니라 "누른 해 + 단풍지도 + 시기"로 구글 검색', () => {
     const l = newsLink('내장산 우화정', timingNotice(['danpung'])!, oct2026);
-    expect(new URL(l.url).origin).toBe('https://search.naver.com');
-    expect(q(l.url)).toBe('2026 단풍지도');
+    expect(new URL(l.url).origin + new URL(l.url).pathname).toBe('https://www.google.com/search');
+    expect(q(l.url)).toBe('2026 단풍지도 시기');
     expect(l.label).toBe('올해 단풍지도 찾아보기 ›');
   });
-  it('벚꽃은 "누른 해 + 벚꽃지도", 그 밖의 꽃은 "누른 해 + 꽃지도"', () => {
-    expect(q(newsLink('경주 대릉원', timingNotice(['beotkkot'])!, oct2026).url)).toBe('2026 벚꽃지도');
+  it('벚꽃은 "누른 해 + 벚꽃지도 + 시기", 그 밖의 꽃은 "누른 해 + 꽃지도 + 시기"', () => {
+    expect(q(newsLink('경주 대릉원', timingNotice(['beotkkot'])!, oct2026).url)).toBe('2026 벚꽃지도 시기');
     for (const t of ['maehwa', 'jindallae', 'yeoreumkkot', 'kkotmureut'] as const) {
       const l = newsLink('비슬산 참꽃 군락지', timingNotice([t])!, oct2026);
-      expect(q(l.url)).toBe('2026 꽃지도');
+      expect(q(l.url)).toBe('2026 꽃지도 시기');
       expect(l.label).toBe('올해 꽃지도 찾아보기 ›');
     }
   });
   it('해는 누른 때를 따름(해가 바뀌면 그해로)', () => {
-    expect(q(newsLink('x', timingNotice(['danpung'])!, new Date(2027, 0, 5)).url)).toBe('2027 단풍지도');
+    expect(q(newsLink('x', timingNotice(['danpung'])!, new Date(2027, 0, 5)).url)).toBe('2027 단풍지도 시기');
   });
-  it('눈은 지금처럼 장소 + 눈으로 검색(그곳 CCTV·눈 소식이 나옴)', () => {
+  it('눈은 "장소 이름(풍경 말 빼고) + 누른 해 + 눈 + 시기"', () => {
     const l = newsLink('발왕산 상고대', timingNotice(['seolgyeong'])!, oct2026);
-    expect(q(l.url)).toBe('발왕산 상고대 눈');
+    expect(q(l.url)).toBe('발왕산 2026 눈 시기');
     expect(l.label).toBe('올해 눈 소식 찾아보기 ›');
+    expect(q(newsLink('덕유산 향적봉 설화', timingNotice(['seolgyeong'])!, oct2026).url)).toBe('덕유산 향적봉 2026 눈 시기');
   });
-  it('억새도 장소로 검색(억새 지도는 흔하지 않음), 이름에 키워드가 있으면 겹치지 않게', () => {
-    expect(q(newsLink('간월재', timingNotice(['eoksae'])!, oct2026).url)).toBe('간월재 억새');
-    expect(q(newsLink('신불산 억새평원', timingNotice(['eoksae'])!, oct2026).url)).toBe('신불산 억새평원');
+  it('억새는 "장소 이름 + 누른 해 + 억새 + 시기", 갈대 장면은 "갈대"로', () => {
+    expect(q(newsLink('간월재', timingNotice(['eoksae'])!, oct2026).url)).toBe('간월재 2026 억새 시기');
+    expect(q(newsLink('신불산 억새평원', timingNotice(['eoksae'])!, oct2026).url)).toBe('신불산 2026 억새 시기');
+    expect(q(newsLink('원동습지 갈대 데크길', timingNotice(['eoksae'])!, oct2026).url)).toBe('원동습지 2026 갈대 시기');
+    expect(q(newsLink('강진만 생태공원 갈대숲', timingNotice(['eoksae'])!, oct2026).url)).toBe('강진만 생태공원 2026 갈대 시기');
+  });
+});
+
+describe('placeName: 검색할 때 장면 이름에서 풍경 말 빼기(D40 — 구글 AI 개요가 장소를 잘 찾게)', () => {
+  it.each([
+    ['천리포수목원 봄 연못', '천리포수목원'],
+    ['그레이스정원 수국', '그레이스정원'],
+    ['제이드가든 이끼정원', '제이드가든'],
+    ['순천 탐매마을 홍매화', '순천 탐매마을'],
+    ['울릉 관음도 둘레길', '울릉 관음도'],
+    ['해남 비원정원', '해남 비원정원'],
+    ['지리산 노고단 상고대', '지리산 노고단'],
+    ['백두대간 협곡열차 설경', '백두대간 협곡열차'],
+    ['만천하스카이워크 조망', '만천하스카이워크'],
+    ['영양 자작나무숲', '영양 자작나무숲'],
+    ['태백 구문소', '태백 구문소'],
+    ['상고대', '상고대'], // 다 빼면 이름이 없어지므로 그대로
+  ])('%s → %s', (name, want) => expect(placeName(name)).toBe(want));
+});
+
+describe('admissionLink: 입장료·운영 시간 찾아보기 — 구글 "장소 이름 + 입장료 운영시간"(D40)', () => {
+  it('풍경 말을 빼고 구글로', () => {
+    const u = new URL(admissionLink('천리포수목원 봄 연못'));
+    expect(u.origin + u.pathname).toBe('https://www.google.com/search');
+    expect(u.searchParams.get('q')).toBe('천리포수목원 입장료 운영시간');
   });
 });

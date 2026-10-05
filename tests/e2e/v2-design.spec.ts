@@ -121,13 +121,13 @@ test('추천 시기 칸의 안내 글은 내어쓰기 없이 "올해 ○○ 소�
   expect(Math.abs(r.linkLeft - r.rowLeft)).toBeLessThanOrEqual(1);
 });
 
-test('올해 소식 찾아보기: 단풍 장면은 "올해 + 단풍지도"로 검색', async ({ page }) => {
+test('올해 소식 찾아보기: 단풍 장면은 "올해 + 단풍지도 + 시기"로 구글 검색(D40)', async ({ page }) => {
   await open(page, '?m=10');
   await page.locator('.big').first().click();
   const link = page.locator('.when-link');
   await expect(link).toHaveText('올해 단풍지도 찾아보기 ›');
-  const q = new URL((await link.getAttribute('href'))!).searchParams.get('query');
-  expect(q).toBe(`${new Date().getFullYear()} 단풍지도`);
+  const q = new URL((await link.getAttribute('href'))!).searchParams.get('q');
+  expect(q).toBe(`${new Date().getFullYear()} 단풍지도 시기`);
 });
 
 test('장면 상세에는 "작가 부부 방문" 꼬리표를 두지 않음(사진 안내 문구로 충분)', async ({ page }) => {
