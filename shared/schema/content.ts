@@ -70,6 +70,12 @@ export const StoryScene = z.object({
   photos: z.array(Photo).min(1).max(6),
   spot: LatLng,
   dest: LatLng.extend({ name: z.string().min(1).max(40), kind: z.enum(['parking', 'trailhead', 'entrance']) }),
+  /**
+   * spot·dest 좌표(와 dest 이름)를 어디서 얻었는지. 'kakao-search' = 카카오 로컬 API(장소 검색) 결과.
+   * 카카오 정책상 검색 결과(좌표·장소 이름)는 저장하면 안 된다는 공식 답변이 있어(10/5, 법무 점검 1번),
+   * 대안이 정해지면 이 표시가 붙은 장면을 한꺼번에 바꿉니다. 'public-data' = 공공데이터 등 저장 가능한 출처, 'manual' = 사람이 지도에서 직접 고름.
+   */
+  coordSource: z.enum(['kakao-search', 'public-data', 'manual']).optional(),
   review: z.object({ best: Review, dest: Review, oneLiner: Review, types: Review }),
   /** 글 제목의 '몇 번째 여행'(앱 데이터를 만들 때 붙임) */
   trip: z.string().max(30).optional(),
