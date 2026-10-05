@@ -10,7 +10,7 @@ import { routeHref } from '../domain/router';
 import { SCENE_TYPES } from '../domain/sceneTypes';
 import { timingNotice } from '../domain/timingNotice';
 import type { MapAdapter, MapPin } from '../map/types';
-import { calIcon, fmtDate, h, infoIcon, paintBrowserBar, photoImg, thumb } from './dom';
+import { calIcon, fmtDate, h, infoIcon, paintBrowserBar, photoImg, sized, thumb } from './dom';
 
 const RECOMMENDER = '이상호 작가'; // 맨 위 작은 글씨(10/3 사용자 결정)
 const STORY_URL = 'https://brunch.co.kr/@caed5ea4c3d74d9/1'; // 이 앱 이야기
@@ -105,7 +105,7 @@ export function createHome(d: HomeDeps): Home {
       h(
         'div',
         { class: 'photo' },
-        photoImg(s.photos[0]!, '', { eager: i === 0 }),
+        photoImg(s.photos[0]!, '', { eager: i === 0, src: sized(s.photos[0]!.src, 720) }),
         h('span', { class: 'badges' }, h('span', { class: 'badge on-photo', text: typeLabel(s) })),
         h('span', { class: 'cap' }, h('b', { text: s.name }), h('span', { text: s.region })),
       ),

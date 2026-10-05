@@ -16,7 +16,7 @@ import { isYearRound, visitedMonth } from '../domain/sceneTier';
 import { SCENE_TYPES } from '../domain/sceneTypes';
 import { admissionLink, newsLink, timingNotice, type TimingNotice } from '../domain/timingNotice';
 import type { Month } from '../domain/month';
-import { fmtDate, h, paintBrowserBar, photoImg } from './dom';
+import { fmtDate, h, paintBrowserBar, photoImg, sized } from './dom';
 import type { Navi } from './navi';
 import { shareUrl, type EventData, type EventName } from '../analytics';
 import type { SavedStore } from '../storage/saved';
@@ -96,7 +96,7 @@ export function createDetail(d: DetailDeps): Detail {
   function gallery(s: StoryScene): { node: HTMLElement; dots: HTMLElement | null } {
     const n = s.photos.length;
     const photoEl = (p: Photo, i: number): HTMLElement => {
-      const pic = photoImg(p, i === 0 ? `${s.name} 풍경` : '', { eager: i === 0 });
+      const pic = photoImg(p, i === 0 ? `${s.name} 풍경` : '', { eager: i === 0, src: sized(p.src, 1080, 75) });
       pic.addEventListener('error', () => {
         // F2-AC10: 사진을 못 불러오면 회색 자리와 안내
         const slide = pic.closest('.slide');
