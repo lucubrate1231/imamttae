@@ -66,17 +66,24 @@ export function createKakaoMap(kakao: KakaoNS, opts: { focusLevel?: number } = {
    * 칸이 보이거나 크기가 바뀌면 지도를 다시 맞춤. 숨은 칸(0×0 — 다른 탭에 있을 때)에서 만들거나 옮긴 지도는
    * 카카오가 크기를 0으로 기억해 지도 그림이 안 뜸(10/5 — 저장한 곳에서 열고 첫 화면으로 가면 깨짐)
    */
-  function onResize(): void {
+  function onResize(force = false): void {
     if (!host || !map) return;
     const w = host.clientWidth;
     const h = host.clientHeight;
     const size = `${w}x${h}`;
-    if (!w || !h || size === lastSize) return;
+    if (!w || !h || (size === lastSize && !force)) return;
     lastSize = size;
     map.relayout();
     const cur = focusLevel ? pins.find((x) => x.p.id === selected) : undefined;
     if (cur) map.setCenter(new K.LatLng(cur.p.lat, cur.p.lng));
   }
+  /**
+   * 화면이 다시 보이면(크기가 같아도) 다시 맞춤. 카톡 → '사파리로 열기'는 사파리가 뒤에서 페이지를 먼저 열 수 있고,
+   * 그때 만든 지도는 다시 보여도 그림이 안 그려질 수 있음(10/6 사용자 아이폰 — 지도 칸이 비어 있음)
+   */
+  const onShow = () => {
+    if (document.visibilityState !== 'hidden') onResize(true);
+  };
   let waiting: readonly MapPin[] | null = null; // 첫 화면 지도: 처음 고를 때까지 기다리는 핀
 
   /** 지도 만들기. 첫 화면 지도는 처음 고른 곳에서 바로 시작(다른 곳 지도 그림을 먼저 받지 않게 — 메시지 V 2) */
@@ -118,9 +125,11 @@ export function createKakaoMap(kakao: KakaoNS, opts: { focusLevel?: number } = {
     async mount(el) {
       host = el;
       if (typeof ResizeObserver === 'function') {
-        watcher = new ResizeObserver(onResize);
+        watcher = new ResizeObserver(() => onResize());
         watcher.observe(el);
       }
+      window.addEventListener('pageshow', onShow);
+      document.addEventListener('visibilitychange', onShow);
       if (!focusLevel) create(KOREA.center);
     },
     setPins(list: readonly MapPin[]) {
@@ -156,6 +165,8 @@ export function createKakaoMap(kakao: KakaoNS, opts: { focusLevel?: number } = {
     destroy() {
       watcher?.disconnect();
       watcher = null;
+      window.removeEventListener('pageshow', onShow);
+      document.removeEventListener('visibilitychange', onShow);
       for (const { o } of pins) o.setMap(null);
       pins = [];
       map = null;
