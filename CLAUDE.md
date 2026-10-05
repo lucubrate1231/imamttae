@@ -56,7 +56,7 @@
 | `npm run live` | 실제 카카오 지도 확인(localhost:8080 또는 `LIVE_URL`) |
 | `npx tsx pipeline/sync.ts` | 브런치 발행 글 동기화 → `content/brunch/index.json` (글 전문은 `.cache/`에만) |
 | `npx tsx pipeline/scenes/check-cli.ts content/scenes/drafts.json` | 장면 초안 검사(원문 대목·사진·15km·날짜) |
-| `npx tsx pipeline/scenes/build.ts` | 앱 데이터 만들기 → `public/data/scenes.json`(메모 뺌), 작가 확인용 메모 `public/_review/notes.json` |
+| `npx tsx pipeline/scenes/build.ts` | 앱 데이터 만들기 → `public/data/scenes.json`. 작가 확인 메모·법규 메모는 비공개 저장소 `lucubrate1231/imamttae-notes`(공개 저장소에 두지 않음, 10/5) |
 | `npx tsx scripts/build-title-font.ts` | 제목 글꼴 다시 만들기(장면 데이터를 바꾼 뒤). 제목·작가의 한마디 글자만 담은 고운바탕 파일 하나 → `src/styles/fonts/`. 빠뜨리면 `npm run check`가 알려 줌 |
 | `KAKAO_REST_KEY=… npx tsx pipeline/geocode.ts "지역 장소"` | 좌표 찾기(키는 환경 변수로만) |
 

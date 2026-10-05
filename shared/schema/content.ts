@@ -87,7 +87,6 @@ export const StoryScene = z.object({
    */
   checkAdmission: z.boolean().optional(),
   /** 작가 확인 때 볼 메모(앱에는 안 보임) */
-  notes: z.string().max(300).optional(),
 });
 
 /** 준비 중 장면: 저장글. 이름과 다녀온 날, 대표 위치만 (사진·본문 없음) */

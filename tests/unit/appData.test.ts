@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { buildAppData, buildReviewNotes, tripLabel } from '../../pipeline/scenes/appData';
+import { buildAppData, tripLabel } from '../../pipeline/scenes/appData';
 import { ContentFile } from '../../shared/schema/content';
 import sample from '../fixtures/scenes.sample.json';
 
@@ -26,7 +26,7 @@ describe('buildAppData: 장면 초안 → 앱 데이터', () => {
   it('앱 데이터 규칙을 통과', () => {
     expect(() => ContentFile.parse(out)).not.toThrow();
   });
-  it('숨긴 장면은 빼고, 작가 확인 메모(notes)는 앱에 싣지 않음', () => {
+  it('숨긴 장면은 빼고, 혹시 남은 메모 칸(notes)도 앱에 싣지 않음(메모는 비공개 저장소)', () => {
     expect(out.scenes.map((s) => s.id)).toEqual(['s-a']);
     expect(JSON.stringify(out)).not.toContain('작가께 확인할 것');
   });
@@ -36,16 +36,5 @@ describe('buildAppData: 장면 초안 → 앱 데이터', () => {
   });
   it('규칙에 어긋난 초안이 있으면 만들지 않음(잘못된 데이터가 화면에 나가지 않게)', () => {
     expect(() => buildAppData([{ ...story, id: 'BAD ID' }], titles, '2026-10-03T00:00:00Z')).toThrow();
-  });
-});
-
-describe('buildReviewNotes: 작가 확인용 메모는 따로', () => {
-  it('숨긴 장면 빼고 id → 메모', () => {
-    const out = buildReviewNotes([
-      { ...story, id: 's-a', notes: '주차장 확인' },
-      { ...story, id: 's-b' },
-      { ...story, id: 's-c', notes: 'x', hidden: true },
-    ]);
-    expect(out).toEqual({ 's-a': '주차장 확인' });
   });
 });

@@ -10,7 +10,7 @@ import { SCENE_TYPES } from '../domain/sceneTypes';
 
 type Scene = StoryScene;
 type Filter = 'all' | 'ask' | 'peak' | 'record';
-/** 작가님께 여쭐 법규 문장(D20) — content/review/legal.json */
+/** 작가님께 여쭐 법규 문장(D20) — 비공개 저장소 imamttae-notes로 옮겨 공개 사이트에는 없음(없으면 이 구역을 숨김) */
 interface LegalPost {
   brunchNo: number;
   title: string;
