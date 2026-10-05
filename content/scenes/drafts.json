@@ -174,10 +174,10 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
    "hidden": false,
@@ -373,7 +373,7 @@
     "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false,
+   "hidden": true,
    "details": [
     "낙조",
     "갯벌",
@@ -433,10 +433,10 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
    "hidden": false,
@@ -1904,10 +1904,10 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
    "hidden": false,
@@ -2609,10 +2609,10 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
    "hidden": false,
@@ -3003,10 +3003,10 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
    "hidden": false,
@@ -5528,6 +5528,78 @@
     "목련",
     "연못",
     "수목원"
+   ]
+  },
+  {
+   "id": "s-069-udo-sea-road",
+   "kind": "story",
+   "brunchNo": 69,
+   "brunchUrl": "https://brunch.co.kr/@caed5ea4c3d74d9/69",
+   "name": "서산 우도 열린 바닷길",
+   "region": "충남 서산",
+   "types": [
+    "ilchul",
+    "bada"
+   ],
+   "visited": "2025-04-28",
+   "best": {
+    "from": 1,
+    "to": 12,
+    "note": "일 년 내내",
+    "season": "사계절",
+    "tip": "썰물 때 이른 아침"
+   },
+   "oneLiner": "썰물에 열리는 바닷길 따라 분점도까지 걷는 섬",
+   "excerpt": "썰물에 까마득히 물이 빠진 뻘에는 햇살이 내려앉아 반짝이고 우리 형제들은 신비로운 세상을 바라보며 분점도에서 커피를 마셨다.",
+   "photos": [
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/Xu6RpUDcBy5Gep78E7qJxc-j04o.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": "우도의 일출"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/7dVn2nBA8A4eNtBF5S6SrXviD_Y.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": "썰물에 바닷길이 열리는 중"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/8neQklREJQQyfdaXjZcw_fdMVbs.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": "썰물에 열린 바닷길"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/QUQejkoE9teY40Ce3yw7E61RGm8.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": ""
+    }
+   ],
+   "spot": {
+    "lat": 0,
+    "lng": 0
+   },
+   "dest": {
+    "name": "벌말선착장(우도행 배)",
+    "lat": 0,
+    "lng": 0,
+    "kind": "entrance"
+   },
+   "review": {
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
+   },
+   "contestEntry": true,
+   "hidden": false,
+   "details": [
+    "바닷길",
+    "일출",
+    "갯벌",
+    "섬"
    ]
   },
   {
