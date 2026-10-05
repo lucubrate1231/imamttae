@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>좌표 확인 · 이맘때 풍경</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+      :root { --ink: #1f2421; --ink-2: #4f5753; --ink-3: #6b746f; --line: #dfe3df; --soft: #f3f5f2; --accent: #b0502a; --ok: #2e6b4a; --spot: #2f5a7e; --dest: #b0502a; }
+      * { box-sizing: border-box; }
+      body { margin: 0; font: 16px/1.5 system-ui, -apple-system, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; color: var(--ink); background: #fff; }
+      .wrap { display: grid; grid-template-columns: 300px 1fr 380px; height: 100vh; }
+      aside.list { overflow-y: auto; border-right: 1px solid var(--line); }
+      aside.list header { position: sticky; top: 0; background: #fff; padding: 12px 14px; border-bottom: 1px solid var(--line); }
+      aside.list h1 { margin: 0; font-size: 18px; }
+      .prog { color: var(--ink-3); font-size: 14px; }
+      .item { display: block; width: 100%; padding: 10px 14px; border: 0; border-bottom: 1px solid var(--line); background: #fff; text-align: left; font: inherit; cursor: pointer; }
+      .item.on { background: var(--soft); }
+      .item small { display: block; color: var(--ink-3); }
+      .badge { float: right; font-size: 13px; padding: 1px 8px; border-radius: 99px; background: var(--soft); color: var(--ink-3); }
+      .badge.done { background: #e4f1e9; color: var(--ok); }
+      #map { height: 100vh; }
+      aside.panel { overflow-y: auto; border-left: 1px solid var(--line); padding: 16px; }
+      .panel h2 { margin: 0 0 2px; font-size: 20px; }
+      .muted { color: var(--ink-3); font-size: 14px; }
+      .photo { width: 100%; max-height: 180px; object-fit: cover; border-radius: 12px; margin: 10px 0; background: var(--soft); }
+      .note { background: #fff7e8; border-radius: 10px; padding: 8px 10px; font-size: 14px; margin: 8px 0; white-space: pre-wrap; }
+      fieldset { border: 1.5px solid var(--line); border-radius: 14px; margin: 14px 0; padding: 10px 12px 12px; }
+      legend { font-weight: 800; padding: 0 6px; }
+      .spot legend { color: var(--spot); }
+      .dest legend { color: var(--dest); }
+      .cand { display: flex; gap: 8px; align-items: flex-start; padding: 6px 0; border-top: 1px dashed var(--line); }
+      .cand:first-of-type { border-top: 0; }
+      button.btn { border: 1.5px solid var(--line); background: #fff; border-radius: 10px; padding: 6px 10px; font: inherit; font-size: 14px; cursor: pointer; white-space: nowrap; }
+      button.btn.main { background: var(--ok); border-color: var(--ok); color: #fff; font-weight: 700; }
+      button.btn.mode.on { background: var(--ink); border-color: var(--ink); color: #fff; }
+      .cur { font-size: 14px; margin-top: 8px; padding: 8px 10px; background: var(--soft); border-radius: 10px; }
+      label { display: block; font-size: 14px; margin-top: 8px; }
+      input[type=text], select { width: 100%; padding: 7px 9px; border: 1.5px solid var(--line); border-radius: 9px; font: inherit; }
+      .row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+      .search { display: flex; gap: 6px; margin-top: 6px; }
+      .hint { font-size: 13px; color: var(--ink-3); margin-top: 6px; }
+      .saved { color: var(--ok); font-weight: 700; }
+      .credit { font-size: 12px; color: var(--ink-3); margin-top: 18px; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <aside class="list">
+        <header><h1>좌표 확인</h1><div class="prog" id="prog"></div></header>
+        <div id="list"></div>
+      </aside>
+      <div id="map"></div>
+      <aside class="panel" id="panel"><p class="muted">왼쪽에서 장면을 고르세요.</p></aside>
+    </div>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+      /*
+       * 좌표 확인 페이지(이 컴퓨터에서만, pipeline/places/serve.ts)
+       * - 파란 점: 장면 위치 후보(한국관광공사 관광정보) · 주황 점: 목적지 후보(전국주차장정보표준데이터)
+       * - '지도에서 찍기'를 켜고 지도를 누르면 그 자리로 정함(오픈스트리트맵 위에서 사람이 고른 값 = 직접 지정)
+       * - 기존(카카오) 좌표는 일부러 보여 주지 않음(카카오 로컬 API 결과 저장 금지)
+       */
+      const $ = (s) => document.querySelector(s);
+      const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+      let scenes = [], cands = {}, picked = {}, cur = null, mode = null;
+      const map = L.map('map').setView([36.3, 127.8], 7);
+      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; OpenStreetMap contributors' }).addTo(map);
+      const layer = L.layerGroup().addTo(map);
+      const dot = (color, label) => L.divIcon({ className: '', html: `<div style="background:${color};color:#fff;border:2px solid #fff;border-radius:50%;width:24px;height:24px;display:grid;place-items:center;font:700 12px system-ui;box-shadow:0 1px 4px rgba(0,0,0,.4)">${label}</div>`, iconSize: [24, 24], iconAnchor: [12, 12] });
+      const pin = (color, label) => L.divIcon({ className: '', html: `<div style="background:${color};color:#fff;border:3px solid #fff;border-radius:8px;padding:2px 6px;font:800 13px system-ui;box-shadow:0 2px 6px rgba(0,0,0,.45);white-space:nowrap">${label}</div>`, iconSize: null, iconAnchor: [20, 14] });
+
+      async function load() {
+        [scenes, cands, picked] = await Promise.all([fetch('/api/scenes').then((r) => r.json()), fetch('/api/candidates').then((r) => r.json()), fetch('/api/picked').then((r) => r.json())]);
+        cands = Object.fromEntries(cands.map((c) => [c.id, c]));
+        renderList();
+      }
+      function done(id) { const p = picked[id]; return p && p.spot && p.dest && p.dest.name; }
+      function renderList() {
+        $('#prog').textContent = `확인 ${scenes.filter((s) => done(s.id)).length} / ${scenes.length}곳`;
+        $('#list').innerHTML = scenes.map((s) => `<button class="item ${cur?.id === s.id ? 'on' : ''}" data-id="${s.id}"><span class="badge ${done(s.id) ? 'done' : ''}">${done(s.id) ? '확인' : '남음'}</span>${esc(s.name)}<small>${esc(s.region)}</small></button>`).join('');
+        document.querySelectorAll('.item').forEach((b) => b.addEventListener('click', () => open(b.dataset.id)));
+      }
+      function draft(id) {
+        if (!picked[id]) picked[id] = {};
+        return picked[id];
+      }
+      function open(id) {
+        cur = scenes.find((s) => s.id === id);
+        mode = null;
+        renderList();
+        render(true);
+      }
+      async function save() {
+        const r = await fetch('/api/picked', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id: cur.id, value: picked[cur.id] ?? null }) });
+        const j = await r.json();
+        $('#savemsg').textContent = j.ok ? '저장했어요' : '저장 실패: ' + j.error;
+        renderList();
+      }
+      function setSpot(lat, lng, source, ref, title) { draft(cur.id).spot = { lat: +lat.toFixed(7), lng: +lng.toFixed(7), source, ref: ref ?? null, title: title ?? null }; render(); }
+      function setDest(lat, lng, source, ref, name) {
+        const d = draft(cur.id);
+        d.dest = { name: name ?? d.dest?.name ?? '', kind: d.dest?.kind ?? 'parking', lat: +lat.toFixed(7), lng: +lng.toFixed(7), source, ref: ref ?? null };
+        render();
+      }
+      async function searchOsm() {
+        const q = $('#q').value.trim();
+        if (!q) return;
+        $('#qres').innerHTML = '<span class="muted">찾는 중…</span>';
+        const r = await fetch('https://nominatim.openstreetmap.org/search?' + new URLSearchParams({ q, format: 'json', countrycodes: 'kr', limit: '6', 'accept-language': 'ko' }));
+        const list = await r.json();
+        $('#qres').innerHTML = list.length ? list.map((x, i) => `<div class="cand"><button class="btn" data-i="${i}">보기</button><span>${esc(x.display_name)}</span></div>`).join('') : '<span class="muted">없어요. 지도를 움직여 직접 찍어 주세요.</span>';
+        $('#qres').querySelectorAll('button').forEach((b) => b.addEventListener('click', () => map.setView([+list[b.dataset.i].lat, +list[b.dataset.i].lon], 16)));
+      }
+      function render(fit) {
+        const s = cur, c = cands[s.id] ?? {}, p = picked[s.id] ?? {};
+        layer.clearLayers();
+        const pts = [];
+        if (c.spot) { L.marker([c.spot.lat, c.spot.lng], { icon: dot('#2f5a7e', '관') }).bindTooltip('관광정보: ' + c.spot.title).addTo(layer); pts.push([c.spot.lat, c.spot.lng]); }
+        (c.parking ?? []).forEach((k, i) => { L.marker([k.lat, k.lng], { icon: dot('#b0502a', i + 1) }).bindTooltip(`주차장 ${i + 1}: ${k.name} (${k.km.toFixed(2)}km)`).addTo(layer); pts.push([k.lat, k.lng]); });
+        if (p.spot) { L.marker([p.spot.lat, p.spot.lng], { icon: pin('#2f5a7e', '장면'), draggable: true }).on('dragend', (e) => setSpot(e.target.getLatLng().lat, e.target.getLatLng().lng, 'manual')).addTo(layer); pts.push([p.spot.lat, p.spot.lng]); }
+        if (p.dest) { L.marker([p.dest.lat, p.dest.lng], { icon: pin('#b0502a', '목적지'), draggable: true }).on('dragend', (e) => setDest(e.target.getLatLng().lat, e.target.getLatLng().lng, 'manual')).addTo(layer); pts.push([p.dest.lat, p.dest.lng]); }
+        if (fit) { if (pts.length) map.fitBounds(pts, { padding: [60, 60], maxZoom: 15 }); else map.setView([36.3, 127.8], 7); }
+        const km = p.spot && p.dest ? L.latLng(p.spot.lat, p.spot.lng).distanceTo(L.latLng(p.dest.lat, p.dest.lng)) / 1000 : null;
+        $('#panel').innerHTML = `
+          <h2>${esc(s.name)}</h2>
+          <div class="muted">${esc(s.region)} · <a href="${esc(s.brunchUrl)}" target="_blank" rel="noopener">브런치 글</a></div>
+          ${s.photo ? `<img class="photo" src="${esc(s.photo)}" alt="">` : ''}
+          ${s.note ? `<div class="note">${esc(s.note)}</div>` : ''}
+          <fieldset class="spot"><legend>① 장면 위치(지도 점)</legend>
+            ${c.spot ? `<div class="cand"><button class="btn" id="useSpot">이걸로</button><span>관광정보: <b>${esc(c.spot.title)}</b><br><span class="muted">${esc(c.spot.addr)}</span></span></div>` : '<div class="muted">관광정보 후보가 없어요. 지도에서 찍어 주세요.</div>'}
+            <div class="row"><button class="btn mode ${mode === 'spot' ? 'on' : ''}" id="modeSpot">지도에서 찍기</button></div>
+            <div class="cur">${p.spot ? `정함: ${p.spot.lat}, ${p.spot.lng} <span class="muted">(${p.spot.source === 'public-data' ? '관광정보' : '직접'})</span>` : '아직 안 정함'}</div>
+          </fieldset>
+          <fieldset class="dest"><legend>② 길찾기 목적지(차를 세울 곳)</legend>
+            ${(c.parking ?? []).map((k, i) => `<div class="cand"><button class="btn" data-k="${i}">${i + 1}번</button><span><b>${esc(k.name)}</b> · ${k.km.toFixed(2)}km<br><span class="muted">${esc(k.type)} · ${esc(k.addr)}</span></span></div>`).join('') || '<div class="muted">3km 안 공영주차장 후보가 없어요. 지도에서 찍어 주세요.</div>'}
+            <div class="row"><button class="btn mode ${mode === 'dest' ? 'on' : ''}" id="modeDest">지도에서 찍기</button></div>
+            <label>목적지 이름(길찾기 앱에 보이는 이름)<input type="text" id="destName" value="${esc(p.dest?.name ?? '')}" placeholder="예: 내장산 제1주차장"></label>
+            <label>종류<select id="destKind"><option value="parking">주차장</option><option value="entrance">입구</option><option value="trailhead">탐방로 입구</option></select></label>
+            <div class="cur">${p.dest ? `정함: ${p.dest.lat}, ${p.dest.lng} <span class="muted">(${p.dest.source === 'public-data' ? '공영주차장' : '직접'})</span>` : '아직 안 정함'}${km !== null ? ` · 장면에서 ${km.toFixed(1)}km${km > 15 ? ' <b style="color:#a8322a">(15km 넘음)</b>' : ''}` : ''}</div>
+          </fieldset>
+          <fieldset><legend>오픈스트리트맵에서 이름 찾기</legend>
+            <div class="search"><input type="text" id="q" placeholder="예: 백양사 주차장"><button class="btn" id="qb">찾기</button></div>
+            <div id="qres"></div>
+            <div class="hint">찾은 곳으로 지도만 옮겨요. 정하려면 '지도에서 찍기'를 켜고 누르세요.</div>
+          </fieldset>
+          <div class="row"><button class="btn main" id="save">저장</button><button class="btn" id="clear">이 장면 지우기</button><span id="savemsg" class="saved"></span></div>
+          <div class="credit">지도 © OpenStreetMap contributors · 장면 후보 한국관광공사 관광정보 · 주차장 후보 공공데이터포털 전국주차장정보표준데이터</div>`;
+        if (p.dest) $('#destKind').value = p.dest.kind ?? 'parking';
+        $('#useSpot')?.addEventListener('click', () => setSpot(c.spot.lat, c.spot.lng, 'public-data', 'tour:' + c.spot.contentId, c.spot.title));
+        $('#panel').querySelectorAll('[data-k]').forEach((b) => b.addEventListener('click', () => { const k = c.parking[b.dataset.k]; setDest(k.lat, k.lng, 'public-data', 'parking:' + k.id, k.name); }));
+        $('#modeSpot').addEventListener('click', () => { mode = mode === 'spot' ? null : 'spot'; render(); });
+        $('#modeDest').addEventListener('click', () => { mode = mode === 'dest' ? null : 'dest'; render(); });
+        $('#destName').addEventListener('input', (e) => { if (draft(s.id).dest) draft(s.id).dest.name = e.target.value; });
+        $('#destKind').addEventListener('change', (e) => { if (draft(s.id).dest) draft(s.id).dest.kind = e.target.value; });
+        $('#qb').addEventListener('click', searchOsm);
+        $('#q').addEventListener('keydown', (e) => e.key === 'Enter' && searchOsm());
+        $('#save').addEventListener('click', save);
+        $('#clear').addEventListener('click', () => { delete picked[s.id]; render(true); save(); });
+        map.getContainer().style.cursor = mode ? 'crosshair' : '';
+      }
+      map.on('click', (e) => {
+        if (!cur || !mode) return;
+        if (mode === 'spot') setSpot(e.latlng.lat, e.latlng.lng, 'manual');
+        else setDest(e.latlng.lat, e.latlng.lng, 'manual');
+        mode = null;
+        render();
+      });
+      load();
+    </script>
+  </body>
+</html>

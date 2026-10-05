@@ -76,6 +76,8 @@ export const StoryScene = z.object({
    * 대안이 정해지면 이 표시가 붙은 장면을 한꺼번에 바꿉니다. 'public-data' = 공공데이터 등 저장 가능한 출처, 'manual' = 사람이 지도에서 직접 고름.
    */
   coordSource: z.enum(['kakao-search', 'public-data', 'manual']).optional(),
+  /** 좌표 출처 번호(카카오 좌표 바꾸기, docs/kakao-local-data.md): 'tour:관광정보번호' · 'parking:주차장관리번호' · 'manual'(오픈스트리트맵 위에서 직접) */
+  coordRef: z.object({ spot: z.string().min(1).max(60), dest: z.string().min(1).max(60) }).optional(),
   review: z.object({ best: Review, dest: Review, oneLiner: Review, types: Review }),
   /** 글 제목의 '몇 번째 여행'(앱 데이터를 만들 때 붙임) */
   trip: z.string().max(30).optional(),

@@ -65,7 +65,8 @@
 | `npx tsx pipeline/scenes/check-cli.ts content/scenes/drafts.json` | 장면 초안 검사(원문 대목·사진·15km·날짜) |
 | `npx tsx pipeline/scenes/build.ts` | 앱 데이터 만들기 → `public/data/scenes.json`. 작가 확인 메모·법규 메모는 비공개 저장소 `lucubrate1231/imamttae-notes`(공개 저장소에 두지 않음, 10/5) |
 | `npx tsx scripts/build-title-font.ts` | 제목 글꼴 다시 만들기(장면 데이터를 바꾼 뒤). 제목·작가의 한마디 글자만 담은 고운바탕 파일 하나 → `src/styles/fonts/`. 빠뜨리면 `npm run check`가 알려 줌 |
-| `KAKAO_REST_KEY=… npx tsx pipeline/geocode.ts "지역 장소"` | 좌표 찾기(키는 환경 변수로만) |
+| `npx tsx pipeline/places/candidates.ts` | 좌표 후보 만들기 — 한국관광공사 관광정보(장면 위치)·전국주차장정보표준데이터(목적지). 키는 `.env.local`의 `DATA_GO_KR_KEY`. **카카오 장소 검색 결과는 저장 금지**(docs/kakao-local-data.md) |
+| `npm run places` | 좌표 확인 페이지 http://localhost:8090 (오픈스트리트맵 지도에서 후보를 고르거나 직접 찍음) → `npx tsx pipeline/places/apply.ts`로 초안에 넣기 |
 
 ## 개발 방식 (TDD)
 1. 완성 기준을 `docs/features/F*.md`에 한국어로 씁니다(F2-AC3처럼 번호). 사용자가 확인합니다.
