@@ -183,3 +183,85 @@ test('카카오가 지도 칸에 position: relative를 박아도 칸 높이는 �
   expect(h[0]).toBe(210);
   expect(h[1]).toBe(h[2]);
 });
+
+test('D42: 옆에 조금 보이는 카드를 누르면 상세가 열리지 않고 그 카드를 당겨 다 보이게(지도도 그곳) → 다시 누르면 상세', async ({ page }) => {
+  await page.goto('./?map=fake&motion=0#/month/10');
+  const rail = page.locator('.rail').first();
+  const second = page.locator('.rail .big').nth(1);
+  await second.waitFor();
+  const name = (await second.getAttribute('aria-label'))!.split(',')[0]!;
+  // 손가락처럼 옆 카드의 보이는 가장자리를 누름(Playwright click은 먼저 화면 안으로 스크롤해서 쓰지 않음)
+  const rb = (await rail.boundingBox())!;
+  const sb = (await second.boundingBox())!;
+  await page.mouse.click(rb.x + rb.width - 8, sb.y + sb.height / 3);
+  await expect(page.locator('.detail.open')).toHaveCount(0);
+  await expect(page).toHaveURL(/#\/month\/10$/);
+  // 그 카드가 카드 띠 안에 다 보임(왼쪽 맞춤)
+  await expect
+    .poll(async () => {
+      const [r, c] = await Promise.all([rail.boundingBox(), second.boundingBox()]);
+      return c!.x >= r!.x - 1 && c!.x + c!.width <= r!.x + r!.width + 1;
+    })
+    .toBe(true);
+  // 지도(가짜 지도)도 그곳이 골라짐
+  await expect(page.locator('.mapsec [data-pin-id][aria-current="true"]')).toHaveText(name);
+  await second.click();
+  await expect(page.locator('.detail.open')).toBeVisible();
+});
+
+test('D42: 키보드로 옆 카드에 가면 그 카드가 다 보이게 옮겨지고, 엔터로 열림', async ({ page }) => {
+  await page.goto('./?map=fake&motion=0#/month/10');
+  const rail = page.locator('.rail').first();
+  const first = page.locator('.rail .big').first();
+  const second = page.locator('.rail .big').nth(1);
+  await first.waitFor();
+  await first.focus();
+  await page.keyboard.press('Tab');
+  await expect(second).toBeFocused();
+  await expect
+    .poll(async () => {
+      const [r, c] = await Promise.all([rail.boundingBox(), second.boundingBox()]);
+      return c!.x + c!.width <= r!.x + r!.width + 1;
+    })
+    .toBe(true);
+  await page.keyboard.press('Enter');
+  await expect(page.locator('.detail.open')).toBeVisible();
+});
+
+test('D43: 달 띠는 고른 달이 왼쪽에서 두 번째 자리(앞달이 살짝 보임)에서 시작 — 1·2월은 맨 앞부터, 달을 바꾸거나 상세에서 돌아와도', async ({ page }) => {
+  const strip = page.locator('nav.months');
+  const at = (m: number) =>
+    page.evaluate((m) => {
+      const s = document.querySelector('nav.months')!.getBoundingClientRect();
+      const c = [...document.querySelectorAll<HTMLElement>('.mchip')][m - 1]!.getBoundingClientRect();
+      return { left: Math.round(c.left - s.left), right: Math.round(s.right - c.right) };
+    }, m);
+  /** 앞달 알약이 왼쪽 여백 자리에서 시작하고 고른 달은 다 보임. 연말(10~12월)은 띠 끝까지 넘겨도 자리가 모자라 앞달이 조금 더 오른쪽 */
+  const prevAtStart = async (m: number) => {
+    const prev = await at(m - 1);
+    const atEnd = await strip.evaluate((s) => s.scrollLeft >= s.scrollWidth - s.clientWidth - 1);
+    expect(prev.left).toBeGreaterThanOrEqual(0); // 앞달이 보임
+    if (!atEnd) expect(prev.left).toBeLessThanOrEqual(24); // 왼쪽 여백(16px) 자리
+    const cur = await at(m);
+    expect(cur.right).toBeGreaterThanOrEqual(0); // 고른 달은 다 보임
+  };
+  await page.goto('./?map=fake&motion=0#/month/6');
+  await page.locator('h1.ttl').waitFor();
+  await prevAtStart(6);
+  expect((await at(5)).left).toBeLessThanOrEqual(24); // 6월: 5월 | 6월 | 7월 …
+  await page.goto('./?map=fake&motion=0#/month/10');
+  await page.locator('.rail .big').first().waitFor();
+  await prevAtStart(10);
+  await page.locator('.mchip', { hasText: /^12월$/ }).click();
+  await expect(page.locator('h1.ttl')).toHaveText('12월에 만나는 풍경');
+  await prevAtStart(12);
+  await strip.evaluate((s) => s.scrollTo({ left: 0 })); // 띠를 맨 앞으로 넘겨 둔 채
+  await page.locator('.rail .big').first().click();
+  await expect(page.locator('.detail.open')).toBeVisible();
+  await page.locator('.detail .back').click();
+  await expect(page.locator('.detail.open')).toHaveCount(0);
+  await prevAtStart(12);
+  await page.goto('./?map=fake&motion=0#/month/1');
+  await page.locator('h1.ttl').waitFor();
+  expect(await strip.evaluate((s) => s.scrollLeft)).toBe(0);
+});

@@ -249,6 +249,7 @@ export async function startApp(deps: AppDeps): Promise<AppHandle> {
     if (next !== screen) win.scrollTo?.({ top: 0 });
     screen = next;
     for (const n of home.nodes) n.hidden = next !== 'home';
+    if (next === 'home') home.alignMonths(); // D43: 다른 탭·장면 상세에서 돌아와도 고른 달이 보이게
     find.el.hidden = next !== 'find';
     saved.el.hidden = next !== 'saved';
     const tab = { home: 0, find: 1, saved: 2 }[next];
@@ -304,8 +305,6 @@ export async function startApp(deps: AppDeps): Promise<AppHandle> {
   };
   win.addEventListener('hashchange', onHash);
   onHash();
-  // F1-AC1: 달 띠의 이번 달을 화면 가운데로
-  root.querySelector<HTMLElement>('.mchip[aria-pressed="true"]')?.scrollIntoView?.({ inline: 'center', block: 'nearest' });
   tracker.load(); // 첫 화면을 다 그린 뒤 통계 스크립트를 늦게 부름
 
   return {

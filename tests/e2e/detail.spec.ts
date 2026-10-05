@@ -55,7 +55,7 @@ test('사진 위 버튼은 상세에 들어갈 때 바로 뜨지 않고, 1초쯤
   await page.$eval('.detail', (d) => d.scrollTo(0, 600));
   await page.goBack();
   await expect(page.locator('.detail.open')).toHaveCount(0);
-  await page.locator('.rail .big').nth(1).click();
+  await page.locator('.rail .big').nth(1).click(); // Playwright가 먼저 화면 안으로 옮겨 다 보이므로 바로 열림(D42 당겨 오기는 home.spec)
   await expect(page.locator('.detail.open')).toBeVisible();
   await expect(page.locator('.gallery')).toHaveClass(/ov-wait/);
   await page.waitForTimeout(400);
