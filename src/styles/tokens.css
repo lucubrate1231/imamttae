@@ -53,6 +53,10 @@
   --season-soft: #fbefe8;
   --season-line: #e3c2b4; /* '지금 제철' 점의 고리(디자인 세션 토큰) */
   --photo-empty: #d9ddd8; /* 사진이 뜨기 전·없을 때 */
+  /* 카톡 안 '크롬(사파리)으로 열기' 띠 — 계절과 상관없이 늘 같은 연한 하늘색(디자인 #64). 링크 #2F5A7E는 하늘 바탕에서 대비 5.9 */
+  --band-bg: #dceaf6;
+  --band-line: #c4d7e8;
+  --band-link: #2f5a7e;
   --pin-rec: #aab2ac; /* 작가 부부가 다녀온 곳 점 */
 
   /* ── 모서리 ── */

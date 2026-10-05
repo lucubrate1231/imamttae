@@ -24,13 +24,21 @@ const small = (page: Page, sel: string) =>
 test.describe('카톡 안(안드로이드)', () => {
   test.use({ userAgent: UA.kakao });
 
-  test('F5-AC4: 첫 화면 맨 위 띠 — 320px에서 첫 줄은 한 줄, 띠 높이 60 이상, 접근성 위반 0', async ({ page }) => {
+  test('F5-AC4: 첫 화면 맨 위 띠 — 앱 아이콘과 함께 320px에서도 첫 줄은 한 줄, 띠 높이 64 이상, 하늘색, 접근성 위반 0', async ({ page }) => {
     await page.setViewportSize({ width: 320, height: 640 });
     await page.goto('./?map=fake&motion=0#/');
     const band = page.locator('main.home > .kband');
     await expect(band).toBeVisible();
+    await page.evaluate(() => document.fonts.ready); // 앱 글꼴로 재야 함(첫 줄 약 202px, 320px에서 글 자리 205px — 디자인 #64)
     expect(await page.locator('.kb-l1').evaluate((e) => e.getClientRects().length === 1 && e.getBoundingClientRect().height < 26)).toBe(true);
-    expect((await page.locator('.kb-go').boundingBox())!.height).toBeGreaterThanOrEqual(60);
+    expect((await page.locator('.kb-go').boundingBox())!.height).toBeGreaterThanOrEqual(64);
+    // 디자인 #64: 연한 하늘색 띠(계절과 상관없이), 링크 글자는 하늘 바탕에서 대비가 충분한 #2F5A7E, 앱 아이콘이 실제로 뜸
+    const look = await page.evaluate(() => {
+      const cs = (sel: string) => getComputedStyle(document.querySelector(sel)!);
+      const img = document.querySelector<HTMLImageElement>('.kb-ic')!;
+      return { bg: cs('.kband').backgroundColor, line: cs('.kband').borderBottomColor, link: cs('.kb-l2').color, icon: img.complete && img.naturalWidth > 0 ? Math.round(img.getBoundingClientRect().width) : 0 };
+    });
+    expect(look).toEqual({ bg: 'rgb(220, 234, 246)', line: 'rgb(196, 215, 232)', link: 'rgb(47, 90, 126)', icon: 32 });
     expect(await small(page, '.kband button')).toEqual([]);
     expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(0);
     await axe(page, '.kband', '띠');
@@ -93,7 +101,7 @@ test.describe('아이폰 사파리', () => {
     await page.goto('./?map=fake&motion=0#/saved');
     await page.locator('.saved .home-add').click();
     const g = page.getByRole('dialog', { name: '홈 화면에 두는 방법' });
-    await expect(g.locator('.a2-desc')).toHaveText('사파리 메뉴로 할 수 있어요.');
+    await expect(g.locator('.a2-desc')).toHaveText('사파리 공유 버튼으로 할 수 있어요.');
     await noOverflow(page, '.a2sheet');
     await axe(page, '.a2sheet', '사파리 안내');
   });

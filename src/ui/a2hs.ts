@@ -47,8 +47,15 @@ const KEY = 'a2hs';
 const ICON = './brand/icon-192.png';
 
 /** 글 조각: 문자열 또는 굵게(누를 것) */
-type Seg = string | { b: string };
-type Pic = { kind: 'key'; at: 'tr' | 'br'; sym: string } | { kind: 'menu'; item: string } | { kind: 'dialog'; label: string };
+/** 글 조각: 문자열 · 굵게(누를 것) · 글 안의 버튼 모양 열쇠(장식, 읽지 않음) */
+type Seg = string | { b: string } | { key: 'share' };
+type Pic =
+  | { kind: 'key'; at: 'tr' | 'br'; sym: string }
+  /** rows가 있으면 실제 메뉴 순서대로 그리고, 누를 줄(item) 오른쪽에 아이콘 */
+  | { kind: 'menu'; item: string; rows?: string[]; icon?: 'plus' }
+  /** 버튼 모양 하나만(자리 없이) — 아이폰 공유 버튼처럼 자리가 판마다 다를 때(디자인 #62) */
+  | { kind: 'icon'; sym: 'share' }
+  | { kind: 'dialog'; label: string; toggle?: boolean };
 interface Step {
   t: Seg[];
   sub?: string;
@@ -95,13 +102,14 @@ const GUIDES: Record<Exclude<A2hsEnv, 'standalone'>, Guide> = {
       { t: ["'", { b: '홈 화면' }, "'을 누르세요"], pic: { kind: 'dialog', label: '홈 화면' } },
     ],
   },
+  // 아이폰 사파리는 판·배치마다 공유 버튼 자리가 달라(iOS 18 아래 막대, iOS 26 '간결'은 [⋯] 안, '아래'·'위'는 막대에 바로) 자리 대신 모양으로 안내(디자인 #62)
   'ios-safari': {
     title: '홈 화면에 두는 방법',
-    desc: '사파리 메뉴로 할 수 있어요.',
+    desc: '사파리 공유 버튼으로 할 수 있어요.',
     steps: [
-      { t: ['주소창 옆 ', { b: '[⋯]' }, " 버튼을 누르고 '", { b: '공유' }, "'를 누르세요"], sub: '아래에 공유 버튼이 보이면 그것을 바로 눌러요.', pic: { kind: 'key', at: 'tr', sym: '⋯' } },
-      { t: ["아래로 내려 '", { b: '홈 화면에 추가' }, "'를 누르세요"], pic: { kind: 'menu', item: '홈 화면에 추가' } },
-      { t: ["오른쪽 위 '", { b: '추가' }, "'를 누르세요"], sub: "'웹 앱으로 열기'는 켜 둔 채로요.", pic: { kind: 'dialog', label: '추가' } },
+      { t: [{ key: 'share' }, { b: "'공유'" }, ' 버튼을 누르세요'], sub: '안 보이면 주소창 옆 [⋯] 버튼을 먼저 누르세요.', pic: { kind: 'icon', sym: 'share' } },
+      { t: ["아래로 내려 '", { b: '홈 화면에 추가' }, "'를 누르세요"], pic: { kind: 'menu', item: '홈 화면에 추가', rows: ['북마크에 추가', '페이지에서 찾기'], icon: 'plus' } },
+      { t: ["오른쪽 위 '", { b: '추가' }, "'를 누르세요"], sub: "'웹 앱으로 열기'가 보이면 켠 채로 두세요.", pic: { kind: 'dialog', label: '추가', toggle: true } },
     ],
   },
 };
@@ -110,15 +118,33 @@ const CHECK = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" strok
 const CLOSE = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>`;
 
 /** 작은 그림(장식): 휴대폰 화면 한 칸 안에 누를 곳만 흰 바탕 + 계절 색 테두리 */
+/** 장면 상세 아래 막대 [공유]와 같은 모양(네모 위로 화살표) */
+const SHARE = (size: number) => `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 8l5-5 5 5M5 13v6a2 2 0 002 2h10a2 2 0 002-2v-6"/></svg>`;
+/** 아이폰 공유 화면 '홈 화면에 추가' 줄의 ⊕ 네모 */
+const PLUS_SQ = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="4"/><path d="M12 8v8M8 12h8"/></svg>`;
+const svgSpan = (cls: string, svg: string) => {
+  const s = h('span', { class: cls, 'aria-hidden': 'true' });
+  s.innerHTML = svg;
+  return s;
+};
+
 function pic(p: Pic): HTMLElement {
   const box = h('span', { class: `a2-pic ${p.kind}`, 'aria-hidden': 'true' });
   if (p.kind === 'key') {
     box.classList.add(p.at);
     box.append(h('span', { class: 'a2-bar' }), h('span', { class: 'a2-hit', text: p.sym }));
+  } else if (p.kind === 'icon') {
+    box.append(svgSpan('a2-hit a2-sym', SHARE(18)));
+  } else if (p.kind === 'menu' && p.rows) {
+    const hit = h('span', { class: 'a2-row a2-hit', text: p.item });
+    if (p.icon === 'plus') hit.append(svgSpan('a2-row-ic', PLUS_SQ));
+    box.classList.add('rows');
+    box.append(...p.rows.map((r) => h('span', { class: 'a2-row', text: r })), hit);
   } else if (p.kind === 'menu') {
     box.append(h('span', { class: 'a2-line' }), h('span', { class: 'a2-hit', text: p.item }), h('span', { class: 'a2-line' }));
   } else {
     box.append(h('span', { class: 'a2-line short' }), h('span', { class: 'a2-hit', text: p.label }));
+    if (p.toggle) box.append(h('span', { class: 'a2-switch' }));
   }
   return box;
 }
@@ -193,7 +219,7 @@ export function createA2hs(d: A2hsDeps): A2hs {
             h(
               'span',
               { class: 'a2-body' },
-              h('span', { class: 'a2-txt' }, ...st.t.map((x) => (typeof x === 'string' ? x : h('b', { text: x.b })))),
+              h('span', { class: 'a2-txt' }, ...st.t.map((x) => (typeof x === 'string' ? x : 'b' in x ? h('b', { text: x.b }) : svgSpan('a2-key', SHARE(16))))),
               st.sub ? h('span', { class: 'a2-sub', text: st.sub }) : null,
             ),
             pic(st.pic),
@@ -233,8 +259,14 @@ export function createA2hs(d: A2hsDeps): A2hs {
     const go = h(
       'button',
       { type: 'button', class: 'kb-go', 'aria-label': `${via} 열기 안내` },
-      h('span', { class: 'kb-l1' }, h('span', { class: 'nowrap', text: `${via} 열면` }), ' ', h('span', { class: 'nowrap', text: '앱처럼 쓸 수 있어요' })),
-      h('b', { class: 'kb-l2', text: `${via} 열기 ›` }),
+      // 앱 아이콘(장식) — '앱처럼'이 무엇인지 바로 보이게(디자인 #64)
+      h('img', { class: 'kb-ic', src: ICON, alt: '', width: '32', height: '32' }),
+      h(
+        'span',
+        { class: 'kb-txt' },
+        h('span', { class: 'kb-l1' }, h('span', { class: 'nowrap', text: `${via} 열면` }), ' ', h('span', { class: 'nowrap', text: '앱처럼 쓸 수 있어요' })),
+        h('b', { class: 'kb-l2', text: `${via} 열기 ›` }),
+      ),
     );
     const x = h('button', { type: 'button', class: 'kb-x', 'aria-label': '안내 닫기' });
     x.innerHTML = CLOSE;
