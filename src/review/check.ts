@@ -91,6 +91,7 @@ function item(s: Scene, no: number): HTMLElement {
         'dl',
         {},
         h('div', {}, h('dt', { text: '풍경 종류' }), h('dd', {}, s.types.map(label).join(', '), draft(s.review.types === 'draft'))),
+        s.details?.length ? h('div', {}, h('dt', { text: '세부 풍경' }), h('dd', {}, s.details.join(', '), draft(s.review.types === 'draft'))) : null,
         h('div', {}, h('dt', { text: '가장 좋은 때' }), h('dd', {}, bestText, draft(s.review.best === 'draft'), h('small', { text: tierText }))),
         best?.tip ? h('div', {}, h('dt', { text: '이럴 때 더 좋아요' }), h('dd', {}, best.tip, draft(s.review.best === 'draft'))) : null,
         h('div', {}, h('dt', { text: '한 줄 소개' }), h('dd', {}, s.oneLiner, draft(s.review.oneLiner === 'draft'))),

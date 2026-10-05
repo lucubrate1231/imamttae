@@ -57,13 +57,18 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "연못",
+    "무궁화",
+    "수목원"
+   ]
   },
   {
    "id": "s-004-sangnim-kkotmureut",
@@ -111,13 +116,17 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "꽃무릇",
+    "숲길"
+   ]
   },
   {
    "id": "s-005-biryong",
@@ -165,13 +174,17 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "폭포",
+    "단풍"
+   ]
   },
   {
    "id": "s-006-baekgil-beach",
@@ -220,20 +233,24 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "낙조",
+    "해변"
+   ]
   },
   {
    "id": "s-009-daegwallyeong-hanil-ranch",
    "kind": "story",
    "brunchNo": 9,
    "brunchUrl": "https://brunch.co.kr/@caed5ea4c3d74d9/9",
-   "name": "대관령 한일2목장 초원",
+   "name": "대관령 하늘목장 초원",
    "region": "강원 평창",
    "types": [
     "sinrok",
@@ -289,7 +306,12 @@
     "types": "draft"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "초원",
+    "풍력발전기",
+    "목장"
+   ]
   },
   {
    "id": "s-010-seosan-udo",
@@ -345,13 +367,18 @@
     "kind": "entrance"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": true,
+   "details": [
+    "낙조",
+    "갯벌",
+    "섬"
+   ]
   },
   {
    "id": "s-011-buryeongsa",
@@ -406,13 +433,17 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "은행나무",
+    "절집"
+   ]
   },
   {
    "id": "s-011-yongsogol",
@@ -475,13 +506,17 @@
     "kind": "trailhead"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "폭포",
+    "암반 계곡"
+   ]
   },
   {
    "id": "s-012-seonunsa-kkotmureut",
@@ -543,13 +578,17 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "꽃무릇",
+    "절집"
+   ]
   },
   {
    "id": "s-013-daeseung-falls",
@@ -611,13 +650,17 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "단풍",
+    "폭포"
+   ]
   },
   {
    "id": "s-013-jujeongol",
@@ -672,13 +715,18 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "단풍",
+    "기암절벽",
+    "계곡길"
+   ]
   },
   {
    "id": "s-014-baekmudong",
@@ -733,13 +781,17 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "단풍",
+    "계곡"
+   ]
   },
   {
    "id": "s-014-nogodan",
@@ -803,13 +855,17 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "상고대",
+    "일출"
+   ]
   },
   {
    "id": "s-015-byeongdaedo",
@@ -865,13 +921,17 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "일몰",
+    "다도해"
+   ]
   },
   {
    "id": "s-016-gochang-cheongbori",
@@ -919,13 +979,16 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "청보리"
+   ]
   },
   {
    "id": "s-017-boriam",
@@ -968,13 +1031,18 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "기암",
+    "남해 바다",
+    "운무"
+   ]
   },
   {
    "id": "s-018-sajipo",
@@ -1022,13 +1090,17 @@
     "kind": "trailhead"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "연꽃",
+    "습지"
+   ]
   },
   {
    "id": "s-018-upo-wetland",
@@ -1084,13 +1156,17 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "노을",
+    "습지"
+   ]
   },
   {
    "id": "s-019-huibang-falls",
@@ -1132,13 +1208,16 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "폭포"
+   ]
   },
   {
    "id": "s-019-forest-healing-deck",
@@ -1194,13 +1273,17 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "숲길",
+    "무장애 데크길"
+   ]
   },
   {
    "id": "s-020-baegyangsa",
@@ -1248,13 +1331,18 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "단풍",
+    "연못",
+    "절집"
+   ]
   },
   {
    "id": "s-020-gangcheonsan",
@@ -1295,13 +1383,17 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "단풍",
+    "계곡길"
+   ]
   },
   {
    "id": "s-020-naejangsan-uhwajeong",
@@ -1356,13 +1448,18 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "단풍",
+    "연못",
+    "정자"
+   ]
   },
   {
    "id": "s-020-yonggwolsan",
@@ -1411,13 +1508,18 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "운무",
+    "절벽 데크길",
+    "강 조망"
+   ]
   },
   {
    "id": "s-021-dolsan-park-sunset",
@@ -1473,13 +1575,17 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "낙조",
+    "항구"
+   ]
   },
   {
    "id": "s-021-geumosan-sunrise",
@@ -1535,20 +1641,24 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "일출",
+    "수평선"
+   ]
   },
   {
    "id": "s-022-gurye-sansuyu",
    "kind": "story",
    "brunchNo": 22,
    "brunchUrl": "https://brunch.co.kr/@caed5ea4c3d74d9/22",
-   "name": "구례 산수유마을",
+   "name": "구례 산수유 하위마을",
    "region": "전남 구례",
    "types": [
     "maehwa"
@@ -1596,13 +1706,18 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "산수유",
+    "돌담",
+    "계곡"
+   ]
   },
   {
    "id": "s-022-gwangyang-maehwa",
@@ -1664,13 +1779,17 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "매화",
+    "강 조망"
+   ]
   },
   {
    "id": "s-023-gaesimsa-cherry",
@@ -1693,18 +1812,18 @@
    "excerpt": "사찰과 어울린 왕벚꽃은 푸른 하늘에 아름다운 수를 놓았고, 난생처음 만난 청벚꽃은 나도 모르게 감탄사를 쏟아내게 하였다.",
    "photos": [
     {
-     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/uKMhSLRtAZX5N7FyHGX9i3ULuCI.jpg",
-     "w": 1434,
-     "h": 640,
-     "cap": "",
-     "focus": "60% 50%"
-    },
-    {
      "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/dVaekFpXJ1UcnAmWgJ3MBl4FhSI.jpg",
      "w": 1430,
      "h": 640,
      "cap": "",
      "focus": "50% 50%"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/uKMhSLRtAZX5N7FyHGX9i3ULuCI.jpg",
+     "w": 1434,
+     "h": 640,
+     "cap": "",
+     "focus": "60% 50%"
     }
    ],
    "spot": {
@@ -1724,7 +1843,12 @@
     "types": "draft"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "청벚꽃",
+    "겹벚꽃",
+    "절집"
+   ]
   },
   {
    "id": "s-023-palbongsan-sunrise",
@@ -1744,7 +1868,7 @@
     "season": "사계절",
     "tip": "맑은 날 새벽 산행"
    },
-   "oneLiner": "바위 봉우리 사이로 떠오르는 해를 맞는 낮은 산",
+   "oneLiner": "바위 봉우리 사이로 해를 맞는 낮은 산, 암릉구간 주의 필요",
    "excerpt": "서서히 밝아오는 여명을 따라 기암괴석으로 치장한 암릉을 올라 3봉인 정상에 도착하니 동쪽 수평선에 태양이 서서히 솟아오르며 세상을 밝혔다.",
    "photos": [
     {
@@ -1780,13 +1904,17 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "일출",
+    "암릉"
+   ]
   },
   {
    "id": "s-024-manhangjae-wildflowers",
@@ -1848,13 +1976,17 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "야생화",
+    "고갯길"
+   ]
   },
   {
    "id": "s-024-mugeonri-moss-falls",
@@ -1903,13 +2035,17 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "이끼",
+    "폭포"
+   ]
   },
   {
    "id": "s-024-yukbaekmajigi-fog",
@@ -1950,13 +2086,18 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "안개",
+    "고원",
+    "데크길"
+   ]
   },
   {
    "id": "s-025-jinyangho",
@@ -2005,13 +2146,17 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "물안개",
+    "호수"
+   ]
   },
   {
    "id": "s-026-yeongdeok-haemaji-sunrise",
@@ -2074,13 +2219,17 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "일출",
+    "해안 바위"
+   ]
   },
   {
    "id": "s-027-chuam-candle-rock",
@@ -2136,13 +2285,18 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "촛대바위",
+    "일출",
+    "기암 해변"
+   ]
   },
   {
    "id": "s-027-wangpicheon-waterlily",
@@ -2190,13 +2344,17 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "수련",
+    "연못"
+   ]
   },
   {
    "id": "s-028-jusanji",
@@ -2243,13 +2401,18 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "왕버들",
+    "저수지",
+    "물안개"
+   ]
   },
   {
    "id": "s-028-juwangsan-yongchu",
@@ -2309,13 +2472,17 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "협곡",
+    "폭포"
+   ]
   },
   {
    "id": "s-029-naeyeonsan-falls",
@@ -2376,13 +2543,17 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "폭포",
+    "계곡"
+   ]
   },
   {
    "id": "s-030-bidulginang",
@@ -2438,13 +2609,18 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "폭포",
+    "협곡",
+    "소"
+   ]
   },
   {
    "id": "s-030-goseokjeong",
@@ -2503,13 +2679,17 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "협곡",
+    "바위"
+   ]
   },
   {
    "id": "s-030-hantangang-jando",
@@ -2570,7 +2750,12 @@
     "types": "draft"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "주상절리",
+    "잔도",
+    "협곡"
+   ]
   },
   {
    "id": "s-047-jade-garden-moss",
@@ -2632,7 +2817,12 @@
    },
    "contestEntry": false,
    "hidden": false,
-   "checkAdmission": true
+   "checkAdmission": true,
+   "details": [
+    "이끼",
+    "계곡",
+    "수목원"
+   ]
   },
   {
    "id": "s-047-namiseom",
@@ -2691,13 +2881,17 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "숲길",
+    "메타세쿼이아"
+   ]
   },
   {
    "id": "s-048-sogeumsan",
@@ -2751,13 +2945,18 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "출렁다리",
+    "절벽",
+    "강"
+   ]
   },
   {
    "id": "s-049-beopgi-reservoir",
@@ -2804,13 +3003,18 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "편백",
+    "반송",
+    "호수"
+   ]
   },
   {
    "id": "s-049-taejongdae",
@@ -2871,13 +3075,17 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "등대",
+    "일출"
+   ]
   },
   {
    "id": "s-049-yeocheon-metasequoia",
@@ -2918,13 +3126,17 @@
     "kind": "entrance"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "메타세쿼이아",
+    "은행나무"
+   ]
   },
   {
    "id": "s-050-balwangsan",
@@ -2984,13 +3196,17 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "상고대",
+    "주목"
+   ]
   },
   {
    "id": "s-051-yeongyang-birch",
@@ -3050,13 +3266,17 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "자작나무",
+    "설경"
+   ]
   },
   {
    "id": "s-052-baekdudaegan-train",
@@ -3110,13 +3330,18 @@
     "kind": "entrance"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "설경",
+    "협곡",
+    "기차"
+   ]
   },
   {
    "id": "s-052-gumunso",
@@ -3171,7 +3396,11 @@
     "types": "draft"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "바위굴",
+    "설경"
+   ]
   },
   {
    "id": "s-053-biseulsan-azalea",
@@ -3236,7 +3465,11 @@
     "types": "draft"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "참꽃",
+    "진달래"
+   ]
   },
   {
    "id": "s-054-haeinsa-green-valley",
@@ -3278,13 +3511,17 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "신록",
+    "계곡"
+   ]
   },
   {
    "id": "s-054-hapcheon-auxiliary-dam",
@@ -3332,13 +3569,18 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "신록",
+    "호숫가 데크길",
+    "안개"
+   ]
   },
   {
    "id": "s-054-hatdeul-peony",
@@ -3397,13 +3639,16 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "작약"
+   ]
   },
   {
    "id": "s-055-daebongsan-cheonwangbong",
@@ -3457,13 +3702,16 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "능선 조망"
+   ]
   },
   {
    "id": "s-055-sangnim-early-summer",
@@ -3523,13 +3771,18 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "숲",
+    "이끼",
+    "금계국"
+   ]
   },
   {
    "id": "s-056-grace-garden-hydrangea",
@@ -3588,14 +3841,18 @@
     "kind": "entrance"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
    "hidden": false,
-   "checkAdmission": true
+   "checkAdmission": true,
+   "details": [
+    "수국",
+    "돌담"
+   ]
   },
   {
    "id": "s-056-jangsan-forest",
@@ -3642,13 +3899,18 @@
     "kind": "entrance"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "마을숲",
+    "연못",
+    "정자"
+   ]
   },
   {
    "id": "s-056-sangjogam",
@@ -3707,13 +3969,17 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "퇴적암 절벽",
+    "공룡발자국"
+   ]
   },
   {
    "id": "s-057-daehan-dawon",
@@ -3773,13 +4039,17 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "녹차밭",
+    "안개"
+   ]
   },
   {
    "id": "s-058-baengnyeonsa-baerong",
@@ -3838,13 +4108,18 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "배롱나무",
+    "동백숲",
+    "절집"
+   ]
   },
   {
    "id": "s-058-gangjinman-reeds",
@@ -3891,13 +4166,18 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "갈대",
+    "습지",
+    "데크길"
+   ]
   },
   {
    "id": "s-058-gaudo-dulle",
@@ -3951,13 +4231,17 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "출렁다리",
+    "섬 둘레길"
+   ]
   },
   {
    "id": "s-059-sebang-sunset",
@@ -4018,13 +4302,18 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "낙조",
+    "해무",
+    "다도해"
+   ]
   },
   {
    "id": "s-059-ttangkkeut",
@@ -4077,13 +4366,17 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "해안 바위",
+    "섬"
+   ]
   },
   {
    "id": "s-060-biwon-garden",
@@ -4142,14 +4435,19 @@
     "kind": "entrance"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
    "hidden": false,
-   "checkAdmission": true
+   "checkAdmission": true,
+   "details": [
+    "나무수국",
+    "배롱나무",
+    "연꽃"
+   ]
   },
   {
    "id": "s-060-duryunsan-gogyebong",
@@ -4190,13 +4488,18 @@
     "kind": "entrance"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "능선 조망",
+    "다도해",
+    "케이블카"
+   ]
   },
   {
    "id": "s-061-hajodae",
@@ -4244,13 +4547,18 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "노송",
+    "백사장",
+    "바위"
+   ]
   },
   {
    "id": "s-062-geumganggul-cheonbuldong",
@@ -4303,13 +4611,17 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "운무",
+    "암봉"
+   ]
   },
   {
    "id": "s-062-gwongeumseong",
@@ -4365,13 +4677,18 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "암봉",
+    "아침 햇살",
+    "운해"
+   ]
   },
   {
    "id": "s-062-ulsanbawi",
@@ -4424,13 +4741,17 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "화강암 봉우리",
+    "안개"
+   ]
   },
   {
    "id": "s-062-towangseong-falls",
@@ -4483,13 +4804,17 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "폭포",
+    "암봉"
+   ]
   },
   {
    "id": "s-063-danyanggang-jando",
@@ -4536,13 +4861,17 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "잔도",
+    "강"
+   ]
   },
   {
    "id": "s-063-mancheonha-skywalk",
@@ -4595,13 +4924,18 @@
     "kind": "entrance"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "설경",
+    "강 조망",
+    "스카이워크"
+   ]
   },
   {
    "id": "s-064-deogyusan-hyangjeokbong",
@@ -4660,13 +4994,17 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "설화",
+    "구름바다"
+   ]
   },
   {
    "id": "s-065-amisan-ridge",
@@ -4718,13 +5056,17 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "암릉",
+    "소나무"
+   ]
   },
   {
    "id": "s-065-hwasan-windmill-fog",
@@ -4783,13 +5125,17 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "운해",
+    "풍차"
+   ]
   },
   {
    "id": "s-066-wondong-maehwa",
@@ -4848,13 +5194,18 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "매화",
+    "강변",
+    "철길"
+   ]
   },
   {
    "id": "s-066-wondong-wetland-reeds",
@@ -4900,13 +5251,18 @@
     "kind": "entrance"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "갈대",
+    "습지",
+    "데크길"
+   ]
   },
   {
    "id": "s-067-saseongam-seomjingang",
@@ -4960,7 +5316,11 @@
     "types": "draft"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": true,
+   "details": [
+    "강 조망",
+    "암자"
+   ]
   },
   {
    "id": "s-067-tammae-hongmaehwa",
@@ -5018,14 +5378,18 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
    "hidden": false,
-   "checkAdmission": true
+   "checkAdmission": true,
+   "details": [
+    "홍매화",
+    "골목"
+   ]
   },
   {
    "id": "s-068-upo-weeping-cherry",
@@ -5083,13 +5447,17 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "수양벚꽃",
+    "습지"
+   ]
   },
   {
    "id": "s-069-chollipo-arboretum",
@@ -5148,14 +5516,91 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": true,
    "hidden": false,
-   "checkAdmission": true
+   "checkAdmission": true,
+   "details": [
+    "목련",
+    "연못",
+    "수목원"
+   ]
+  },
+  {
+   "id": "s-069-udo-sea-road",
+   "kind": "story",
+   "brunchNo": 69,
+   "brunchUrl": "https://brunch.co.kr/@caed5ea4c3d74d9/69",
+   "name": "서산 우도 열린 바닷길",
+   "region": "충남 서산",
+   "types": [
+    "ilchul",
+    "bada"
+   ],
+   "visited": "2025-04-28",
+   "best": {
+    "from": 1,
+    "to": 12,
+    "note": "일 년 내내",
+    "season": "사계절",
+    "tip": "썰물 때 이른 아침"
+   },
+   "oneLiner": "썰물에 열리는 바닷길 따라 분점도까지 걷는 섬",
+   "excerpt": "썰물에 까마득히 물이 빠진 뻘에는 햇살이 내려앉아 반짝이고 우리 형제들은 신비로운 세상을 바라보며 분점도에서 커피를 마셨다.",
+   "photos": [
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/Xu6RpUDcBy5Gep78E7qJxc-j04o.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": "우도의 일출"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/7dVn2nBA8A4eNtBF5S6SrXviD_Y.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": "썰물에 바닷길이 열리는 중"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/8neQklREJQQyfdaXjZcw_fdMVbs.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": "썰물에 열린 바닷길"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/QUQejkoE9teY40Ce3yw7E61RGm8.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": ""
+    }
+   ],
+   "spot": {
+    "lat": 0,
+    "lng": 0
+   },
+   "dest": {
+    "name": "벌말선착장(우도행 배)",
+    "lat": 0,
+    "lng": 0,
+    "kind": "entrance"
+   },
+   "review": {
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
+   },
+   "contestEntry": true,
+   "hidden": false,
+   "details": [
+    "바닷길",
+    "일출",
+    "갯벌",
+    "섬"
+   ]
   },
   {
    "id": "s-070-daewonsa-valley",
@@ -5203,13 +5648,17 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": true,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "신록",
+    "계곡 숲길"
+   ]
   },
   {
    "id": "s-070-hwangmaesan-cheoljjuk",
@@ -5268,13 +5717,17 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": true,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "철쭉",
+    "일출"
+   ]
   },
   {
    "id": "s-071-ulleung-sea-cliffs",
@@ -5333,13 +5786,17 @@
     "kind": "entrance"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": true,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "해안 절벽",
+    "기암"
+   ]
   },
   {
    "id": "s-072-haengnam-coast",
@@ -5398,13 +5855,17 @@
     "kind": "entrance"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": true,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "해안 절벽",
+    "해안산책로"
+   ]
   },
   {
    "id": "s-072-gwaneumdo",
@@ -5457,14 +5918,18 @@
     "kind": "entrance"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": true,
    "hidden": false,
-   "checkAdmission": true
+   "checkAdmission": true,
+   "details": [
+    "섬 둘레길",
+    "해안 절벽"
+   ]
   },
   {
    "id": "s-073-geochang-changpowon",
@@ -5523,13 +5988,18 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": true,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "창포",
+    "장미",
+    "수련"
+   ]
   },
   {
    "id": "s-073-gamaksan-deck",
@@ -5581,13 +6051,17 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": true,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "숲길",
+    "무장애 데크길"
+   ]
   },
   {
    "id": "s-074-yokjido-coast",
@@ -5646,13 +6120,18 @@
     "kind": "entrance"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": true,
-   "hidden": false
+   "hidden": false,
+   "details": [
+    "해안 절벽",
+    "다도해",
+    "해무"
+   ]
   }
  ]
 }

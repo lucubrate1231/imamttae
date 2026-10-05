@@ -42,6 +42,11 @@ export const StoryScene = z.object({
   name: z.string().min(1).max(30),
   region: z.string().min(1).max(20),
   types: z.array(z.enum(sceneTypeIds)).min(1).max(3),
+  /**
+   * 세부 풍경(D34): 그 장면의 구체적인 꽃·나무·풍경 이름(예: '수국', '메타세쿼이아', '습지'). 큰 갈래는 types.
+   * 화면에는 아직 안 보임. 비공개 베타 준비 때 기획이 집계해 풍경 찾기에 올릴지 정함(PRD 3-7장). 작가 확인 대상.
+   */
+  details: z.array(z.string().min(1).max(12)).max(5).optional(),
   visited: IsoDate,
   /**
    * 가장 좋은 때. 다녀온 달이 이 안에 있으면 '제철', 아니면 '기록' 장면입니다(src/domain/sceneTier.ts).
