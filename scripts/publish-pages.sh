@@ -26,6 +26,8 @@ HTML
 elif [ "$TARGET" = root ]; then
   find site -mindepth 1 -maxdepth 1 ! -name next ! -name .git -exec rm -rf {} +
   cp -r dist/. site/
+  # 알파에는 작가 확인 페이지·법규 메모·내부 메모(_review)를 올리지 않음(공개 전 점검 6번, docs/public-repo-check.md)
+  rm -rf site/_review
 else
   echo "TARGET must be next or root" >&2; exit 1
 fi
