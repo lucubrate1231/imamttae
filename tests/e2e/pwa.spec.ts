@@ -41,3 +41,20 @@ test('D33 실기기 확인 페이지: 상태 · 카톡→브라우저 두 주소
   const r = await new AxeBuilder({ page }).analyze();
   expect(r.violations.map((v) => `${v.id}: ${v.help}`)).toEqual([]);
 });
+
+test('새 판이 나오면 다시 화면에 나올 때 저절로 다시 불러옴 — 보던 화면 주소는 그대로(10/6, 홈 화면 앱은 새로고침 버튼이 없음)', async ({ page }) => {
+  await page.clock.install();
+  await page.goto('./?map=fake&motion=0#/month/11');
+  await page.locator('.rail .big').first().waitFor();
+  // 서버에 새 판이 올라간 것처럼: 앱이 확인하려고 받는 첫 화면 HTML(fetch)만 판 이름을 바꿔 돌려줌
+  await page.route('**/*', async (route) => {
+    if (route.request().resourceType() !== 'fetch' || !/\/(\?.*)?$/.test(new URL(route.request().url()).pathname + new URL(route.request().url()).search)) return route.fallback();
+    const res = await route.fetch();
+    await route.fulfill({ response: res, body: (await res.text()).replace(/assets\/main-[\w-]+\.js/, 'assets/main-NEWBUILD.js') });
+  });
+  await page.clock.fastForward(61_000);
+  const reloaded = page.waitForEvent('load');
+  await page.evaluate(() => window.dispatchEvent(new Event('pageshow')));
+  await reloaded;
+  await expect(page).toHaveURL(/#\/month\/11$/);
+});
