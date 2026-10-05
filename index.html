@@ -20,6 +20,13 @@
     <!-- 글꼴은 src/styles/tokens.css 가 내려받습니다(C-9). 여기서는 글꼴 서버에 미리 연결만 합니다 -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- 카카오 지도 서버에 미리 연결(#77): SDK(dapi) → SDK 본체(t1) → 지도 그림(mts). 지도 그림은 서비스 워커에 저장하지 않음(카카오 약관) -->
+    <link rel="preconnect" href="https://dapi.kakao.com" />
+    <link rel="preconnect" href="https://t1.daumcdn.net" />
+    <link rel="preconnect" href="https://mts.daumcdn.net" />
+    <link rel="dns-prefetch" href="https://dapi.kakao.com" />
+    <link rel="dns-prefetch" href="https://t1.daumcdn.net" />
+    <link rel="dns-prefetch" href="https://mts.daumcdn.net" />
   </head>
   <body>
     <div id="app"></div>

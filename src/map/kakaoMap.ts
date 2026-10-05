@@ -2,50 +2,22 @@
  * 카카오 지도 어댑터(확정 시안 v2와 같은 동작)
  * - 작은 지도는 손으로 움직이지 않습니다(페이지 스크롤과 다투지 않게).
  * - 핀은 화면 요소(CustomOverlay)로 그립니다: 제철은 계절 색 점, 다녀온 곳은 작은 회색 점, 준비 중은 점선 점.
- * - 장소를 고르면 우리나라 전체를 잠깐 보여 준 뒤 그 장소로 확대합니다(F1-AC5). '움직임 줄이기'면 바로 확대합니다.
+ * - 장소를 고르면 그 핀만 이름표를 보이고 맨 앞으로 올립니다. 지도는 우리나라 전체 그대로 둡니다(F1-AC5, D39 —
+ *   확대하면 지도 그림을 다시 받느라 늦게 떠서 뺌, #77).
  */
-import type { KakaoLatLng, KakaoMapInst, KakaoNS, KakaoOverlay } from './kakaoSdk';
+import type { KakaoMapInst, KakaoNS, KakaoOverlay } from './kakaoSdk';
 import type { MapAdapter, MapPin, PinKind } from './types';
 
 const KOREA = { center: { lat: 36.4, lng: 127.9 }, sw: { lat: 33.15, lng: 125.6 }, ne: { lat: 38.45, lng: 129.6 } };
-const CLOSE = 10; // 장소로 확대했을 때의 지도 단계
 const CLASS: Record<PinKind, string> = { peak: 'p', record: 'r', placeholder: 'ph' };
 const BASE_Z: Record<PinKind, number> = { peak: 2, record: 1, placeholder: 1 };
 
-export function createKakaoMap(kakao: KakaoNS, opts: { reduceMotion?: boolean } = {}): MapAdapter {
-  const reduceMotion = opts.reduceMotion ?? window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
+export function createKakaoMap(kakao: KakaoNS): MapAdapter {
   const K = kakao.maps;
   let map: KakaoMapInst | null = null;
   let pins: { p: MapPin; o: KakaoOverlay; el: HTMLElement }[] = [];
   let handler: ((id: string) => void) | null = null;
   let selected: string | null = null;
-  let national: { level: number; center: KakaoLatLng } | null = null;
-  let ready = false; // 첫 지도 조각이 뜬 뒤에만 움직임(뜨기 전에 움직이면 빈 화면이 날아다님)
-  let timers: number[] = [];
-
-  const clearTimers = () => {
-    timers.forEach((t) => window.clearTimeout(t));
-    timers = [];
-  };
-
-  function flyTo(p: MapPin): void {
-    clearTimers();
-    if (!map || !ready || !national) return;
-    const spot = new K.LatLng(p.lat, p.lng);
-    if (reduceMotion) {
-      map.setLevel(CLOSE);
-      map.setCenter(spot);
-      return;
-    }
-    const m = map;
-    const { level, center } = national;
-    if (m.getLevel() !== level) m.setLevel(level, { animate: { duration: 350 } });
-    timers.push(
-      window.setTimeout(() => m.setCenter(center), 380),
-      window.setTimeout(() => m.setLevel(CLOSE, { animate: { duration: 700 }, anchor: spot }), 1600),
-      window.setTimeout(() => m.panTo(spot), 2350),
-    );
-  }
 
   function paint(): void {
     for (const { p, o, el } of pins) {
@@ -53,8 +25,6 @@ export function createKakaoMap(kakao: KakaoNS, opts: { reduceMotion?: boolean } 
       el.classList.toggle('on', on);
       o.setZIndex(on ? 10 : BASE_Z[p.kind]);
     }
-    const cur = pins.find((x) => x.p.id === selected);
-    if (cur) flyTo(cur.p);
   }
 
   return {
@@ -70,19 +40,7 @@ export function createKakaoMap(kakao: KakaoNS, opts: { reduceMotion?: boolean } 
       });
       m.setZoomable(false);
       m.setBounds(new K.LatLngBounds(new K.LatLng(KOREA.sw.lat, KOREA.sw.lng), new K.LatLng(KOREA.ne.lat, KOREA.ne.lng)), 4, 4, 4, 4);
-      national = { level: m.getLevel(), center: m.getCenter() };
       map = m;
-      const go = () => {
-        if (ready) return;
-        ready = true;
-        timers.push(window.setTimeout(paint, 500));
-      };
-      const onFirst = () => {
-        K.event.removeListener(m, 'tilesloaded', onFirst);
-        go();
-      };
-      K.event.addListener(m, 'tilesloaded', onFirst);
-      timers.push(window.setTimeout(go, 2500));
     },
     setPins(list: readonly MapPin[]) {
       for (const { o } of pins) o.setMap(null);
@@ -110,7 +68,6 @@ export function createKakaoMap(kakao: KakaoNS, opts: { reduceMotion?: boolean } 
       paint();
     },
     fit() {
-      clearTimers();
       if (!map || pins.length === 0) return;
       map.relayout(); // 숨어 있던 칸에서 처음 보일 때 크기를 다시 잼
       const b = new K.LatLngBounds();
@@ -121,7 +78,6 @@ export function createKakaoMap(kakao: KakaoNS, opts: { reduceMotion?: boolean } 
       handler = cb;
     },
     destroy() {
-      clearTimers();
       for (const { o } of pins) o.setMap(null);
       pins = [];
       map = null;
