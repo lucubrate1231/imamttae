@@ -2124,7 +2124,7 @@
     "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false,
+   "hidden": true,
    "details": [
     "안개",
     "고원",

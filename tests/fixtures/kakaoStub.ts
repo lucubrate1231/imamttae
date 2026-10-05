@@ -35,7 +35,7 @@ export function createKakaoStub(): { kakao: KakaoNS; log: StubLog; fire: (event:
     getBounds() { const [s, w, n, e] = log.view; return { getSouthWest: () => new LatLng(s, w), getNorthEast: () => new LatLng(n, e) }; }
     setBounds(b: LatLngBounds) { this.rec.level = log.fitLevel; log.calls.push(`bounds ${b.pts.length}`); }
     setZoomable(z: boolean) { this.rec.zoomable = z; }
-    relayout() {}
+    relayout() { log.calls.push('relayout'); }
   }
   class CustomOverlay {
     rec: StubLog['overlays'][number];

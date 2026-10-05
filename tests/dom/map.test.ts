@@ -333,3 +333,26 @@ describe('미리보기: 지도를 기다리는 동안 몇 초째·어느 단계�
     resetKakaoSdkForTest();
   });
 });
+
+describe('숨은 칸에서 만든 지도도 보이면 다시 맞춤(10/5 — 저장한 곳에서 열고 첫 화면으로 가면 지도가 깨짐)', () => {
+  it('칸 크기가 0에서 생기거나 바뀌면 relayout 하고 고른 곳을 다시 가운데로', async () => {
+    const watchers: ((() => void))[] = [];
+    const Orig = (window as unknown as { ResizeObserver?: unknown }).ResizeObserver;
+    (window as unknown as { ResizeObserver: unknown }).ResizeObserver = class { constructor(cb: () => void) { watchers.push(cb); } observe() {} disconnect() {} };
+    try {
+      const stub = createKakaoStub();
+      const m = createKakaoMap(stub.kakao, { focusLevel: 9 });
+      const host = document.createElement('div');
+      await m.mount(host);
+      m.setPins(pins);
+      m.select('s-sea'); // 숨은 칸(0×0)에서 지도를 만듦
+      const before = stub.log.calls.length;
+      Object.defineProperty(host, 'clientWidth', { value: 358, configurable: true });
+      Object.defineProperty(host, 'clientHeight', { value: 210, configurable: true });
+      watchers.forEach((w) => w()); // 첫 화면이 보여 칸 크기가 생김
+      expect(stub.log.calls.slice(before)).toEqual(['relayout', 'center 37.47,129.16']);
+    } finally {
+      (window as unknown as { ResizeObserver?: unknown }).ResizeObserver = Orig;
+    }
+  });
+});

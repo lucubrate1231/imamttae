@@ -12,7 +12,7 @@ import { routeHref } from '../domain/router';
 import { isYearRound, sceneTier, visitedMonth } from '../domain/sceneTier';
 import { SCENE_TYPES, type SceneTypeId } from '../domain/sceneTypes';
 import type { MapAdapter, MapPin } from '../map/types';
-import { h, photoImg, thumb } from './dom';
+import { h, photoImg, sized, thumb } from './dom';
 
 export interface FindDeps {
   win: Window;
@@ -85,7 +85,7 @@ export function createFind(d: FindDeps): Find {
     const line = [whenText(w), `${count}곳`].filter(Boolean).join(' · ');
     const cls = `tile${opts.big ? ' big-tile' : ''}`;
     const b = h('button', { type: 'button', class: cls });
-    const pic = cover ? photoImg(cover.photos[0]!, '', opts.big ? {} : { src: thumb(cover.photos[0]!.src, 480) }) : null;
+    const pic = cover ? photoImg(cover.photos[0]!, '', { src: opts.big ? sized(cover.photos[0]!.src, 720) : thumb(cover.photos[0]!.src, 480) }) : null;
     if (opts.big) {
       // 큰 타일 사진 위 상태는 없앰 — '지금 좋아요'는 구역 이름 앞 점이 알려 줌(디자인 #55)
       b.append(h('span', { class: 'tile-photo' }, pic), h('span', { class: 'tile-cap' }, h('b', { class: 'tile-name', text: label(t) }), h('span', { class: 'tile-line', text: line })));
