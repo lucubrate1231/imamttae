@@ -376,7 +376,7 @@ function renderDetail(): void {
   next.addEventListener('click', () => go(cur() + 1));
   slides.addEventListener('scroll', paintNav, { passive: true });
   paintNav();
-  const credit = h('span', { class: 'credit' }, `사진·글 ${AUTHOR}`, h('span', { class: 'sign', title: '작가 손글씨 서명 자리', text: '서명' }));
+  const credit = h('span', { class: 'credit' }, `사진 ${AUTHOR}`, h('span', { class: 'sign', title: '작가 손글씨 서명 자리', text: '서명' }));
 
   // ── 아래 붙박이 막대: 가고 싶어요 · 공유 · 길찾기 (사진과 제목 영역에서 버튼을 덜어 냄) ──
   const want = h('button', { class: 'dact', type: 'button' });

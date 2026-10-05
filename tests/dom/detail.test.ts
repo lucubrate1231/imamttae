@@ -115,7 +115,7 @@ describe('내용', () => {
     expect(q('.detail .prev')!.hidden).toBe(true);
     expect(q('.detail .next')!.hidden).toBe(false);
     expect(q('.detail .gallery')!.classList.contains('ov-wait')).toBe(true); // 들어오자마자 뜨지 않음
-    expect(text('.detail .credit')).toContain('사진·글 이상호');
+    expect(text('.detail .credit')).toContain('사진 이상호');
   });
 
   it('F2-AC4: 작가가 아직 확인하지 않은 추천 시기·한 줄 소개에는 "초안"', async () => {
@@ -161,12 +161,12 @@ describe('내용', () => {
     expect(q('.detail .precheck')).toBeNull();
   });
 
-  it('F2-AC13(#66): 사진 안내는 모든 장면에 — 사진 바로 아래 캡션 "작가가 N월에 다녀온 모습", 사진기 아이콘 + 글자만, 제목 구역에는 없음', async () => {
+  it('F2-AC13(#66·#69): 사진 안내는 모든 장면에 — 사진 바로 아래 캡션 "N월 사진", 사진기 아이콘 + 글자만, 제목 구역에는 없음', async () => {
     await start('#/scene/s-sea'); // 사진 1장: 캡션만
     const cap = q('.detail .gallery + .photo-cap')!;
     expect(cap).not.toBeNull();
     expect([...cap.children].map((c) => c.className)).toEqual(['recnote']);
-    expect(text('.detail .photo-cap .recnote')).toBe('작가가 10월에 다녀온 모습');
+    expect(text('.detail .photo-cap .recnote')).toBe('10월 사진');
     expect(q('.detail .photo-cap .recnote svg')).not.toBeNull();
     expect(q('.detail .dsec .recnote')).toBeNull();
     expect(text('.detail .body .badges')).not.toContain('작가 부부 방문');
@@ -174,7 +174,7 @@ describe('내용', () => {
     hashChange();
     expect([...q('.detail .photo-cap')!.children].map((c) => c.className)).toEqual(['recnote', 'gdots']);
     expect(root.querySelectorAll('.detail .photo-cap .gdots i')).toHaveLength(3);
-    expect(text('.detail .recnote')).toBe('작가가 10월에 다녀온 모습');
+    expect(text('.detail .recnote')).toBe('10월 사진');
   });
 
   it('F2-AC8: 준비 중 장면은 이름·다녀온 날·안내만. 사진·본문·길찾기 없음', async () => {

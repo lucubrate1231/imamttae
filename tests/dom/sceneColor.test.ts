@@ -47,7 +47,7 @@ describe('작가 서명(design-guide 6장, PR #46)', () => {
     expect(sign.getAttribute('src')).toBe('./brand/sign-white.png');
     expect(sign.getAttribute('alt')).toBe('');
     expect([sign.getAttribute('width'), sign.getAttribute('height')]).toEqual(['37', '22']);
-    expect(root.querySelector('.detail .credit')!.textContent).toBe('사진·글 이상호');
+    expect(root.querySelector('.detail .credit')!.textContent).toBe('사진 이상호');
   });
 });
 
