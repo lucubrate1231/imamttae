@@ -15,8 +15,11 @@ Claude(또는 도우미 에이전트)가 이 문서대로 작업하고, `pipelin
 - 사진 순번은 `content/brunch/index.json`의 그 글 `photos` 배열 순서와 같습니다. 주소(src)는 거기서 가져옵니다.
 - **좌표는 카카오 장소 검색으로 찾지 않아요**(카카오 로컬 API 결과는 저장 금지 — 사람이 고쳤어도 해당, `docs/kakao-local-data.md`, 10/5).
   1. `npx tsx pipeline/places/candidates.ts` — 장면 이름으로 한국관광공사 관광정보(장면 위치)와 근처 공영주차장(전국주차장정보표준데이터, `.cache/public-data/`)을 후보로 찾아요.
-  2. `npm run places` → http://localhost:8090 — 오픈스트리트맵 지도에서 후보를 고르거나 직접 찍어요. 카카오 지도를 보며 찍지 않아요.
-  3. `npx tsx pipeline/places/apply.ts` — 정한 값을 초안에 넣고 `coordSource`(public-data·manual)와 `coordRef`(tour:번호·parking:번호·manual)를 남겨요.
+  2. 좌표 확인 페이지에서 오픈스트리트맵 지도로 후보를 고르거나 직접 찍어요. 카카오 지도를 보며 찍지 않아요. 두 곳에서 열 수 있어요.
+     - **어디서나(클라우드, 10/5~):** 미리보기 https://lucubrate1231.github.io/imamttae/next/_review/places/ — 휴대폰도 됨. 지금까지 확인한 값(`tools/places/picked-seed.json`)이 들어 있고, 새로 정한 값은 **그 브라우저에** 저장돼요. 다 하면 **[결과 복사]** → 콘텐츠 세션에 붙여 넣기 → 콘텐츠 세션이 그 글을 `tools/places/picked-seed.json`에 덮어써 PR. 공개 사이트라 작가 내부 메모는 안 보여요.
+     - **사용자 컴퓨터:** `npm run places` → http://localhost:8090 (결과는 `.cache/places/picked.json`, 내부 메모도 보임)
+     - 후보 목록은 `tools/places/candidates.json`(새 장면이 생기면 `npx tsx pipeline/places/candidates.ts`로 다시 만들고 복사).
+  3. `npx tsx pipeline/places/apply.ts tools/places/picked-seed.json` — 정한 값을 초안에 넣고 `coordSource`(public-data·manual)와 `coordRef`(tour:번호·parking:번호·manual)를 남겨요. 파일을 안 주면 `.cache/places/picked.json`.
 
 ## 무엇을 장면으로 고르나
 - **자연 풍경만** 고릅니다. 단풍, 꽃, 운해, 물안개, 일출·낙조, 설경·상고대, 억새, 계곡, 폭포, 숲길, 바다 절경 같은 것들입니다.

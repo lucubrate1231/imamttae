@@ -1,10 +1,27 @@
 import { defineConfig } from 'vite';
 import { resolve } from 'node:path';
+import { readFileSync } from 'node:fs';
+import { placesPageData } from './pipeline/places/pageData';
+
+/**
+ * 좌표 확인 페이지를 미리보기에 올림: /next/_review/places/ (10/5 — 콘텐츠 세션에서 이어서 하려고).
+ * 알파(루트)에는 _review가 올라가지 않음(scripts/publish-pages.sh). 카카오 좌표·내부 메모는 넣지 않음(pipeline/places/pageData.ts)
+ */
+const placesPage = {
+  name: 'places-page',
+  generateBundle(this: { emitFile(f: { type: 'asset'; fileName: string; source: string }): void }) {
+    const read = (p: string) => JSON.parse(readFileSync(resolve(__dirname, p), 'utf8'));
+    const data = placesPageData(read('content/scenes/drafts.json').scenes, read('tools/places/candidates.json'), read('tools/places/picked-seed.json'));
+    this.emitFile({ type: 'asset', fileName: '_review/places/index.html', source: readFileSync(resolve(__dirname, 'tools/places/index.html'), 'utf8') });
+    this.emitFile({ type: 'asset', fileName: '_review/places/data.json', source: JSON.stringify(data) });
+  },
+};
 
 // base './' : 같은 빌드가 /imamttae/ 와 /imamttae/next/ 어디에 올라가도 작동하도록 상대 경로를 씁니다.
 // _review/ : 디자인 시안 페이지(검토용). 앱과 같은 부품(카카오 지도 연결 등)을 씁니다.
 export default defineConfig({
   base: './',
+  plugins: [placesPage],
   build: {
     target: 'es2020',
     outDir: 'dist',

@@ -13,6 +13,7 @@ const sums = { js: 0, css: 0, json: 0 };
 function walk(d) {
   for (const n of readdirSync(d)) {
     const p = join(d, n);
+    if (p === join('dist', '_review', 'places')) continue; // 좌표 확인 페이지 데이터 — 앱이 받지 않음(미리보기 검토용)
     if (statSync(p).isDirectory()) walk(p);
     else {
       const ext = extname(p).slice(1);
