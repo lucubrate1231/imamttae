@@ -38,14 +38,17 @@ describe('풍경 고르기(#/find)', () => {
     expect(q('.find h1')!.textContent).toBe('어떤 풍경이 보고 싶으세요?');
   });
 
-  it('F3-AC1·D22: 10월에 좋은 풍경 — 이번 달 장면이 많은 순, 첫째는 큰 타일(이름 위에 "지금 좋아요")', async () => {
+  it('F3-AC1·D22: 10월에 좋은 풍경 — 이번 달 장면이 많은 순, 구역 이름 앞에 "지금 좋아요" 점(큰 타일에는 상태 없음, #55)', async () => {
     await start('#/find');
-    expect(q('.sec-good h2')!.textContent).toBe('10월에 좋은 풍경');
+    const h2 = q('.sec-good h2')!;
+    expect(h2.querySelector('.dot.now')!.getAttribute('aria-hidden')).toBe('true');
+    expect(h2.querySelector('.sr')!.textContent).toBe(', 지금 가기 좋아요');
+    expect(h2.textContent).toBe('10월에 좋은 풍경, 지금 가기 좋아요');
     expect(names('.sec-good .tile')).toEqual(['단풍·은행', '운해·물안개', '억새·갈대', '계곡·폭포']);
     const big = q('.sec-good .tile')!;
     expect(big.classList.contains('big-tile')).toBe(true);
-    const cap = big.querySelector('.tile-cap')!;
-    expect(cap.firstElementChild!.textContent).toBe('지금 좋아요'); // 상태는 이름 위(8-1)
+    expect(big.querySelector('.on-photo-status')).toBeNull(); // 큰 타일 사진 위 상태는 없앰(#55)
+    expect(big.textContent).not.toContain('지금 좋아요');
     expect(big.textContent).not.toContain('제철');
     expect(big.querySelector('.tile-line')!.textContent).toMatch(/^10~11월 · \d+곳$/);
   });

@@ -87,9 +87,8 @@ export function createFind(d: FindDeps): Find {
     const b = h('button', { type: 'button', class: cls });
     const pic = cover ? photoImg(cover.photos[0]!, '', opts.big ? {} : { src: thumb(cover.photos[0]!.src, 480) }) : null;
     if (opts.big) {
-      // 상태는 이름 위 한 줄(8-1, 10/4 — 이름 오른쪽에 두면 320px에서 '단풍·은행'이 두 줄로 깨짐)
-      const status = whenStatus(w, today) === 'now' ? h('span', { class: 'on-photo-status' }, h('span', { class: 'dot photo', 'aria-hidden': 'true' }), '지금 좋아요') : null;
-      b.append(h('span', { class: 'tile-photo' }, pic), h('span', { class: 'tile-cap' }, status, h('b', { class: 'tile-name', text: label(t) }), h('span', { class: 'tile-line', text: line })));
+      // 큰 타일 사진 위 상태는 없앰 — '지금 좋아요'는 구역 이름 앞 점이 알려 줌(디자인 #55)
+      b.append(h('span', { class: 'tile-photo' }, pic), h('span', { class: 'tile-cap' }, h('b', { class: 'tile-name', text: label(t) }), h('span', { class: 'tile-line', text: line })));
     } else {
       b.append(h('span', { class: 'tile-photo' }, pic), h('span', { class: 'tile-text' }, h('b', { class: 'tile-name', text: label(t) }), !opts.nameOnly && h('span', { class: 'tile-line', text: line })));
     }
@@ -125,7 +124,18 @@ export function createFind(d: FindDeps): Find {
         h('h1', { class: 'find-ttl', text: '어떤 풍경이 보고 싶으세요?' }),
         h('p', { class: 'find-sub', text: '고르면 언제, 어디서 볼 수 있는지 알려 드려요.' }),
       ),
-      ...(good.length ? [sec('sec-good', `${today}월에 좋은 풍경`, tile(good[0]!, { big: true }), good.length > 1 ? grid(good.slice(1)) : null)] : []),
+      ...(good.length
+        ? [
+            h(
+              'section',
+              { class: 'find-sec sec-good' },
+              // 구역 이름 앞 '지금 좋아요' 점(8-2와 같은 모양), 읽기는 'N월에 좋은 풍경, 지금 가기 좋아요'(#55)
+              h('h2', {}, h('span', { class: 'dot now', 'aria-hidden': 'true' }), `${today}월에 좋은 풍경`, h('span', { class: 'sr', text: ', 지금 가기 좋아요' })),
+              tile(good[0]!, { big: true }),
+              good.length > 1 ? grid(good.slice(1)) : null,
+            ),
+          ]
+        : []),
       sec('sec-region', '지역으로 고르기', chips([{ id: null, label: '전국' }, ...regionCounts(stories)], null, (r) => routeHref({ name: 'find', type: null, region: r }), 'chips')),
       ...(g.always.length ? [sec('sec-always', '언제나 볼 수 있는 풍경', grid(g.always))] : []),
       ...(g.other.length || g.empty.length

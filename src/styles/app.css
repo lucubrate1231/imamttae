@@ -214,6 +214,8 @@ h1, h2, h3, p { margin: 0; }
 .dbar .go { flex: 1; margin-left: 6px; display: flex; align-items: center; justify-content: center; height: 54px; border-radius: var(--r-pill); background: var(--season); color: #fff; font-size: 18px; font-weight: 800; text-decoration: none; }
 
 .toast { position: fixed; left: 50%; bottom: calc(var(--tabs-h) + 24px); transform: translateX(-50%); z-index: 30; background: var(--ink); color: #fff; font-size: 16px; padding: 10px 16px; border-radius: var(--r-pill); opacity: 0; transition: opacity .2s; pointer-events: none; white-space: nowrap; }
+/* 장면 상세의 도장 순간·날짜 창(덮개)이 열린 동안은 안내 줄을 숨김 — 저장 직후 [다녀왔어요]를 누르면 카드 위에 겹쳐서(10/5) */
+.detail:has(.vscrim) ~ .toast { visibility: hidden; }
 .toast.on { opacity: 1; }
 
 @media (prefers-reduced-motion: reduce) {
@@ -398,14 +400,30 @@ h1, h2, h3, p { margin: 0; }
 .vscrim.center { align-items: center; padding: 16px; }
 .vscrim.bottom { align-items: flex-end; }
 .stamp-moment { display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 440px; max-height: calc(100dvh - 32px); overflow-y: auto; padding: 30px 20px 18px; border-radius: 28px; background: #fff; text-align: center; }
-.sm-stamp { position: relative; flex-shrink: 0; width: 168px; height: 168px; transform: rotate(-8deg); }
-.sm-stamp img { display: block; width: 168px; height: 168px; }
-.sm-line { position: absolute; left: 50%; top: 50%; width: 3px; height: 13px; margin: -6px 0 0 -1.5px; border-radius: 2px; background: color-mix(in srgb, var(--season) 45%, transparent); transform: rotate(var(--a)) translateY(-100px); }
-.thud img { animation: thud .4s cubic-bezier(.2, .8, .3, 1.15) both; }
-.thud .sm-line { animation: thud-line .25s .3s ease-out both; }
-@keyframes thud { 0% { transform: scale(1.35); opacity: 0; } 65% { transform: scale(.95); opacity: 1; } 100% { transform: scale(1); } }
-@keyframes thud-line { from { opacity: 0; } to { opacity: 1; } }
-@media (prefers-reduced-motion: reduce) { .thud img, .thud .sm-line { animation: none; } }
+/* 도장 찍히는 순간(디자인 #54 2차, 10/5): 공중에서 빨라지며 내려와 닿는 순간 '쿵' — 흐림·그림자가 사라지고 진해짐, 선 8개가 퍼졌다 사라짐, 카드가 3px 눌림 */
+.sm-press { display: flex; flex-direction: column; align-items: center; width: 100%; animation: sm-press .24s .18s both; }
+.sm-stamp { position: relative; flex-shrink: 0; width: 148px; height: 148px; transform: rotate(-8deg); }
+.sm-stamp img { display: block; width: 148px; height: 148px; }
+.sm-line { position: absolute; left: 50%; top: 50%; width: 3px; height: 10px; margin: -5px 0 0 -1.5px; border-radius: 2px; background: color-mix(in srgb, var(--season) 45%, transparent); opacity: 0; transform: rotate(var(--a)) translateY(-80px); }
+.thud img { animation: thud .46s linear both; }
+.thud .sm-line { animation: thud-line .32s .18s both; }
+@keyframes thud {
+  0% { transform: scale(1.25); opacity: 0; filter: blur(2.5px) drop-shadow(0 14px 10px rgba(60, 40, 20, .24)); animation-timing-function: cubic-bezier(.55, 0, .9, .45); }
+  13% { opacity: .6; animation-timing-function: linear; }
+  39% { transform: scale(.95); opacity: 1; filter: blur(0) drop-shadow(0 0 0 rgba(60, 40, 20, 0)); animation-timing-function: cubic-bezier(.2, .8, .3, 1); }
+  100% { transform: scale(1); opacity: 1; filter: blur(0) drop-shadow(0 0 0 rgba(60, 40, 20, 0)); }
+}
+@keyframes thud-line {
+  0% { opacity: 0; transform: rotate(var(--a)) translateY(-74px) scaleY(.4); animation-timing-function: cubic-bezier(.2, .8, .3, 1); }
+  31% { opacity: 1; transform: rotate(var(--a)) translateY(-80px) scaleY(1); animation-timing-function: ease-in; }
+  100% { opacity: 0; transform: rotate(var(--a)) translateY(-84px) scaleY(.5); }
+}
+@keyframes sm-press {
+  0% { transform: translateY(0); animation-timing-function: cubic-bezier(.2, .8, .4, 1); }
+  25% { transform: translateY(3px); animation-timing-function: cubic-bezier(.3, 0, .3, 1); }
+  100% { transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) { .thud img, .thud .sm-line, .sm-press { animation: none; } }
 .sm-ttl { margin-top: 18px; font-family: var(--font-display); font-weight: 700; font-size: 25px; line-height: 1.35; color: var(--ink-title); }
 .sm-daterow { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px 10px; margin-top: 12px; }
 .sm-date { font-size: 17px; color: var(--ink-2); }
@@ -445,12 +463,13 @@ h1, h2, h3, p { margin: 0; }
 .dot { flex: none; width: 10px; height: 10px; border-radius: 50%; }
 .dot.now { background: var(--season); box-shadow: 0 0 0 4px var(--season-line); }
 .dot.soon { border: 2px solid var(--season); }
-.dot.photo { background: var(--season); box-shadow: 0 0 0 3px #fff; }
 
 .find-sec { display: flex; flex-direction: column; gap: 12px; padding: 32px var(--gutter) 0; }
 .find-head + .find-sec { padding-top: 22px; }
 .find-sec h2 { font-size: 17px; font-weight: 700; line-height: 1.4; color: var(--ink-2); }
 .sec-good h2, .together h2 { color: var(--season); }
+/* 'N월에 좋은 풍경' 앞 '지금 좋아요' 점(디자인 #55) — 큰 타일 사진 위 상태 대신 */
+.sec-good h2 { display: flex; align-items: center; gap: 12px; padding-left: 4px; }
 .tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 12px; }
 .tile { display: flex; flex-direction: column; gap: 6px; text-align: left; color: var(--ink); }
 .tile-photo { display: block; aspect-ratio: 3 / 2; border-radius: 20px; overflow: hidden; background: var(--photo-empty); }
@@ -466,7 +485,6 @@ h1, h2, h3, p { margin: 0; }
 .tile-cap { position: absolute; left: 18px; right: 18px; bottom: 14px; z-index: 2; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; color: #fff; }
 .big-tile .tile-name { font-size: 28px; line-height: 1.25; color: #fff; text-shadow: 0 1px 8px rgba(0, 0, 0, .35); }
 .big-tile .tile-line { font-size: 17px; color: #fff; }
-.on-photo-status { display: inline-flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 700; white-space: nowrap; text-shadow: 0 1px 6px rgba(0, 0, 0, .45); }
 /* 권역 칩 */
 .chips { display: flex; flex-wrap: wrap; gap: 8px; }
 .find-chips { display: flex; gap: 8px; overflow-x: auto; padding: 16px var(--gutter) 0; scrollbar-width: none; }

@@ -22,14 +22,21 @@ function scene(id: string, patch: Partial<FindInput> = {}) {
 const ids = (scenes: readonly { id: string }[]) => scenes.map((s) => s.id);
 
 describe('regionOf · REGIONS: 권역을 첫 낱말로 나누기 (F3-AC7)', () => {
-  it('강원 · 경상 · 전라 · 충청 · 수도권 순서와 이름', () => {
+  it('강원 · 경상 · 전라 · 충청 · 수도권 · 제주 순서와 이름(제주는 디자인 #55)', () => {
     expect(find.REGIONS).toEqual([
       { id: 'gangwon', label: '강원' },
       { id: 'gyeongsang', label: '경상' },
       { id: 'jeolla', label: '전라' },
       { id: 'chungcheong', label: '충청' },
       { id: 'sudogwon', label: '수도권' },
+      { id: 'jeju', label: '제주' },
     ]);
+  });
+
+  it('제주·서귀포는 제주 권역, 제주 장면이 없으면 칩에 나오지 않음(#55)', () => {
+    expect(find.regionOf('제주 서귀포')).toBe('jeju');
+    expect(find.regionOf('서귀포')).toBe('jeju');
+    expect(find.regionCounts([{ kind: 'story', region: '강원 양양', types: ['danpung'], name: '가', visited: '2024-10-10', best: { from: 10, to: 10 } }]).map((r) => r.id)).toEqual(['gangwon']);
   });
 
   it.each([
@@ -58,7 +65,7 @@ describe('regionOf · REGIONS: 권역을 첫 낱말로 나누기 (F3-AC7)', () =
     expect(find.regionOf('서울')).toBe('sudogwon');
   });
 
-  it.each(['제주 서귀포', '', '   ', '알수없음 강원', '강원도 속초', '서울숲'])('%j: 모르는 첫 낱말은 null', (region) => {
+  it.each(['독도 울릉', '', '   ', '알수없음 강원', '강원도 속초', '서울숲'])('%j: 모르는 첫 낱말은 null', (region) => {
     expect(find.regionOf(region)).toBeNull();
   });
 });
@@ -84,7 +91,7 @@ describe('regionCounts: 있는 권역만 순서대로 세기 (F3-AC4·AC7)', () 
       scene('준비 중', { kind: 'placeholder' }),
       scene('숨김', { hidden: true }),
       scene('알 수 없음', { kind: 'draft' }),
-      scene('제주', { region: '제주 서귀포' }),
+      scene('독도', { region: '독도 울릉' }),
     ])).toEqual([{ id: 'gangwon', label: '강원', count: 1 }]);
   });
 
@@ -108,7 +115,7 @@ describe('typeCounts: 풍경 13가지 이야기 수 (F3-AC4·AC5)', () => {
     const counts = find.typeCounts([
       scene('준비 중', { kind: 'placeholder' }),
       scene('숨김', { hidden: true }),
-      scene('제주 바다', { region: '제주 서귀포', types: ['bada'] }),
+      scene('독도 바다', { region: '독도 울릉', types: ['bada'] }),
     ]);
     expect(counts.danpung).toBe(0);
     expect(counts.bada).toBe(1);
@@ -323,7 +330,7 @@ describe('findScenes: 풍경·권역 고르기 (F3-AC2·AC4·AC7)', () => {
     scene('강원 단풍'),
     scene('전라 단풍', { region: '전북 정읍', visited: '2020-11', best: { from: 11, to: 11 } }),
     scene('강원 바다', { types: ['bada'], best: { from: 1, to: 12 } }),
-    scene('제주 단풍', { region: '제주 서귀포' }),
+    scene('제주 단풍', { region: '독도 울릉' }),
     scene('준비 중', { kind: 'placeholder' }),
     scene('숨김', { hidden: true }),
     scene('다른 종류', { kind: 'draft' }),

@@ -3,7 +3,7 @@ import { inWindow, MONTHS, type Month, type MonthWindow } from './month';
 import { isYearRound, sceneTier, visitedMonth, type TierInput } from './sceneTier';
 import { SCENE_TYPES, type SceneTypeId } from './sceneTypes';
 
-export type RegionId = 'gangwon' | 'gyeongsang' | 'jeolla' | 'chungcheong' | 'sudogwon';
+export type RegionId = 'gangwon' | 'gyeongsang' | 'jeolla' | 'chungcheong' | 'sudogwon' | 'jeju';
 
 export const REGIONS: readonly { id: RegionId; label: string }[] = [
   { id: 'gangwon', label: '강원' },
@@ -11,6 +11,7 @@ export const REGIONS: readonly { id: RegionId; label: string }[] = [
   { id: 'jeolla', label: '전라' },
   { id: 'chungcheong', label: '충청' },
   { id: 'sudogwon', label: '수도권' },
+  { id: 'jeju', label: '제주' }, // 디자인 #55: 장면이 생기면 칩이 저절로 나옴
 ];
 
 const REGION_BY_PREFIX: ReadonlyMap<string, RegionId> = new Map([
@@ -19,6 +20,7 @@ const REGION_BY_PREFIX: ReadonlyMap<string, RegionId> = new Map([
   ['전북', 'jeolla'], ['전남', 'jeolla'], ['광주', 'jeolla'],
   ['충북', 'chungcheong'], ['충남', 'chungcheong'], ['대전', 'chungcheong'], ['세종', 'chungcheong'],
   ['서울', 'sudogwon'], ['경기', 'sudogwon'], ['인천', 'sudogwon'],
+  ['제주', 'jeju'], ['서귀포', 'jeju'],
 ]);
 
 export interface FindInput extends TierInput {
