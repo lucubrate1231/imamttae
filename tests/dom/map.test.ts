@@ -356,3 +356,26 @@ describe('숨은 칸에서 만든 지도도 보이면 다시 맞춤(10/5 — 저
     }
   });
 });
+
+describe('화면이 다시 보이면 지도를 다시 맞춤(카톡 → 사파리로 열기: 사파리가 뒤에서 페이지를 먼저 열 수 있음, 10/6)', () => {
+  it('pageshow·visibilitychange(보임) 때 relayout + 고른 곳 가운데로(크기가 같아도)', async () => {
+    const stub = createKakaoStub();
+    const m = createKakaoMap(stub.kakao, { focusLevel: 9 });
+    const host = document.createElement('div');
+    Object.defineProperty(host, 'clientWidth', { value: 358, configurable: true });
+    Object.defineProperty(host, 'clientHeight', { value: 210, configurable: true });
+    await m.mount(host);
+    m.setPins(pins);
+    m.select('s-sea');
+    const before = stub.log.calls.length;
+    window.dispatchEvent(new Event('pageshow'));
+    expect(stub.log.calls.slice(before)).toEqual(['relayout', 'center 37.47,129.16']);
+    const mid = stub.log.calls.length;
+    document.dispatchEvent(new Event('visibilitychange')); // 시험 환경은 늘 보임
+    expect(stub.log.calls.slice(mid)).toEqual(['relayout', 'center 37.47,129.16']);
+    m.destroy();
+    const end = stub.log.calls.length;
+    window.dispatchEvent(new Event('pageshow'));
+    expect(stub.log.calls.length).toBe(end); // 치운 뒤에는 듣지 않음
+  });
+});
