@@ -157,7 +157,13 @@ export function createA2hs(d: A2hsDeps): A2hs {
   const track = (action: string) => d.track('a2hs', { action, env });
   const kakao = env === 'kakao-android' || env === 'kakao-ios';
   // 카톡 안 띠: 안드로이드는 크롬, 아이폰은 사파리('으로'/'로'가 달라 통째로 둠)
-  const via = env === 'kakao-ios' ? '사파리로' : '크롬으로';
+  /**
+   * 띠 확인용 주소 ?band=show(10/5 사용자): 닫은 적이 있어도, 카톡이 아니어도 띠를 보여 줌. 닫음 표시는 건드리지 않음.
+   * 카톡이 아니면 아이폰 사파리는 아이폰 카톡 띠, 그 밖은 안드로이드 카톡 띠로 흉내 냄
+   */
+  const bandPreview = new URLSearchParams(win.location.search).get('band') === 'show';
+  const bandEnv: 'kakao-android' | 'kakao-ios' = kakao ? env : env === 'ios-safari' ? 'kakao-ios' : 'kakao-android';
+  const via = bandEnv === 'kakao-ios' ? '사파리로' : '크롬으로';
 
   // ── 넘겨받은 장면 번호(카톡 → 브라우저): 합치고 주소에서 지움 ──
   const known = new Set(d.scenes.map((s) => s.id));
@@ -200,9 +206,9 @@ export function createA2hs(d: A2hsDeps): A2hs {
     return item;
   }
 
-  function guide(): void {
-    if (env === 'standalone') return;
-    const g = GUIDES[env];
+  function guide(which: A2hsEnv = env): void {
+    if (which === 'standalone') return;
+    const g = GUIDES[which];
     const ok = h('button', { type: 'button', class: 'btn line a2-done', text: '알겠어요' });
     const s = sheet(g.title, [
       h('h2', { class: 'a2-gttl', text: g.title }),
@@ -255,7 +261,7 @@ export function createA2hs(d: A2hsDeps): A2hs {
 
   // ── 카톡 안 띠(11-2) ──
   let band: HTMLElement | null = null;
-  if (kakao && !flags().bandClosed) {
+  if ((kakao && !flags().bandClosed) || bandPreview) {
     const go = h(
       'button',
       { type: 'button', class: 'kb-go', 'aria-label': `${via} 열기 안내` },
@@ -273,6 +279,7 @@ export function createA2hs(d: A2hsDeps): A2hs {
     const el = h('div', { class: 'kband' }, go, x);
     go.addEventListener('click', () => {
       track('band');
+      if (!kakao) return guide(bandEnv); // 확인용 주소로 카톡 밖에서 본 띠: 넘어갈 곳이 없으니 안내만
       const target = withCarry(win.location.href, d.saved.wanted());
       d.openUrl(env === 'kakao-android' ? chromeIntentUrl(target) : kakaoExternalUrl(target));
       win.setTimeout(() => doc.visibilityState === 'visible' && guide(), d.waitMs);
