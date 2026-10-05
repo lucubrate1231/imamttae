@@ -22,7 +22,8 @@
 | `share` | 공유 버튼 | `scene`, `where`(detail, F4 때 stamp), `how`(share-sheet / copy) | 지금 |
 | `save` | [저장]을 누르거나 다시 눌러 뺄 때(옛 '가고 싶어요', D28) | `scene`, `on`(true / false) | 지금 |
 | `brunch` | '브런치에서 전체 이야기 읽기' | `scene` | 지금 |
-| `news` | '올해 ○○ 찾아보기' | `scene` | 지금 |
+| `news` | '떠나기 전에 확인하세요' 카드의 시기 줄 '올해 ○○ 찾아보기'(디자인 #61) | `scene` | 지금 |
+| `admission` | '떠나기 전에 확인하세요' 카드의 입장료 줄 '입장료·운영 시간 찾아보기'(D4, 디자인 #61, `checkAdmission` 장면만) | `scene` | 지금 |
 | `error` | 지도를 못 불러옴 / 장면 데이터를 못 불러옴 / 저장이 막힘 | `kind`(map-fail / data-fail / storage-blocked) | 지금 |
 | `feedback` | 의견 보내기 버튼(구글 폼) | — | **비공개 베타 때 버튼과 함께**(알파는 의견을 말로 들음, D32 · 6장 ①) |
 | `alert-card` | 제철 알림 카드 | `action`, `where`, `count` | F4 화면과 함께 |

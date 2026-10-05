@@ -21,12 +21,15 @@ export interface TimingNotice {
   text: string;
   /** 카드에 쓰는 짧은 한 줄 */
   short: string;
+  /** 장면 상세 '떠나기 전에 확인하세요' 카드의 시기 줄 안내(디자인 #61 — 뒤 문장은 카드 제목과 겹쳐 뺌) */
+  line: string;
 }
 
 const BLOOM: TimingNotice = {
   keyword: '개화',
   search: { kind: 'map', word: '꽃지도' },
   short: '꽃 피는 시기는 해마다 달라져요',
+  line: '꽃 피는 때는 해마다 1~2주씩 달라져요',
   text: '꽃 피는 때는 해마다 1~2주씩 달라져요. 떠나기 전 올해 개화 소식을 확인하세요.',
 };
 const NOTICES: Partial<Record<SceneTypeId, TimingNotice>> = {
@@ -35,9 +38,9 @@ const NOTICES: Partial<Record<SceneTypeId, TimingNotice>> = {
   jindallae: BLOOM,
   yeoreumkkot: BLOOM,
   kkotmureut: BLOOM,
-  danpung: { keyword: '단풍', search: { kind: 'map', word: '단풍지도' }, short: '단풍 시기는 해마다 달라져요', text: '단풍 드는 때는 해마다 1~2주씩 달라져요. 떠나기 전 올해 단풍 소식을 확인하세요.' },
-  eoksae: { keyword: '억새', search: { kind: 'place', word: '억새' }, short: '억새 시기는 해마다 달라져요', text: '억새가 가장 좋은 때는 해마다 조금씩 달라져요. 떠나기 전 올해 소식을 확인하세요.' },
-  seolgyeong: { keyword: '눈', search: { kind: 'place', word: '눈' }, short: '눈이 와야 볼 수 있어요', text: '눈이 와야 볼 수 있는 풍경이에요. 떠나기 전 눈 소식과 길 상황(빙판·통제)을 확인하세요.' },
+  danpung: { keyword: '단풍', search: { kind: 'map', word: '단풍지도' }, short: '단풍 시기는 해마다 달라져요', line: '단풍 드는 때는 해마다 1~2주씩 달라져요', text: '단풍 드는 때는 해마다 1~2주씩 달라져요. 떠나기 전 올해 단풍 소식을 확인하세요.' },
+  eoksae: { keyword: '억새', search: { kind: 'place', word: '억새' }, short: '억새 시기는 해마다 달라져요', line: '억새가 가장 좋은 때는 해마다 조금씩 달라져요', text: '억새가 가장 좋은 때는 해마다 조금씩 달라져요. 떠나기 전 올해 소식을 확인하세요.' },
+  seolgyeong: { keyword: '눈', search: { kind: 'place', word: '눈' }, short: '눈이 와야 볼 수 있어요', line: '눈이 와야 볼 수 있고, 길이 얼거나 막힐 수 있어요', text: '눈이 와야 볼 수 있는 풍경이에요. 떠나기 전 눈 소식과 길 상황(빙판·통제)을 확인하세요.' },
 };
 
 /** 종류 목록에서 앞의 것(대표 종류)부터 보고, 안내가 있는 첫 종류의 안내를 돌려줍니다 */
@@ -49,10 +52,10 @@ export function timingNotice(types: readonly SceneTypeId[]): TimingNotice | null
   return null;
 }
 
-/** 올해 소식 찾아보기 링크(네이버 검색)와 글자. now는 누른 때(해를 정함) */
-export function newsLink(name: string, n: TimingNotice, now: Date = new Date()): { url: string; label: string } {
+/** 올해 소식 찾아보기 링크(네이버 검색)와 글자. now는 누른 때(해를 정함). label은 옛 링크(시안 v2), go는 카드 줄('›'는 줄 화살표가 대신) */
+export function newsLink(name: string, n: TimingNotice, now: Date = new Date()): { url: string; label: string; go: string } {
   const { kind, word } = n.search;
   const q = kind === 'map' ? `${now.getFullYear()} ${word}` : name.includes(word) ? name : `${name} ${word}`;
-  const label = kind === 'map' ? `올해 ${word} 찾아보기 ›` : `올해 ${n.keyword} 소식 찾아보기 ›`;
-  return { url: `https://search.naver.com/search.naver?query=${encodeURIComponent(q)}`, label };
+  const go = kind === 'map' ? `올해 ${word} 찾아보기` : `올해 ${n.keyword} 소식 찾아보기`;
+  return { url: `https://search.naver.com/search.naver?query=${encodeURIComponent(q)}`, label: `${go} ›`, go };
 }

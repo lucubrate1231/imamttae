@@ -152,11 +152,18 @@ describe('장면 상세의 버튼', () => {
     ]);
   });
 
-  it('brunch: 브런치에서 전체 이야기 읽기 / news: 올해 소식 찾아보기', async () => {
+  it('brunch: 브런치에서 전체 이야기 읽기 / news: 올해 소식 찾아보기(카드 시기 줄)', async () => {
     await start(`#/scene/${story.id}`, { store: memoryStore() });
     q('.detail .btn.line').dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
-    q('.detail .when-link').dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
+    q('.detail .pc-row.news').dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
     expect(events('brunch')).toEqual([{ scene: story.id }]);
     expect(events('news')).toEqual([{ scene: story.id }]);
+  });
+
+  it('admission: 입장료·운영 시간 찾아보기(D4, #61)', async () => {
+    const garden = content.scenes.find((s) => s.kind === 'story' && s.checkAdmission)!;
+    await start(`#/scene/${garden.id}`, { store: memoryStore() });
+    q('.detail .pc-row.admission').dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
+    expect(events('admission')).toEqual([{ scene: garden.id }]);
   });
 });

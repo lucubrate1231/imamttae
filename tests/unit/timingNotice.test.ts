@@ -46,6 +46,20 @@ describe('timingNotice.short: 카드에 쓰는 짧은 한 줄 (10/3 2차 코멘�
   });
 });
 
+describe("timingNotice.line · newsLink.go: '떠나기 전에 확인하세요' 카드의 시기 줄(디자인 #61)", () => {
+  it('안내는 뒤 문장 없이 한 문장', () => {
+    expect(timingNotice(['beotkkot'])!.line).toBe('꽃 피는 때는 해마다 1~2주씩 달라져요');
+    expect(timingNotice(['danpung'])!.line).toBe('단풍 드는 때는 해마다 1~2주씩 달라져요');
+    expect(timingNotice(['eoksae'])!.line).toBe('억새가 가장 좋은 때는 해마다 조금씩 달라져요');
+    expect(timingNotice(['seolgyeong'])!.line).toBe('눈이 와야 볼 수 있고, 길이 얼거나 막힐 수 있어요');
+  });
+  it("찾아보기 글자는 '›' 없이(줄 오른쪽 화살표가 대신)", () => {
+    const d = new Date(2026, 9, 4);
+    expect(newsLink('x', timingNotice(['danpung'])!, d).go).toBe('올해 단풍지도 찾아보기');
+    expect(newsLink('발왕산 상고대', timingNotice(['seolgyeong'])!, d).go).toBe('올해 눈 소식 찾아보기');
+  });
+});
+
 describe('newsLink: 올해 소식 찾아보기 링크 (10/3 6차 코멘트)', () => {
   const q = (u: string) => new URL(u).searchParams.get('query');
   const oct2026 = new Date(2026, 9, 3);

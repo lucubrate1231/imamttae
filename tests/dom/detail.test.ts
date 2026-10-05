@@ -28,6 +28,8 @@ const CONTENT: ContentFile = {
       dest: { name: '오색약수터주차장', lat: 38.0774, lng: 128.4526, kind: 'parking' },
       brunchUrl: 'https://brunch.co.kr/@caed5ea4c3d74d9/5',
     }),
+    story('s-garden', { name: '그레이스정원 수국', region: '충남 서산', visited: '2024-06-20', types: ['yeoreumkkot'], best: { from: 6, to: 7, note: '6월 중순~7월 초' }, checkAdmission: true }),
+    story('s-isle', { name: '울릉 관음도 둘레길', region: '경북 울릉', visited: '2025-05-20', types: ['bada'], best: { from: 1, to: 12, note: '일 년 내내' }, checkAdmission: true }),
     placeholder('p-ready', '부산 태종대', '2023-10-26'),
   ],
 };
@@ -122,17 +124,50 @@ describe('내용', () => {
     expect(text('.detail .when-row .draft')).toBe('초안');
   });
 
-  it('F2-AC12: 추천 시기 칸 — 추천 시기, 이럴 때 더 좋아요, 해마다 달라짐 안내, 올해 소식 찾아보기', async () => {
+  it('F2-AC12(#61): 추천 시기 상자에는 세 가지만 — 시기 안내·찾아보기는 아래 "떠나기 전에 확인하세요" 카드로', async () => {
     await start('#/scene/s-detail');
     expect(text('.detail .when-row')).toContain('10월 중순~하순');
     expect(text('.detail .when-tip')).toContain('맑은 날 오전');
-    expect(text('.detail .when-vary')).toContain('단풍 드는 때는 해마다');
-    expect(text('.detail .when-link')).toBe('올해 단풍지도 찾아보기 ›');
+    expect(q('.detail .when-box .when-vary')).toBeNull();
+    expect(q('.detail .when-box .when-link')).toBeNull();
+    const card = q('.detail .dsec[aria-label="추천 시기"] .precheck')!;
+    expect(card.tagName).toBe('SECTION');
+    expect(card.getAttribute('aria-label')).toBe('떠나기 전에 확인하세요');
+    expect(text('.precheck .pc-ttl')).toBe('떠나기 전에 확인하세요');
+    expect(card.previousElementSibling!.classList.contains('when-box')).toBe(true);
+    const rows = [...card.querySelectorAll<HTMLAnchorElement>('a.pc-row')];
+    expect(rows.map((r) => r.className)).toEqual(['pc-row news']);
+    expect(rows[0]!.querySelector('.pc-msg')!.textContent).toBe('단풍 드는 때는 해마다 1~2주씩 달라져요');
+    expect(rows[0]!.querySelector('.pc-go')!.textContent).toBe('올해 단풍지도 찾아보기');
+    expect(rows[0]!.getAttribute('aria-label')).toBe('단풍 드는 때는 해마다 1~2주씩 달라져요. 올해 단풍지도 찾아보기, 새 창');
+    expect(rows[0]!.target).toBe('_blank');
   });
 
-  it('F2-AC13: 사진 안내 "사진은 작가 부부가 N월에 다녀온 모습이에요"는 모든 장면에, "작가 부부 방문" 꼬리표는 없음', async () => {
+  it('F2-AC14(#61, D4): 입장료 확인 장면은 입장료 줄 — 금액 없이 고정 문장, 네이버 "{장면 이름} 입장료"', async () => {
+    await start('#/scene/s-garden');
+    const rows = [...root.querySelectorAll<HTMLAnchorElement>('.precheck a.pc-row')];
+    expect(rows.map((r) => r.className)).toEqual(['pc-row news', 'pc-row admission']); // 시기 줄 → 입장료 줄
+    expect(rows[1]!.querySelector('.pc-msg')!.textContent).toBe('입장료와 운영 시간은 미리 확인하세요');
+    expect(rows[1]!.querySelector('.pc-go')!.textContent).toBe('입장료·운영 시간 찾아보기');
+    expect(new URL(rows[1]!.href).searchParams.get('query')).toBe('그레이스정원 수국 입장료');
+    expect(rows[1]!.getAttribute('aria-label')).toBe('입장료와 운영 시간은 미리 확인하세요. 입장료·운영 시간 찾아보기, 새 창');
+  });
+
+  it('일 년 내내 장면은 시기 줄이 없고, 입장료 확인이면 입장료 줄만 · 둘 다 없으면 카드도 없음', async () => {
+    await start('#/scene/s-isle');
+    expect([...root.querySelectorAll('.precheck a.pc-row')].map((r) => r.className)).toEqual(['pc-row admission']);
+    window.location.hash = '#/scene/s-sea';
+    hashChange();
+    expect(q('.detail .precheck')).toBeNull();
+  });
+
+  it('F2-AC13: 사진 안내는 모든 장면에 — 제목 구역의 지역 바로 아래, 사진기 아이콘 + 글자만(#61), 꼬리표는 없음', async () => {
     await start('#/scene/s-sea');
     expect(text('.detail .recnote')).toBe('사진은 작가가 10월에 다녀온 모습이에요.');
+    const note = q('.detail .dsec[aria-label="제목"] .recnote')!;
+    expect(note.previousElementSibling!.classList.contains('region')).toBe(true);
+    expect(note.querySelector('svg')).not.toBeNull();
+    expect(q('.detail .dsec[aria-label="추천 시기"] .recnote')).toBeNull();
     expect(text('.detail .body .badges')).not.toContain('작가 부부 방문');
     window.location.hash = '#/scene/s-detail';
     hashChange();
