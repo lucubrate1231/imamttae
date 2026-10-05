@@ -1,0 +1,48 @@
+name: 버그 알리기
+description: 앱이 이상하게 움직이거나 멈췄을 때
+labels: ["버그"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **이 이슈는 누구나 볼 수 있어요.** 지인 이름·연락처·카톡 대화 화면은 올리지 마세요(스크린샷에 있으면 가려 주세요).
+  - type: dropdown
+    id: screen
+    attributes:
+      label: 어느 화면
+      options: [첫 화면(지금 풍경), 장면 상세, 풍경 찾기, 저장한 곳, 길찾기, 홈 화면에 두기, 모르겠음]
+    validations:
+      required: true
+  - type: dropdown
+    id: phone
+    attributes:
+      label: 휴대폰
+      options: [아이폰, 안드로이드]
+    validations:
+      required: true
+  - type: dropdown
+    id: opened
+    attributes:
+      label: 어디서 열었나
+      options: [카톡 안, 크롬, 사파리, 삼성 인터넷, 홈 화면 아이콘, 모르겠음]
+    validations:
+      required: true
+  - type: textarea
+    id: did
+    attributes:
+      label: 무엇을 했나
+      placeholder: 예) 10월 첫 카드를 누르고 [길찾기]를 눌렀어요
+    validations:
+      required: true
+  - type: textarea
+    id: happened
+    attributes:
+      label: 무엇이 일어났나
+      placeholder: 예) 티맵이 엉뚱한 곳으로 안내했어요
+    validations:
+      required: true
+  - type: textarea
+    id: shot
+    attributes:
+      label: 스크린샷
+      description: 끌어다 놓으면 붙어요. 개인 정보는 가려 주세요.
