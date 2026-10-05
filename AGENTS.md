@@ -91,7 +91,8 @@ Cowork(기획·콘텐츠·디자인 세션), Claude Code(개발 리드), Codex�
 - 맡은 일이 바뀌면 이 목록을 고칩니다.
 
 ### 지금 Codex가 맡고 있는 것
-- **지금 맡은 일 없음**(10/5). 일 1~4는 모두 합쳐짐 — 일 3(풍경 찾기 묶음 계산, PR #52)은 개발 리드가 화면의 임시 계산을 바꿔 끼우는 PR과 함께 합침.
+- **일 5** 첫 화면 속도 재는 도구(10/5, 지도 늦게 뜸 이슈): [`docs/tasks/codex-5-첫화면-속도재기.md`](docs/tasks/codex-5-첫화면-속도재기.md) — `scripts/measure-speed.mjs`, `docs/speed.md`만. 같은 때 Claude Code는 `claude/map-speed`에서 화면·지도 코드를 고침.
+- 일 1~4는 모두 합쳐짐.
 - 다음 일은 개발 리드가 `docs/tasks/codex-N-*.md`를 main에 올린 뒤 시작합니다.
 - 일이 끝나 PR이 합쳐지면 이 칸을 다음 일로 바꿉니다.
 
