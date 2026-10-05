@@ -1,7 +1,7 @@
 // @vitest-environment happy-dom
 import { describe, expect, it, vi } from 'vitest';
 import { createMap, pickMapMode } from '../../src/map';
-import { loadKakaoSdk, resetKakaoSdkForTest } from '../../src/map/kakaoSdk';
+import { kakaoSdkStage, loadKakaoSdk, resetKakaoSdkForTest } from '../../src/map/kakaoSdk';
 import { createKakaoMap } from '../../src/map/kakaoMap';
 import { createListMap } from '../../src/map/listMap';
 import { createLazyMap } from '../../src/map/lazyMap';
@@ -296,5 +296,40 @@ describe('미리보기에서는 지도를 못 불러온 까닭을 작게 보여 
     const el2 = document.createElement('div');
     await lazy.mount(el2);
     expect(el2.querySelector('.mapfail-why')?.textContent).toBe('지도가 너무 늦습니다');
+  });
+});
+
+describe('미리보기: 지도를 기다리는 동안 몇 초째·어느 단계인지 작게 보여 줌(사파리에서 지도 칸이 비던 것 찾기, 10/5)', () => {
+  it('기다리는 동안 상태 글자, 지도가 오면 지움', async () => {
+    let give!: (m: ReturnType<typeof createListMap>) => void;
+    const lazy = createLazyMap(() => new Promise((r) => (give = r)), { showReason: true, status: () => 'SDK 파일 받는 중' });
+    const el = document.createElement('div');
+    const mounted = lazy.mount(el);
+    expect(el.querySelector('.mapwait')?.textContent).toBe('지도 기다리는 중 · 0초 · SDK 파일 받는 중');
+    give(createListMap());
+    await mounted;
+    expect(el.querySelector('.mapwait')).toBeNull();
+  });
+  it('showReason이 없으면(알파) 아무 글자 없음', async () => {
+    const lazy = createLazyMap(() => new Promise(() => {}), { status: () => 'x' });
+    const el = document.createElement('div');
+    void lazy.mount(el);
+    expect(el.querySelector('.mapwait')).toBeNull();
+  });
+  it('SDK 단계: 파일 받는 중 → 지도 준비 중 → 준비 끝', async () => {
+    resetKakaoSdkForTest();
+    let script: HTMLScriptElement | null = null;
+    const doc = { createElement: (t: string) => document.createElement(t), head: { append: (s: HTMLScriptElement) => (script = s) } } as unknown as Document;
+    const p = loadKakaoSdk('key', 1000, doc);
+    expect(kakaoSdkStage()).toBe('SDK 파일 받는 중');
+    let ready!: () => void;
+    (window as unknown as { kakao: unknown }).kakao = { maps: { load: (cb: () => void) => (ready = cb) } };
+    script!.onload!(new Event('load'));
+    expect(kakaoSdkStage()).toBe('지도 준비 중');
+    ready();
+    await p;
+    expect(kakaoSdkStage()).toBe('지도 준비 끝');
+    delete (window as unknown as { kakao?: unknown }).kakao;
+    resetKakaoSdkForTest();
   });
 });

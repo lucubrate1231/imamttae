@@ -4,6 +4,7 @@ import type { ContentFile } from '../shared/schema/content';
 import { startApp } from './app';
 import { createMap, pickMapMode } from './map';
 import { createLazyMap } from './map/lazyMap';
+import { kakaoSdkStage } from './map/kakaoSdk';
 import { CLOSEST_LEVEL } from './map/kakaoMap';
 import { createUmamiTracker, SITE_ID, tagFor } from './analytics';
 import { captureInstallPrompt, registerServiceWorker } from './pwa';
@@ -40,8 +41,8 @@ async function main(): Promise<void> {
       return map;
     });
   const homeMap = makeMap({ focusLevel: HOME_MAP_LEVEL });
-  const map = createLazyMap(() => homeMap, { showReason });
-  const findMap = createLazyMap(() => makeMap(), { showReason });
+  const map = createLazyMap(() => homeMap, { showReason, status: kakaoSdkStage });
+  const findMap = createLazyMap(() => makeMap(), { showReason, status: kakaoSdkStage });
   const content = await loadContent();
   // 사용 통계(docs/analytics.md): github.io에서만 보내고, 미리보기·알파는 꼬리표로 나눔
   const tracker = createUmamiTracker(window, { siteId: SITE_ID, tag: tagFor(location.pathname) });

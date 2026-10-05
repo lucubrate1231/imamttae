@@ -95,6 +95,7 @@ h1, h2, h3, p { margin: 0; }
 .legend span.r::before { background: #aab2ac; }
 .mapfail { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: 4px; font-size: var(--fs-meta); color: var(--ink-2); text-align: center; padding: 0 16px; }
 .mapfail-why { font-size: 14px; color: var(--ink-3); } /* 미리보기에서만: 못 불러온 까닭 */
+.mapwait { position: absolute; left: 12px; bottom: 10px; font-size: 14px; color: var(--ink-3); } /* 미리보기에서만: 기다리는 몇 초째·단계 */
 
 .pin { display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; }
 /* 카카오는 점 묶음의 아래 끝을 좌표에 둠(yAnchor 1) → 점 높이 절반만큼 아래로 빼서 점 가운데가 그 장소가 되게(10/5 — 전국 지도에서 30km 어긋났음) */
