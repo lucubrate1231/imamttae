@@ -8,7 +8,7 @@ import { createFailedMap } from './failedMap';
 import type { MapAdapter, MapPin } from './types';
 
 /** giveUpMs: 이만큼 기다려도 지도가 안 붙으면 '지도를 불러오지 못했어요'(빈 칸으로 남지 않게, 10/5 아이폰) */
-export function createLazyMap(make: () => Promise<MapAdapter>, opts: { giveUpMs?: number } = {}): MapAdapter {
+export function createLazyMap(make: () => Promise<MapAdapter>, opts: { giveUpMs?: number; showReason?: boolean } = {}): MapAdapter {
   const giveUpMs = opts.giveUpMs ?? 15_000;
   let inner: MapAdapter | null = null; // 붙은 뒤에만 채움
   let started: Promise<void> | null = null;
@@ -48,8 +48,9 @@ export function createLazyMap(make: () => Promise<MapAdapter>, opts: { giveUpMs?
     const got = await Promise.race([job, late]);
     window.clearTimeout(timer);
     if (got && 'm' in got) return finish(got.m);
-    console.warn('[imamttae] 지도 대체:', got ? (got.e instanceof Error ? got.e.message : got.e) : '지도가 너무 늦습니다');
-    const failed = createFailedMap();
+    const why = got ? (got.e instanceof Error ? got.e.message : String(got.e)) : '지도가 너무 늦습니다';
+    console.warn('[imamttae] 지도 대체:', why);
+    const failed = createFailedMap(opts.showReason ? why : undefined);
     await failed.mount(el);
     finish(failed);
     // 너무 늦었을 뿐이면, 나중에라도 오면 안내를 지우고 지도로 바꿈

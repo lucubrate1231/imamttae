@@ -151,3 +151,23 @@ test('장면 상세를 연 동안 사파리가 가져가는 색(맨 위 고정 �
   expect(d.color).toBe('rgb(233, 243, 237)');
   expect(d.image).toContain('linear-gradient'); // 흰 그림으로 덮어 보이는 바탕은 흰색
 });
+
+test('지도 점은 가운데가 그 장소(아래 끝이 아님) — 카카오는 점 묶음의 아래 끝을 좌표에 둠(yAnchor 1), 전국 지도에서 30km 어긋나 비룡폭포가 바다에 찍히던 것(10/5)', async ({ page }) => {
+  await page.goto('./?map=fake&motion=0#/month/10');
+  await page.locator('.rail .big').first().waitFor();
+  const gaps = await page.evaluate(() => {
+    const host = document.querySelector('.mapsec .kmap')!;
+    return ['pin p', 'pin p on', 'pin r', 'pin ph'].map((cls) => {
+      const el = document.createElement('div');
+      el.className = cls;
+      el.innerHTML = '<div class="nm">이름</div><div class="dot"></div>';
+      el.style.position = 'absolute';
+      host.append(el);
+      const box = el.getBoundingClientRect();
+      const dot = el.querySelector('.dot')!.getBoundingClientRect();
+      el.remove();
+      return Math.abs(box.bottom - (dot.top + dot.height / 2)); // 카카오가 좌표에 두는 아래 끝 ↔ 점 가운데
+    });
+  });
+  for (const g of gaps) expect(g).toBeLessThanOrEqual(0.5);
+});
