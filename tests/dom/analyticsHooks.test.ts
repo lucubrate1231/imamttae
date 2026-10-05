@@ -82,6 +82,19 @@ describe('앱이 열릴 때', () => {
 });
 
 describe('scene-open: 어디서 열었나', () => {
+  it('D42: 옆 카드를 당겨 올 때는 보내지 않고, 다시 눌러 실제로 열 때만 photo-card', async () => {
+    await start('#/month/10', { store: memoryStore() });
+    const before = events('scene-open').length;
+    const second = root.querySelectorAll<HTMLElement>('.rail .big')[1]!;
+    second.click(); // 옆 카드 → 당겨 옴(상세 안 열림)
+    hashChange();
+    expect(window.location.hash).toBe('#/month/10');
+    expect(events('scene-open')).toHaveLength(before);
+    second.click(); // 이제 고른 카드 → 상세
+    hashChange();
+    expect(events('scene-open').at(-1)).toMatchObject({ from: 'photo-card' });
+  });
+
   it('첫 화면 큰 카드 → photo-card, 작가가 다녀온 곳 줄 → visited-row', async () => {
     await start('#/month/10', { store: memoryStore() });
     q('.rail .big').click();

@@ -35,6 +35,8 @@ export interface Home {
   /** 지도를 붙일 자리 */
   mapHost: HTMLElement;
   render(month: Month): void;
+  /** D43: 달 띠를 고른 달이 왼쪽에서 두 번째 자리로(첫 화면이 보일 때마다) */
+  alignMonths(): void;
   destroy(): void;
 }
 
@@ -45,7 +47,8 @@ export function createHome(d: HomeDeps): Home {
   const reduceMotion = win.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
   let view: HomeView | null = null;
   let cards: StoryScene[] = []; // 카드 띠에 놓인 제철 장면(순서대로)
-  let sel = 0;
+  let sel = 0; // 다 보이는(고른) 카드 — 카드 띠 순서(제철 카드 → 준비 중 카드)
+  let items: string[] = []; // 카드 띠 순서대로 장면 번호(지도에서 고를 때)
 
   // ── 머리: 작은 글씨 → 큰 제목 → 달 띠. 스크롤하면 작은 제목 막대(F1-AC13) ──
   const eyebrow = h('p', { class: 'eyebrow', text: `${RECOMMENDER}의 추천` });
@@ -112,11 +115,40 @@ export function createHome(d: HomeDeps): Home {
       h('div', { class: 'best' }, calIcon(), h('span', { class: 'lbl', text: '추천 시기' }), h('strong', { text: note })),
       tn && h('div', { class: 'vary' }, infoIcon(), h('span', { text: tn.short })),
     );
-    b.addEventListener('click', () => d.openScene(s.id, 'photo-card'));
+    tapOrPull(b, i, () => d.openScene(s.id, 'photo-card'));
     return h('div', { role: 'listitem' }, b);
   }
+  /**
+   * D42: 다 보이는 카드를 누르면 상세, 옆에 조금 보이는 카드를 누르면 그 카드를 당겨 다 보이게(지도도 그곳).
+   * 손가락으로 끌어 넘기다 떼면 열리지 않음(브라우저가 click을 안 보냄). 키보드로 가면 다 보이게 옮기고 엔터로 열림.
+   * 통계 scene-open은 실제로 열 때만(openScene).
+   */
+  function tapOrPull(b: HTMLElement, i: number, open: () => void): void {
+    b.addEventListener('click', () => {
+      if (i === sel || mostlyVisible(b)) {
+        if (i !== sel) select(i, false);
+        open();
+      } else select(i, true);
+    });
+    b.addEventListener('focus', () => {
+      let keyboard = false;
+      try {
+        keyboard = b.matches(':focus-visible');
+      } catch {
+        keyboard = false;
+      }
+      if (keyboard && i !== sel) select(i, true);
+    });
+  }
+  /** 카드 띠 칸 안에 90% 넘게 보이는가(맨 끝 카드처럼 고른 카드가 아니어도 다 보일 때) */
+  function mostlyVisible(el: HTMLElement): boolean {
+    const r = rail.getBoundingClientRect();
+    const c = el.getBoundingClientRect();
+    if (!c.width) return false;
+    return (Math.min(c.right, r.right) - Math.max(c.left, r.left)) / c.width >= 0.9;
+  }
   /** 준비 중 카드(F1-AC4): 사진 없이 점선, 이름과 다녀온 날 */
-  function phCard(p: PlaceholderScene): HTMLElement {
+  function phCard(p: PlaceholderScene, i: number): HTMLElement {
     const b = h(
       'button',
       { class: 'big ph', type: 'button', 'aria-label': `${p.name}, 준비 중, ${fmtDate(p.visited)}에 다녀옴` },
@@ -128,7 +160,7 @@ export function createHome(d: HomeDeps): Home {
         h('span', { class: 'ph-date', text: `${fmtDate(p.visited)}에 다녀옴` }),
       ),
     );
-    b.addEventListener('click', () => d.openScene(p.id, 'photo-card'));
+    tapOrPull(b, i, () => d.openScene(p.id, 'photo-card'));
     return h('div', { role: 'listitem' }, b);
   }
   function recRow(s: StoryScene): HTMLElement {
@@ -145,7 +177,7 @@ export function createHome(d: HomeDeps): Home {
   // ── 카드와 지도 맞추기(F1-AC5·AC6) ──
   function select(i: number, scrollRail: boolean): void {
     sel = i;
-    map.select(cards[i]?.id ?? null);
+    map.select(items[i] ?? null);
     if (scrollRail) {
       const c = rail.children[i] as HTMLElement | undefined;
       if (c) rail.scrollTo?.({ left: c.offsetLeft - 16, behavior: reduceMotion ? 'auto' : 'smooth' });
@@ -158,15 +190,32 @@ export function createHome(d: HomeDeps): Home {
       const first = rail.children[0] as HTMLElement | undefined;
       if (!first) return;
       const step = first.offsetWidth + 12;
-      const i = Math.max(0, Math.min(cards.length - 1, Math.round(rail.scrollLeft / step)));
+      const i = Math.max(0, Math.min(items.length - 1, Math.round(rail.scrollLeft / step)));
       if (i !== sel) select(i, false);
     }, 90);
   });
   map.onPinClick((id) => {
     const i = cards.findIndex((s) => s.id === id);
-    if (i >= 0) select(i, true);
+    if (i >= 0) select(i, true); // 제철 점 → 그 카드로(준비 중 점은 아래처럼 상세로, F1-AC6)
     else d.openScene(id, 'map-pin'); // 작가가 다녀온 곳·준비 중은 바로 상세로
   });
+
+  /**
+   * D43: 달 띠는 고른 달이 왼쪽에서 두 번째 자리(앞달이 살짝 보여 뒤로도 넘길 수 있음을 알림). 움직임 없이 바로.
+   * 1·2월은 맨 앞부터. 숨어 있으면(다른 탭) 건너뛰고 보일 때(app showScreen) 다시 부름.
+   */
+  function alignMonths(): void {
+    const i = chips.findIndex((c) => c.getAttribute('aria-pressed') === 'true');
+    if (i <= 1) {
+      months.scrollLeft = 0;
+      return;
+    }
+    if (!months.clientWidth) return;
+    const pad = Number.parseFloat(win.getComputedStyle(months).paddingLeft) || 0;
+    months.scrollLeft += chips[i - 1]!.getBoundingClientRect().left - months.getBoundingClientRect().left - pad;
+  }
+  // 글꼴이 늦게 오면 알약 폭이 바뀌어 한 번 더 맞춤
+  void win.document.fonts?.ready.then(() => alignMonths());
 
   function render(month: Month): void {
     view = homeView(d.scenes, month);
@@ -175,6 +224,7 @@ export function createHome(d: HomeDeps): Home {
     paintBrowserBar(win, root ?? null);
 
     for (const c of chips) c.setAttribute('aria-pressed', String(c.textContent === `${month}월`));
+    alignMonths();
     title.textContent = `${month}월에 만나는 풍경`;
     mini.textContent = title.textContent;
 
@@ -184,7 +234,8 @@ export function createHome(d: HomeDeps): Home {
     emptyNote.replaceChildren(
       ...(view.empty ? [h('b', { text: `${month}월은 아직 이야기가 없어요.` }), ` 가까운 ${view.nearby.months.map((m) => `${m}월`).join('·')} 풍경을 보여 드려요.`] : []),
     );
-    rail.replaceChildren(...cards.map(bigCard), ...view.placeholders.map(phCard));
+    rail.replaceChildren(...cards.map(bigCard), ...view.placeholders.map((p, j) => phCard(p, cards.length + j)));
+    items = [...cards.map((s) => s.id), ...view.placeholders.map((p) => p.id)];
     rail.scrollLeft = 0;
     peakSec.hidden = rail.children.length === 0 && !view.empty;
 
@@ -206,6 +257,7 @@ export function createHome(d: HomeDeps): Home {
     nodes: [mini, main],
     mapHost,
     render,
+    alignMonths,
     destroy() {
       io?.disconnect();
       win.clearTimeout(scrollTimer);
