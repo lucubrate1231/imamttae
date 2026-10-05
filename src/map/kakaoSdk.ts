@@ -16,6 +16,7 @@ export interface KakaoMapInst {
   getLevel(): number;
   getCenter(): KakaoLatLng;
   panTo(ll: KakaoLatLng): void;
+  getBounds(): { getSouthWest(): KakaoLatLng; getNorthEast(): KakaoLatLng };
   setBounds(b: unknown, top?: number, right?: number, bottom?: number, left?: number): void;
   setZoomable(z: boolean): void;
   relayout(): void;

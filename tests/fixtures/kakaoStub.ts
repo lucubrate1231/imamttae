@@ -5,10 +5,12 @@ export interface StubLog {
   maps: { center: [number, number]; level: number; opts: Record<string, unknown>; zoomable?: boolean }[];
   overlays: { lat: number; lng: number; el: HTMLElement; onMap: boolean; z: number }[];
   calls: string[];
+  /** 지도에 보이는 범위 [남, 서, 북, 동] */
+  view: [number, number, number, number];
 }
 
 export function createKakaoStub(): { kakao: KakaoNS; log: StubLog; fire: (event: string) => void } {
-  const log: StubLog = { maps: [], overlays: [], calls: [] };
+  const log: StubLog = { maps: [], overlays: [], calls: [], view: [34.6, 125.6, 37.9, 130.0] };
   const listeners = new Map<string, (() => void)[]>();
   class LatLng {
     constructor(private lat: number, private lng: number) {}
@@ -26,7 +28,9 @@ export function createKakaoStub(): { kakao: KakaoNS; log: StubLog; fire: (event:
     setLevel(l: number) { this.rec.level = l; log.calls.push(`level ${l}`); }
     getLevel() { return this.rec.level; }
     getCenter() { return new LatLng(...this.rec.center); }
-    panTo(ll: LatLng) { this.setCenter(ll); }
+    panTo(ll: LatLng) { this.rec.center = [ll.getLat(), ll.getLng()]; log.calls.push(`pan ${ll.getLat()},${ll.getLng()}`); }
+    /** 작은 지도에 보이는 범위(가장 넓은 단계에서도 전국이 다 들어가지 않음 — 위아래가 잘림) */
+    getBounds() { const [s, w, n, e] = log.view; return { getSouthWest: () => new LatLng(s, w), getNorthEast: () => new LatLng(n, e) }; }
     setBounds(b: LatLngBounds) { this.rec.level = 13; log.calls.push(`bounds ${b.pts.length}`); }
     setZoomable(z: boolean) { this.rec.zoomable = z; }
     relayout() {}

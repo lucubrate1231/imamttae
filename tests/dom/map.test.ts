@@ -106,6 +106,19 @@ describe('카카오 지도 어댑터 (가짜 SDK로 확인)', () => {
     }
   });
 
+  it('D39: 고른 곳이 작은 지도 칸 밖이면 확대 없이 그곳이 보이게 옮김(칸 안이면 그대로)', async () => {
+    const stub = createKakaoStub();
+    const m = createKakaoMap(stub.kakao);
+    await m.mount(document.createElement('div'));
+    m.setPins(pins);
+    const before = stub.log.calls.length;
+    m.select('s-sea'); // 37.47 — 칸 안
+    expect(stub.log.calls.slice(before)).toEqual([]);
+    m.select('s-005-jujeongol'); // 38.08 — 칸 위로 벗어남(설악)
+    expect(stub.log.calls.slice(before)).toEqual(['pan 38.0825,128.4282']);
+    expect(stub.log.calls.some((c) => c.startsWith('level'))).toBe(false);
+  });
+
   it("풍경 찾기: fit()은 올린 핀이 모두 보이게 지도를 맞춤(한 곳으로 확대하지 않음)", async () => {
     const { log, m, fire } = await mount();
     m.setPins(pins);
