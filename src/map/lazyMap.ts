@@ -8,7 +8,8 @@ import { createFailedMap } from './failedMap';
 import type { MapAdapter, MapPin } from './types';
 
 /** giveUpMs: 이만큼 기다려도 지도가 안 붙으면 '지도를 불러오지 못했어요'(빈 칸으로 남지 않게, 10/5 아이폰) */
-export function createLazyMap(make: () => Promise<MapAdapter>, opts: { giveUpMs?: number; showReason?: boolean } = {}): MapAdapter {
+/** status: 지금 단계 글자(미리보기에서 기다리는 동안 지도 칸에 '몇 초째 · 단계'로 보여 줌) */
+export function createLazyMap(make: () => Promise<MapAdapter>, opts: { giveUpMs?: number; showReason?: boolean; status?: () => string } = {}): MapAdapter {
   const giveUpMs = opts.giveUpMs ?? 15_000;
   let inner: MapAdapter | null = null; // 붙은 뒤에만 채움
   let started: Promise<void> | null = null;
@@ -40,13 +41,31 @@ export function createLazyMap(make: () => Promise<MapAdapter>, opts: { giveUpMs?
     inner = m;
   }
 
+  /** 미리보기: 기다리는 동안 몇 초째·어느 단계인지 작게(끝나면 지움) */
+  function waitNote(el: HTMLElement): () => void {
+    if (!opts.showReason) return () => undefined;
+    const note = document.createElement('small');
+    note.className = 'mapwait';
+    const t0 = Date.now();
+    const paint = () => (note.textContent = ['지도 기다리는 중', `${Math.floor((Date.now() - t0) / 1000)}초`, opts.status?.()].filter(Boolean).join(' · '));
+    paint();
+    el.append(note);
+    const tick = window.setInterval(paint, 1000);
+    return () => {
+      window.clearInterval(tick);
+      note.remove();
+    };
+  }
+
   async function attach(el: HTMLElement): Promise<void> {
+    const stopNote = waitNote(el);
     type Got = { m: MapAdapter } | { e: unknown };
     const job: Promise<Got> = attachInner(el).then((m) => ({ m }), (e: unknown) => ({ e }));
     let timer = 0;
     const late = new Promise<null>((ok) => (timer = window.setTimeout(() => ok(null), giveUpMs)));
     const got = await Promise.race([job, late]);
     window.clearTimeout(timer);
+    stopNote();
     if (got && 'm' in got) return finish(got.m);
     const why = got ? (got.e instanceof Error ? got.e.message : String(got.e)) : '지도가 너무 늦습니다';
     console.warn('[imamttae] 지도 대체:', why);

@@ -43,6 +43,9 @@ export interface KakaoNS {
 }
 
 let pending: Promise<KakaoNS> | null = null;
+let stage = '시작 전';
+/** 지금 SDK 불러오기 단계(미리보기에서 지도 칸에 보여 줌 — 휴대폰에서 어디서 멈추는지 찾기, 10/5) */
+export const kakaoSdkStage = (): string => stage;
 
 export function loadKakaoSdk(appkey: string, timeoutMs = 8000, doc: Document = document): Promise<KakaoNS> {
   if (!appkey) return Promise.reject(new Error('카카오 JavaScript 키가 없습니다'));
@@ -56,8 +59,10 @@ export function loadKakaoSdk(appkey: string, timeoutMs = 8000, doc: Document = d
         clearTimeout(timer);
         return reject(new Error('카카오 SDK가 비어 있습니다(도메인 미등록일 수 있음)'));
       }
+      stage = '지도 준비 중';
       k.maps.load(() => {
         clearTimeout(timer);
+        stage = '지도 준비 끝';
         resolve(k);
       });
     };
@@ -65,9 +70,11 @@ export function loadKakaoSdk(appkey: string, timeoutMs = 8000, doc: Document = d
     const s = doc.createElement('script');
     s.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${encodeURIComponent(appkey)}&autoload=false`;
     s.async = true;
+    stage = 'SDK 파일 받는 중';
     s.onload = () => done();
     s.onerror = () => {
       clearTimeout(timer);
+      stage = 'SDK 파일 실패';
       reject(new Error('카카오 지도 SDK를 불러오지 못했습니다'));
     };
     doc.head.append(s);
@@ -81,4 +88,5 @@ export function loadKakaoSdk(appkey: string, timeoutMs = 8000, doc: Document = d
 /** 테스트용: 불러오기 상태 초기화 */
 export function resetKakaoSdkForTest(): void {
   pending = null;
+  stage = '시작 전';
 }
