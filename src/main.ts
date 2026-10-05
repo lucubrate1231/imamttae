@@ -7,7 +7,7 @@ import { createLazyMap } from './map/lazyMap';
 import { kakaoSdkStage } from './map/kakaoSdk';
 import { CLOSEST_LEVEL } from './map/kakaoMap';
 import { createUmamiTracker, SITE_ID, tagFor } from './analytics';
-import { captureInstallPrompt, registerServiceWorker } from './pwa';
+import { buildOf, captureInstallPrompt, registerServiceWorker, watchForUpdate } from './pwa';
 
 // 크롬 설치 창 신호는 앱이 다 그려지기 전에 올 수 있어 가장 먼저 듣기 시작함(F5-AC2)
 const installPrompt = captureInstallPrompt(window);
@@ -47,6 +47,8 @@ async function main(): Promise<void> {
   // 사용 통계(docs/analytics.md): github.io에서만 보내고, 미리보기·알파는 꼬리표로 나눔
   const tracker = createUmamiTracker(window, { siteId: SITE_ID, tag: tagFor(location.pathname) });
   registerServiceWorker(window); // 홈 화면에 추가(F5-AC2) — github.io에서만
+  // 새 판이 나오면 다시 화면에 나올 때 저절로 다시 불러옴(홈 화면 앱은 새로고침 버튼이 없음, 10/6)
+  watchForUpdate(window, { current: buildOf(document.querySelector<HTMLScriptElement>('script[src*="assets/main-"]')?.getAttribute('src') ?? '') });
   await startApp({ root, map, findMap, content, tracker, installPrompt });
 }
 

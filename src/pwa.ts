@@ -18,6 +18,49 @@ export function registerServiceWorker(win: Window, url = './sw.js'): void {
   else win.addEventListener('load', go, { once: true });
 }
 
+/** 페이지의 판 이름 = 앱 파일 이름의 해시(assets/main-XXXX.js). 개발 서버처럼 없으면 null */
+export function buildOf(html: string): string | null {
+  return /assets\/main-([\w-]+)\.js/.exec(html)?.[1] ?? null;
+}
+
+/**
+ * 새 판이 나오면 저절로 다시 불러오기(10/6 사용자). 아이폰은 홈 화면 앱·사파리 탭을 다시 열 때 예전 화면을 되살려서,
+ * 새로고침 버튼이 없는 홈 화면 앱은 예전 판이 계속 돌았음. 다시 화면에 나올 때(pageshow·보임) 첫 화면 HTML을 받아
+ * 판 이름이 다르면 다시 불러옴(보던 화면 주소는 그대로). 확인은 minGapMs에 한 번, 인터넷이 끊기면 그대로.
+ */
+export function watchForUpdate(
+  win: Window,
+  opts: { current: string | null; fetchHtml?: () => Promise<string>; reload?: () => void; minGapMs?: number },
+): () => void {
+  const { current } = opts;
+  if (!current) return () => undefined;
+  const fetchHtml = opts.fetchHtml ?? (() => win.fetch(new URL('./', win.location.href).href, { cache: 'no-store' }).then((r) => (r.ok ? r.text() : '')));
+  const reload = opts.reload ?? (() => win.location.reload());
+  const gap = opts.minGapMs ?? 60_000;
+  let last = Date.now(); // 막 연 때는 확인하지 않음
+  let busy = false;
+  const check = async () => {
+    if (busy || win.document.visibilityState === 'hidden' || Date.now() - last < gap) return;
+    busy = true;
+    last = Date.now();
+    try {
+      const served = buildOf(await fetchHtml());
+      if (served && served !== current) reload();
+    } catch {
+      // 인터넷이 끊김 — 다음에 다시
+    } finally {
+      busy = false;
+    }
+  };
+  if (gap === 0) last = -Infinity;
+  win.addEventListener('pageshow', check);
+  win.document.addEventListener('visibilitychange', check);
+  return () => {
+    win.removeEventListener('pageshow', check);
+    win.document.removeEventListener('visibilitychange', check);
+  };
+}
+
 /** 카카오톡 안에서 바깥 기본 브라우저로 열기(널리 쓰이지만 카카오 공식 문서는 없음 — 실기기 확인) */
 export function kakaoExternalUrl(target: string): string {
   return `kakaotalk://web/openExternal?url=${encodeURIComponent(target)}`;
