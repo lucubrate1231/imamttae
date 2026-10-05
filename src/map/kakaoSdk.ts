@@ -48,20 +48,24 @@ export function loadKakaoSdk(appkey: string, timeoutMs = 8000, doc: Document = d
   if (!appkey) return Promise.reject(new Error('카카오 JavaScript 키가 없습니다'));
   if (pending) return pending;
   pending = new Promise<KakaoNS>((resolve, reject) => {
+    // 시간 재기는 SDK 파일이 온 때가 아니라 지도 준비(maps.load)가 끝날 때까지 — 중간에 멈추면 빈 칸으로 남음(10/5 아이폰)
+    const timer = setTimeout(() => reject(new Error('카카오 지도 응답이 늦습니다')), timeoutMs);
     const done = () => {
       const k = window.kakao;
-      if (!k?.maps?.load) return reject(new Error('카카오 SDK가 비어 있습니다(도메인 미등록일 수 있음)'));
-      k.maps.load(() => resolve(k));
+      if (!k?.maps?.load) {
+        clearTimeout(timer);
+        return reject(new Error('카카오 SDK가 비어 있습니다(도메인 미등록일 수 있음)'));
+      }
+      k.maps.load(() => {
+        clearTimeout(timer);
+        resolve(k);
+      });
     };
     if (window.kakao?.maps?.load) return done();
     const s = doc.createElement('script');
     s.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${encodeURIComponent(appkey)}&autoload=false`;
     s.async = true;
-    const timer = setTimeout(() => reject(new Error('카카오 지도 응답이 늦습니다')), timeoutMs);
-    s.onload = () => {
-      clearTimeout(timer);
-      done();
-    };
+    s.onload = () => done();
     s.onerror = () => {
       clearTimeout(timer);
       reject(new Error('카카오 지도 SDK를 불러오지 못했습니다'));

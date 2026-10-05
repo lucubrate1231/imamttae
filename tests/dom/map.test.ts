@@ -1,6 +1,7 @@
 // @vitest-environment happy-dom
 import { describe, expect, it, vi } from 'vitest';
 import { createMap, pickMapMode } from '../../src/map';
+import { loadKakaoSdk, resetKakaoSdkForTest } from '../../src/map/kakaoSdk';
 import { createKakaoMap } from '../../src/map/kakaoMap';
 import { createListMap } from '../../src/map/listMap';
 import { createLazyMap } from '../../src/map/lazyMap';
@@ -186,5 +187,45 @@ describe('#77 기다리지 않는 지도(createLazyMap)', () => {
     give(inner);
     await mounted;
     expect(destroy).toHaveBeenCalled();
+  });
+});
+
+describe('지도 칸이 빈 채로 남지 않음(10/5 아이폰에서 지도 칸이 비어 있던 것)', () => {
+  it('SDK 파일은 왔는데 카카오 지도 준비(maps.load)가 끝내 안 끝나면 시간이 지나 실패로 넘어감', async () => {
+    resetKakaoSdkForTest();
+    let script: HTMLScriptElement | null = null;
+    const doc = { createElement: (t: string) => document.createElement(t), head: { append: (s: HTMLScriptElement) => (script = s) } } as unknown as Document;
+    const p = loadKakaoSdk('key', 50, doc);
+    (window as unknown as { kakao: unknown }).kakao = { maps: { load: () => {} } }; // 콜백을 부르지 않음
+    script!.onload!(new Event('load'));
+    await expect(p).rejects.toThrow(/늦습니다/);
+    delete (window as unknown as { kakao?: unknown }).kakao;
+    resetKakaoSdkForTest();
+  });
+
+  it('지도를 붙이다 오류가 나면 "지도를 불러오지 못했어요"', async () => {
+    const broken = { ...createListMap(), mount: () => Promise.reject(new Error('붙이기 실패')) };
+    const lazy = createLazyMap(async () => broken);
+    const el = document.createElement('div');
+    lazy.setPins(pins);
+    lazy.select('s-sea');
+    await lazy.mount(el);
+    expect(lazy.kind).toBe('failed');
+    expect(el.querySelector('.mapfail')?.textContent).toBe('지도를 불러오지 못했어요.');
+  });
+
+  it('지도가 정한 시간 안에 안 오면 "지도를 불러오지 못했어요", 나중에라도 오면 지도로 바꿈', async () => {
+    let give!: (m: ReturnType<typeof createListMap>) => void;
+    const lazy = createLazyMap(() => new Promise((r) => (give = r)), { giveUpMs: 30 });
+    const el = document.createElement('div');
+    lazy.setPins(pins);
+    await lazy.mount(el);
+    expect(lazy.kind).toBe('failed');
+    expect(el.querySelector('.mapfail')).not.toBeNull();
+    give(createListMap());
+    await new Promise((r) => setTimeout(r, 0));
+    expect(lazy.kind).toBe('list');
+    expect(el.querySelector('.mapfail')).toBeNull();
+    expect(el.querySelectorAll('button[data-pin-id]')).toHaveLength(3);
   });
 });
