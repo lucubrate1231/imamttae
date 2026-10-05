@@ -32,14 +32,16 @@ async function main(): Promise<void> {
   const key = import.meta.env.VITE_KAKAO_JS_KEY ?? '';
   // 지도를 기다리지 않음(#77): 카카오 SDK는 지금 바로 받기 시작하고, 앱은 장면 데이터만 오면 그림.
   // 첫 화면과 풍경 찾기가 지도를 하나씩 씀(SDK는 한 번만 불러옴). 풍경 찾기 지도는 그 탭을 처음 열 때 만듦
+  // 미리보기(/next/)에서는 지도를 못 불러온 까닭을 지도 칸에 작게 보여 줌(휴대폰에서 원인 찾기)
+  const showReason = tagFor(location.pathname) === 'preview';
   const makeMap = (opts: { focusLevel?: number } = {}) =>
-    createMap(mode, key, undefined, opts).then(({ map, fallbackReason }) => {
+    createMap(mode, key, undefined, { ...opts, showReason }).then(({ map, fallbackReason }) => {
       if (fallbackReason) console.warn('[imamttae] 지도 대체:', fallbackReason);
       return map;
     });
   const homeMap = makeMap({ focusLevel: HOME_MAP_LEVEL });
-  const map = createLazyMap(() => homeMap);
-  const findMap = createLazyMap(() => makeMap());
+  const map = createLazyMap(() => homeMap, { showReason });
+  const findMap = createLazyMap(() => makeMap(), { showReason });
   const content = await loadContent();
   // 사용 통계(docs/analytics.md): github.io에서만 보내고, 미리보기·알파는 꼬리표로 나눔
   const tracker = createUmamiTracker(window, { siteId: SITE_ID, tag: tagFor(location.pathname) });

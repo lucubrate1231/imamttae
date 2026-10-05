@@ -93,13 +93,15 @@ h1, h2, h3, p { margin: 0; }
 .legend span { display: inline-flex; align-items: center; gap: 6px; }
 .legend span::before { content: ''; width: 12px; height: 12px; border-radius: 50%; background: var(--season); }
 .legend span.r::before { background: #aab2ac; }
-.mapfail { position: absolute; inset: 0; display: grid; place-items: center; font-size: var(--fs-meta); color: var(--ink-2); }
+.mapfail { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: 4px; font-size: var(--fs-meta); color: var(--ink-2); text-align: center; padding: 0 16px; }
+.mapfail-why { font-size: 14px; color: var(--ink-3); } /* 미리보기에서만: 못 불러온 까닭 */
 
 .pin { display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; }
-.pin .dot { width: 16px; height: 16px; border-radius: 50%; background: var(--season); border: 3px solid #fff; box-shadow: 0 2px 6px -2px rgba(0, 0, 0, .5); }
-.pin.r .dot { width: 12px; height: 12px; background: #aab2ac; border-width: 2px; }
+/* 카카오는 점 묶음의 아래 끝을 좌표에 둠(yAnchor 1) → 점 높이 절반만큼 아래로 빼서 점 가운데가 그 장소가 되게(10/5 — 전국 지도에서 30km 어긋났음) */
+.pin .dot { margin-bottom: -8px; width: 16px; height: 16px; border-radius: 50%; background: var(--season); border: 3px solid #fff; box-shadow: 0 2px 6px -2px rgba(0, 0, 0, .5); }
+.pin.r .dot { margin-bottom: -6px; width: 12px; height: 12px; background: #aab2ac; border-width: 2px; }
 .pin .nm { display: none; font-size: 15px; font-weight: 800; padding: 2px 10px; border-radius: var(--r-pill); background: var(--season); color: #fff; white-space: nowrap; }
-.pin.on .dot { width: 24px; height: 24px; }
+.pin.on .dot { margin-bottom: -12px; width: 24px; height: 24px; }
 .pin.on .nm { display: block; }
 
 /* ── 작가 부부가 다녀온 곳(제철 아님, 톤을 낮춤: 작은 사진, 회색, 계절 색 없음) ── */
@@ -248,7 +250,7 @@ h1, h2, h3, p { margin: 0; }
 .empty-month { margin: 0 var(--gutter) 14px; padding: 14px 16px; border-radius: 18px; background: #fff; font-size: 17px; color: var(--ink-2); }
 .empty-month b { color: var(--ink); }
 /* 지도의 준비 중 점: 점선 테두리 */
-.pin.ph .dot { width: 12px; height: 12px; background: #fff; border: 2px dashed var(--draft); }
+.pin.ph .dot { margin-bottom: -6px; width: 12px; height: 12px; background: #fff; border: 2px dashed var(--draft); }
 /* 가짜 지도(?map=fake, 자동 테스트용): 핀을 버튼 목록으로 */
 .listmap { list-style: none; margin: 0; padding: 10px; display: flex; flex-wrap: wrap; gap: 6px; height: 100%; overflow-y: auto; }
 .listpin { min-height: var(--tap); padding: 0 14px; border-radius: var(--r-pill); background: #fff; font-size: 16px; font-weight: 700; color: var(--ink-2); }

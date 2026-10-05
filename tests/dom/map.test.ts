@@ -5,6 +5,7 @@ import { loadKakaoSdk, resetKakaoSdkForTest } from '../../src/map/kakaoSdk';
 import { createKakaoMap } from '../../src/map/kakaoMap';
 import { createListMap } from '../../src/map/listMap';
 import { createLazyMap } from '../../src/map/lazyMap';
+import { createFailedMap } from '../../src/map/failedMap';
 import { createKakaoStub } from '../fixtures/kakaoStub';
 import type { MapPin } from '../../src/map/types';
 
@@ -271,5 +272,29 @@ describe('지도 칸이 빈 채로 남지 않음(10/5 아이폰에서 지도 칸
     expect(lazy.kind).toBe('list');
     expect(el.querySelector('.mapfail')).toBeNull();
     expect(el.querySelectorAll('button[data-pin-id]')).toHaveLength(3);
+  });
+});
+
+describe('미리보기에서는 지도를 못 불러온 까닭을 작게 보여 줌(홈 화면 앱에서 지도 칸이 비던 것 찾기, 10/5)', () => {
+  it('까닭을 넘기면 안내 아래 작은 글자로', async () => {
+    const el = document.createElement('div');
+    await createFailedMap('카카오 지도 응답이 늦습니다').mount(el);
+    expect(el.querySelector('.mapfail')?.firstChild?.textContent).toBe('지도를 불러오지 못했어요.');
+    expect(el.querySelector('.mapfail-why')?.textContent).toBe('카카오 지도 응답이 늦습니다');
+  });
+  it('까닭을 안 넘기면(알파) 안내만', async () => {
+    const el = document.createElement('div');
+    await createFailedMap().mount(el);
+    expect(el.querySelector('.mapfail-why')).toBeNull();
+  });
+  it('createMap·기다리는 지도에 showReason을 주면 그 까닭이 칸에 보임', async () => {
+    const r = await createMap('kakao', 'key', () => Promise.reject(new Error('SDK 막힘')), { showReason: true });
+    const el = document.createElement('div');
+    await r.map.mount(el);
+    expect(el.querySelector('.mapfail-why')?.textContent).toBe('SDK 막힘');
+    const lazy = createLazyMap(() => new Promise(() => {}), { giveUpMs: 20, showReason: true });
+    const el2 = document.createElement('div');
+    await lazy.mount(el2);
+    expect(el2.querySelector('.mapfail-why')?.textContent).toBe('지도가 너무 늦습니다');
   });
 });
