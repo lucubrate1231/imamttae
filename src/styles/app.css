@@ -351,12 +351,14 @@ h1, h2, h3, p { margin: 0; }
 
 /* ── 홈 화면에 두기(F5) — design-guide 11장 ── */
 /* 카톡 안 첫 화면 맨 위 띠(11-2): 화면을 덮지 않고 내용과 함께 스크롤 */
-.kband { display: flex; align-items: center; padding-top: env(safe-area-inset-top); background: var(--bg-soft); border-bottom: 1px solid var(--line); }
+.kband { display: flex; align-items: center; padding-top: env(safe-area-inset-top); background: var(--band-bg); border-bottom: 1px solid var(--band-line); }
 .kband + .eyebrow { padding-top: 14px; }
-.kb-go { display: flex; flex: 1; flex-direction: column; justify-content: center; min-width: 0; min-height: 60px; padding: 10px 0 10px 16px; text-align: left; }
+.kb-go { display: flex; flex: 1; align-items: center; gap: 10px; min-width: 0; min-height: 64px; padding: 10px 0 10px 16px; text-align: left; }
+.kb-ic { flex: none; width: 32px; height: 32px; border: 1px solid rgba(47, 90, 126, .18); border-radius: 9px; }
+.kb-txt { display: flex; flex-direction: column; min-width: 0; }
 .kb-l1 { font-size: 15px; line-height: 1.4; color: var(--ink); }
-.kb-l2 { margin-top: 2px; font-size: 16px; font-weight: 800; color: var(--season); }
-.kb-x { display: grid; flex: none; place-items: center; width: 48px; height: 48px; margin-right: 4px; color: var(--ink-3); }
+.kb-l2 { margin-top: 2px; font-size: 16px; font-weight: 800; color: var(--band-link); }
+.kb-x { display: grid; flex: none; place-items: center; width: 48px; height: 48px; margin-right: 4px; color: var(--ink-2); }
 /* 판(날짜 변경 창과 같은 틀) — 화면보다 길면 판 안에서 스크롤, 맨 위 24px는 남김 */
 .a2sheet { max-height: calc(100dvh - 24px); overflow-y: auto; }
 .a2-icon { align-self: center; width: 64px; height: 64px; border-radius: 16px; box-shadow: 0 2px 10px rgba(0, 0, 0, .12); }
@@ -366,7 +368,7 @@ h1, h2, h3, p { margin: 0; }
 .a2-gttl { font-size: 19px; font-weight: 800; color: var(--ink); }
 .a2-desc { margin-top: 4px; font-size: 16px; color: var(--ink-3); }
 .a2-steps { display: flex; flex-direction: column; gap: 16px; margin: 18px 0 0; padding: 0; list-style: none; }
-.a2-step { display: grid; grid-template-columns: 28px 1fr 76px; align-items: start; gap: 12px; }
+.a2-step { display: grid; grid-template-columns: 28px 1fr auto; align-items: start; gap: 12px; }
 .a2-num { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: var(--season); color: #fff; font-size: 15px; font-weight: 800; }
 .a2-body { display: flex; flex-direction: column; min-width: 0; }
 .a2-txt { font-size: 17px; line-height: 1.5; color: var(--ink); }
@@ -384,6 +386,16 @@ h1, h2, h3, p { margin: 0; }
 .a2-pic.br .a2-hit { bottom: 4px; }
 .a2-line { display: block; height: 6px; border-radius: 3px; background: #d5dbd4; }
 .a2-line.short { width: 60%; }
+/* 아이폰 사파리 그림(디자인 #62): 공유 모양 하나만 · 공유 화면의 실제 메뉴 순서 · 추가 창의 '웹 앱으로 열기' 스위치 */
+.a2-pic.icon { align-items: center; }
+.a2-pic.icon .a2-sym { display: grid; place-items: center; width: 34px; height: 34px; padding: 0; color: var(--ink); }
+.a2-pic.rows { width: 96px; gap: 3px; padding: 5px; } /* 메뉴 글자와 ⊕ 아이콘이 다 들어가게 조금 넓게 */
+.a2-row { display: flex; align-items: center; justify-content: space-between; gap: 2px; overflow: hidden; padding: 0 4px; font-size: 9px; line-height: 1.5; white-space: nowrap; color: var(--ink-3); }
+.a2-row.a2-hit { padding: 1px 4px; font-size: 9.5px; color: var(--ink); }
+.a2-row-ic { display: flex; flex: none; }
+.a2-switch { position: relative; align-self: flex-end; width: 22px; height: 13px; border-radius: 7px; background: #34c759; }
+.a2-switch::after { content: ''; position: absolute; top: 2px; right: 2px; width: 9px; height: 9px; border-radius: 50%; background: #fff; }
+.a2-key { display: inline-flex; vertical-align: -2px; margin-right: 4px; }
 @media (max-width: 359px) {
   .a2-step { grid-template-columns: 28px 1fr; }
   .a2-pic { grid-column: 2; }

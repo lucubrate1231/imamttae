@@ -95,6 +95,13 @@ describe('F5-AC4: 카톡 안 첫 화면 맨 위 띠', () => {
     expect(band.nextElementSibling!.matches('.eyebrow')).toBe(true);
     expect(text('.kband .kb-l1')).toBe('크롬으로 열면 앱처럼 쓸 수 있어요');
     expect(text('.kband .kb-l2')).toBe('크롬으로 열기 ›');
+    // 디자인 #64: 띠 맨 앞에 앱 아이콘(32px, 장식), 글 두 줄은 한 덩어리
+    const icon = q<HTMLImageElement>('.kband .kb-go img.kb-ic')!;
+    expect(icon.getAttribute('src')).toBe('./brand/icon-192.png');
+    expect(icon.getAttribute('alt')).toBe('');
+    expect([icon.getAttribute('width'), icon.getAttribute('height')]).toEqual(['32', '32']);
+    expect(q('.kband .kb-go')!.firstElementChild).toBe(icon);
+    expect(q('.kband .kb-txt .kb-l1')).not.toBeNull();
     expect(q('.kband .kb-go')!.getAttribute('aria-label')).toBe('크롬으로 열기 안내');
     expect(q('.kband .kb-x')!.getAttribute('aria-label')).toBe('안내 닫기');
     expect(root.querySelectorAll('.kband')).toHaveLength(1);
@@ -220,7 +227,21 @@ describe('F5-AC6: 크롬·삼성 인터넷에서 처음 [저장] 직후 한 번'
     expect(text('.toast')).toContain('저장했어요');
     go('#/');
     q('main.home .home-add')!.click();
-    expect(text('.a2sheet .a2-desc')).toBe('사파리 메뉴로 할 수 있어요.');
+    expect(text('.a2sheet .a2-desc')).toBe('사파리 공유 버튼으로 할 수 있어요.');
+    // 디자인 #62: 공유 버튼은 자리 대신 모양으로(아이폰 판·배치마다 자리가 달라서)
+    const steps = [...root.querySelectorAll('.a2sheet .a2-step')];
+    expect(steps).toHaveLength(3);
+    const s1 = steps[0]!;
+    expect(s1.querySelector('.a2-txt')!.textContent).toBe("'공유' 버튼을 누르세요");
+    expect(s1.querySelector('.a2-txt .a2-key svg')).not.toBeNull(); // 글 안의 공유 모양 열쇠(장식)
+    expect(s1.querySelector('.a2-txt .a2-key')!.getAttribute('aria-hidden')).toBe('true');
+    expect(s1.querySelector('.a2-sub')!.textContent).toBe('안 보이면 주소창 옆 [⋯] 버튼을 먼저 누르세요.');
+    expect(s1.querySelector('.a2-pic.icon svg')).not.toBeNull(); // 그림은 공유 모양 하나만
+    expect(s1.querySelector('.a2-pic .a2-bar')).toBeNull();
+    expect([...steps[1]!.querySelectorAll('.a2-pic .a2-row')].map((r) => r.textContent)).toEqual(['북마크에 추가', '페이지에서 찾기', '홈 화면에 추가']);
+    expect(steps[1]!.querySelector('.a2-pic .a2-row.a2-hit svg')).not.toBeNull(); // '홈 화면에 추가' 줄의 ⊕ 네모
+    expect(steps[2]!.querySelector('.a2-sub')!.textContent).toBe("'웹 앱으로 열기'가 보이면 켠 채로 두세요.");
+    expect(steps[2]!.querySelector('.a2-pic .a2-switch')).not.toBeNull();
   });
 
   it('덮개를 눌러 닫아도 다시 띄우지 않음(새로 열어도)', async () => {
