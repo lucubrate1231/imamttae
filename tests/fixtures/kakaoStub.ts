@@ -7,10 +7,12 @@ export interface StubLog {
   calls: string[];
   /** 지도에 보이는 범위 [남, 서, 북, 동] */
   view: [number, number, number, number];
+  /** setBounds 뒤 지도 단계(카카오가 핀에 맞춰 고른 단계) */
+  fitLevel: number;
 }
 
 export function createKakaoStub(): { kakao: KakaoNS; log: StubLog; fire: (event: string) => void } {
-  const log: StubLog = { maps: [], overlays: [], calls: [], view: [34.6, 125.6, 37.9, 130.0] };
+  const log: StubLog = { maps: [], overlays: [], calls: [], view: [34.6, 125.6, 37.9, 130.0], fitLevel: 13 };
   const listeners = new Map<string, (() => void)[]>();
   class LatLng {
     constructor(private lat: number, private lng: number) {}
@@ -31,7 +33,7 @@ export function createKakaoStub(): { kakao: KakaoNS; log: StubLog; fire: (event:
     panTo(ll: LatLng) { this.rec.center = [ll.getLat(), ll.getLng()]; log.calls.push(`pan ${ll.getLat()},${ll.getLng()}`); }
     /** 작은 지도에 보이는 범위(가장 넓은 단계에서도 전국이 다 들어가지 않음 — 위아래가 잘림) */
     getBounds() { const [s, w, n, e] = log.view; return { getSouthWest: () => new LatLng(s, w), getNorthEast: () => new LatLng(n, e) }; }
-    setBounds(b: LatLngBounds) { this.rec.level = 13; log.calls.push(`bounds ${b.pts.length}`); }
+    setBounds(b: LatLngBounds) { this.rec.level = log.fitLevel; log.calls.push(`bounds ${b.pts.length}`); }
     setZoomable(z: boolean) { this.rec.zoomable = z; }
     relayout() {}
   }

@@ -4,6 +4,7 @@ import type { ContentFile } from '../shared/schema/content';
 import { startApp } from './app';
 import { createMap, pickMapMode } from './map';
 import { createLazyMap } from './map/lazyMap';
+import { CLOSEST_LEVEL } from './map/kakaoMap';
 import { createUmamiTracker, SITE_ID, tagFor } from './analytics';
 import { captureInstallPrompt, registerServiceWorker } from './pwa';
 
@@ -22,7 +23,7 @@ async function loadContent(): Promise<ContentFile | null> {
 }
 
 /** 첫 화면 지도 단계(카카오 지도 9단계 ≈ 가로 30km, 10/5 사용자). 고른 곳을 움직임 없이 가운데로(F1-AC5) */
-const HOME_MAP_LEVEL = 9;
+const HOME_MAP_LEVEL = CLOSEST_LEVEL;
 
 async function main(): Promise<void> {
   const root = document.getElementById('app');

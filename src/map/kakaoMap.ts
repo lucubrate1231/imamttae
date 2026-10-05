@@ -6,11 +6,14 @@
  * - 첫 화면 지도(focusLevel)는 9단계로 시작하고, 고른 곳을 움직임 없이 가운데로 둡니다(10/5 사용자).
  *   단계는 바꾸지 않습니다 — 전국 → 확대 움직임은 지도 그림을 두 번 받아 늦게 떠서 뺐습니다(D39, #77).
  * - 풍경 찾기 지도는 우리나라 전체로 시작해 fit()으로 맞추고, 고른 곳이 칸 밖이면 옮기기만 합니다.
+ * - 어느 화면도 9단계(CLOSEST_LEVEL)보다 가까이 가지 않습니다.
  */
 import type { KakaoMapInst, KakaoNS, KakaoOverlay } from './kakaoSdk';
 import type { MapAdapter, MapPin, PinKind } from './types';
 
 const KOREA = { center: { lat: 36.4, lng: 127.9 }, sw: { lat: 33.15, lng: 125.6 }, ne: { lat: 38.45, lng: 129.6 } };
+/** 어느 화면도 이보다 가까이 가지 않음(카카오 단계는 작을수록 가까이. 7·8단계는 등고선이 빽빽함 — 메시지 V, 10/5) */
+export const CLOSEST_LEVEL = 9;
 const CLASS: Record<PinKind, string> = { peak: 'p', record: 'r', placeholder: 'ph' };
 const BASE_Z: Record<PinKind, number> = { peak: 2, record: 1, placeholder: 1 };
 
@@ -56,26 +59,27 @@ export function createKakaoMap(kakao: KakaoNS, opts: { focusLevel?: number } = {
     if (!inside) map.panTo(new K.LatLng(p.lat, p.lng));
   }
 
-  return {
-    kind: 'kakao',
-    async mount(el) {
-      const m = new K.Map(el, {
-        center: new K.LatLng(KOREA.center.lat, KOREA.center.lng),
+  let host: HTMLElement | null = null;
+  let waiting: readonly MapPin[] | null = null; // 첫 화면 지도: 처음 고를 때까지 기다리는 핀
+
+  /** 지도 만들기. 첫 화면 지도는 처음 고른 곳에서 바로 시작(다른 곳 지도 그림을 먼저 받지 않게 — 메시지 V 2) */
+  function create(center: { lat: number; lng: number }): void {
+    if (!host) return;
+    const m = new K.Map(host, {
+      center: new K.LatLng(center.lat, center.lng),
         level: focusLevel ?? 13,
         draggable: false,
         scrollwheel: false,
         disableDoubleClickZoom: true,
-        keyboardShortcuts: false,
-      });
-      m.setZoomable(false);
-      if (!focusLevel) m.setBounds(new K.LatLngBounds(new K.LatLng(KOREA.sw.lat, KOREA.sw.lng), new K.LatLng(KOREA.ne.lat, KOREA.ne.lng)), 4, 4, 4, 4);
-      map = m;
-    },
-    setPins(list: readonly MapPin[]) {
-      for (const { o } of pins) o.setMap(null);
-      pins = [];
-      if (!map) return;
-      for (const p of list) {
+      keyboardShortcuts: false,
+    });
+    m.setZoomable(false);
+    if (!focusLevel) m.setBounds(new K.LatLngBounds(new K.LatLng(KOREA.sw.lat, KOREA.sw.lng), new K.LatLng(KOREA.ne.lat, KOREA.ne.lng)), 4, 4, 4, 4);
+    map = m;
+  }
+
+  function addPins(list: readonly MapPin[]): void {
+    for (const p of list) {
         const el = document.createElement('div');
         el.className = `pin ${CLASS[p.kind]}`;
         el.dataset.pinId = p.id;
@@ -90,10 +94,31 @@ export function createKakaoMap(kakao: KakaoNS, opts: { focusLevel?: number } = {
         o.setMap(map);
         pins.push({ p, o, el });
       }
+  }
+
+  return {
+    kind: 'kakao',
+    async mount(el) {
+      host = el;
+      if (!focusLevel) create(KOREA.center);
+    },
+    setPins(list: readonly MapPin[]) {
+      for (const { o } of pins) o.setMap(null);
+      pins = [];
+      if (!map) {
+        if (focusLevel && host) waiting = list; // 처음 고를 때 그곳에서 지도를 만들고 올림
+        return;
+      }
+      addPins(list);
       paint();
     },
     select(id) {
       selected = id;
+      if (!map && focusLevel && host) {
+        create(waiting?.find((p) => p.id === id) ?? KOREA.center);
+        if (waiting) addPins(waiting);
+        waiting = null;
+      }
       paint();
     },
     fit() {
@@ -102,6 +127,7 @@ export function createKakaoMap(kakao: KakaoNS, opts: { focusLevel?: number } = {
       const b = new K.LatLngBounds();
       for (const { p } of pins) b.extend(new K.LatLng(p.lat, p.lng));
       map.setBounds(b, 24, 24, 24, 24);
+      if (map.getLevel() < CLOSEST_LEVEL) map.setLevel(CLOSEST_LEVEL); // 핀이 하나뿐이거나 모여 있을 때
     },
     onPinClick(cb) {
       handler = cb;
