@@ -18,8 +18,17 @@ test('지금까지 확인한 값이 들어 있고, 후보를 골라 저장하면
   expect(before).toBeGreaterThanOrEqual(50); // 10/5 사용자가 확인한 값(tools/places/picked-seed.json)
   await expect(page.locator('#share')).toBeVisible();
 
-  // 아직 안 한 곳 하나: 관광정보 후보로 장면 위치, 지도에서 찍기 대신 목적지 이름과 함께 후보 주차장(없으면 장면 위치를 목적지로)
-  await page.locator('.item', { hasText: '남음' }).first().click();
+  // 남은 곳이 없을 수 있어(10/6 92곳 모두 끝) — 관광정보 후보가 있는 확인된 곳 하나를 지웠다가 다시 정함
+  const target = page.locator('.item', { hasText: '확인' }).first();
+  await target.click();
+  for (let i = 0; i < 40 && !(await page.locator('#useSpot').count()); i++) {
+    await page.locator('.item').nth(i + 1).click(); // 관광정보 후보가 있는 곳까지
+  }
+  const wasDone = (await page.locator('.item.on .badge.done').count()) > 0;
+  await page.locator('#clear').click();
+  await expect(page.locator('#savemsg')).toHaveText('이 브라우저에 저장했어요');
+  const mid = wasDone ? before - 1 : before;
+  await expect(prog).toHaveText(`확인 ${mid} / ${all}곳`);
   await page.locator('#useSpot').click();
   const park = page.locator('#panel [data-k]').first();
   if (await park.count()) await park.click();
@@ -30,13 +39,13 @@ test('지금까지 확인한 값이 들어 있고, 후보를 골라 저장하면
   await page.locator('#destName').fill('시험 주차장');
   await page.locator('#save').click();
   await expect(page.locator('#savemsg')).toHaveText('이 브라우저에 저장했어요');
-  await expect(prog).toHaveText(`확인 ${before + 1} / ${all}곳`);
+  await expect(prog).toHaveText(`확인 ${mid + 1} / ${all}곳`);
 
   await page.reload();
-  await expect(prog).toHaveText(`확인 ${before + 1} / ${all}곳`);
+  await expect(prog).toHaveText(`확인 ${mid + 1} / ${all}곳`);
 
   await page.locator('#copy').click();
-  await expect(page.locator('#copymsg')).toHaveText(`${before + 1}곳 복사했어요`);
+  await expect(page.locator('#copymsg')).toHaveText(`${mid + 1}곳 복사했어요`);
   const copied = JSON.parse(await page.evaluate(() => navigator.clipboard.readText()));
   expect(copied.format).toBe('imamttae-places/1');
   expect(Object.values(copied.picked).some((v) => (v as { dest?: { name?: string } }).dest?.name === '시험 주차장')).toBe(true);

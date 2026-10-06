@@ -433,13 +433,21 @@
  },
  "s-021-geumosan-sunrise": {
   "spot": {
-   "lat": 34.5938216,
-   "lng": 127.8030244,
-   "source": "public-data",
-   "ref": "tour:2704646",
-   "title": "향일암 해안길"
+   "lat": 34.590369,
+   "lng": 127.8019059,
+   "source": "manual",
+   "ref": null,
+   "title": null
   },
-  "savedAt": "2026-10-05T12:37:11.921Z"
+  "savedAt": "2026-10-06T08:27:06.056Z",
+  "dest": {
+   "name": "향일암 공영주차장",
+   "kind": "parking",
+   "lat": 34.594392,
+   "lng": 127.8043252,
+   "source": "manual",
+   "ref": null
+  }
  },
  "s-022-gurye-sansuyu": {
   "spot": {
@@ -1142,5 +1150,527 @@
    "ref": null
   },
   "savedAt": "2026-10-05T15:25:15.810Z"
+ },
+ "s-058-gaudo-dulle": {
+  "spot": {
+   "lat": 34.5283355,
+   "lng": 126.7726379,
+   "source": "public-data",
+   "ref": "tour:2024432",
+   "title": "가우도"
+  },
+  "dest": {
+   "name": "가우도망호출렁다리주차장",
+   "kind": "parking",
+   "lat": 34.5287937,
+   "lng": 126.7719027,
+   "source": "manual",
+   "ref": null
+  },
+  "savedAt": "2026-10-05T15:32:28.202Z"
+ },
+ "s-059-sebang-sunset": {
+  "spot": {
+   "lat": 34.440416,
+   "lng": 126.1022217,
+   "source": "public-data",
+   "ref": "tour:128224",
+   "title": "세방낙조 전망대"
+  },
+  "dest": {
+   "name": "세방낙조 전망대주차장",
+   "kind": "parking",
+   "lat": 34.4409024,
+   "lng": 126.1035204,
+   "source": "manual",
+   "ref": null
+  },
+  "savedAt": "2026-10-05T15:33:26.079Z"
+ },
+ "s-059-ttangkkeut": {
+  "spot": {
+   "lat": 34.29241,
+   "lng": 126.523828,
+   "source": "public-data",
+   "ref": "tour:3019080",
+   "title": "땅끝탑 스카이워크"
+  },
+  "dest": {
+   "name": "땅끝모노레일주차장",
+   "kind": "parking",
+   "lat": 34.2971643,
+   "lng": 126.527532,
+   "source": "manual",
+   "ref": null
+  },
+  "savedAt": "2026-10-05T15:34:42.714Z"
+ },
+ "s-060-biwon-garden": {
+  "spot": {
+   "lat": 34.5366202,
+   "lng": 126.6262507,
+   "source": "manual",
+   "ref": null,
+   "title": null
+  },
+  "dest": {
+   "name": "해남비원 주차장",
+   "kind": "parking",
+   "lat": 34.5370179,
+   "lng": 126.6261864,
+   "source": "manual",
+   "ref": null
+  },
+  "savedAt": "2026-10-05T15:43:12.889Z"
+ },
+ "s-060-duryunsan-gogyebong": {
+  "spot": {
+   "lat": 34.4816914,
+   "lng": 126.6338199,
+   "source": "manual",
+   "ref": null,
+   "title": null
+  },
+  "dest": {
+   "name": "두륜산케이블카주차장",
+   "kind": "parking",
+   "lat": 34.4969213,
+   "lng": 126.6249204,
+   "source": "manual",
+   "ref": null
+  },
+  "savedAt": "2026-10-05T15:47:15.287Z"
+ },
+ "s-061-hajodae": {
+  "spot": {
+   "lat": 38.0211,
+   "lng": 128.7357,
+   "source": "public-data",
+   "ref": "tour:2710734",
+   "title": "하조대"
+  },
+  "dest": {
+   "name": "하조대주차장",
+   "kind": "parking",
+   "lat": 38.0210919,
+   "lng": 128.7335068,
+   "source": "manual",
+   "ref": null
+  },
+  "savedAt": "2026-10-05T15:50:38.644Z"
+ },
+ "s-062-geumganggul-cheonbuldong": {
+  "spot": {
+   "lat": 38.157555,
+   "lng": 128.4701233,
+   "source": "public-data",
+   "ref": "tour:125680",
+   "title": "천불동계곡"
+  },
+  "dest": {
+   "name": "소공원주차장",
+   "kind": "parking",
+   "lat": 38.1727748,
+   "lng": 128.4958845,
+   "source": "manual",
+   "ref": null
+  },
+  "savedAt": "2026-10-05T15:59:35.355Z"
+ },
+ "s-062-gwongeumseong": {
+  "spot": {
+   "lat": 38.164149,
+   "lng": 128.4881826,
+   "source": "public-data",
+   "ref": "tour:125798",
+   "title": "설악산 권금성"
+  },
+  "dest": {
+   "name": "소공원주차장",
+   "kind": "parking",
+   "lat": 38.1728423,
+   "lng": 128.4959328,
+   "source": "manual",
+   "ref": null
+  },
+  "savedAt": "2026-10-05T15:59:24.436Z"
+ },
+ "s-062-ulsanbawi": {
+  "spot": {
+   "lat": 38.193157,
+   "lng": 128.474776,
+   "source": "public-data",
+   "ref": "tour:125805",
+   "title": "설악산 울산바위"
+  },
+  "dest": {
+   "name": "소공원주차장",
+   "kind": "parking",
+   "lat": 38.1727453,
+   "lng": 128.495906,
+   "source": "manual",
+   "ref": null
+  },
+  "savedAt": "2026-10-05T16:00:56.178Z"
+ },
+ "s-062-towangseong-falls": {
+  "spot": {
+   "lat": 38.154315,
+   "lng": 128.494717,
+   "source": "public-data",
+   "ref": "tour:125676",
+   "title": "토왕성폭포"
+  },
+  "dest": {
+   "name": "소공원주차장",
+   "kind": "parking",
+   "lat": 38.1727326,
+   "lng": 128.4959543,
+   "source": "manual",
+   "ref": null
+  },
+  "savedAt": "2026-10-05T16:01:17.782Z"
+ },
+ "s-063-danyanggang-jando": {
+  "spot": {
+   "lat": 36.97805,
+   "lng": 128.3398233,
+   "source": "public-data",
+   "ref": "tour:2604656",
+   "title": "단양강 잔도"
+  },
+  "dest": {
+   "name": "만천하스카이워크1주차장",
+   "kind": "parking",
+   "lat": 36.9772767,
+   "lng": 128.3369797,
+   "source": "manual",
+   "ref": null
+  },
+  "savedAt": "2026-10-05T16:08:45.814Z"
+ },
+ "s-063-mancheonha-skywalk": {
+  "spot": {
+   "lat": 36.9781724,
+   "lng": 128.3373982,
+   "source": "manual",
+   "ref": null,
+   "title": null
+  },
+  "dest": {
+   "name": "만천하스카이워크1주차장",
+   "kind": "parking",
+   "lat": 36.9772596,
+   "lng": 128.3369422,
+   "source": "manual",
+   "ref": null
+  },
+  "savedAt": "2026-10-05T16:09:51.166Z"
+ },
+ "s-064-deogyusan-hyangjeokbong": {
+  "spot": {
+   "lat": 35.859903,
+   "lng": 127.746352,
+   "source": "public-data",
+   "ref": "tour:1705213",
+   "title": "향적봉(덕유산)"
+  },
+  "dest": {
+   "name": "무주덕유산리조트 설천하우스 주차장",
+   "kind": "parking",
+   "lat": 35.8916968,
+   "lng": 127.7368838,
+   "source": "manual",
+   "ref": null
+  },
+  "savedAt": "2026-10-06T07:55:33.013Z"
+ },
+ "s-065-amisan-ridge": {
+  "spot": {
+   "lat": 36.1556178,
+   "lng": 128.8601875,
+   "source": "manual",
+   "ref": null,
+   "title": null
+  },
+  "dest": {
+   "name": "아미산주차장",
+   "kind": "parking",
+   "lat": 36.1685847,
+   "lng": 128.838231,
+   "source": "manual",
+   "ref": null
+  },
+  "savedAt": "2026-10-06T07:55:29.714Z"
+ },
+ "s-065-hwasan-windmill-fog": {
+  "spot": {
+   "lat": 36.1057484,
+   "lng": 128.7785625,
+   "source": "manual",
+   "ref": null,
+   "title": null
+  },
+  "dest": {
+   "name": "군위 화산산성 풍차전망대주차장",
+   "kind": "parking",
+   "lat": 36.1055469,
+   "lng": 128.7788388,
+   "source": "manual",
+   "ref": null
+  },
+  "savedAt": "2026-10-06T07:55:25.941Z"
+ },
+ "s-066-wondong-maehwa": {
+  "spot": {
+   "lat": 35.3589737,
+   "lng": 128.9253598,
+   "source": "manual",
+   "ref": null,
+   "title": null
+  },
+  "dest": {
+   "name": "순매원 입구",
+   "kind": "entrance",
+   "lat": 35.3585493,
+   "lng": 128.9258721,
+   "source": "manual",
+   "ref": null
+  },
+  "savedAt": "2026-10-06T07:55:22.489Z"
+ },
+ "s-068-upo-weeping-cherry": {
+  "spot": {
+   "lat": 35.5533874,
+   "lng": 128.4046841,
+   "source": "manual",
+   "ref": null,
+   "title": null
+  },
+  "dest": {
+   "name": "우포늪무료 주차장",
+   "kind": "parking",
+   "lat": 35.5435277,
+   "lng": 128.4174621,
+   "source": "manual",
+   "ref": null
+  },
+  "savedAt": "2026-10-06T07:55:14.426Z"
+ },
+ "s-067-tammae-hongmaehwa": {
+  "spot": {
+   "lat": 34.959837,
+   "lng": 127.483062,
+   "source": "public-data",
+   "ref": "tour:3062105",
+   "title": "탐매마을"
+  },
+  "dest": {
+   "name": "탐매마을입구",
+   "kind": "parking",
+   "lat": 34.9592879,
+   "lng": 127.4841607,
+   "source": "manual",
+   "ref": null
+  },
+  "savedAt": "2026-10-06T07:55:17.470Z"
+ },
+ "s-066-wondong-wetland-reeds": {
+  "dest": {
+   "name": "원동습지생태공원",
+   "kind": "parking",
+   "lat": 35.3712444,
+   "lng": 128.9090574,
+   "source": "manual",
+   "ref": null
+  },
+  "spot": {
+   "lat": 35.3711438,
+   "lng": 128.9089018,
+   "source": "manual",
+   "ref": null,
+   "title": null
+  },
+  "savedAt": "2026-10-06T07:55:19.372Z"
+ },
+ "s-069-chollipo-arboretum": {
+  "spot": {
+   "lat": 36.7982459,
+   "lng": 126.1489999,
+   "source": "manual",
+   "ref": null,
+   "title": null
+  },
+  "dest": {
+   "name": "천리포수목원 제1주차장",
+   "kind": "parking",
+   "lat": 36.7956857,
+   "lng": 126.1481631,
+   "source": "manual",
+   "ref": null
+  },
+  "savedAt": "2026-10-06T07:56:57.984Z"
+ },
+ "s-069-udo-sea-road": {
+  "spot": {
+   "lat": 36.9311809,
+   "lng": 126.3392544,
+   "source": "manual",
+   "ref": null,
+   "title": null
+  },
+  "dest": {
+   "name": "벌말선착장",
+   "kind": "entrance",
+   "lat": 36.9609001,
+   "lng": 126.3330102,
+   "source": "manual",
+   "ref": null
+  },
+  "savedAt": "2026-10-06T07:59:03.437Z"
+ },
+ "s-070-daewonsa-valley": {
+  "spot": {
+   "lat": 35.3548349,
+   "lng": 127.808075,
+   "source": "manual",
+   "ref": null,
+   "title": null
+  },
+  "dest": {
+   "name": "대원사주차장",
+   "kind": "parking",
+   "lat": 35.3554649,
+   "lng": 127.8075144,
+   "source": "manual",
+   "ref": null
+  },
+  "savedAt": "2026-10-06T08:00:22.455Z"
+ },
+ "s-070-hwangmaesan-cheoljjuk": {
+  "spot": {
+   "lat": 35.4813258,
+   "lng": 127.9775047,
+   "source": "manual",
+   "ref": null,
+   "title": null
+  },
+  "dest": {
+   "name": "정상주차장",
+   "kind": "parking",
+   "lat": 35.4816774,
+   "lng": 127.9829147,
+   "source": "manual",
+   "ref": null
+  },
+  "savedAt": "2026-10-06T08:03:21.227Z"
+ },
+ "s-071-ulleung-sea-cliffs": {
+  "spot": {
+   "lat": 37.5352534,
+   "lng": 130.8475113,
+   "source": "manual",
+   "ref": null,
+   "title": null
+  },
+  "dest": {
+   "name": "코끼리주차장",
+   "kind": "parking",
+   "lat": 37.5291531,
+   "lng": 130.8428872,
+   "source": "manual",
+   "ref": null
+  },
+  "savedAt": "2026-10-06T08:05:38.280Z"
+ },
+ "s-072-haengnam-coast": {
+  "spot": {
+   "lat": 37.4817376,
+   "lng": 130.9103233,
+   "source": "manual",
+   "ref": null,
+   "title": null
+  },
+  "dest": {
+   "name": "도동공영주차장",
+   "kind": "parking",
+   "lat": 37.4830146,
+   "lng": 130.9078985,
+   "source": "manual",
+   "ref": null
+  },
+  "savedAt": "2026-10-06T08:09:54.290Z"
+ },
+ "s-072-gwaneumdo": {
+  "spot": {
+   "lat": 37.5426463,
+   "lng": 130.9192711,
+   "source": "manual",
+   "ref": null,
+   "title": null
+  },
+  "dest": {
+   "name": "관음도 매표소",
+   "kind": "trailhead",
+   "lat": 37.5414,
+   "lng": 130.9169537,
+   "source": "manual",
+   "ref": null
+  },
+  "savedAt": "2026-10-06T08:11:18.758Z"
+ },
+ "s-073-geochang-changpowon": {
+  "spot": {
+   "lat": 35.65292,
+   "lng": 127.9426575,
+   "source": "manual",
+   "ref": null,
+   "title": null
+  },
+  "dest": {
+   "name": "거창창포원제1주차장",
+   "kind": "parking",
+   "lat": 35.6543479,
+   "lng": 127.9387951,
+   "source": "manual",
+   "ref": null
+  },
+  "savedAt": "2026-10-06T08:13:03.268Z"
+ },
+ "s-073-gamaksan-deck": {
+  "spot": {
+   "lat": 35.5903362,
+   "lng": 127.9183245,
+   "source": "manual",
+   "ref": null,
+   "title": null
+  },
+  "dest": {
+   "name": "감악산 별바람언덕 주차장",
+   "kind": "parking",
+   "lat": 35.5910167,
+   "lng": 127.9202235,
+   "source": "manual",
+   "ref": null
+  },
+  "savedAt": "2026-10-06T08:19:06.368Z"
+ },
+ "s-074-yokjido-coast": {
+  "spot": {
+   "lat": 34.6198239,
+   "lng": 128.2764745,
+   "source": "manual",
+   "ref": null,
+   "title": null
+  },
+  "dest": {
+   "name": "욕지고메원",
+   "kind": "parking",
+   "lat": 34.6221813,
+   "lng": 128.2771719,
+   "source": "manual",
+   "ref": null
+  },
+  "savedAt": "2026-10-06T08:22:14.478Z"
  }
 }

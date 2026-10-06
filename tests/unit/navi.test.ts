@@ -1,25 +1,25 @@
 import { describe, expect, it } from 'vitest';
 import { naviUrl, NAVI_APPS, isInKorea } from '../../src/domain/navi';
 
-const dest = { name: '오색약수터주차장', lat: 38.0774, lng: 128.4526 };
+const dest = { name: '오색약수터주차장', lat: 38.0601, lng: 128.4398 };
 
 describe('naviUrl: 이름이 아니라 좌표로 길찾기 앱을 연다', () => {
   it('카카오맵: 공식 link/to 주소, 이름·위도·경도 순서', () => {
     expect(naviUrl('kakao', dest)).toBe(
-      'https://map.kakao.com/link/to/' + encodeURIComponent('오색약수터주차장') + ',38.0774,128.4526',
+      'https://map.kakao.com/link/to/' + encodeURIComponent('오색약수터주차장') + ',38.0601,128.4398',
     );
   });
 
   it('카카오맵: 이름에 쉼표가 있으면 주소가 깨지지 않게 뺀다', () => {
     const url = naviUrl('kakao', { ...dest, name: '주전골, 오색' });
-    expect(url).toContain(encodeURIComponent('주전골 오색') + ',38.0774,128.4526');
+    expect(url).toContain(encodeURIComponent('주전골 오색') + ',38.0601,128.4398');
   });
 
   it('네이버지도: nmap 스킴, 도착 위도·경도, appname 필수', () => {
     const url = new URL(naviUrl('naver', dest, { appname: 'imamttae.github.io' }));
     expect(url.protocol).toBe('nmap:');
-    expect(url.searchParams.get('dlat')).toBe('38.0774');
-    expect(url.searchParams.get('dlng')).toBe('128.4526');
+    expect(url.searchParams.get('dlat')).toBe('38.0601');
+    expect(url.searchParams.get('dlng')).toBe('128.4398');
     expect(url.searchParams.get('dname')).toBe('오색약수터주차장');
     expect(url.searchParams.get('appname')).toBe('imamttae.github.io');
   });
@@ -31,13 +31,13 @@ describe('naviUrl: 이름이 아니라 좌표로 길찾기 앱을 연다', () =>
   it('티맵: X가 경도, Y가 위도 (순서 바뀌면 바다로 안내됨)', () => {
     const url = new URL(naviUrl('tmap', dest));
     expect(url.protocol).toBe('tmap:');
-    expect(url.searchParams.get('rGoX')).toBe('128.4526');
-    expect(url.searchParams.get('rGoY')).toBe('38.0774');
+    expect(url.searchParams.get('rGoX')).toBe('128.4398');
+    expect(url.searchParams.get('rGoY')).toBe('38.0601');
     expect(url.searchParams.get('rGoName')).toBe('오색약수터주차장');
   });
 
   it('한국 밖 좌표(위도·경도 뒤바뀜 포함)는 거부한다', () => {
-    expect(() => naviUrl('kakao', { name: 'x', lat: 128.4526, lng: 38.0774 })).toThrow(/좌표/);
+    expect(() => naviUrl('kakao', { name: 'x', lat: 128.4398, lng: 38.0601 })).toThrow(/좌표/);
     expect(() => naviUrl('kakao', { name: 'x', lat: Number.NaN, lng: 128 })).toThrow(/좌표/);
   });
 

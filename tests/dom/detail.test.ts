@@ -25,7 +25,7 @@ const CONTENT: ContentFile = {
       excerpt: '용소폭포를 지나자 붉은 단풍이 계곡을 덮고 있었다.',
       photos: [photo(1), photo(2), photo(3)],
       review: { best: 'draft', dest: 'confirmed', oneLiner: 'draft', types: 'confirmed' },
-      dest: { name: '오색약수터주차장', lat: 38.0774, lng: 128.4526, kind: 'parking' },
+      dest: { name: '오색약수터주차장', lat: 38.0601, lng: 128.4398, kind: 'parking' },
       brunchUrl: 'https://brunch.co.kr/@caed5ea4c3d74d9/5',
     }),
     story('s-garden', { name: '그레이스정원 수국', region: '충남 서산', visited: '2024-06-20', types: ['yeoreumkkot'], best: { from: 6, to: 7, note: '6월 중순~7월 초' }, checkAdmission: true }),
@@ -236,8 +236,8 @@ describe('아래 붙박이 막대', () => {
     q('.detail .go')!.click();
     const u = new URL(opened[0]!);
     expect(u.protocol).toBe('tmap:');
-    expect(u.searchParams.get('rGoX')).toBe('128.4526');
-    expect(u.searchParams.get('rGoY')).toBe('38.0774');
+    expect(u.searchParams.get('rGoX')).toBe('128.4398');
+    expect(u.searchParams.get('rGoY')).toBe('38.0601');
   });
 
   it('F2-AC5: 티맵이 열리지 않으면(1.5초 뒤에도 화면 그대로) "티맵 설치 / 네이버지도 / 카카오맵" 안내', async () => {

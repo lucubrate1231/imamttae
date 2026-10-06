@@ -5,6 +5,7 @@
  * - 저장소에는 content/brunch/index.json(글 목록·날짜·소제목·사진 주소)만 남깁니다.
  */
 import { mkdirSync, readFileSync, writeFileSync, existsSync } from 'node:fs';
+import { pathToFileURL } from 'node:url';
 import { listPublished, fetchArticle } from './brunch/api';
 import { normalizeArticle, type Story } from './brunch/normalize';
 import { parseVisitDate } from '../src/domain/dateLine';
@@ -71,4 +72,5 @@ async function main(): Promise<void> {
   if (failed.length) process.exitCode = 1;
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) void main();
+// 윈도우에서도 직접 실행을 알아보게(file:///C:/… 모양, 10/6)
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) void main();
