@@ -13,13 +13,13 @@ describe('applyPicked', () => {
   it('장면 위치·목적지·이름·종류를 바꾸고, 출처와 번호를 남김', () => {
     const picked: Picked = {
       's-a': {
-        spot: { lat: 0, lng: 0, source: 'public-data', ref: 'tour:649968' },
+        spot: { lat: 35.4801, lng: 126.9013, source: 'public-data', ref: 'tour:649968' },
         dest: { name: '내장산 주차장', kind: 'parking', lat: 35.4801, lng: 126.9011, source: 'public-data', ref: 'parking:345-3-000171' },
       },
     };
     const [s] = applyPicked([base], picked).scenes;
     expect(s).toMatchObject({
-      spot: { lat: 0, lng: 0 },
+      spot: { lat: 35.4801, lng: 126.9013 },
       dest: { name: '내장산 주차장', lat: 35.4801, lng: 126.9011, kind: 'parking' },
       coordSource: 'public-data',
       coordRef: { spot: 'tour:649968', dest: 'parking:345-3-000171' },

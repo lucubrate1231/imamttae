@@ -10,7 +10,7 @@ import { createKakaoStub } from '../fixtures/kakaoStub';
 import type { MapPin } from '../../src/map/types';
 
 const pins: MapPin[] = [
-  { id: 's-005-jujeongol', lat: 38.0825, lng: 128.4282, label: '주전골', kind: 'peak' },
+  { id: 's-005-jujeongol', lat: 38.0712, lng: 128.4123, label: '주전골', kind: 'peak' },
   { id: 's-sea', lat: 37.47, lng: 129.16, label: '추암', kind: 'record' },
   { id: 'p-033-taejongdae', lat: 35.0532, lng: 129.0871, label: '태종대', kind: 'placeholder' },
 ];
@@ -74,7 +74,7 @@ describe('카카오 지도 어댑터 (가짜 SDK로 확인)', () => {
   it('핀을 위도·경도 순서로 올리고, 다시 그리면 이전 핀을 지운다. 종류는 class로', async () => {
     const { log, m } = await mount();
     m.setPins(pins);
-    expect(log.overlays.map((o) => [o.lat, o.lng])).toEqual([[38.0825, 128.4282], [37.47, 129.16], [35.0532, 129.0871]]);
+    expect(log.overlays.map((o) => [o.lat, o.lng])).toEqual([[38.0712, 128.4123], [37.47, 129.16], [35.0532, 129.0871]]);
     expect(log.overlays.map((o) => o.el.className)).toEqual(['pin p', 'pin r', 'pin ph']);
     m.setPins([pins[0]!]);
     expect(log.overlays.filter((o) => o.onMap)).toHaveLength(1);
@@ -117,7 +117,7 @@ describe('카카오 지도 어댑터 (가짜 SDK로 확인)', () => {
     m.select('s-sea'); // 37.47 — 칸 안
     expect(stub.log.calls.slice(before)).toEqual([]);
     m.select('s-005-jujeongol'); // 38.08 — 칸 위로 벗어남(설악)
-    expect(stub.log.calls.slice(before)).toEqual(['pan 38.0825,128.4282']);
+    expect(stub.log.calls.slice(before)).toEqual(['pan 38.0712,128.4123']);
     expect(stub.log.calls.some((c) => c.startsWith('level'))).toBe(false);
   });
 
@@ -139,7 +139,7 @@ describe('카카오 지도 어댑터 (가짜 SDK로 확인)', () => {
       expect(stub.log.overlays[1]!.el.classList.contains('on')).toBe(true);
       m.select('s-005-jujeongol');
       vi.advanceTimersByTime(5000);
-      expect(stub.log.calls.slice(before)).toEqual(['center 37.47,129.16', 'center 38.0825,128.4282']); // 확대·옮기기 움직임 없음
+      expect(stub.log.calls.slice(before)).toEqual(['center 37.47,129.16', 'center 38.0712,128.4123']); // 확대·옮기기 움직임 없음
     } finally {
       vi.useRealTimers();
     }

@@ -26,7 +26,7 @@ const CONTENT: ContentFile = {
       types: ['danpung', 'gyegok'],
       best: { from: 10, to: 10, note: '10월 중순~하순' },
       photos: [photo(1)],
-      dest: { name: '오색약수터주차장', lat: 38.0774, lng: 128.4526, kind: 'parking' },
+      dest: { name: '오색약수터주차장', lat: 38.0601, lng: 128.4398, kind: 'parking' },
     }),
   ],
 };

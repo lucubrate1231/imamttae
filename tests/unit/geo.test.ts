@@ -3,8 +3,8 @@ import { distanceKm } from '../../src/domain/geo';
 
 const seoul = { lat: 37.5665, lng: 126.978 };
 const busan = { lat: 35.1796, lng: 129.0756 };
-const jujeongol = { lat: 0, lng: 0 };
-const osaekParking = { lat: 0, lng: 0 };
+const jujeongol = { lat: 38.0712, lng: 128.4123 };
+const osaekParking = { lat: 38.0601, lng: 128.4398 };
 
 describe('distanceKm: 두 지점 사이 직선거리', () => {
   it('서울–부산 약 325km', () => {

@@ -47,13 +47,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 36.219323,
+    "lng": 129.2562211
    },
    "dest": {
-    "name": "경상북도수목원 주차장1",
-    "lat": 0,
-    "lng": 0,
+    "name": "경상북도수목원주차장",
+    "lat": 36.2173452,
+    "lng": 129.2592895,
     "kind": "parking"
    },
    "review": {
@@ -69,7 +69,11 @@
     "무궁화",
     "수목원"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-004-sangnim-kkotmureut",
@@ -107,13 +111,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 35.5244815,
+    "lng": 127.7187574
    },
    "dest": {
-    "name": "상림공원 주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "상림공원주차장",
+    "lat": 35.5241147,
+    "lng": 127.721343,
     "kind": "parking"
    },
    "review": {
@@ -128,7 +132,11 @@
     "꽃무릇",
     "숲길"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-005-biryong",
@@ -166,13 +174,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 38.1622689,
+    "lng": 128.501721
    },
    "dest": {
-    "name": "설악산 소공원 주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "설악산 B1 노외주차장",
+    "lat": 38.1681428,
+    "lng": 128.5188254,
     "kind": "parking"
    },
    "review": {
@@ -187,7 +195,11 @@
     "폭포",
     "단풍"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "parking:255-2-000011"
+   }
   },
   {
    "id": "s-006-baekgil-beach",
@@ -226,13 +238,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 34.84947,
+    "lng": 126.0394049
    },
    "dest": {
     "name": "백길해수욕장 주차장",
-    "lat": 0,
-    "lng": 0,
+    "lat": 34.8503857,
+    "lng": 126.0398984,
     "kind": "parking"
    },
    "review": {
@@ -247,7 +259,11 @@
     "낙조",
     "해변"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-009-daegwallyeong-hanil-ranch",
@@ -294,13 +310,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 37.7058081,
+    "lng": 128.7208414
    },
    "dest": {
-    "name": "대관령하늘목장 1주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "대관령하늘목장 주차장",
+    "lat": 37.7055705,
+    "lng": 128.7188888,
     "kind": "parking"
    },
    "review": {
@@ -316,7 +332,11 @@
     "풍력발전기",
     "목장"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-010-seosan-udo",
@@ -429,13 +449,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 36.9409485,
+    "lng": 129.2741811
    },
    "dest": {
-    "name": "불영사휴게소 주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "불영사 주차장",
+    "lat": 36.9407384,
+    "lng": 129.273693,
     "kind": "parking"
    },
    "review": {
@@ -450,7 +470,11 @@
     "은행나무",
     "절집"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-011-yongsogol",
@@ -503,14 +527,14 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 37.0887849,
+    "lng": 129.1907001
    },
    "dest": {
-    "name": "덕풍산장(용소골 들머리)",
-    "lat": 0,
-    "lng": 0,
-    "kind": "trailhead"
+    "name": "덕풍계곡유원지무료주차장",
+    "lat": 37.1228996,
+    "lng": 129.1579449,
+    "kind": "parking"
    },
    "review": {
     "best": "confirmed",
@@ -524,7 +548,11 @@
     "폭포",
     "암반 계곡"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-012-seonunsa-kkotmureut",
@@ -576,13 +604,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 35.4974344,
+    "lng": 126.5783787
    },
    "dest": {
-    "name": "선운산도립공원 공영주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "선운산도립공원주차장",
+    "lat": 35.5037326,
+    "lng": 126.5875773,
     "kind": "parking"
    },
    "review": {
@@ -597,7 +625,11 @@
     "꽃무릇",
     "절집"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "parking:318-2-000037"
+   }
   },
   {
    "id": "s-013-daeseung-falls",
@@ -649,13 +681,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 38.1256446,
+    "lng": 128.3421028
    },
    "dest": {
-    "name": "장수대분소 주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "설악산국립공원 하계산성분소 주차장",
+    "lat": 38.119633,
+    "lng": 128.3414698,
     "kind": "parking"
    },
    "review": {
@@ -670,7 +702,11 @@
     "단풍",
     "폭포"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-013-jujeongol",
@@ -715,13 +751,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 38.079113,
+    "lng": 128.4377879
    },
    "dest": {
-    "name": "오색약수터주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "오색공영주차장",
+    "lat": 38.0774645,
+    "lng": 128.4523329,
     "kind": "parking"
    },
    "review": {
@@ -737,7 +773,11 @@
     "기암절벽",
     "계곡길"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-014-baekmudong",
@@ -782,13 +822,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 35.3578537,
+    "lng": 127.6823974
    },
    "dest": {
-    "name": "백무동제1주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "백무동 주차장",
+    "lat": 35.363137,
+    "lng": 127.6802402,
     "kind": "parking"
    },
    "review": {
@@ -803,7 +843,11 @@
     "단풍",
     "계곡"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "parking:396-2-000008"
+   }
   },
   {
    "id": "s-014-nogodan",
@@ -857,13 +901,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 35.2936036,
+    "lng": 127.5318933
    },
    "dest": {
     "name": "성삼재휴게소 주차장",
-    "lat": 0,
-    "lng": 0,
+    "lat": 35.3063351,
+    "lng": 127.5108111,
     "kind": "parking"
    },
    "review": {
@@ -878,7 +922,11 @@
     "상고대",
     "일출"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-015-byeongdaedo",
@@ -924,14 +972,14 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 34.7036412,
+    "lng": 128.6100018
    },
    "dest": {
-    "name": "여차홍포전망대 길가 주차",
-    "lat": 0,
-    "lng": 0,
-    "kind": "parking"
+    "name": "병대도전망대",
+    "lat": 34.7038617,
+    "lng": 128.6098945,
+    "kind": "entrance"
    },
    "review": {
     "best": "confirmed",
@@ -945,7 +993,11 @@
     "일몰",
     "다도해"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-016-gochang-cheongbori",
@@ -983,13 +1035,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 35.3765589,
+    "lng": 126.5428877
    },
    "dest": {
-    "name": "학원농장 주차장1",
-    "lat": 0,
-    "lng": 0,
+    "name": "보리나라 학원농장 주차장",
+    "lat": 35.373987,
+    "lng": 126.5454841,
     "kind": "parking"
    },
    "review": {
@@ -1003,7 +1055,11 @@
    "details": [
     "청보리"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-017-boriam",
@@ -1036,13 +1092,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 34.7519356,
+    "lng": 127.9826117
    },
    "dest": {
-    "name": "복곡제2주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "보리암복곡주차장",
+    "lat": 34.7746072,
+    "lng": 127.985613,
     "kind": "parking"
    },
    "review": {
@@ -1058,7 +1114,11 @@
     "남해 바다",
     "운무"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-018-sajipo",
@@ -1096,14 +1156,14 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 35.5620982,
+    "lng": 128.4358621
    },
    "dest": {
-    "name": "사지포제방",
-    "lat": 0,
-    "lng": 0,
-    "kind": "trailhead"
+    "name": "우포늪무료주차장",
+    "lat": 35.5435583,
+    "lng": 128.4174514,
+    "kind": "parking"
    },
    "review": {
     "best": "confirmed",
@@ -1117,7 +1177,11 @@
     "연꽃",
     "습지"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-018-upo-wetland",
@@ -1163,13 +1227,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 35.5578564,
+    "lng": 128.42803
    },
    "dest": {
-    "name": "우포늪생태관주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "우포늪무료주차장",
+    "lat": 35.5435059,
+    "lng": 128.4174514,
     "kind": "parking"
    },
    "review": {
@@ -1184,7 +1248,11 @@
     "노을",
     "습지"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-019-huibang-falls",
@@ -1216,13 +1284,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 36.9178352,
+    "lng": 128.4558392
    },
    "dest": {
-    "name": "소백산국립공원 희방제2주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "영주 소백산 철쭉제희방1주차장",
+    "lat": 36.908886,
+    "lng": 128.4594467,
     "kind": "parking"
    },
    "review": {
@@ -1236,7 +1304,11 @@
    "details": [
     "폭포"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-019-forest-healing-deck",
@@ -1282,13 +1354,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 36.8574416,
+    "lng": 128.4730482
    },
    "dest": {
-    "name": "국립산림치유원 데크로드 주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "국립산림치유원주차장",
+    "lat": 36.8577764,
+    "lng": 128.4733379,
     "kind": "parking"
    },
    "review": {
@@ -1303,7 +1375,11 @@
     "숲길",
     "무장애 데크길"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-020-baegyangsa",
@@ -1341,13 +1417,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 35.4395805,
+    "lng": 126.884011
    },
    "dest": {
-    "name": "백양사 주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "ㅂ",
+    "lat": 35.4402208,
+    "lng": 126.8842256,
     "kind": "parking"
    },
    "review": {
@@ -1363,7 +1439,11 @@
     "연못",
     "절집"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-020-gangcheonsan",
@@ -1394,13 +1474,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 35.4077654,
+    "lng": 127.0659399
    },
    "dest": {
-    "name": "강천산 주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "강천산다목적 주차장",
+    "lat": 35.4091165,
+    "lng": 127.0775539,
     "kind": "parking"
    },
    "review": {
@@ -1415,7 +1495,11 @@
     "단풍",
     "계곡길"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-020-naejangsan-uhwajeong",
@@ -1460,13 +1544,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 35.4864496,
+    "lng": 126.9102457
    },
    "dest": {
-    "name": "내장산 주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "내장산 국립공원케이블카주차장",
+    "lat": 35.4877556,
+    "lng": 126.9076547,
     "kind": "parking"
    },
    "review": {
@@ -1482,7 +1566,11 @@
     "연못",
     "정자"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-020-yonggwolsan",
@@ -1521,13 +1609,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 35.4677481,
+    "lng": 127.2030866
    },
    "dest": {
-    "name": "용궐산치유의숲 주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "용궐산 치유의숲 주차장",
+    "lat": 35.4618672,
+    "lng": 127.2022927,
     "kind": "parking"
    },
    "review": {
@@ -1543,7 +1631,11 @@
     "절벽 데크길",
     "강 조망"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-021-dolsan-park-sunset",
@@ -1589,13 +1681,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 34.7310103,
+    "lng": 127.7386487
    },
    "dest": {
-    "name": "돌산공원 제1주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "오동도공영주차타워",
+    "lat": 34.7411585,
+    "lng": 127.7527624,
     "kind": "parking"
    },
    "review": {
@@ -1610,7 +1702,11 @@
     "낙조",
     "항구"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-021-geumosan-sunrise",
@@ -1656,13 +1752,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 34.590369,
+    "lng": 127.8019059
    },
    "dest": {
-    "name": "향일암 주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "향일암 공영주차장",
+    "lat": 34.594392,
+    "lng": 127.8043252,
     "kind": "parking"
    },
    "review": {
@@ -1677,7 +1773,11 @@
     "일출",
     "수평선"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-022-gurye-sansuyu",
@@ -1722,13 +1822,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 35.3314596,
+    "lng": 127.4882054
    },
    "dest": {
-    "name": "산수유마을 상위 대형주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "산수유마을주차장",
+    "lat": 35.3188677,
+    "lng": 127.4718574,
     "kind": "parking"
    },
    "review": {
@@ -1744,7 +1844,11 @@
     "돌담",
     "계곡"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-022-gwangyang-maehwa",
@@ -1796,13 +1900,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 35.0782421,
+    "lng": 127.7174592
    },
    "dest": {
-    "name": "섬진강매화마을 주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "광야매화마을주차장",
+    "lat": 35.0791179,
+    "lng": 127.7179635,
     "kind": "parking"
    },
    "review": {
@@ -1817,7 +1921,11 @@
     "매화",
     "강 조망"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-023-gaesimsa-cherry",
@@ -1855,13 +1963,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 36.7467894,
+    "lng": 126.5902877
    },
    "dest": {
-    "name": "개심사주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "개심사 공영주차장",
+    "lat": 36.7471117,
+    "lng": 126.5854383,
     "kind": "parking"
    },
    "review": {
@@ -1877,7 +1985,11 @@
     "겹벚꽃",
     "절집"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-023-palbongsan-sunrise",
@@ -1923,13 +2035,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 36.8096111,
+    "lng": 126.3716555
    },
    "dest": {
-    "name": "팔봉산 양길리주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "팔봉산양길리주차장",
+    "lat": 36.8178311,
+    "lng": 126.3664305,
     "kind": "parking"
    },
    "review": {
@@ -1944,7 +2056,11 @@
     "일출",
     "암릉"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-024-manhangjae-wildflowers",
@@ -1996,13 +2112,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 37.1489609,
+    "lng": 128.900882
    },
    "dest": {
-    "name": "만항재 주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "함백산코스주차장",
+    "lat": 37.148653,
+    "lng": 128.9022124,
     "kind": "parking"
    },
    "review": {
@@ -2017,7 +2133,11 @@
     "야생화",
     "고갯길"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-024-mugeonri-moss-falls",
@@ -2056,14 +2176,14 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 37.2598622,
+    "lng": 129.1093969
    },
    "dest": {
-    "name": "무건리 이끼계곡 주차장",
-    "lat": 0,
-    "lng": 0,
-    "kind": "parking"
+    "name": "무건리 이끼폭포 입구",
+    "lat": 37.2734552,
+    "lng": 129.0965948,
+    "kind": "trailhead"
    },
    "review": {
     "best": "confirmed",
@@ -2077,7 +2197,11 @@
     "이끼",
     "폭포"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-024-yukbaekmajigi-fog",
@@ -2108,13 +2232,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 37.4069721,
+    "lng": 128.5115111
    },
    "dest": {
     "name": "육백마지기 주차장",
-    "lat": 0,
-    "lng": 0,
+    "lat": 37.4063351,
+    "lng": 128.5114789,
     "kind": "parking"
    },
    "review": {
@@ -2130,7 +2254,11 @@
     "고원",
     "데크길"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-025-jinyangho",
@@ -2169,13 +2297,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 35.1666518,
+    "lng": 128.0281448
    },
    "dest": {
-    "name": "진양호공원 전용주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "노을공원주차장",
+    "lat": 35.1614156,
+    "lng": 128.0318248,
     "kind": "parking"
    },
    "review": {
@@ -2190,7 +2318,11 @@
     "물안개",
     "호수"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-026-yeongdeok-haemaji-sunrise",
@@ -2243,13 +2375,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 36.4274,
+    "lng": 129.4353
    },
    "dest": {
-    "name": "영덕해맞이공원 주차장2",
-    "lat": 0,
-    "lng": 0,
+    "name": "영덕해맞이공원주차장1",
+    "lat": 36.4301029,
+    "lng": 129.4341588,
     "kind": "parking"
    },
    "review": {
@@ -2264,7 +2396,11 @@
     "일출",
     "해안 바위"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "tour:127710",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-027-chuam-candle-rock",
@@ -2310,13 +2446,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 37.4794525,
+    "lng": 129.1602292
    },
    "dest": {
-    "name": "추암해수욕장 공영주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "추암조각공원주차장",
+    "lat": 37.4784129,
+    "lng": 129.1579878,
     "kind": "parking"
    },
    "review": {
@@ -2332,7 +2468,11 @@
     "일출",
     "기암 해변"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "tour:129000",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-027-wangpicheon-waterlily",
@@ -2370,13 +2510,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 36.9689581,
+    "lng": 129.4051802
    },
    "dest": {
-    "name": "왕피천공원 P1주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "울진왕피천공원주차장3",
+    "lat": 36.9697253,
+    "lng": 129.4008672,
     "kind": "parking"
    },
    "review": {
@@ -2391,7 +2531,11 @@
     "수련",
     "연못"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-028-jusanji",
@@ -2428,13 +2572,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 36.3627197,
+    "lng": 129.1898218
    },
    "dest": {
-    "name": "주산저수지 주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "주산지주차장",
+    "lat": 36.3631722,
+    "lng": 129.1793919,
     "kind": "parking"
    },
    "review": {
@@ -2450,7 +2594,11 @@
     "저수지",
     "물안개"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "tour:126223",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-028-juwangsan-yongchu",
@@ -2500,13 +2648,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 36.4011127,
+    "lng": 129.1494584
    },
    "dest": {
-    "name": "주왕산국립공원 상의주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "주왕산국립공원소형주차장",
+    "lat": 36.3904212,
+    "lng": 129.1411221,
     "kind": "parking"
    },
    "review": {
@@ -2521,7 +2669,11 @@
     "협곡",
     "폭포"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-029-naeyeonsan-falls",
@@ -2572,13 +2724,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 36.2608546,
+    "lng": 129.3012285
    },
    "dest": {
-    "name": "보경사 주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "보경사주차장",
+    "lat": 36.2441088,
+    "lng": 129.3206853,
     "kind": "parking"
    },
    "review": {
@@ -2593,7 +2745,11 @@
     "폭포",
     "계곡"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-030-bidulginang",
@@ -2639,13 +2795,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 38.0794213,
+    "lng": 127.2171575
    },
    "dest": {
-    "name": "비둘기낭폭포 주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "비둘기낭캠핑장주차장",
+    "lat": 38.0789484,
+    "lng": 127.2185576,
     "kind": "parking"
    },
    "review": {
@@ -2661,7 +2817,11 @@
     "협곡",
     "소"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-030-goseokjeong",
@@ -2710,13 +2870,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 38.1848688,
+    "lng": 127.2877157
    },
    "dest": {
-    "name": "고석정국민관광지 주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "고석정주차장",
+    "lat": 38.1860705,
+    "lng": 127.2875172,
     "kind": "parking"
    },
    "review": {
@@ -2731,7 +2891,11 @@
     "협곡",
     "바위"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-030-hantangang-jando",
@@ -2776,13 +2940,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 38.1678151,
+    "lng": 127.2883058
    },
    "dest": {
-    "name": "드르니주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "드르니매표소 주차장",
+    "lat": 38.1547354,
+    "lng": 127.2883809,
     "kind": "parking"
    },
    "review": {
@@ -2798,7 +2962,11 @@
     "잔도",
     "협곡"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-047-jade-garden-moss",
@@ -2843,13 +3011,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 37.8323614,
+    "lng": 127.5423539
    },
    "dest": {
-    "name": "제이드가든수목원 주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "제이드가든주차장",
+    "lat": 37.8334757,
+    "lng": 127.5410798,
     "kind": "parking"
    },
    "review": {
@@ -2866,7 +3034,11 @@
     "계곡",
     "수목원"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-047-namiseom",
@@ -2915,13 +3087,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 37.7893913,
+    "lng": 127.5245494
    },
    "dest": {
-    "name": "남이섬선착장주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "남이섬 주차장 카카오모빌리티",
+    "lat": 37.8042233,
+    "lng": 127.5252494,
     "kind": "parking"
    },
    "review": {
@@ -2936,7 +3108,11 @@
     "숲길",
     "메타세쿼이아"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-048-sogeumsan",
@@ -2980,13 +3156,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 37.3650642,
+    "lng": 127.8216159
    },
    "dest": {
-    "name": "소금산그랜드밸리 공영주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "소금산그랜드밸리주차장",
+    "lat": 37.3639624,
+    "lng": 127.8339583,
     "kind": "parking"
    },
    "review": {
@@ -3002,7 +3178,11 @@
     "절벽",
     "강"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "tour:2814485",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-049-beopgi-reservoir",
@@ -3039,13 +3219,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 35.3483551,
+    "lng": 129.1062117
    },
    "dest": {
-    "name": "법기수원지 주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "수원지입구 주차장",
+    "lat": 35.3481276,
+    "lng": 129.1087022,
     "kind": "parking"
    },
    "review": {
@@ -3061,7 +3241,11 @@
     "반송",
     "호수"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "tour:2381381",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-049-taejongdae",
@@ -3112,13 +3296,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 35.0522963,
+    "lng": 129.0920578
    },
    "dest": {
-    "name": "태종대 주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "태종대유원지부설주차장",
+    "lat": 35.062358,
+    "lng": 129.082937,
     "kind": "parking"
    },
    "review": {
@@ -3133,7 +3317,11 @@
     "등대",
     "일출"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-049-yeocheon-metasequoia",
@@ -3164,14 +3352,14 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 35.5276074,
+    "lng": 129.3474537
    },
    "dest": {
-    "name": "울산여천 메타세쿼이아길 입구",
-    "lat": 0,
-    "lng": 0,
-    "kind": "entrance"
+    "name": "울산도서관전용주차장",
+    "lat": 35.5324445,
+    "lng": 129.3453562,
+    "kind": "parking"
    },
    "review": {
     "best": "confirmed",
@@ -3185,7 +3373,11 @@
     "메타세쿼이아",
     "은행나무"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-050-balwangsan",
@@ -3235,13 +3427,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 37.6117922,
+    "lng": 128.6719286
    },
    "dest": {
-    "name": "모나용평 주차장6",
-    "lat": 0,
-    "lng": 0,
+    "name": "발왕산스카이워크 주차장",
+    "lat": 37.6432064,
+    "lng": 128.6781514,
     "kind": "parking"
    },
    "review": {
@@ -3256,7 +3448,11 @@
     "상고대",
     "주목"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-051-yeongyang-birch",
@@ -3306,13 +3502,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 36.743001,
+    "lng": 129.265298
    },
    "dest": {
-    "name": "영양자작나무숲 주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "영양자작나무숲 안내센터",
+    "lat": 36.7254188,
+    "lng": 129.2247319,
     "kind": "parking"
    },
    "review": {
@@ -3327,7 +3523,11 @@
     "자작나무",
     "설경"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "tour:2704700",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-052-baekdudaegan-train",
@@ -3371,14 +3571,14 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 36.9326817,
+    "lng": 129.0576518
    },
    "dest": {
-    "name": "분천역(협곡열차 타는 곳)",
-    "lat": 0,
-    "lng": 0,
-    "kind": "entrance"
+    "name": "백두대간협곡열차 분천역산타마을 주차장",
+    "lat": 36.9312838,
+    "lng": 129.0553451,
+    "kind": "parking"
    },
    "review": {
     "best": "confirmed",
@@ -3393,7 +3593,11 @@
     "협곡",
     "기차"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-052-gumunso",
@@ -3432,13 +3636,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 37.0932608,
+    "lng": 129.0420735
    },
    "dest": {
-    "name": "구문소 공영주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "구문소옆 공영 주차장",
+    "lat": 37.0931239,
+    "lng": 129.0440476,
     "kind": "parking"
    },
    "review": {
@@ -3453,7 +3657,11 @@
     "바위굴",
     "설경"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-053-biseulsan-azalea",
@@ -3502,13 +3710,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 35.6972467,
+    "lng": 128.529675
    },
    "dest": {
-    "name": "비슬산 유가사 주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "비슬산자연휴양림공영주차장1",
+    "lat": 35.6942581,
+    "lng": 128.5052079,
     "kind": "parking"
    },
    "review": {
@@ -3523,7 +3731,11 @@
     "참꽃",
     "진달래"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-054-haeinsa-green-valley",
@@ -3555,13 +3767,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 35.8001854,
+    "lng": 128.0946422
    },
    "dest": {
-    "name": "해인사 주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "해인사주차장",
+    "lat": 35.7995001,
+    "lng": 128.0974048,
     "kind": "parking"
    },
    "review": {
@@ -3576,7 +3788,11 @@
     "신록",
     "계곡"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-054-hapcheon-auxiliary-dam",
@@ -3614,13 +3830,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 35.548473,
+    "lng": 128.0738068
    },
    "dest": {
-    "name": "합천군청소년수련관 주차장2",
-    "lat": 0,
-    "lng": 0,
+    "name": "합천영상테마파크주차장",
+    "lat": 35.5481675,
+    "lng": 128.0719078,
     "kind": "parking"
    },
    "review": {
@@ -3636,7 +3852,11 @@
     "호숫가 데크길",
     "안개"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-054-hatdeul-peony",
@@ -3685,13 +3905,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 35.57514,
+    "lng": 128.169254
    },
    "dest": {
-    "name": "핫들공영주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "핫들 공영주차장",
+    "lat": 35.569809,
+    "lng": 128.1663467,
     "kind": "parking"
    },
    "review": {
@@ -3705,7 +3925,11 @@
    "details": [
     "작약"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "public-data",
+   "coordRef": {
+    "spot": "tour:3015558",
+    "dest": "parking:398-2-000180"
+   }
   },
   {
    "id": "s-055-daebongsan-cheonwangbong",
@@ -3749,13 +3973,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 35.5976908,
+    "lng": 127.7051532
    },
    "dest": {
-    "name": "대봉산휴양밸리 주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "대봉스카이랜드 대봉휴양밸리관주차장",
+    "lat": 35.5665282,
+    "lng": 127.7161125,
     "kind": "parking"
    },
    "review": {
@@ -3769,7 +3993,11 @@
    "details": [
     "능선 조망"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "parking:396-2-000041"
+   }
   },
   {
    "id": "s-055-sangnim-early-summer",
@@ -3819,13 +4047,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 35.526946,
+    "lng": 127.718076
    },
    "dest": {
-    "name": "상림공원 주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "상림공원주차장",
+    "lat": 35.5241191,
+    "lng": 127.7213484,
     "kind": "parking"
    },
    "review": {
@@ -3841,7 +4069,11 @@
     "이끼",
     "금계국"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "tour:126861",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-056-grace-garden-hydrangea",
@@ -3890,13 +4122,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 34.974362,
+    "lng": 128.169229
    },
    "dest": {
     "name": "그레이스정원 입구",
-    "lat": 0,
-    "lng": 0,
+    "lat": 34.9745729,
+    "lng": 128.1690949,
     "kind": "entrance"
    },
    "review": {
@@ -3912,7 +4144,11 @@
     "수국",
     "돌담"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-056-jangsan-forest",
@@ -3949,14 +4185,14 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 35.0593221,
+    "lng": 128.3266647
    },
    "dest": {
-    "name": "장산숲 입구",
-    "lat": 0,
-    "lng": 0,
-    "kind": "entrance"
+    "name": "고성잔상숲주차장",
+    "lat": 35.0589477,
+    "lng": 128.3263475,
+    "kind": "parking"
    },
    "review": {
     "best": "confirmed",
@@ -3971,7 +4207,11 @@
     "연못",
     "정자"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "tour:2613122",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-056-sangjogam",
@@ -4020,13 +4260,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 34.9091,
+    "lng": 128.1543
    },
    "dest": {
-    "name": "상족암군립공원 제전주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "상족암오토캠핑장",
+    "lat": 34.9106332,
+    "lng": 128.1561962,
     "kind": "parking"
    },
    "review": {
@@ -4041,7 +4281,11 @@
     "퇴적암 절벽",
     "공룡발자국"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "tour:126232",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-057-daehan-dawon",
@@ -4091,13 +4335,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 34.7156546,
+    "lng": 127.0787962
    },
    "dest": {
-    "name": "보성녹차밭 1주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "대한다원보성녹차밭제2주차장",
+    "lat": 34.7145026,
+    "lng": 127.0808262,
     "kind": "parking"
    },
    "review": {
@@ -4112,7 +4356,11 @@
     "녹차밭",
     "안개"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "tour:127869",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-058-baengnyeonsa-baerong",
@@ -4161,13 +4409,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 34.5877501,
+    "lng": 126.7480767
    },
    "dest": {
-    "name": "백련사 주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "백련사주차장",
+    "lat": 34.5855861,
+    "lng": 126.749568,
     "kind": "parking"
    },
    "review": {
@@ -4183,7 +4431,11 @@
     "동백숲",
     "절집"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-058-gangjinman-reeds",
@@ -4220,13 +4472,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 34.6196209,
+    "lng": 126.7725974
    },
    "dest": {
-    "name": "강진만생태공원 주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "강진만생태공원주차장",
+    "lat": 34.621007,
+    "lng": 126.7749846,
     "kind": "parking"
    },
    "review": {
@@ -4242,7 +4494,11 @@
     "습지",
     "데크길"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-058-gaudo-dulle",
@@ -4286,13 +4542,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 34.5283355,
+    "lng": 126.7726379
    },
    "dest": {
-    "name": "망호출렁다리 주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "가우도망호출렁다리주차장",
+    "lat": 34.5287937,
+    "lng": 126.7719027,
     "kind": "parking"
    },
    "review": {
@@ -4307,7 +4563,11 @@
     "출렁다리",
     "섬 둘레길"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "tour:2024432",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-059-sebang-sunset",
@@ -4358,13 +4618,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 34.440416,
+    "lng": 126.1022217
    },
    "dest": {
-    "name": "세방낙조휴게소 주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "세방낙조 전망대주차장",
+    "lat": 34.4409024,
+    "lng": 126.1035204,
     "kind": "parking"
    },
    "review": {
@@ -4380,7 +4640,11 @@
     "해무",
     "다도해"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "tour:128224",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-059-ttangkkeut",
@@ -4423,13 +4687,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 34.29241,
+    "lng": 126.523828
    },
    "dest": {
-    "name": "땅끝마을 주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "땅끝모노레일주차장",
+    "lat": 34.2971643,
+    "lng": 126.527532,
     "kind": "parking"
    },
    "review": {
@@ -4444,7 +4708,11 @@
     "해안 바위",
     "섬"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "tour:3019080",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-060-biwon-garden",
@@ -4493,14 +4761,14 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 34.5366202,
+    "lng": 126.6262507
    },
    "dest": {
-    "name": "비원 입구",
-    "lat": 0,
-    "lng": 0,
-    "kind": "entrance"
+    "name": "해남비원 주차장",
+    "lat": 34.5370179,
+    "lng": 126.6261864,
+    "kind": "parking"
    },
    "review": {
     "best": "confirmed",
@@ -4516,7 +4784,11 @@
     "배롱나무",
     "연꽃"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-060-duryunsan-gogyebong",
@@ -4547,14 +4819,14 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 34.4816914,
+    "lng": 126.6338199
    },
    "dest": {
-    "name": "두륜산케이블카 하부 탑승장",
-    "lat": 0,
-    "lng": 0,
-    "kind": "entrance"
+    "name": "두륜산케이블카주차장",
+    "lat": 34.4969213,
+    "lng": 126.6249204,
+    "kind": "parking"
    },
    "review": {
     "best": "confirmed",
@@ -4569,7 +4841,11 @@
     "다도해",
     "케이블카"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-061-hajodae",
@@ -4607,13 +4883,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 38.0211,
+    "lng": 128.7357
    },
    "dest": {
-    "name": "하조대 주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "하조대주차장",
+    "lat": 38.0210919,
+    "lng": 128.7335068,
     "kind": "parking"
    },
    "review": {
@@ -4629,7 +4905,11 @@
     "백사장",
     "바위"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "tour:2710734",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-062-geumganggul-cheonbuldong",
@@ -4672,13 +4952,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 38.157555,
+    "lng": 128.4701233
    },
    "dest": {
-    "name": "설악산소공원 주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "소공원주차장",
+    "lat": 38.1727748,
+    "lng": 128.4958845,
     "kind": "parking"
    },
    "review": {
@@ -4693,7 +4973,11 @@
     "운무",
     "암봉"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "tour:125680",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-062-gwongeumseong",
@@ -4739,13 +5023,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 38.164149,
+    "lng": 128.4881826
    },
    "dest": {
-    "name": "설악산소공원 주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "소공원주차장",
+    "lat": 38.1728423,
+    "lng": 128.4959328,
     "kind": "parking"
    },
    "review": {
@@ -4761,7 +5045,11 @@
     "아침 햇살",
     "운해"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "tour:125798",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-062-ulsanbawi",
@@ -4804,13 +5092,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 38.193157,
+    "lng": 128.474776
    },
    "dest": {
-    "name": "설악산소공원 주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "소공원주차장",
+    "lat": 38.1727453,
+    "lng": 128.495906,
     "kind": "parking"
    },
    "review": {
@@ -4825,7 +5113,11 @@
     "화강암 봉우리",
     "안개"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "tour:125805",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-062-towangseong-falls",
@@ -4868,13 +5160,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 38.154315,
+    "lng": 128.494717
    },
    "dest": {
-    "name": "설악산 소공원 주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "소공원주차장",
+    "lat": 38.1727326,
+    "lng": 128.4959543,
     "kind": "parking"
    },
    "review": {
@@ -4889,7 +5181,11 @@
     "폭포",
     "암봉"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "tour:125676",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-063-danyanggang-jando",
@@ -4926,13 +5222,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 36.97805,
+    "lng": 128.3398233
    },
    "dest": {
-    "name": "만천하스카이워크 2주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "만천하스카이워크1주차장",
+    "lat": 36.9772767,
+    "lng": 128.3369797,
     "kind": "parking"
    },
    "review": {
@@ -4947,7 +5243,11 @@
     "잔도",
     "강"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "tour:2604656",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-063-mancheonha-skywalk",
@@ -4990,14 +5290,14 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 36.9781724,
+    "lng": 128.3373982
    },
    "dest": {
-    "name": "만천하스카이워크 매표소",
-    "lat": 0,
-    "lng": 0,
-    "kind": "entrance"
+    "name": "만천하스카이워크1주차장",
+    "lat": 36.9772596,
+    "lng": 128.3369422,
+    "kind": "parking"
    },
    "review": {
     "best": "confirmed",
@@ -5012,7 +5312,11 @@
     "강 조망",
     "스카이워크"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-064-deogyusan-hyangjeokbong",
@@ -5061,13 +5365,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 35.859903,
+    "lng": 127.746352
    },
    "dest": {
-    "name": "무주덕유산리조트 관광곤도라 주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "무주덕유산리조트 설천하우스 주차장",
+    "lat": 35.8916968,
+    "lng": 127.7368838,
     "kind": "parking"
    },
    "review": {
@@ -5082,7 +5386,11 @@
     "설화",
     "구름바다"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "tour:1705213",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-065-amisan-ridge",
@@ -5124,13 +5432,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 36.1556178,
+    "lng": 128.8601875
    },
    "dest": {
-    "name": "아미산등산로 주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "아미산주차장",
+    "lat": 36.1685847,
+    "lng": 128.838231,
     "kind": "parking"
    },
    "review": {
@@ -5145,7 +5453,11 @@
     "암릉",
     "소나무"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-065-hwasan-windmill-fog",
@@ -5194,13 +5506,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 36.1057484,
+    "lng": 128.7785625
    },
    "dest": {
-    "name": "화산마을주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "군위 화산산성 풍차전망대주차장",
+    "lat": 36.1055469,
+    "lng": 128.7788388,
     "kind": "parking"
    },
    "review": {
@@ -5215,7 +5527,11 @@
     "운해",
     "풍차"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-066-wondong-maehwa",
@@ -5264,14 +5580,14 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 35.3589737,
+    "lng": 128.9253598
    },
    "dest": {
-    "name": "원동면 공용주차장(원리)",
-    "lat": 0,
-    "lng": 0,
-    "kind": "parking"
+    "name": "순매원 입구",
+    "lat": 35.3585493,
+    "lng": 128.9258721,
+    "kind": "entrance"
    },
    "review": {
     "best": "confirmed",
@@ -5286,7 +5602,11 @@
     "강변",
     "철길"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-066-wondong-wetland-reeds",
@@ -5322,14 +5642,14 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 35.3711438,
+    "lng": 128.9089018
    },
    "dest": {
-    "name": "양산당곡생태학습관",
-    "lat": 0,
-    "lng": 0,
-    "kind": "entrance"
+    "name": "원동습지생태공원",
+    "lat": 35.3712444,
+    "lng": 128.9090574,
+    "kind": "parking"
    },
    "review": {
     "best": "confirmed",
@@ -5344,7 +5664,11 @@
     "습지",
     "데크길"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-067-saseongam-seomjingang",
@@ -5451,13 +5775,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 34.959837,
+    "lng": 127.483062
    },
    "dest": {
-    "name": "웃장공영주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "탐매마을입구",
+    "lat": 34.9592879,
+    "lng": 127.4841607,
     "kind": "parking"
    },
    "review": {
@@ -5473,7 +5797,11 @@
     "홍매화",
     "골목"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "tour:3062105",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-068-upo-weeping-cherry",
@@ -5521,13 +5849,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 35.5533874,
+    "lng": 128.4046841
    },
    "dest": {
-    "name": "우포늪생태관주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "우포늪무료 주차장",
+    "lat": 35.5435277,
+    "lng": 128.4174621,
     "kind": "parking"
    },
    "review": {
@@ -5542,7 +5870,11 @@
     "수양벚꽃",
     "습지"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-069-chollipo-arboretum",
@@ -5591,13 +5923,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 36.7982459,
+    "lng": 126.1489999
    },
    "dest": {
-    "name": "천리포수목원 주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "천리포수목원 제1주차장",
+    "lat": 36.7956857,
+    "lng": 126.1481631,
     "kind": "parking"
    },
    "review": {
@@ -5614,7 +5946,11 @@
     "연못",
     "수목원"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-069-udo-sea-road",
@@ -5664,13 +6000,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 36.9311809,
+    "lng": 126.3392544
    },
    "dest": {
-    "name": "벌말선착장(우도행 배)",
-    "lat": 0,
-    "lng": 0,
+    "name": "벌말선착장",
+    "lat": 36.9609001,
+    "lng": 126.3330102,
     "kind": "entrance"
    },
    "review": {
@@ -5687,7 +6023,11 @@
     "갯벌",
     "섬"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-070-daewonsa-valley",
@@ -5725,13 +6065,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 35.3548349,
+    "lng": 127.808075
    },
    "dest": {
-    "name": "지리산국립공원 대원사주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "대원사주차장",
+    "lat": 35.3554649,
+    "lng": 127.8075144,
     "kind": "parking"
    },
    "review": {
@@ -5746,7 +6086,11 @@
     "신록",
     "계곡 숲길"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-070-hwangmaesan-cheoljjuk",
@@ -5795,13 +6139,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 35.4813258,
+    "lng": 127.9775047
    },
    "dest": {
-    "name": "황매산 정상주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "정상주차장",
+    "lat": 35.4816774,
+    "lng": 127.9829147,
     "kind": "parking"
    },
    "review": {
@@ -5816,7 +6160,11 @@
     "철쭉",
     "일출"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-071-ulleung-sea-cliffs",
@@ -5865,14 +6213,14 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 37.5352534,
+    "lng": 130.8475113
    },
    "dest": {
-    "name": "도동항",
-    "lat": 0,
-    "lng": 0,
-    "kind": "entrance"
+    "name": "코끼리주차장",
+    "lat": 37.5291531,
+    "lng": 130.8428872,
+    "kind": "parking"
    },
    "review": {
     "best": "confirmed",
@@ -5886,7 +6234,11 @@
     "해안 절벽",
     "기암"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-072-haengnam-coast",
@@ -5935,14 +6287,14 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 37.4817376,
+    "lng": 130.9103233
    },
    "dest": {
-    "name": "도동항",
-    "lat": 0,
-    "lng": 0,
-    "kind": "entrance"
+    "name": "도동공영주차장",
+    "lat": 37.4830146,
+    "lng": 130.9078985,
+    "kind": "parking"
    },
    "review": {
     "best": "confirmed",
@@ -5956,7 +6308,11 @@
     "해안 절벽",
     "해안산책로"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-072-gwaneumdo",
@@ -5999,14 +6355,14 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 37.5426463,
+    "lng": 130.9192711
    },
    "dest": {
     "name": "관음도 매표소",
-    "lat": 0,
-    "lng": 0,
-    "kind": "entrance"
+    "lat": 37.5414,
+    "lng": 130.9169537,
+    "kind": "trailhead"
    },
    "review": {
     "best": "confirmed",
@@ -6021,7 +6377,11 @@
     "섬 둘레길",
     "해안 절벽"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-073-geochang-changpowon",
@@ -6070,13 +6430,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 35.65292,
+    "lng": 127.9426575
    },
    "dest": {
-    "name": "거창창포원 주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "거창창포원제1주차장",
+    "lat": 35.6543479,
+    "lng": 127.9387951,
     "kind": "parking"
    },
    "review": {
@@ -6092,7 +6452,11 @@
     "장미",
     "수련"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-073-gamaksan-deck",
@@ -6134,13 +6498,13 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 35.5903362,
+    "lng": 127.9183245
    },
    "dest": {
-    "name": "감악산 주차장",
-    "lat": 0,
-    "lng": 0,
+    "name": "감악산 별바람언덕 주차장",
+    "lat": 35.5910167,
+    "lng": 127.9202235,
     "kind": "parking"
    },
    "review": {
@@ -6155,7 +6519,11 @@
     "숲길",
     "무장애 데크길"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   },
   {
    "id": "s-074-yokjido-coast",
@@ -6204,14 +6572,14 @@
     }
    ],
    "spot": {
-    "lat": 0,
-    "lng": 0
+    "lat": 34.6198239,
+    "lng": 128.2764745
    },
    "dest": {
-    "name": "욕지항여객선터미널",
-    "lat": 0,
-    "lng": 0,
-    "kind": "entrance"
+    "name": "욕지고메원",
+    "lat": 34.6221813,
+    "lng": 128.2771719,
+    "kind": "parking"
    },
    "review": {
     "best": "confirmed",
@@ -6226,7 +6594,11 @@
     "다도해",
     "해무"
    ],
-   "coordSource": "kakao-search"
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
   }
  ]
 }
