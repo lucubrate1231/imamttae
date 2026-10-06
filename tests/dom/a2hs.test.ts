@@ -204,21 +204,21 @@ describe('띠 확인용 주소 ?band=show(10/5 사용자 — 닫은 뒤에도 �
   });
 });
 
-describe('D37(디자인 #72): 안드로이드 크롬·삼성 인터넷도 첫 방문부터 "홈 화면에 두기" 띠', () => {
-  it('안드로이드 크롬 첫 화면 맨 위: "홈 화면에 두면 앱처럼 쓸 수 있어요 / 홈 화면에 두기 ›", 모양은 카톡 띠와 같음', async () => {
+describe('D37(디자인 #72·#101): 안드로이드 크롬·삼성 인터넷도 첫 방문부터 "앱으로 설치하기" 띠', () => {
+  it('안드로이드 크롬 첫 화면 맨 위: "앱으로 설치하면 바로 열 수 있어요 / 앱으로 설치하기 ›"(10/6 — 크롬 말 \'앱 설치\'에 맞춤), 모양은 카톡 띠와 같음', async () => {
     await start(UA.chrome);
     const band = q('main.home > .kband')!;
     expect(band).not.toBeNull();
     expect(band.nextElementSibling!.matches('.eyebrow')).toBe(true);
-    expect(text('.kband .kb-l1')).toBe('홈 화면에 두면 앱처럼 쓸 수 있어요');
-    expect(text('.kband .kb-l2')).toBe('홈 화면에 두기 ›');
-    expect(q('.kband .kb-go')!.getAttribute('aria-label')).toBe('홈 화면에 두기 안내');
+    expect(text('.kband .kb-l1')).toBe('앱으로 설치하면 바로 열 수 있어요');
+    expect(text('.kband .kb-l2')).toBe('앱으로 설치하기 ›');
+    expect(q('.kband .kb-go')!.getAttribute('aria-label')).toBe('앱으로 설치하기 안내');
     expect(q('.kband img.kb-ic')).not.toBeNull();
   });
 
   it('삼성 인터넷도 같은 띠, PC 크롬·아이폰 사파리에는 없음', async () => {
     const app = await start(UA.samsung);
-    expect(text('.kband .kb-l2')).toBe('홈 화면에 두기 ›');
+    expect(text('.kband .kb-l2')).toBe('앱으로 설치하기 ›');
     app.destroy();
     for (const ua of [UA.pc, UA.safari]) {
       document.body.innerHTML = '<div id="app"></div>';
@@ -238,7 +238,7 @@ describe('D37(디자인 #72): 안드로이드 크롬·삼성 인터넷도 첫 �
     expect(q('.kband')).not.toBeNull();
     prompt = null;
     q('.kband .kb-go')!.click();
-    expect(q('.a2sheet')!.getAttribute('aria-label')).toBe('홈 화면에 두는 방법');
+    expect(q('.a2sheet')!.getAttribute('aria-label')).toBe('앱으로 설치하는 방법');
     btn('.a2sheet', '알겠어요')!.click();
     expect(q('.kband')).not.toBeNull(); // 그림 안내 [알겠어요]로는 닫히지 않음
     expect(a2hsEvents()).toContainEqual({ action: 'band', env: 'chrome' });
@@ -273,7 +273,7 @@ describe('D37(디자인 #72): 안드로이드 크롬·삼성 인터넷도 첫 �
     const app = await start(UA.chrome);
     window.dispatchEvent(new Event('appinstalled'));
     expect(q('.kband')).toBeNull();
-    expect(text('.toast')).toBe("홈 화면에 '이맘때'를 두었어요");
+    expect(q('.a2sheet')!.getAttribute('aria-label')).toBe('설치됐어요'); // 설치 직후 판(아래 F5-AC8)
     app.destroy();
     document.body.innerHTML = '<div id="app"></div>';
     root = document.getElementById('app')!;
@@ -285,28 +285,28 @@ describe('D37(디자인 #72): 안드로이드 크롬·삼성 인터넷도 첫 �
     storage.setItem('imamttae:a2hs', JSON.stringify({ bandClosed: true }));
     window.history.replaceState(null, '', '/?band=show');
     const app = await start(UA.chrome);
-    expect(text('.kband .kb-l2')).toBe('홈 화면에 두기 ›');
+    expect(text('.kband .kb-l2')).toBe('앱으로 설치하기 ›');
     app.destroy();
     document.body.innerHTML = '<div id="app"></div>';
     root = document.getElementById('app')!;
     window.history.replaceState(null, '', '/?band=chrome');
     await start(UA.safari);
-    expect(text('.kband .kb-l2')).toBe('홈 화면에 두기 ›');
+    expect(text('.kband .kb-l2')).toBe('앱으로 설치하기 ›');
     q('.kband .kb-go')!.click();
     expect(text('.a2sheet .a2-desc')).toBe('크롬 메뉴로 할 수 있어요.');
   });
 });
 
 describe('F5-AC6: 크롬·삼성 인터넷에서 처음 [저장] 직후 한 번', () => {
-  it('크롬: 안내 줄 대신 판 — 앱 아이콘 · 저장했어요 · 문장 · [홈 화면에 두기] · [괜찮아요]', async () => {
+  it('크롬: 안내 줄 대신 판 — 앱 아이콘 · 저장했어요 · 문장 · [앱으로 설치하기] · [괜찮아요]', async () => {
     await start(UA.chrome);
     saveIn('s-naejang');
     const s = q('.a2sheet')!;
     expect(s.getAttribute('aria-label')).toBe('저장했어요');
     expect(s.querySelector<HTMLImageElement>('img.a2-icon')!.getAttribute('src')).toBe('./brand/icon-192.png');
     expect(text('.a2sheet .a2-ok')).toBe('저장했어요');
-    expect(text('.a2sheet .a2-ttl')).toBe('홈 화면에 두면 저장한 곳을 바로 열 수 있어요');
-    expect(btn('.a2sheet', '홈 화면에 두기')).toBeTruthy();
+    expect(text('.a2sheet .a2-ttl')).toBe('앱으로 설치하면 저장한 곳을 바로 열 수 있어요');
+    expect(btn('.a2sheet', '앱으로 설치하기')).toBeTruthy();
     expect(btn('.a2sheet', '괜찮아요')).toBeTruthy();
     expect(q('.toast.on')).toBeNull();
     btn('.a2sheet', '괜찮아요')!.click();
@@ -316,31 +316,38 @@ describe('F5-AC6: 크롬·삼성 인터넷에서 처음 [저장] 직후 한 번'
     expect(text('.toast')).toContain('저장했어요');
   });
 
-  it('[홈 화면에 두기]: 크롬 설치 창이 준비돼 있으면 그 창, 설치하면 "홈 화면에 \'이맘때\'를 두었어요"', async () => {
+  it('[앱으로 설치하기]: 크롬 설치 창이 준비돼 있으면 그 창, 설치하면 설치 직후 판', async () => {
     const p = fakePrompt();
     prompt = p;
     await start(UA.chrome);
     saveIn('s-naejang');
-    btn('.a2sheet', '홈 화면에 두기')!.click();
+    btn('.a2sheet', '앱으로 설치하기')!.click();
     expect(p.prompt).toHaveBeenCalledTimes(1);
     window.dispatchEvent(new Event('appinstalled'));
-    expect(text('.toast')).toBe("홈 화면에 '이맘때'를 두었어요");
+    expect(q('.a2sheet')!.getAttribute('aria-label')).toBe('설치됐어요');
     expect(a2hsEvents()).toContainEqual({ action: 'installed', env: 'chrome' });
   });
 
-  it('[홈 화면에 두기]: 설치 창이 없으면 크롬 그림 안내(세 단계)', async () => {
+  it('[앱으로 설치하기]: 설치 창이 없으면 크롬 그림 안내(세 단계) — ② \'앱 설치\' 먼저, \'홈 화면에 추가\'는 보충(10/6)', async () => {
     await start(UA.chrome);
     saveIn('s-naejang');
-    btn('.a2sheet', '홈 화면에 두기')!.click();
-    expect(q('.a2sheet')!.getAttribute('aria-label')).toBe('홈 화면에 두는 방법');
+    btn('.a2sheet', '앱으로 설치하기')!.click();
+    expect(q('.a2sheet')!.getAttribute('aria-label')).toBe('앱으로 설치하는 방법');
+    expect(text('.a2sheet .a2-gttl')).toBe('앱으로 설치하는 방법');
     expect(text('.a2sheet .a2-desc')).toBe('크롬 메뉴로 할 수 있어요.');
-    expect(root.querySelectorAll('.a2sheet .a2-step')).toHaveLength(3);
+    const steps = [...root.querySelectorAll('.a2sheet .a2-step')];
+    expect(steps).toHaveLength(3);
+    expect(steps[1]!.querySelector('.a2-txt')!.textContent).toBe("'앱 설치'를 누르세요");
+    expect(steps[1]!.querySelector('.a2-sub')!.textContent).toBe("'홈 화면에 추가'로 보일 수도 있어요.");
+    expect([...steps[1]!.querySelectorAll('.a2-pic .a2-row')].map((r) => r.textContent)).toEqual(['페이지에서 찾기', '앱 설치', '데스크톱 사이트']);
+    expect(steps[1]!.querySelector('.a2-pic .a2-row.a2-hit')!.textContent).toBe('앱 설치');
   });
 
   it('삼성 인터넷도 처음 저장 직후 판, 버튼은 삼성 인터넷 그림 안내', async () => {
     await start(UA.samsung);
     saveIn('s-naejang');
-    btn('.a2sheet', '홈 화면에 두기')!.click();
+    btn('.a2sheet', '앱으로 설치하기')!.click();
+    expect(text('.a2sheet .a2-gttl')).toBe('앱으로 설치하는 방법');
     expect(text('.a2sheet .a2-desc')).toBe('삼성 인터넷 메뉴로 할 수 있어요.');
   });
 
@@ -351,6 +358,7 @@ describe('F5-AC6: 크롬·삼성 인터넷에서 처음 [저장] 직후 한 번'
     expect(text('.toast')).toContain('저장했어요');
     go('#/');
     q('main.home .home-add')!.click();
+    expect(text('.a2sheet .a2-gttl')).toBe('홈 화면에 두는 방법'); // 아이폰은 그대로
     expect(text('.a2sheet .a2-desc')).toBe('사파리 공유 버튼으로 할 수 있어요.');
     // 디자인 #62: 공유 버튼은 자리 대신 모양으로(아이폰 판·배치마다 자리가 달라서)
     const steps = [...root.querySelectorAll('.a2sheet .a2-step')];
@@ -383,13 +391,30 @@ describe('F5-AC6: 크롬·삼성 인터넷에서 처음 [저장] 직후 한 번'
 });
 
 describe('F5-AC5·11-5: 카드와 홈 화면 아이콘으로 연 경우', () => {
-  it('카드: 앱 아이콘 + "홈 화면에 두기 / 앱처럼 바로 열려요." — 첫 화면 맨 아래와 저장한 곳 맨 아래', async () => {
+  it('카드: 앱 아이콘 + 안드로이드·PC "앱으로 설치하기 / 앱처럼 바로 열려요."(10/6) — 첫 화면 맨 아래와 저장한 곳 맨 아래', async () => {
     await start(UA.chrome);
     const card = q('main.home .home-add')!;
     expect(card.querySelector<HTMLImageElement>('img')!.getAttribute('src')).toBe('./brand/icon-192.png');
-    expect(card.textContent).toBe('홈 화면에 두기앱처럼 바로 열려요.');
+    expect(card.textContent).toBe('앱으로 설치하기앱처럼 바로 열려요.');
     go('#/saved');
-    expect(q('.saved .home-add')!.textContent).toBe('홈 화면에 두기앱처럼 바로 열려요.');
+    expect(q('.saved .home-add')!.textContent).toBe('앱으로 설치하기앱처럼 바로 열려요.');
+  });
+
+  it('카드 이름은 브라우저 말에 맞춤: 아이폰(사파리·카톡) "홈 화면에 두기", 안드로이드(크롬·삼성 인터넷·카톡)·PC "앱으로 설치하기"', async () => {
+    const cases: [string, string][] = [
+      [UA.safari, '홈 화면에 두기'],
+      [UA.kakaoIos, '홈 화면에 두기'],
+      [UA.samsung, '앱으로 설치하기'],
+      [UA.kakaoAndroid, '앱으로 설치하기'],
+      [UA.pc, '앱으로 설치하기'],
+    ];
+    for (const [ua, name] of cases) {
+      document.body.innerHTML = '<div id="app"></div>';
+      root = document.getElementById('app')!;
+      const a = await start(ua);
+      expect(q('main.home .home-add b')!.textContent).toBe(name);
+      a.destroy();
+    }
   });
 
   it('홈 화면 아이콘으로 열면 띠·판·카드가 모두 없음', async () => {
@@ -409,5 +434,52 @@ describe('F5-AC5·11-5: 카드와 홈 화면 아이콘으로 연 경우', () => 
     expect(document.activeElement).toBe(q('.a2sheet'));
     document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
     expect(q('.a2sheet')).toBeNull();
+  });
+});
+
+describe('F5-AC8(디자인 #101, 10/6): 설치를 마친 직후', () => {
+  it('안드로이드 크롬: 판 한 번 — 앱 아이콘 · 설치됐어요 · "휴대폰 앱 목록에 \'이맘때\'가 생겼어요" · 홈 화면에 꺼내는 두 단계 · [알겠어요]', async () => {
+    await start(UA.chrome);
+    window.dispatchEvent(new Event('appinstalled'));
+    const s = q('.a2sheet')!;
+    expect(s.getAttribute('aria-label')).toBe('설치됐어요');
+    expect(s.querySelector('img.a2-icon')).not.toBeNull();
+    expect(text('.a2sheet .a2-ok')).toBe('설치됐어요');
+    expect(text('.a2sheet .a2-ttl')).toBe("휴대폰 앱 목록에 '이맘때'가 생겼어요");
+    expect(text('.a2sheet .a2-if')).toBe('홈 화면에 아이콘이 없으면');
+    const steps = [...root.querySelectorAll('.a2sheet .a2-step')];
+    expect(steps).toHaveLength(2);
+    expect(steps[0]!.querySelector('.a2-txt')!.textContent).toBe("앱 목록에서 '이맘때'를 길게 누르세요");
+    expect(steps[0]!.querySelector('.a2-sub')!.textContent).toBe('앱 목록은 홈 화면을 위로 밀면 나와요. 위젯 목록에는 없어요.');
+    expect(steps[0]!.querySelectorAll('.a2-pic.apps .a2-app')).toHaveLength(4); // 앱 아이콘 네 칸
+    expect(steps[0]!.querySelectorAll('.a2-pic.apps .a2-app.a2-hit')).toHaveLength(1); // '이맘때'만 테두리
+    expect(steps[1]!.querySelector('.a2-txt')!.textContent).toBe("'홈 화면에 추가'를 누르세요");
+    expect([...steps[1]!.querySelectorAll('.a2-pic .a2-row')].map((r) => r.textContent)).toEqual(['선택', '홈 화면에 추가', '앱 정보']);
+    expect(q('.toast.on')).toBeNull();
+    expect(a2hsEvents()).toContainEqual({ action: 'installed', env: 'chrome' });
+    btn('.a2sheet', '알겠어요')!.click();
+    expect(q('.a2sheet')).toBeNull();
+  });
+
+  it('다른 판(저장 직후 판)이 열려 있으면 닫고 띄움', async () => {
+    await start(UA.chrome);
+    saveIn('s-naejang');
+    expect(q('.a2sheet')!.getAttribute('aria-label')).toBe('저장했어요');
+    window.dispatchEvent(new Event('appinstalled'));
+    expect(root.querySelectorAll('.a2sheet')).toHaveLength(1);
+    expect(q('.a2sheet')!.getAttribute('aria-label')).toBe('설치됐어요');
+  });
+
+  it('삼성 인터넷도 같은 판', async () => {
+    await start(UA.samsung);
+    window.dispatchEvent(new Event('appinstalled'));
+    expect(q('.a2sheet')!.getAttribute('aria-label')).toBe('설치됐어요');
+  });
+
+  it('PC 크롬: 판 대신 안내 줄 "\'이맘때\'를 앱으로 설치했어요"', async () => {
+    await start(UA.pc);
+    window.dispatchEvent(new Event('appinstalled'));
+    expect(q('.a2sheet')).toBeNull();
+    expect(text('.toast')).toBe("'이맘때'를 앱으로 설치했어요");
   });
 });

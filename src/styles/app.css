@@ -399,6 +399,13 @@ h1, h2, h3, p { margin: 0; }
 .a2-row { display: flex; align-items: center; justify-content: space-between; gap: 2px; overflow: hidden; padding: 0 4px; font-size: 9px; line-height: 1.5; white-space: nowrap; color: var(--ink-3); }
 .a2-row.a2-hit { padding: 1px 4px; font-size: 9.5px; color: var(--ink); }
 .a2-row-ic { display: flex; flex: none; }
+/* 설치 직후 판(디자인 #101): '홈 화면에 아이콘이 없으면' + 앱 목록 그림(앱 아이콘 네 칸 중 '이맘때'만 테두리) */
+.a2-if { margin-top: 18px; font-size: 16px; font-weight: 800; color: var(--ink-2); }
+.a2-if + .a2-steps { margin-top: 10px; }
+.a2-pic.apps { display: grid; grid-template-columns: repeat(2, 22px); grid-auto-rows: 22px; gap: 4px; justify-content: center; align-content: center; }
+.a2-app { display: block; border-radius: 6px; background: #d5dbd4; }
+.a2-app.a2-hit { display: grid; place-items: center; padding: 0; border-width: 2px; }
+.a2-app img { width: 14px; height: 14px; border-radius: 3px; }
 .a2-switch { position: relative; align-self: flex-end; width: 22px; height: 13px; border-radius: 7px; background: #34c759; }
 .a2-switch::after { content: ''; position: absolute; top: 2px; right: 2px; width: 9px; height: 9px; border-radius: 50%; background: #fff; }
 .a2-key { display: inline-flex; vertical-align: -2px; margin-right: 4px; }

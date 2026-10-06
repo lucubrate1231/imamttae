@@ -1,5 +1,7 @@
 /**
  * 홈 화면에 두기(F5, D33) — design-guide 11장, 글자 10-6
+ * - 말은 그 브라우저가 쓰는 말에 맞춤(10/6 디자인 #101): 안드로이드·PC '앱으로 설치하기'(크롬 화면이 '앱 설치'), 아이폰 '홈 화면에 두기'
+ * - 설치를 마치면(appinstalled) 안드로이드는 '앱 목록에 생겼어요' 판 한 번(갤럭시는 아이콘이 앱 목록에만 생길 수 있음), PC는 안내 줄
  * - 카톡 안: 첫 화면 맨 위 띠 '크롬(사파리)으로 열기' → 넘어가지 못하면 그림 안내
  * - 크롬·삼성 인터넷(설치 전): 처음 [저장] 직후 판 한 번(안내 줄 대신)
  * - 늘 있는 [홈 화면에 두기] 카드(첫 화면·저장한 곳 맨 아래): 설치 창 또는 브라우저별 그림 안내
@@ -54,7 +56,9 @@ type Seg = string | { b: string } | { key: 'share' };
 type Pic =
   | { kind: 'key'; at: 'tr' | 'br'; sym: string }
   /** rows가 있으면 실제 메뉴 순서대로 그리고, 누를 줄(item) 오른쪽에 아이콘 */
-  | { kind: 'menu'; item: string; rows?: string[]; icon?: 'plus' }
+  | { kind: 'menu'; item: string; rows?: string[]; after?: string[]; icon?: 'plus' }
+  /** 휴대폰 앱 목록: 앱 아이콘 네 칸 중 '이맘때'만 계절 색 테두리(설치 직후 판) */
+  | { kind: 'apps' }
   /** 버튼 모양 하나만(자리 없이) — 아이폰 공유 버튼처럼 자리가 판마다 다를 때(디자인 #62) */
   | { kind: 'icon'; sym: 'share' }
   | { kind: 'dialog'; label: string; toggle?: boolean };
@@ -86,17 +90,18 @@ const GUIDES: Record<Exclude<A2hsEnv, 'standalone'>, Guide> = {
       { t: ["'", { b: 'Safari' }, "'를 고르세요"], pic: { kind: 'menu', item: 'Safari' } },
     ],
   },
+  // 크롬 메뉴의 말 '앱 설치'를 먼저(10/6 실기기 — 옛 순서의 반대)
   chrome: {
-    title: '홈 화면에 두는 방법',
+    title: '앱으로 설치하는 방법',
     desc: '크롬 메뉴로 할 수 있어요.',
     steps: [
       { t: ['오른쪽 위 ', { b: '[⋮]' }, ' 버튼을 누르세요'], pic: { kind: 'key', at: 'tr', sym: '⋮' } },
-      { t: ["'", { b: '홈 화면에 추가' }, "'를 누르세요"], sub: "'앱 설치'로 보일 수도 있어요.", pic: { kind: 'menu', item: '홈 화면에 추가' } },
+      { t: ["'", { b: '앱 설치' }, "'를 누르세요"], sub: "'홈 화면에 추가'로 보일 수도 있어요.", pic: { kind: 'menu', item: '앱 설치', rows: ['페이지에서 찾기'], after: ['데스크톱 사이트'] } },
       { t: ["'", { b: '설치' }, "'를 누르세요"], pic: { kind: 'dialog', label: '설치' } },
     ],
   },
   samsung: {
-    title: '홈 화면에 두는 방법',
+    title: '앱으로 설치하는 방법', // 10/6 제목만 — 메뉴 순서는 실기기 확인 뒤
     desc: '삼성 인터넷 메뉴로 할 수 있어요.',
     steps: [
       { t: ['오른쪽 아래 ', { b: '[≡]' }, ' 버튼을 누르세요'], pic: { kind: 'key', at: 'br', sym: '≡' } },
@@ -141,7 +146,10 @@ function pic(p: Pic): HTMLElement {
     const hit = h('span', { class: 'a2-row a2-hit', text: p.item });
     if (p.icon === 'plus') hit.append(svgSpan('a2-row-ic', PLUS_SQ));
     box.classList.add('rows');
-    box.append(...p.rows.map((r) => h('span', { class: 'a2-row', text: r })), hit);
+    box.append(...p.rows.map((r) => h('span', { class: 'a2-row', text: r })), hit, ...(p.after ?? []).map((r) => h('span', { class: 'a2-row', text: r })));
+  } else if (p.kind === 'apps') {
+    const me = h('span', { class: 'a2-app a2-hit' }, h('img', { src: ICON, alt: '', width: '18', height: '18' }));
+    box.append(h('span', { class: 'a2-app' }), h('span', { class: 'a2-app' }), me, h('span', { class: 'a2-app' }));
   } else if (p.kind === 'menu') {
     box.append(h('span', { class: 'a2-line' }), h('span', { class: 'a2-hit', text: p.item }), h('span', { class: 'a2-line' }));
   } else {
@@ -169,6 +177,8 @@ export function createA2hs(d: A2hsDeps): A2hs {
   const installCapable = (env === 'chrome' || env === 'samsung') && d.android;
   const bandEnv: 'kakao-android' | 'kakao-ios' = kakao ? env : env === 'ios-safari' ? 'kakao-ios' : 'kakao-android';
   const via = bandEnv === 'kakao-ios' ? '사파리로' : '크롬으로';
+  /** 카드·저장 판 버튼 이름: 아이폰은 사파리 메뉴 말 '홈 화면에 두기', 안드로이드·PC는 크롬 말에 맞춰 '앱으로 설치하기'(10/6) */
+  const addWord = env === 'ios-safari' || env === 'kakao-ios' ? '홈 화면에 두기' : '앱으로 설치하기';
 
   // ── 넘겨받은 장면 번호(카톡 → 브라우저): 합치고 주소에서 지움 ──
   const known = new Set(d.scenes.map((s) => s.id));
@@ -211,17 +221,12 @@ export function createA2hs(d: A2hsDeps): A2hs {
     return item;
   }
 
-  function guide(which: A2hsEnv = env): void {
-    if (which === 'standalone') return;
-    const g = GUIDES[which];
-    const ok = h('button', { type: 'button', class: 'btn line a2-done', text: '알겠어요' });
-    const s = sheet(g.title, [
-      h('h2', { class: 'a2-gttl', text: g.title }),
-      h('p', { class: 'a2-desc', text: g.desc }),
-      h(
+  /** 그림 안내 단계(번호 · 글 · 보충 · 작은 그림) */
+  function stepList(steps: Step[]): HTMLElement {
+    return h(
         'ol',
         { class: 'a2-steps' },
-        ...g.steps.map((st, i) =>
+        ...steps.map((st, i) =>
           h(
             'li',
             { class: 'a2-step' },
@@ -236,11 +241,39 @@ export function createA2hs(d: A2hsDeps): A2hs {
             pic(st.pic),
           ),
         ),
-      ),
-      ok,
-    ]);
+      );
+  }
+
+  function guide(which: A2hsEnv = env): void {
+    if (which === 'standalone') return;
+    const g = GUIDES[which];
+    const ok = h('button', { type: 'button', class: 'btn line a2-done', text: '알겠어요' });
+    const s = sheet(g.title, [h('h2', { class: 'a2-gttl', text: g.title }), h('p', { class: 'a2-desc', text: g.desc }), stepList(g.steps), ok]);
     ok.addEventListener('click', () => s.close());
     track('guide');
+  }
+
+  /**
+   * 설치 직후 판(안드로이드, 디자인 #101 · F5-AC8): 갤럭시는 설치해도 홈 화면에 아이콘이 안 생길 수 있어(앱 목록에만)
+   * '홈 화면에 두었어요'라고 단정하지 않고, 앱 목록에 생겼다고 말한 뒤 홈 화면에 꺼내는 법을 알려 줌. 다른 판은 닫고 띄움
+   */
+  function installedSheet(): void {
+    const ok = h('p', { class: 'a2-ok' });
+    ok.innerHTML = `${CHECK}<span>설치됐어요</span>`;
+    const done = h('button', { type: 'button', class: 'btn line a2-done', text: '알겠어요' });
+    const s = sheet('설치됐어요', [
+      h('img', { class: 'a2-icon', src: ICON, alt: '', width: '64', height: '64' }),
+      ok,
+      h('h2', { class: 'a2-ttl' }, h('span', { class: 'nowrap', text: '휴대폰 앱 목록에' }), ' ', h('span', { class: 'nowrap', text: "'이맘때'가 생겼어요" })),
+      h('p', { class: 'a2-if', text: '홈 화면에 아이콘이 없으면' }),
+      stepList([
+        { t: ["앱 목록에서 '", { b: '이맘때' }, "'를 길게 누르세요"], sub: '앱 목록은 홈 화면을 위로 밀면 나와요. 위젯 목록에는 없어요.', pic: { kind: 'apps' } },
+        // 길게 누르면 뜨는 메뉴 이름은 휴대폰마다 다를 수 있어 실기기로 맞춤
+        { t: ["'", { b: '홈 화면에 추가' }, "'를 누르세요"], pic: { kind: 'menu', item: '홈 화면에 추가', rows: ['선택'], after: ['앱 정보'] } },
+      ]),
+      done,
+    ]);
+    done.addEventListener('click', () => s.close());
   }
 
   /** [홈 화면에 두기]: 카톡 → 넘어가기 안내 · 설치 창이 있으면 그 창 · 아니면 그 브라우저 그림 안내 */
@@ -263,7 +296,8 @@ export function createA2hs(d: A2hsDeps): A2hs {
     setFlag({ installed: true });
     band?.remove(); // 설치를 마치면 띠가 사라짐(D37)
     track('installed');
-    d.toast("홈 화면에 '이맘때'를 두었어요");
+    if (d.android) installedSheet();
+    else d.toast("'이맘때'를 앱으로 설치했어요"); // PC 크롬(아이폰은 설치 끝 신호가 없음)
   };
   win.addEventListener('appinstalled', onInstalled);
 
@@ -285,13 +319,13 @@ export function createA2hs(d: A2hsDeps): A2hs {
   if (bandKind === 'install') {
     const go = h(
       'button',
-      { type: 'button', class: 'kb-go', 'aria-label': '홈 화면에 두기 안내' },
+      { type: 'button', class: 'kb-go', 'aria-label': '앱으로 설치하기 안내' },
       h('img', { class: 'kb-ic', src: ICON, alt: '', width: '32', height: '32' }),
       h(
         'span',
         { class: 'kb-txt' },
-        h('span', { class: 'kb-l1' }, h('span', { class: 'nowrap', text: '홈 화면에 두면' }), ' ', h('span', { class: 'nowrap', text: '앱처럼 쓸 수 있어요' })),
-        h('b', { class: 'kb-l2', text: '홈 화면에 두기 ›' }),
+        h('span', { class: 'kb-l1' }, h('span', { class: 'nowrap', text: '앱으로 설치하면' }), ' ', h('span', { class: 'nowrap', text: '바로 열 수 있어요' })),
+        h('b', { class: 'kb-l2', text: '앱으로 설치하기 ›' }),
       ),
     );
     const x = h('button', { type: 'button', class: 'kb-x', 'aria-label': '안내 닫기' });
@@ -344,7 +378,7 @@ export function createA2hs(d: A2hsDeps): A2hs {
     band,
     card() {
       const img = h('img', { class: 'ic', src: ICON, alt: '', width: '48', height: '48' });
-      const b = h('button', { class: 'home-add', type: 'button' }, img, h('span', {}, h('b', { text: '홈 화면에 두기' }), h('span', { text: '앱처럼 바로 열려요.' })));
+      const b = h('button', { class: 'home-add', type: 'button' }, img, h('span', {}, h('b', { text: addWord }), h('span', { text: '앱처럼 바로 열려요.' })));
       b.hidden = env === 'standalone';
       b.addEventListener('click', () => {
         track('card');
@@ -364,12 +398,12 @@ export function createA2hs(d: A2hsDeps): A2hs {
       setFlag({ sheetShown: true }); // 한 번만(닫는 방법과 상관없이)
       const ok = h('p', { class: 'a2-ok' });
       ok.innerHTML = `${CHECK}<span>저장했어요</span>`;
-      const add = h('button', { type: 'button', class: 'btn fill', text: '홈 화면에 두기' });
+      const add = h('button', { type: 'button', class: 'btn fill', text: addWord });
       const later = h('button', { type: 'button', class: 'a2-later', text: '괜찮아요' });
       const s = sheet('저장했어요', [
         h('img', { class: 'a2-icon', src: ICON, alt: '', width: '64', height: '64' }),
         ok,
-        h('h2', { class: 'a2-ttl' }, h('span', { class: 'nowrap', text: '홈 화면에 두면' }), ' ', h('span', { class: 'nowrap', text: '저장한 곳을 바로 열 수 있어요' })),
+        h('h2', { class: 'a2-ttl' }, h('span', { class: 'nowrap', text: '앱으로 설치하면' }), ' ', h('span', { class: 'nowrap', text: '저장한 곳을 바로 열 수 있어요' })),
         add,
         later,
       ]);

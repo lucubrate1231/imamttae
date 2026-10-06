@@ -58,20 +58,21 @@ test.describe('카톡 안(안드로이드)', () => {
 test.describe('크롬(안드로이드)', () => {
   test.use({ userAgent: UA.chrome });
 
-  test('D37: 첫 방문부터 맨 위 "홈 화면에 두기" 띠 — 320px에서 첫 줄 한 줄, 하늘색, 높이 64 이상, 접근성 위반 0', async ({ page }) => {
+  test('D37·#101: 첫 방문부터 맨 위 "앱으로 설치하기" 띠 — 320px에서 첫 줄 한 줄, 하늘색, 높이 64 이상, 접근성 위반 0', async ({ page }) => {
     await page.setViewportSize({ width: 320, height: 640 });
     await page.goto('./?map=fake&motion=0#/');
     const band = page.locator('main.home > .kband');
-    await expect(band.locator('.kb-l2')).toHaveText('홈 화면에 두기 ›');
+    await expect(band.locator('.kb-l1')).toHaveText('앱으로 설치하면 바로 열 수 있어요');
+    await expect(band.locator('.kb-l2')).toHaveText('앱으로 설치하기 ›');
     await page.evaluate(() => document.fonts.ready);
     expect(await page.locator('.kb-l1').evaluate((e) => e.getClientRects().length === 1 && e.getBoundingClientRect().height < 26)).toBe(true);
     expect((await page.locator('.kb-go').boundingBox())!.height).toBeGreaterThanOrEqual(64);
     expect(await band.evaluate((e) => getComputedStyle(e).backgroundColor)).toBe('rgb(220, 234, 246)');
     expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(0);
-    await axe(page, '.kband', '홈 화면에 두기 띠');
+    await axe(page, '.kband', '앱으로 설치하기 띠');
   });
 
-  test('F5-AC6·AC7: 처음 [저장] 직후 판 → [홈 화면에 두기] → 설치 창이 없으면 크롬 그림 안내(320×640 판 안 스크롤, 넘침 없음, 접근성)', async ({ page }) => {
+  test('F5-AC6·AC7: 처음 [저장] 직후 판 → [앱으로 설치하기] → 설치 창이 없으면 크롬 그림 안내(320×640 판 안 스크롤, 넘침 없음, 접근성)', async ({ page }) => {
     await page.setViewportSize({ width: 320, height: 640 });
     await page.goto('./?map=fake&motion=0#/scene/s-020-naejangsan-uhwajeong');
     await expect(page.locator('.detail.open')).toBeVisible();
@@ -83,8 +84,8 @@ test.describe('크롬(안드로이드)', () => {
     await noOverflow(page, '.a2sheet');
     expect(await small(page, '.a2sheet button')).toEqual([]);
     await axe(page, '.a2sheet', '저장 판');
-    await s.getByRole('button', { name: '홈 화면에 두기' }).click();
-    const g = page.getByRole('dialog', { name: '홈 화면에 두는 방법' });
+    await s.getByRole('button', { name: '앱으로 설치하기' }).click();
+    const g = page.getByRole('dialog', { name: '앱으로 설치하는 방법' });
     await expect(g).toBeVisible();
     await expect(g.locator('.a2-step')).toHaveCount(3);
     const box = (await g.boundingBox())!;
@@ -93,12 +94,30 @@ test.describe('크롬(안드로이드)', () => {
     await axe(page, '.a2sheet', '크롬 안내');
   });
 
-  test('[홈 화면에 두기] 카드: 앱 아이콘이 실제로 뜨고 "앱처럼 바로 열려요."', async ({ page }) => {
+  test('[앱으로 설치하기] 카드: 앱 아이콘이 실제로 뜨고 "앱처럼 바로 열려요."', async ({ page }) => {
     await page.goto('./?map=fake&motion=0#/');
     const card = page.locator('main.home .home-add');
     await card.scrollIntoViewIfNeeded();
-    await expect(card).toHaveText('홈 화면에 두기앱처럼 바로 열려요.');
+    await expect(card).toHaveText('앱으로 설치하기앱처럼 바로 열려요.');
     await expect.poll(() => card.locator('img').evaluate((i: HTMLImageElement) => i.complete && i.naturalWidth)).toBe(192);
+  });
+
+  test('F5-AC8(#101): 설치를 마치면 설치 직후 판 — 320×640에서 넘침 없이, 제목 두 줄 안, 누르는 곳 48 이상, 접근성 위반 0, 띠는 사라짐', async ({ page }) => {
+    await page.setViewportSize({ width: 320, height: 640 });
+    await page.goto('./?map=fake&motion=0#/');
+    await expect(page.locator('main.home > .kband')).toBeVisible();
+    await page.evaluate(() => window.dispatchEvent(new Event('appinstalled')));
+    const s = page.getByRole('dialog', { name: '설치됐어요' });
+    await expect(s).toBeVisible();
+    await expect(page.locator('main.home > .kband')).toHaveCount(0);
+    await page.evaluate(() => document.fonts.ready);
+    expect(await s.locator('.a2-ttl').evaluate((e) => Math.round(e.getBoundingClientRect().height / parseFloat(getComputedStyle(e).lineHeight)))).toBeLessThanOrEqual(2);
+    await expect(s.locator('.a2-step')).toHaveCount(2);
+    await noOverflow(page, '.a2sheet');
+    expect(await small(page, '.a2sheet button')).toEqual([]);
+    await axe(page, '.a2sheet', '설치 직후 판');
+    await s.getByRole('button', { name: '알겠어요' }).click();
+    await expect(s).toHaveCount(0);
   });
 });
 
