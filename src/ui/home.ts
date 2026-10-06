@@ -27,6 +27,8 @@ export interface HomeDeps {
   /** 홈 화면에 두기(F5, src/ui/a2hs.ts): 카톡 안 띠(맨 위)와 [홈 화면에 두기] 카드 */
   band?: HTMLElement | null;
   homeAdd(): HTMLElement;
+  /** 의견 보내기 카드(D46) — '이 앱 이야기' 바로 아래 */
+  feedback?(): HTMLElement;
 }
 
 export interface Home {
@@ -90,7 +92,8 @@ export function createHome(d: HomeDeps): Home {
     h('span', { class: 'story-txt' }, h('small', { text: '이 앱 이야기' }), h('b', { text: '60대 부부의 100곳 여행 약속' })),
     h('span', { 'aria-hidden': 'true', text: '›' }),
   );
-  const extra = h('section', { class: 'extra' }, homeAdd, storyLink);
+  // 맨 아래: 설치 카드 → 이 앱 이야기 → 의견 보내기(D46) → 바닥줄 '개인정보 안내'(D45, design-guide 12장)
+  const extra = h('section', { class: 'extra' }, homeAdd, storyLink, d.feedback?.() ?? null, h('a', { class: 'privacy-link', href: '#/privacy', text: '개인정보 안내' }));
 
   const main = h('main', { class: 'home' }, d.band ?? null, eyebrow, title, d.alert ?? null, months, peakSec, mapSec, recSec, extra);
 

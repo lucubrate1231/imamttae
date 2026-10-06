@@ -24,6 +24,9 @@ import { createSaved } from './ui/saved';
 import { createAlertCard, type AlertCard } from './ui/alertCard';
 import { createSavedStore, type SavedStore } from './storage/saved';
 import { createA2hs } from './ui/a2hs';
+import { feedbackCard, feedbackLine, type FeedbackDeps } from './ui/feedback';
+import { createPrivacy } from './ui/privacy';
+import { CONTACT_EMAIL, FEEDBACK_FORM_URL, FEEDBACK_PLACE_FIELD } from './config';
 import { a2hsEnv, type InstallEvent } from './pwa';
 
 export interface AppDeps {
@@ -51,6 +54,10 @@ export interface AppDeps {
   motion?: boolean;
   /** 크롬 설치 창 신호(F5). main.ts가 앱보다 먼저 듣기 시작함(src/pwa.ts captureInstallPrompt) */
   installPrompt?: () => InstallEvent | null;
+  /** 의견 보내기 폼 주소·'어느 곳' 칸 번호, 문의 이메일(기본은 src/config.ts — 테스트에서 바꿈) */
+  feedbackUrl?: string;
+  feedbackPlaceField?: string;
+  contactEmail?: string;
   /** 카톡 띠를 누른 뒤 이만큼 지나도 이 화면이면 그림 안내(기본 2초, 테스트는 0) */
   kakaoWaitMs?: number;
 }
@@ -170,6 +177,8 @@ export async function startApp(deps: AppDeps): Promise<AppHandle> {
     alerts.push(a);
     return a;
   };
+  // 의견 보내기(D46, design-guide 12-1): 첫 화면·저장한 곳 카드, 장면 상세 줄
+  const fb: FeedbackDeps = { url: deps.feedbackUrl ?? FEEDBACK_FORM_URL, placeField: deps.feedbackPlaceField ?? FEEDBACK_PLACE_FIELD, toast, track: tracker.track };
   const homeAlert = alertFor('home');
   const savedAlert = alertFor('saved');
   const home = createHome({
@@ -181,6 +190,7 @@ export async function startApp(deps: AppDeps): Promise<AppHandle> {
     alert: homeAlert.el,
     band: a2hs.band,
     homeAdd: () => a2hs.card(),
+    feedback: () => feedbackCard(fb, 'home'),
   });
   const navi = createNavi({ win, ua: deps.ua ?? win.navigator.userAgent, openUrl, store, track: tracker.track });
   const detail = createDetail({
@@ -194,6 +204,7 @@ export async function startApp(deps: AppDeps): Promise<AppHandle> {
     motion: deps.motion ?? new URLSearchParams(win.location.search).get('motion') !== '0',
     toast,
     afterSave: (on) => a2hs.afterSave(on),
+    feedback: (s) => feedbackLine(fb, s),
     back: () => {
       if (openedInApp) {
         openedInApp = false;
@@ -231,9 +242,20 @@ export async function startApp(deps: AppDeps): Promise<AppHandle> {
     track: tracker.track,
     alert: savedAlert,
     homeAdd: () => a2hs.card(),
+    feedback: () => feedbackCard(fb, 'saved'),
   });
   saved.el.hidden = true;
-  root.replaceChildren(...home.nodes, find.el, saved.el, tabs, detail.el, navi.sheet, toastEl);
+  // 개인정보 안내(#/privacy, D45 — design-guide 12-2). 앱 안에서 열었으면 뒤로 = 전 화면, 주소로 바로 열었으면 첫 화면
+  let rendered = false;
+  let privacyFromApp = false;
+  const privacy = createPrivacy({
+    email: deps.contactEmail ?? CONTACT_EMAIL,
+    back: () => {
+      if (privacyFromApp) win.history.back();
+      else win.location.hash = routeHref({ name: 'month', month: null });
+    },
+  });
+  root.replaceChildren(...home.nodes, find.el, saved.el, privacy.el, tabs, detail.el, navi.sheet, toastEl);
   // 지도를 기다리지 않고 화면부터 그림(#77). 카카오 SDK가 늦거나 막혀도 사진 카드는 바로 나옴
   const mapFail = () => tracker.track('error', { kind: 'map-fail' });
   const isFailed = (): boolean => map.kind === 'failed'; // 기다리는 지도(lazyMap)는 붙은 뒤에 바뀜
@@ -245,16 +267,17 @@ export async function startApp(deps: AppDeps): Promise<AppHandle> {
   let findMounted = false;
 
   const tabButtons = [...tabs.querySelectorAll('button')];
-  let screen: 'home' | 'find' | 'saved' = 'home';
-  /** 탭 바꾸기(첫 화면·풍경 찾기·저장한 곳). 색은 세 탭 모두 첫 화면에서 고른 달(design-guide 3장, PR #48) */
-  function showScreen(next: 'home' | 'find' | 'saved'): void {
+  let screen: 'home' | 'find' | 'saved' | 'privacy' = 'home';
+  /** 탭 바꾸기(첫 화면·풍경 찾기·저장한 곳 · 개인정보 안내). 색은 모두 첫 화면에서 고른 달(design-guide 3장, PR #48) */
+  function showScreen(next: 'home' | 'find' | 'saved' | 'privacy'): void {
     if (next !== screen) win.scrollTo?.({ top: 0 });
     screen = next;
     for (const n of home.nodes) n.hidden = next !== 'home';
     if (next === 'home') home.alignMonths(); // D43: 다른 탭·장면 상세에서 돌아와도 고른 달이 보이게
     find.el.hidden = next !== 'find';
     saved.el.hidden = next !== 'saved';
-    const tab = { home: 0, find: 1, saved: 2 }[next];
+    privacy.el.hidden = next !== 'privacy';
+    const tab = { home: 0, find: 1, saved: 2, privacy: -1 }[next]; // 개인정보 안내는 어느 칸도 고르지 않음
     tabButtons.forEach((b, i) => (i === tab ? b.setAttribute('aria-current', 'page') : b.removeAttribute('aria-current')));
     const m = shown ?? thisMonth; // 세 탭 모두 첫 화면에서 고른 달의 색(PR #48). 글자·상태는 오늘 기준 그대로
     root.dataset.season = seasonOf(m);
@@ -279,6 +302,13 @@ export async function startApp(deps: AppDeps): Promise<AppHandle> {
     } else if (route.name === 'saved') {
       saved.render(); // 상세에서 저장·빼기를 했을 수 있어 들어올 때마다 새로 그림
       showScreen('saved');
+    } else if (route.name === 'privacy') {
+      privacyFromApp = rendered;
+      if (shown === null) {
+        shown = thisMonth; // 계절 색은 지금 고른 달
+        home.render(thisMonth);
+      }
+      showScreen('privacy');
     } else if (route.name !== 'scene') {
       // 장면 상세를 여는 동안에도 아래 화면은 보던 그대로
       const month = route.name === 'month' ? (route.month ?? thisMonth) : (shown ?? thisMonth);
@@ -303,6 +333,7 @@ export async function startApp(deps: AppDeps): Promise<AppHandle> {
 
   const onHash = () => {
     render(parseRoute(win.location.hash));
+    rendered = true;
     pageview();
   };
   win.addEventListener('hashchange', onHash);

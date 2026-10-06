@@ -42,6 +42,8 @@ export interface DetailDeps {
   /** 사진 움직임(기본 켬, ?motion=0이면 끔) */
   motion: boolean;
   toast(msg: string, action?: { label: string; run(): void }): void;
+  /** 이곳 정보가 달라졌나요? 줄(의견 보내기, D46) */
+  feedback?(s: { id: string; name: string }): HTMLElement;
   /** [저장]·빼기 뒤(F5): 처음 저장 판을 띄웠으면 true — 그때는 안내 줄을 띄우지 않음 */
   afterSave?(on: boolean): boolean;
   /** 뒤로: 앱 안에서 열었으면 이전 화면으로, 주소로 바로 열었으면 첫 화면으로 */
@@ -339,6 +341,8 @@ export function createDetail(d: DetailDeps): Detail {
         h('section', { class: 'dsec', 'aria-label': '브런치 전체 이야기' }, brunchLink(s)),
         // 작게 '다른 앱으로 길찾기'(10/4 결정). 아래 막대가 높아지지 않게, 누르는 곳 48px을 지키려고 본문 맨 아래에 둠
         other && h('div', { class: 'navi-row' }, other),
+        // 이곳 정보가 달라졌나요?(D46, design-guide 12-1) — 폼에 장면 이름을 미리 넣음
+        d.feedback?.(s) ?? null,
       ),
       bar,
     ];
