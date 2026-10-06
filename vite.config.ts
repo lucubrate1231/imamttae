@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import { resolve } from 'node:path';
 import { readFileSync } from 'node:fs';
 import { placesPageData } from './pipeline/places/pageData';
+import { coversPageData } from './pipeline/covers/pageData';
 
 /**
  * 좌표 확인 페이지를 미리보기에 올림: /next/_review/places/ (10/5 — 콘텐츠 세션에서 이어서 하려고).
@@ -14,6 +15,10 @@ const placesPage = {
     const data = placesPageData(read('content/scenes/drafts.json').scenes, read('tools/places/candidates.json'), read('tools/places/picked-seed.json'));
     this.emitFile({ type: 'asset', fileName: '_review/places/index.html', source: readFileSync(resolve(__dirname, 'tools/places/index.html'), 'utf8') });
     this.emitFile({ type: 'asset', fileName: '_review/places/data.json', source: JSON.stringify(data) });
+    // 풍경 대표 사진 고르기(D44, 10/6): /next/_review/covers/
+    const app = read('public/data/scenes.json');
+    this.emitFile({ type: 'asset', fileName: '_review/covers/index.html', source: readFileSync(resolve(__dirname, 'tools/covers/index.html'), 'utf8') });
+    this.emitFile({ type: 'asset', fileName: '_review/covers/data.json', source: JSON.stringify(coversPageData(app.scenes, app.typeCovers ?? {})) });
   },
 };
 
