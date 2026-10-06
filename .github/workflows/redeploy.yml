@@ -1,4 +1,4 @@
-# 되돌리기: 예전 버전(태그)을 골라 알파 주소나 미리보기에 다시 배포합니다. 2~3분 걸립니다.
+# 되돌리기: 예전 버전(태그)을 골라 베타 주소(루트)나 미리보기에 다시 배포합니다. 2~3분 걸립니다.
 name: redeploy
 on:
   workflow_dispatch:
@@ -7,7 +7,7 @@ on:
         description: '다시 배포할 버전 (예: v0.1.0)'
         required: true
       target:
-        description: 'root(알파 주소) 또는 next(미리보기)'
+        description: 'root(베타 주소) 또는 next(미리보기)'
         required: true
         default: root
         type: choice
