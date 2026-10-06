@@ -184,14 +184,25 @@ describe('풍경을 고른 뒤(#/find/<풍경>)', () => {
   });
 });
 
-describe('대표 사진', () => {
-  it('풍경 타일의 사진 = 그 풍경 화면 목록 맨 위 장면의 사진(누르면 같은 사진이 맨 위에)', async () => {
+describe('대표 사진(D44)', () => {
+  const file = (u: string) => decodeURIComponent(u).split('/').pop();
+  const tileSrcs = () => all('.tile:not(.dim)').map((t) => file(t.querySelector('img')!.getAttribute('src')!));
+
+  it('타일 사진이 서로 겹치지 않음(같은 장면이 여러 풍경에 들어도) — 고르지 않은 풍경도', async () => {
     await start('#/find');
-    const tileSrc = all('.sec-good .tile')[0]!.querySelector('img')!.getAttribute('src')!;
-    window.location.hash = '#/find/danpung';
-    hashChange();
-    const rowSrc = q('.find-list .row img')!.getAttribute('src')!;
-    const file = (u: string) => decodeURIComponent(u).split('/').pop();
-    expect(file(tileSrc)).toBe(file(rowSrc));
+    const srcs = tileSrcs();
+    expect(srcs.length).toBeGreaterThan(3);
+    expect(new Set(srcs).size).toBe(srcs.length);
+  });
+
+  it('사용자가 고른 대표 사진(typeCovers)을 씀 — 그 풍경 목록 맨 위 장면과 달라도', async () => {
+    const data = appData as ContentFile;
+    const danpung = data.scenes.filter((s) => s.kind === 'story' && s.types.includes('danpung'));
+    const pickScene = danpung[danpung.length - 1]!; // 목록 맨 위가 아닐 법한 장면
+    if (pickScene.kind !== 'story') throw new Error('story');
+    const photo = pickScene.photos.length; // 마지막 사진
+    await start('#/find', { content: { ...data, typeCovers: { danpung: { scene: pickScene.id, photo } } } });
+    const tile = all('.tile').find((t) => t.querySelector('.tile-name')?.textContent?.startsWith('단풍'))!;
+    expect(file(tile.querySelector('img')!.getAttribute('src')!)).toBe(file(pickScene.photos[photo - 1]!.src));
   });
 });

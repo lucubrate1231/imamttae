@@ -15,6 +15,7 @@ import { createSafeStore, type SafeStore } from './storage/safeStorage';
 import { dateInSeoul, seasonOf } from './domain/home';
 import { createDetail } from './ui/detail';
 import { createFind } from './ui/find';
+import type { TypeCovers } from './domain/covers';
 import { h, paintBrowserBar } from './ui/dom';
 import { createHome } from './ui/home';
 import { createNavi } from './ui/navi';
@@ -206,6 +207,7 @@ export async function startApp(deps: AppDeps): Promise<AppHandle> {
     map: findMap,
     scenes: deps.content.scenes,
     today: thisMonth,
+    typeCovers: deps.content.typeCovers as TypeCovers | undefined,
     openScene: (id, from) => {
       openedInApp = true;
       sceneFrom = from;

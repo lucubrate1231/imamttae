@@ -11,6 +11,7 @@ import { inWindow, type Month } from '../domain/month';
 import { routeHref } from '../domain/router';
 import { isYearRound, sceneTier, visitedMonth } from '../domain/sceneTier';
 import { SCENE_TYPES, type SceneTypeId } from '../domain/sceneTypes';
+import { pickTypeCovers, type TypeCovers } from '../domain/covers';
 import type { MapAdapter, MapPin } from '../map/types';
 import { h, photoImg, sized, thumb } from './dom';
 
@@ -22,6 +23,8 @@ export interface FindDeps {
   today: Month;
   /** from: 통계 scene-open의 '어디서 열었나'(find-list / map-pin) */
   openScene(id: string, from: string): void;
+  /** 풍경별 대표 사진(D44 — 사용자가 고름, 앱 데이터 typeCovers). 없으면 지금 규칙으로 하되 겹치지 않게 */
+  typeCovers?: TypeCovers;
 }
 
 export interface Find {
@@ -69,23 +72,32 @@ export function createFind(d: FindDeps): Find {
    * 풍경의 대표 사진 = 그 풍경 화면 목록의 맨 위 장면(지금 제철 묶음은 D23 순서 → 일 년 내내 → 곧·그 뒤 → 다녀온 곳).
    * 타일을 누르면 같은 사진이 목록 맨 위에 다시 보입니다. 장면마다 대표 사진을 직접 고르는 것은 콘텐츠 세션 제안.
    */
-  function coverOf(t: SceneTypeId): StoryScene | undefined {
+  /** 대표 사진을 찾을 장면 순서(고르지 않은 풍경의 지금 규칙): 지금 좋은 곳 → 일 년 내내 → 곧 → 나머지 */
+  function coverOrder(t: SceneTypeId): StoryScene[] {
     const list = ofType(t);
     const timed = list.filter((s) => s.best && !yearRound(s) && sceneTier(s) === 'peak');
     const now = sortNow(timed.filter((s) => inWindow(today, s.best!)));
     const yr = list.filter(yearRound).sort((a, b) => a.name.localeCompare(b.name, 'ko'));
     const rest = timed.filter((s) => !now.includes(s)).sort((a, b) => ahead(next(today), a.best!.from) - ahead(next(today), b.best!.from) || a.name.localeCompare(b.name, 'ko'));
-    return now[0] ?? yr[0] ?? rest[0] ?? list[0];
+    const head = [...now, ...yr, ...rest];
+    return [...head, ...list.filter((s) => !head.includes(s))];
   }
+  /** D44: 풍경 13가지 대표 사진 — 사용자가 고른 것 먼저, 나머지는 지금 규칙대로 하되 타일끼리 겹치지 않게 */
+  const covers = pickTypeCovers(
+    SCENE_TYPES.map((t) => t.id),
+    stories,
+    d.typeCovers ?? {},
+    coverOrder,
+  );
 
   function tile(t: SceneTypeId, opts: { big?: boolean; nameOnly?: boolean } = {}): HTMLElement {
-    const cover = coverOf(t);
+    const cover = covers.get(t)?.photo;
     const w = typeWhen(stories, t);
     const count = ofType(t).length;
     const line = [whenText(w), `${count}곳`].filter(Boolean).join(' · ');
     const cls = `tile${opts.big ? ' big-tile' : ''}`;
     const b = h('button', { type: 'button', class: cls });
-    const pic = cover ? photoImg(cover.photos[0]!, '', { src: opts.big ? sized(cover.photos[0]!.src, 720) : thumb(cover.photos[0]!.src, 480) }) : null;
+    const pic = cover ? photoImg(cover, '', { src: opts.big ? sized(cover.src, 720) : thumb(cover.src, 480) }) : null;
     if (opts.big) {
       // 큰 타일 사진 위 상태는 없앰 — '지금 좋아요'는 구역 이름 앞 점이 알려 줌(디자인 #55)
       b.append(h('span', { class: 'tile-photo' }, pic), h('span', { class: 'tile-cap' }, h('b', { class: 'tile-name', text: label(t) }), h('span', { class: 'tile-line', text: line })));

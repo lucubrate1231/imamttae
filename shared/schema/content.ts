@@ -104,10 +104,14 @@ export const PlaceholderScene = z
 
 export const Scene = z.discriminatedUnion('kind', [StoryScene, PlaceholderScene]);
 
+/** D44: 풍경별 대표 사진 — 사용자가 고름(content/scenes/type-covers.json). photo는 그 장면의 몇 번째 사진(1부터) */
+export const TypeCover = z.object({ scene: z.string(), photo: z.number().int().min(1) }).strict();
+
 export const ContentFile = z.object({
   version: z.literal(1),
   generatedAt: z.string(),
   scenes: z.array(Scene),
+  typeCovers: z.record(z.string(), TypeCover).optional(),
 });
 
 export type StoryScene = z.infer<typeof StoryScene>;
