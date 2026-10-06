@@ -13,13 +13,20 @@ Claude(또는 도우미 에이전트)가 이 문서대로 작업하고, `pipelin
 - 점수 원본은 `/home/claude/curation/scores.json`에 있습니다. 키는 `"글번호_순번"`입니다.
 - 사진을 자세히 보려면 `/home/claude/curation/thumbs/NN_ii.jpg`를 엽니다.
 - 사진 순번은 `content/brunch/index.json`의 그 글 `photos` 배열 순서와 같습니다. 주소(src)는 거기서 가져옵니다.
-- **좌표는 카카오 장소 검색으로 찾지 않아요**(카카오 로컬 API 결과는 저장 금지 — 사람이 고쳤어도 해당, `docs/kakao-local-data.md`, 10/5).
-  1. `npx tsx pipeline/places/candidates.ts` — 장면 이름으로 한국관광공사 관광정보(장면 위치)와 근처 공영주차장(전국주차장정보표준데이터, `.cache/public-data/`)을 후보로 찾아요.
-  2. 좌표 확인 페이지에서 오픈스트리트맵 지도로 후보를 고르거나 직접 찍어요. 카카오 지도를 보며 찍지 않아요. 두 곳에서 열 수 있어요.
-     - **어디서나(클라우드, 10/5~):** 미리보기 https://lucubrate1231.github.io/imamttae/next/_review/places/ — 휴대폰도 됨. 지금까지 확인한 값(`tools/places/picked-seed.json`)이 들어 있고, 새로 정한 값은 **그 브라우저에** 저장돼요. 다 하면 **[결과 복사]** → 콘텐츠 세션에 붙여 넣기 → 콘텐츠 세션이 그 글을 `tools/places/picked-seed.json`에 덮어써 PR. 공개 사이트라 작가 내부 메모는 안 보여요.
-     - **사용자 컴퓨터:** `npm run places` → http://localhost:8090 (결과는 `.cache/places/picked.json`, 내부 메모도 보임)
-     - 후보 목록은 `tools/places/candidates.json`(새 장면이 생기면 `npx tsx pipeline/places/candidates.ts`로 다시 만들고 복사).
-  3. `npx tsx pipeline/places/apply.ts tools/places/picked-seed.json` — 정한 값을 초안에 넣고 `coordSource`(public-data·manual)와 `coordRef`(tour:번호·parking:번호·manual)를 남겨요. 파일을 안 주면 `.cache/places/picked.json`.
+- **좌표는 콘텐츠 세션이 골라 넣어요(D47, 10/6).** 사용자는 콘텐츠 세션이 '좌표 확인 필요'로 표시한 곳만 봐요. 새 장면은 처음부터 카카오 좌표 없이 만들어요.
+  - **쓰지 않는 것:** 카카오 장소 검색·카카오맵(웹·앱)에서 좌표·장소 이름 가져오기, 카카오 지도를 보며 찍기(로컬 API 결과 저장 금지 — 사람이 고쳤어도 해당, `docs/kakao-local-data.md`). 네이버·구글 지도도 저장을 막는 약관이라 쓰지 않아요.
+  - **쓰는 것(이 순서로):**
+    1. `tools/places/candidates.json` — 한국관광공사 관광정보(장면 위치 후보)와 전국주차장정보표준데이터(주차장 후보). 새 장면이라 후보가 없으면 Claude Code에 `npx tsx pipeline/places/candidates.ts`(키가 사용자 컴퓨터에 있음)로 다시 만들어 달라고 부탁해요.
+    2. 맞는 후보가 없으면 오픈스트리트맵(지명 검색·지도·`api.openstreetmap.org` 원자료)에서 확인한 좌표. `ref`에 `osm:way/번호`처럼 남겨요. 화면에 출처 '© OpenStreetMap contributors'를 표시해요.
+  - **고르는 기준**
+    - `spot`(장면 위치): 그 사진을 찍은 풍경 지점(전망대·폭포·연못·능선 등). 100m쯤 어긋나도 괜찮아요.
+    - `dest`(가는 곳): 실제로 차를 세우고 걸어 들어가는 곳. **공식 주차장 > 탐방로 입구 > 정문** 순, 장면 위치에서 15km 안. 작가 글에 주차·들머리 이야기가 있으면 그것을 먼저 따라요.
+    - `dest` 이름: 공공데이터 이름이나 현장 표기로, 50~60대가 길찾기 앱에서 알아볼 이름(예: '백무동 탐방지원센터 주차장').
+    - 비공식 갓길·사유지·출입 통제 구역으로 안내하지 않아요(법·개인정보 점검 5번).
+    - 자신 없으면 공식 주차장 쪽으로 고르고 `needsCheck: true`와 `why`(짧은 이유)를 붙여 사용자에게 목록(장소 이름·고른 주차장·이유)으로 알려요. 비공개 베타 기준이 '길찾기 오안내 0'이에요.
+  - **넣는 법:** 고른 값을 picked 형식(`{ "장면번호": { spot:{lat,lng,source,ref}, dest:{name,lat,lng,kind,source,ref} } }`)으로 `tools/places/picked-content.json`(콘텐츠 세션이 고른 값)에 적어요. 사용자가 고른 값은 `tools/places/picked-seed.json`에 있고 바꾸지 않아요. 그다음
+    `npx tsx pipeline/places/apply.ts tools/places/picked-content.json` → `npx tsx pipeline/scenes/check-cli.ts content/scenes/drafts.json` → `npx tsx pipeline/scenes/build.ts` → PR. apply가 `coordSource`(public-data·manual)와 `coordRef`(tour:번호·parking:번호·manual)를 남겨요. 실행 환경이 없으면 picked 파일만 고친 PR을 올리고 Claude Code가 이어서 해요.
+  - **사용자가 직접 볼 때(애매한 곳):** 좌표 확인 페이지 https://lucubrate1231.github.io/imamttae/next/_review/places/ (휴대폰도 됨) 또는 사용자 컴퓨터 `npm run places`. 다 하면 **[결과 복사]** → 콘텐츠 세션이 `tools/places/picked-seed.json`에 넣어 PR.
 
 ## 무엇을 장면으로 고르나
 - **자연 풍경만** 고릅니다. 단풍, 꽃, 운해, 물안개, 일출·낙조, 설경·상고대, 억새, 계곡, 폭포, 숲길, 바다 절경 같은 것들입니다.
@@ -53,9 +60,9 @@ Claude(또는 도우미 에이전트)가 이 문서대로 작업하고, `pipelin
 | `oneLiner` | 처음 보는 사람에게 무엇을 볼 수 있는지 알려 주는 한 줄. **30자 안**. 작가 문장을 베끼지 않습니다(초안) |
 | `excerpt` | 작가 글에서 그 풍경을 그린 대목. **한 문단 안의 연속된 원문 그대로**(띄어쓰기·문장부호까지), 30~120자, 완결된 문장. 지인 실명, 음식·잡담은 피합니다 |
 | `photos` | 1~4장, **첫 장이 대표**. 아래 사진 기준 참고 |
-| `spot` | 풍경 지점 좌표 `{lat, lng}` (지역명을 붙여 검색) |
+| `spot` | 풍경 지점 좌표 `{lat, lng}` — 위 '좌표' 방법으로(카카오 검색 금지) |
 | `dest` | 길찾기 목적지 = 주차장·입구·탐방로 입구 `{name, lat, lng, kind: parking/trailhead/entrance}`. **spot에서 15km 안** |
-| `coordSource` | spot·dest 좌표(와 가는 곳 이름)를 얻은 곳. 지금은 모두 `"kakao-search"`(카카오 장소 검색). **카카오 정책상 검색 결과를 저장하면 안 된다는 공식 답변이 있어(10/5, 법무 점검 1번) 대안이 정해지면 이 표시가 붙은 장면을 한꺼번에 바꿉니다.** 그때까지 새 장면도 지금처럼 만들고 반드시 이 칸을 적습니다(빠뜨리면 계약 테스트가 알려 줌) |
+| `coordSource` | spot·dest 좌표(와 가는 곳 이름)를 얻은 곳. `"public-data"`(둘 다 공공데이터) 또는 `"manual"`(오픈스트리트맵·사람이 고른 값). `apply.ts`가 적어요. **`"kakao-search"`는 더 쓰지 않아요**(10/6에 0곳). 빠뜨리면 계약 테스트가 알려 줌 |
 | `review` | 모두 `"draft"`: `{best, dest, oneLiner, types}` |
 | `contestEntry`, `hidden` | `false` |
 | `checkAdmission` | 입장료·운영 시간 확인이 필요한 곳(민간 정원·유료 수목원)이면 `true`, 그 밖은 적지 않음(`false`) — 위 '민간 정원' 기준 |
