@@ -138,3 +138,33 @@ test.describe('아이폰 사파리', () => {
     await axe(page, '.a2sheet', '사파리 안내');
   });
 });
+
+test.describe('밴드 앱 안(안드로이드, D45 · 디자인 #107)', () => {
+  test.use({ userAgent: 'Mozilla/5.0 (Linux; Android 14; SM-S918N Build/UP1A; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/125.0 Mobile Safari/537.36 BAND/14.4.0' });
+
+  test('카톡 안과 같은 띠(320px 첫 줄 한 줄·접근성) → 누른 뒤 이 화면이면 "밴드 메뉴로 열 수 있어요." 안내', async ({ page }) => {
+    await page.setViewportSize({ width: 320, height: 640 });
+    await page.goto('./?map=fake&motion=0#/');
+    const band = page.locator('main.home > .kband');
+    await expect(band.locator('.kb-l2')).toHaveText('크롬으로 열기 ›');
+    await page.evaluate(() => document.fonts.ready);
+    expect(await page.locator('.kb-l1').evaluate((e) => e.getClientRects().length === 1 && e.getBoundingClientRect().height < 26)).toBe(true);
+    await axe(page, '.kband', '밴드 띠');
+    await page.locator('.kb-go').click();
+    const g = page.getByRole('dialog', { name: '크롬이 열리지 않았나요?' });
+    await expect(g).toBeVisible({ timeout: 5000 });
+    await expect(g.locator('.a2-desc')).toHaveText('밴드 메뉴로 열 수 있어요.');
+    await noOverflow(page, '.a2sheet');
+    await axe(page, '.a2sheet', '밴드 안내');
+  });
+
+  test('실기기 확인 페이지 ⑤: 밴드 앱 안으로 알아보고, 넘기기 버튼 셋과 메뉴 이름 칸, 결과에 함께 담김', async ({ page }) => {
+    await page.goto('./_review/a2hs-lab.html');
+    await expect(page.locator('.state')).toContainText('밴드 앱 안 화면');
+    await expect(page.getByRole('link', { name: '⑤ 크롬으로 열기(안드로이드)' })).toHaveAttribute('href', /^intent:\/\//);
+    await expect(page.getByRole('link', { name: '⑤ 사파리로 열기(아이폰)' })).toHaveAttribute('href', /^x-safari-https?:\/\//);
+    await page.getByRole('textbox', { name: '바깥 브라우저로 여는 메뉴 이름' }).fill('오른쪽 위 ⋯ → 다른 브라우저로 열기');
+    await page.getByRole('textbox', { name: '바깥 브라우저로 여는 메뉴 이름' }).blur();
+    await expect(page.locator('.log')).toContainText('메뉴 이름 적음');
+  });
+});

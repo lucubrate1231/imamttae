@@ -27,7 +27,7 @@ import { createA2hs } from './ui/a2hs';
 import { feedbackCard, feedbackLine, type FeedbackDeps } from './ui/feedback';
 import { createPrivacy } from './ui/privacy';
 import { CONTACT_EMAIL, FEEDBACK_FORM_URL, FEEDBACK_PLACE_FIELD, FEEDBACK_PREFILL_URL } from './config';
-import { a2hsEnv, type InstallEvent } from './pwa';
+import { a2hsEnv, inAppName, type InstallEvent } from './pwa';
 
 export interface AppDeps {
   root: HTMLElement;
@@ -144,6 +144,7 @@ export async function startApp(deps: AppDeps): Promise<AppHandle> {
     win,
     env: a2hsEnv(deps.ua ?? win.navigator.userAgent, launchMode(win) === 'home-screen'),
     android: /Android/i.test(deps.ua ?? win.navigator.userAgent),
+    inApp: inAppName(deps.ua ?? win.navigator.userAgent),
     scenes: deps.content.scenes,
     store,
     saved: savedStore,

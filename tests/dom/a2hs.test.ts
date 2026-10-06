@@ -20,6 +20,10 @@ const UA = {
   samsung: 'Mozilla/5.0 (Linux; Android 14; SM-S918N) AppleWebKit/537.36 SamsungBrowser/27.0 Chrome/125 Mobile Safari/537.36',
   safari: 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_6 like Mac OS X) AppleWebKit/605.1.15 Version/18.6 Mobile/15E148 Safari/604.1',
   pc: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0 Safari/537.36',
+  bandAndroid: 'Mozilla/5.0 (Linux; Android 14; SM-S918N Build/UP1A; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/125.0 Mobile Safari/537.36 BAND/14.4.0',
+  bandIos: 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 BAND/14.4.0',
+  naverAndroid: 'Mozilla/5.0 (Linux; Android 14; SM-S918N; wv) AppleWebKit/537.36 Chrome/125.0 Mobile Safari/537.36 NAVER(inapp; search; 2000; 12.6.2; 14)',
+  instagram: 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_6 like Mac OS X) AppleWebKit/605.1.15 Mobile/15E148 Instagram 350.0.0.0',
 };
 
 function memoryStorage(): Storage {
@@ -481,5 +485,60 @@ describe('F5-AC8(디자인 #101, 10/6): 설치를 마친 직후', () => {
     window.dispatchEvent(new Event('appinstalled'));
     expect(q('.a2sheet')).toBeNull();
     expect(text('.toast')).toBe("'이맘때'를 앱으로 설치했어요");
+  });
+});
+
+describe('D45(디자인 #107): 밴드·네이버 앱 등 다른 앱 안 — 카톡 안과 같은 띠, 판 설명만 앱 이름', () => {
+  it('밴드(안드로이드): 같은 띠·같은 글자(앱 이름 없음) → 누르면 크롬 intent(저장한 장면 번호 붙임) → 못 넘어가면 "밴드 메뉴로 열 수 있어요." 공통안 두 단계', async () => {
+    saved.toggleWanted('s-naejang');
+    await start(UA.bandAndroid);
+    expect(text('.kband .kb-l1')).toBe('크롬으로 열면 앱처럼 쓸 수 있어요');
+    expect(text('.kband .kb-l2')).toBe('크롬으로 열기 ›');
+    q('.kband .kb-go')!.click();
+    expect(opened[0]).toMatch(/^intent:\/\/[^#]+carry=s-naejang[^#]*#Intent;scheme=https;package=com\.android\.chrome;/);
+    await tick();
+    expect(q('.a2sheet')!.getAttribute('aria-label')).toBe('크롬이 열리지 않았나요?');
+    expect(text('.a2sheet .a2-desc')).toBe('밴드 메뉴로 열 수 있어요.');
+    const steps = [...root.querySelectorAll('.a2sheet .a2-step')];
+    expect(steps).toHaveLength(2);
+    expect(steps[0]!.querySelector('.a2-txt')!.textContent).toBe('화면 위나 아래의 [⋮] 또는 [⋯] 버튼을 누르세요');
+    expect(steps[1]!.querySelector('.a2-txt')!.textContent).toBe("'다른 브라우저로 열기'를 누르세요");
+    expect(steps[1]!.querySelector('.a2-sub')!.textContent).toBe("'기본 브라우저로 열기'나 'Safari로 열기'로 보일 수도 있어요.");
+    expect([...steps[1]!.querySelectorAll('.a2-pic .a2-row')].map((r) => r.textContent)).toEqual(['링크 복사', '다른 브라우저로 열기', '공유하기']);
+    expect(a2hsEvents()).toContainEqual({ action: 'band', env: 'inapp-android' });
+  });
+
+  it('밴드(아이폰): "사파리로 열기" 띠 → 누르면 사파리 주소(x-safari-https) → 못 넘어가면 "사파리가 열리지 않았나요?"', async () => {
+    await start(UA.bandIos);
+    expect(text('.kband .kb-l2')).toBe('사파리로 열기 ›');
+    q('.kband .kb-go')!.click();
+    expect(opened[0]).toMatch(/^x-safari-https?:\/\//); // 실제 주소는 https라 x-safari-https://(시험 환경은 http)
+    await tick();
+    expect(q('.a2sheet')!.getAttribute('aria-label')).toBe('사파리가 열리지 않았나요?');
+    expect(text('.a2sheet .a2-desc')).toBe('밴드 메뉴로 열 수 있어요.');
+  });
+
+  it('네이버 앱은 "네이버 앱 메뉴로 열 수 있어요.", 그 밖(인스타그램 등)은 "이 앱의 메뉴로 열 수 있어요."', async () => {
+    const app = await start(UA.naverAndroid);
+    q('.kband .kb-go')!.click();
+    await tick();
+    expect(text('.a2sheet .a2-desc')).toBe('네이버 앱 메뉴로 열 수 있어요.');
+    app.destroy();
+    document.body.innerHTML = '<div id="app"></div>';
+    root = document.getElementById('app')!;
+    await start(UA.instagram);
+    q('.kband .kb-go')!.click();
+    await tick();
+    expect(text('.a2sheet .a2-desc')).toBe('이 앱의 메뉴로 열 수 있어요.');
+  });
+
+  it('앱 안에서 저장하면 주소에 장면 번호를 붙여 둠(메뉴로 넘어가도 함께) · 카드를 눌러도 같은 안내 · 저장 직후 판은 없음', async () => {
+    await start(UA.bandAndroid);
+    saveIn('s-naejang');
+    expect(window.location.search).toBe('?carry=s-naejang');
+    expect(q('.a2sheet')).toBeNull();
+    go('#/');
+    q('main.home .home-add')!.click();
+    expect(q('.a2sheet')!.getAttribute('aria-label')).toBe('크롬이 열리지 않았나요?');
   });
 });
