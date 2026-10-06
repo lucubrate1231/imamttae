@@ -61,3 +61,14 @@ describe('풍경 찾기 주소의 권역 (F3-AC2·AC7)', () => {
     expect(parseRoute(href)).toEqual(route);
   });
 });
+
+describe('이용 안내와 개인정보(#/privacy, design-guide 12-2 — 10/7)', () => {
+  it.each([
+    ['#/privacy', { name: 'privacy' }],
+    ['#/privacy/personal', { name: 'privacy', section: 'personal' }], // 저장한 곳 링크 → '개인정보' 구역부터
+    ['#/privacy/없음', { name: 'privacy' }],
+  ])('%s', (hash, route) => {
+    expect(parseRoute(hash)).toEqual(route);
+    expect(parseRoute(routeHref(route as Route))).toEqual(route);
+  });
+});

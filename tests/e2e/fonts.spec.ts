@@ -80,3 +80,15 @@ test('다 받은 뒤에는 제목·작가의 한마디의 모든 글자가 고�
   for (const r of await renderedFonts(page, cdp, '.detail .title, .detail .quote p')) if (r.fonts.join() !== 'Gowun Batang') bad.push(`상세 "${r.text.slice(0, 20)}" ← ${r.fonts.join(' + ')}`);
   expect(bad).toEqual([]);
 });
+
+test('이용 안내와 개인정보(#/privacy) 제목·구역 제목도 모든 글자가 고운바탕(10/7)', async ({ page }) => {
+  const cdp = await cdpFor(page);
+  await page.goto('./?map=fake&motion=0#/privacy');
+  await expect(page.locator('.privacy h1')).toBeVisible();
+  await page.evaluate(() => document.fonts.ready);
+  await page.waitForTimeout(300);
+  await page.evaluate(() => document.fonts.ready);
+  const rows = await renderedFonts(page, cdp, '.privacy .pv-title, .privacy .pv-zone');
+  expect(rows.map((r) => r.text)).toEqual(['이용 안내와 개인정보', '이 앱의 정보는', '개인정보']);
+  expect(rows.filter((r) => r.fonts.join() !== 'Gowun Batang').map((r) => `"${r.text}" ← ${r.fonts.join(' + ')}`)).toEqual([]);
+});

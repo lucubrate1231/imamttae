@@ -10,7 +10,7 @@ const overflow = (page: Page) => page.evaluate(() => document.documentElement.sc
 
 test.use({ viewport: { width: 320, height: 640 } });
 
-test('첫 화면 맨 아래: 이 앱 이야기 → 의견 보내기 카드 → 개인정보 안내 — 누르는 곳 48 이상, 320px 넘침 없음, 접근성', async ({ page }) => {
+test('첫 화면 맨 아래: 이 앱 이야기 → 의견 보내기 카드 → 이용 안내 · 개인정보 — 누르는 곳 48 이상, 320px 넘침 없음, 접근성', async ({ page }) => {
   await page.goto('./?map=fake&motion=0#/month/10');
   const card = page.locator('main.home .extra a.feedback');
   await card.scrollIntoViewIfNeeded();
@@ -36,16 +36,21 @@ test('장면 상세 본문 끝 "이곳 정보가 달라졌나요?" 줄 — 높�
   await axe(page, '.detail.open .body');
 });
 
-test('개인정보 안내: 바닥줄 → 화면(제목·소제목 다섯·문의) → ‹ 뒤로로 첫 화면 — 본문 18px, 320px 넘침 없음, 접근성', async ({ page }) => {
+test('이용 안내와 개인정보: 바닥줄 → 화면(제목·구역 둘·소제목 여섯·문의) → ‹ 뒤로로 첫 화면 — 본문 18px, 제목 한 줄·고운바탕, 320px 넘침 없음, 접근성', async ({ page }) => {
   await page.goto('./?map=fake&motion=0#/month/10');
   const link = page.locator('main.home a.privacy-link');
   await link.scrollIntoViewIfNeeded();
   await link.click();
   await expect(page).toHaveURL(/#\/privacy$/);
   const p = page.locator('.privacy');
-  await expect(p.getByRole('heading', { level: 1 })).toHaveText('개인정보 안내');
-  await expect(p.locator('h2.pv-h')).toHaveCount(5);
-  expect(await p.locator('.pv-body').first().evaluate((e) => parseFloat(getComputedStyle(e).fontSize))).toBeGreaterThanOrEqual(18);
+  const h1 = p.getByRole('heading', { level: 1 });
+  await expect(h1).toHaveText('이용 안내와 개인정보');
+  await expect(p.getByRole('heading', { level: 2 })).toHaveText(['이 앱의 정보는', '개인정보']);
+  await expect(p.locator('h3.pv-h')).toHaveCount(6);
+  expect(await p.locator('.pv-list li').first().evaluate((e) => parseFloat(getComputedStyle(e).fontSize))).toBeGreaterThanOrEqual(18);
+  // 제목은 한 줄(12-2). 명조로 그렸는지는 fonts.spec
+  const lh = await h1.evaluate((e) => parseFloat(getComputedStyle(e).lineHeight) || parseFloat(getComputedStyle(e).fontSize) * 1.5);
+  expect((await h1.boundingBox())!.height).toBeLessThan(lh * 1.6);
   expect(await overflow(page)).toBeLessThanOrEqual(0);
   await axe(page, '.privacy');
   await p.getByRole('button', { name: '뒤로' }).click();
@@ -53,9 +58,14 @@ test('개인정보 안내: 바닥줄 → 화면(제목·소제목 다섯·문의
   await expect(page.locator('main.home')).toBeVisible();
 });
 
-test('저장한 곳: 상자 끝 "개인정보 안내 보기 ›", 설치 카드 아래 의견 보내기 카드', async ({ page }) => {
+test('저장한 곳: 상자 끝 "개인정보 안내 보기 ›"(누르면 개인정보 구역이 맨 위), 설치 카드 아래 의견 보내기 카드', async ({ page }) => {
   await page.goto('./?map=fake&motion=0#/saved');
-  await expect(page.locator('.saved .sv-note a.privacy-more')).toHaveText('개인정보 안내 보기 ›');
+  const more = page.locator('.saved .sv-note a.privacy-more');
+  await expect(more).toHaveText('개인정보 안내 보기 ›');
+  await more.click();
+  await expect(page).toHaveURL(/#\/privacy\/personal$/);
+  await expect.poll(async () => Math.round((await page.locator('#pv-personal').boundingBox())!.y)).toBeLessThanOrEqual(12);
+  await page.goBack();
   await expect(page.locator('.saved .sv-foot a.feedback')).toBeVisible();
   expect(await overflow(page)).toBeLessThanOrEqual(0);
   await axe(page, '.saved .sv-foot');
