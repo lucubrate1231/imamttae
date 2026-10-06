@@ -3,12 +3,12 @@
 ## 주소
 - **저장소:** https://github.com/lucubrate1231/imamttae (공개)
 - **미리보기:** https://lucubrate1231.github.io/imamttae/next/. main에 올릴 때마다 자동으로 바뀝니다. 개발 중 확인용입니다.
-- **알파 주소:** https://lucubrate1231.github.io/imamttae/. 버전 태그(v0.1.0 등)를 붙였을 때만 바뀝니다. 지인에게 주는 주소입니다.
+- **베타 주소(예전 이름 알파 주소, D45):** https://lucubrate1231.github.io/imamttae/. 버전 태그(v0.1.0 등)를 붙였을 때만 바뀝니다. 지인에게 주는 주소입니다.
 
 ## 자주 하는 일
 | 하고 싶은 일 | 방법 |
 |---|---|
-| 새 버전을 알파 주소에 내기 | 미리보기에서 확인 → 사용자 OK → `git tag v0.1.1 && git push origin v0.1.1` |
+| 새 버전을 베타 주소에 내기 | 미리보기에서 확인 → 사용자 OK → `git tag v0.1.1 && git push origin v0.1.1` |
 | 문제가 생겨 이전 버전으로 되돌리기 | GitHub 저장소 → Actions → **redeploy** → Run workflow → 버전(예: v0.1.0)과 `root` 선택. 2~3분이면 끝납니다 |
 | 사진 하나를 내리기 | `content/flags.json`의 숨김 목록에 넣고 올리기 (기능 단계에서 추가) |
 | 실제 지도가 뜨는지 확인 | Actions → **live** → Run workflow (매일 새벽 3시 7분에도 자동 실행) |

@@ -1,6 +1,6 @@
 // @vitest-environment happy-dom
 import { beforeEach, describe, expect, it } from 'vitest';
-import { applyMeParam, createUmamiTracker, firstMonth, launchMode, shareUrl, SITE_ID, tagFor } from '../../src/analytics';
+import { applyCohortParam, applyMeParam, createUmamiTracker, firstMonth, launchMode, shareUrl, SITE_ID, tagFor } from '../../src/analytics';
 import { createSafeStore } from '../../src/storage/safeStorage';
 
 /** 사용 통계(Umami) — docs/analytics.md, 기획 측정 계획 7장 */
@@ -25,13 +25,44 @@ const blocked: Storage = {
 };
 
 describe('웹사이트 ID와 꼬리표(무료 계정은 사이트 1개 — 10/4 사용자)', () => {
-  it('알파·미리보기가 ID 하나를 같이 씀', () => {
+  it('베타·미리보기가 ID 하나를 같이 씀', () => {
     expect(SITE_ID).toBe('84ee01a2-a3bf-43cc-aec5-9368dcd23fa7');
   });
-  it('주소가 /imamttae/next/ 로 시작하면 꼬리표 preview, 아니면 alpha(대시보드에서 거름)', () => {
+  it('주소가 /imamttae/next/ 로 시작하면 꼬리표 preview, 아니면 beta(D45 — 알파와 비공개 베타를 하나로, 대시보드에서 거름)', () => {
     expect(tagFor('/imamttae/next/')).toBe('preview');
     expect(tagFor('/imamttae/next/index.html')).toBe('preview');
-    expect(tagFor('/imamttae/')).toBe('alpha');
+    expect(tagFor('/imamttae/')).toBe('beta');
+  });
+});
+
+describe('초대 묶음(?in=): 1차(지인)·2차(밴드 등)를 나눠 봄(D45)', () => {
+  const mem = () => {
+    const m = new Map<string, unknown>();
+    return { get: <T,>(k: string, d: T) => (m.has(k) ? (m.get(k) as T) : d), set: (k: string, v: unknown) => (m.set(k, v), true), del: (k: string) => void m.delete(k), m };
+  };
+  const at = (url: string) => {
+    window.history.replaceState(null, '', url);
+    return window;
+  };
+  it('?in=band → 이 휴대폰에 기억하고 주소에서 지움(다시 공유돼도 섞이지 않게)', () => {
+    const store = mem();
+    expect(applyCohortParam(at('/imamttae/?in=band#/month/10'), store as never)).toBe('band');
+    expect(window.location.search).toBe('');
+    expect(window.location.hash).toBe('#/month/10');
+    expect(applyCohortParam(at('/imamttae/'), store as never)).toBe('band'); // 다음에 열어도
+  });
+  it('처음 들어온 묶음을 지킴(나중에 다른 초대 주소로 들어와도 바꾸지 않음)', () => {
+    const store = mem();
+    applyCohortParam(at('/imamttae/?in=friends'), store as never);
+    expect(applyCohortParam(at('/imamttae/?in=band'), store as never)).toBe('friends');
+  });
+  it('모양이 이상한 값은 무시(영문 소문자·숫자·- 20자까지)', () => {
+    const store = mem();
+    expect(applyCohortParam(at('/imamttae/?in=<b>'), store as never)).toBeNull();
+    expect(applyCohortParam(at('/imamttae/?in=' + 'a'.repeat(21)), store as never)).toBeNull();
+  });
+  it('초대 주소가 아니면 없음', () => {
+    expect(applyCohortParam(at('/imamttae/'), mem() as never)).toBeNull();
   });
 });
 

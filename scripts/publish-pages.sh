@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dist/ 를 gh-pages 브랜치에 올립니다.
 #   TARGET=next  → /next/ (미리보기, main 에 올릴 때마다)
-#   TARGET=root  → / (알파 실제 주소, 버전 태그 v* 를 붙일 때만)
+#   TARGET=root  → / (베타 실제 주소 — D45로 알파와 비공개 베타를 합침, 버전 태그 v* 를 붙일 때만)
 # 다른 쪽은 건드리지 않으므로 미리보기와 실제 주소가 따로 유지됩니다.
 set -euo pipefail
 : "${TARGET:?TARGET=next|root}" "${GITHUB_TOKEN:?}" "${GITHUB_REPOSITORY:?}"
@@ -18,15 +18,15 @@ if [ "$TARGET" = next ]; then
   rm -rf site/next && mkdir -p site/next && cp -r dist/. site/next/
   if [ ! -f site/index.html ]; then
     cat > site/index.html <<'HTML'
-<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>이맘때 자연</title>
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>이맘때 풍경</title>
 <style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#fbf9f4;color:#1f2a24;font:18px/1.7 system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;word-break:keep-all;padding:24px;text-align:center}h1{color:#2f5d46;font-size:26px;margin:0 0 8px}</style></head>
-<body><main><h1>이맘때 자연</h1><p>지인 알파를 준비하고 있어요. 10월 말에 만나요.</p></main></body></html>
+<body><main><h1>이맘때 풍경</h1><p>곧 문을 열어요. 조금만 기다려 주세요.</p></main></body></html>
 HTML
   fi
 elif [ "$TARGET" = root ]; then
   find site -mindepth 1 -maxdepth 1 ! -name next ! -name .git -exec rm -rf {} +
   cp -r dist/. site/
-  # 알파에는 작가 확인 페이지·법규 메모·내부 메모(_review)를 올리지 않음(공개 전 점검 6번, docs/public-repo-check.md)
+  # 베타(루트)에는 작가 확인 페이지·법규 메모·내부 메모(_review)를 올리지 않음(공개 전 점검 6번, docs/public-repo-check.md)
   rm -rf site/_review
 else
   echo "TARGET must be next or root" >&2; exit 1

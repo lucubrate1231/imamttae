@@ -44,7 +44,7 @@ async function main(): Promise<void> {
   const map = createLazyMap(() => homeMap, { showReason, status: kakaoSdkStage });
   const findMap = createLazyMap(() => makeMap(), { showReason, status: kakaoSdkStage });
   const content = await loadContent();
-  // 사용 통계(docs/analytics.md): github.io에서만 보내고, 미리보기·알파는 꼬리표로 나눔
+  // 사용 통계(docs/analytics.md): github.io에서만 보내고, 미리보기·베타는 꼬리표로 나눔(D45)
   const tracker = createUmamiTracker(window, { siteId: SITE_ID, tag: tagFor(location.pathname) });
   registerServiceWorker(window); // 홈 화면에 추가(F5-AC2) — github.io에서만
   // 새 판이 나오면 다시 화면에 나올 때 저절로 다시 불러옴(홈 화면 앱은 새로고침 버튼이 없음, 10/6)
