@@ -4,7 +4,7 @@
  * - 작게 '다른 앱으로 길찾기' → 네이버지도·카카오맵을 고르면 이 휴대폰에 기억하고 다음부터 그 앱으로
  * - 앱이 열리지 않으면(1.5초 뒤에도 화면이 그대로) '티맵 설치 / 네이버지도 / 카카오맵' 안내
  * - 컴퓨터는 카카오맵 웹(티맵·네이버지도 앱 주소는 컴퓨터에서 열리지 않음)
- * 티맵은 실제 휴대폰 확인이 알파 전 필수입니다(src/domain/navi.ts의 verified).
+ * 티맵은 실제 휴대폰 확인이 베타 전 필수입니다(src/domain/navi.ts의 verified).
  */
 import { naviUrl, type NaviAppId, type NaviDest } from '../domain/navi';
 import type { SafeStore } from '../storage/safeStorage';

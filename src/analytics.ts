@@ -33,17 +33,37 @@ export interface Tracker {
 }
 
 /**
- * 웹사이트 ID(비밀 키 아님, 10/4 사용자가 줌). 무료 계정은 사이트가 1개라 알파·미리보기가 같이 쓰고,
- * 꼬리표(data-tag)로 나눠 대시보드에서 거릅니다: 미리보기(/next/) = preview, 알파 = alpha.
+ * 웹사이트 ID(비밀 키 아님, 10/4 사용자가 줌). 무료 계정은 사이트가 1개라 베타·미리보기가 같이 쓰고,
+ * 꼬리표(data-tag)로 나눠 대시보드에서 거릅니다: 미리보기(/next/) = preview, 베타 = beta(D45 — 알파와 비공개 베타를 하나로).
  */
 export const SITE_ID = '84ee01a2-a3bf-43cc-aec5-9368dcd23fa7';
 const SCRIPT_SRC = 'https://cloud.umami.is/script.js';
 const DOMAINS = 'lucubrate1231.github.io'; // 이 주소에서만 보냄 → 내 컴퓨터·화면 테스트는 저절로 빠짐
 const QUEUE_MAX = 50;
 
-/** 주소가 /imamttae/next/ 로 시작하면 preview, 아니면 alpha */
-export function tagFor(pathname: string): 'preview' | 'alpha' {
-  return /^\/imamttae\/next(\/|$)/.test(pathname) ? 'preview' : 'alpha';
+/** 주소가 /imamttae/next/ 로 시작하면 preview, 아니면 beta(D45) */
+export function tagFor(pathname: string): 'preview' | 'beta' {
+  return /^\/imamttae\/next(\/|$)/.test(pathname) ? 'preview' : 'beta';
+}
+
+/**
+ * 초대 묶음(D45): 초대 주소 끝의 ?in=이름(예: friends 1차 지인, band, sanak)을 이 휴대폰에 기억하고 주소에서 지움.
+ * 처음 들어온 묶음을 지킴(다른 초대 주소로 다시 들어와도 그대로). 영문 소문자·숫자·- 20자까지. 앱을 열 때마다 app-open의 cohort로 보냄.
+ */
+export function applyCohortParam(win: Window, store: SafeStore): string | null {
+  const KEY = 'cohort';
+  const ok = (v: unknown): v is string => typeof v === 'string' && /^[a-z0-9-]{1,20}$/.test(v);
+  const url = new URL(win.location.href);
+  const given = url.searchParams.get('in');
+  if (given !== null) {
+    url.searchParams.delete('in'); // 그 사람이 다시 공유해도 섞이지 않게
+    win.history.replaceState(win.history.state, '', `${url.pathname}${url.search}${url.hash}`);
+  }
+  const saved = store.get<unknown>(KEY, null);
+  if (ok(saved)) return saved;
+  if (!ok(given)) return null;
+  store.set(KEY, given);
+  return given;
 }
 
 /** 열린 방식: 홈 화면 앱 / 카카오톡 안 브라우저 / 그 밖 */

@@ -19,7 +19,7 @@ import type { TypeCovers } from './domain/covers';
 import { h, paintBrowserBar } from './ui/dom';
 import { createHome } from './ui/home';
 import { createNavi } from './ui/navi';
-import { applyMeParam, firstMonth, launchMode, type EventData, type Tracker } from './analytics';
+import { applyCohortParam, applyMeParam, firstMonth, launchMode, type EventData, type Tracker } from './analytics';
 import { createSaved } from './ui/saved';
 import { createAlertCard, type AlertCard } from './ui/alertCard';
 import { createSavedStore, type SavedStore } from './storage/saved';
@@ -93,6 +93,8 @@ export async function startApp(deps: AppDeps): Promise<AppHandle> {
     const fm = firstMonth(store, deps.now ?? new Date());
     const open: EventData = { mode: launchMode(win) };
     if (new URLSearchParams(win.location.search).get('from') === 'share') open.from = 'share';
+    const cohort = applyCohortParam(win, store); // D45: 초대 묶음(1차 지인·2차 밴드 등)
+    if (cohort) open.cohort = cohort;
     open.first_month = fm.first_month;
     open.returning = fm.returning;
     tracker.track('app-open', open);
