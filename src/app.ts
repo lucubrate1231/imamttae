@@ -26,7 +26,7 @@ import { createSavedStore, type SavedStore } from './storage/saved';
 import { createA2hs } from './ui/a2hs';
 import { feedbackCard, feedbackLine, type FeedbackDeps } from './ui/feedback';
 import { createPrivacy } from './ui/privacy';
-import { CONTACT_EMAIL, FEEDBACK_FORM_URL, FEEDBACK_PLACE_FIELD } from './config';
+import { CONTACT_EMAIL, FEEDBACK_FORM_URL, FEEDBACK_PLACE_FIELD, FEEDBACK_PREFILL_URL } from './config';
 import { a2hsEnv, type InstallEvent } from './pwa';
 
 export interface AppDeps {
@@ -56,6 +56,7 @@ export interface AppDeps {
   installPrompt?: () => InstallEvent | null;
   /** 의견 보내기 폼 주소·'어느 곳' 칸 번호, 문의 이메일(기본은 src/config.ts — 테스트에서 바꿈) */
   feedbackUrl?: string;
+  feedbackPrefillUrl?: string;
   feedbackPlaceField?: string;
   contactEmail?: string;
   /** 카톡 띠를 누른 뒤 이만큼 지나도 이 화면이면 그림 안내(기본 2초, 테스트는 0) */
@@ -178,7 +179,13 @@ export async function startApp(deps: AppDeps): Promise<AppHandle> {
     return a;
   };
   // 의견 보내기(D46, design-guide 12-1): 첫 화면·저장한 곳 카드, 장면 상세 줄
-  const fb: FeedbackDeps = { url: deps.feedbackUrl ?? FEEDBACK_FORM_URL, placeField: deps.feedbackPlaceField ?? FEEDBACK_PLACE_FIELD, toast, track: tracker.track };
+  const fb: FeedbackDeps = {
+    url: deps.feedbackUrl ?? FEEDBACK_FORM_URL,
+    prefillUrl: deps.feedbackPrefillUrl ?? FEEDBACK_PREFILL_URL,
+    placeField: deps.feedbackPlaceField ?? FEEDBACK_PLACE_FIELD,
+    toast,
+    track: tracker.track,
+  };
   const homeAlert = alertFor('home');
   const savedAlert = alertFor('saved');
   const home = createHome({

@@ -7,7 +7,8 @@ import { HOME_SCENES } from '../fixtures/homeScenes';
 
 /** 출시 준비 화면(D45·D46, 디자인 #107) — design-guide 12장, 글자 10-8 */
 const OCT = new Date('2026-09-30T16:00:00Z');
-const FORM = 'https://docs.google.com/forms/d/e/TESTFORM/viewform';
+const FORM = 'https://forms.gle/TESTSHORT'; // 카드용(짧은 주소)
+const PREFILL = 'https://docs.google.com/forms/d/e/TESTFORM/viewform'; // 장면 상세용(미리 채운 링크의 바탕 주소)
 let root: HTMLElement;
 let events: [string, EventData | undefined][];
 const tracker: Tracker = { load() {}, pageview() {}, track: (n, d) => void events.push([n, d]) };
@@ -15,7 +16,7 @@ let toasts: string[];
 
 async function start(hash: string, o: Partial<AppDeps> = {}) {
   window.location.hash = hash;
-  return startApp({ root, map: createListMap(), content: HOME_SCENES, now: OCT, tracker, feedbackUrl: FORM, feedbackPlaceField: 'entry.1234', contactEmail: 'hello@example.com', ...o });
+  return startApp({ root, map: createListMap(), content: HOME_SCENES, now: OCT, tracker, feedbackUrl: FORM, feedbackPrefillUrl: PREFILL, feedbackPlaceField: 'entry.1234', contactEmail: 'hello@example.com', ...o });
 }
 const q = <T extends HTMLElement = HTMLElement>(sel: string) => root.querySelector<T>(sel);
 const hashChange = () => window.dispatchEvent(new Event('hashchange'));
@@ -71,16 +72,27 @@ describe('의견 보내기(D46, 12-1) — 세 자리', () => {
     expect(line.querySelector('.fb-sub')!.textContent).toBe('주차·길·입장 등 알려 주시면 고칠게요');
     expect(line.getAttribute('aria-label')).toBe('이곳 정보가 달라졌나요? 알려 주기, 새 창');
     const u = new URL(line.href);
-    expect(u.origin + u.pathname).toBe(FORM);
+    expect(u.origin + u.pathname).toBe(PREFILL);
     expect(u.searchParams.get('usp')).toBe('pp_url');
     expect(u.searchParams.get('entry.1234')).toBe('내장산 우화정');
     line.click();
     expect(events).toContainEqual(['feedback', { where: 'detail', scene: 's-naejang' }]);
   });
 
-  it('칸 번호를 아직 모르면 장면 이름 없이 폼만', async () => {
+  it('칸 번호나 미리 채운 링크를 모르면 장면 이름 없이 카드와 같은 폼(짧은 주소에는 이름을 붙이지 않음)', async () => {
     await start('#/scene/s-naejang', { feedbackPlaceField: '' });
     expect(q<HTMLAnchorElement>('.detail.open a.fb-line')!.getAttribute('href')).toBe(FORM);
+    document.body.innerHTML = '<div id="app"></div>';
+    root = document.getElementById('app')!;
+    await start('#/scene/s-naejang', { feedbackPrefillUrl: '' });
+    expect(q<HTMLAnchorElement>('.detail.open a.fb-line')!.getAttribute('href')).toBe(FORM);
+  });
+
+  it('장소 이름은 주소용 글자로 바꿔 넣음(한글·띄어쓰기·· 등)', async () => {
+    await start('#/scene/s-naejang');
+    const href = q<HTMLAnchorElement>('.detail.open a.fb-line')!.getAttribute('href')!;
+    expect(href).toContain('entry.1234=%EB%82%B4%EC%9E%A5%EC%82%B0'); // '내장산'
+    expect(href).not.toMatch(/[가-힣 ]/);
   });
 
   it('폼 주소가 아직 없으면 눌러도 어디로도 가지 않고 "곧 열려요" 안내(출시 전 미리보기)', async () => {

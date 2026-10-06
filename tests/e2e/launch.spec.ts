@@ -1,7 +1,7 @@
 import { expect, test, type Page } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
-/** 출시 준비 화면(D45·D46, 디자인 #107) — design-guide 12장. 폼 주소가 아직 없어(src/config.ts) 누르면 '곧 열려요' */
+/** 출시 준비 화면(D45·D46, 디자인 #107) — design-guide 12장. 폼 주소는 src/config.ts(실제 구글 폼 — 시험에서는 열지 않고 주소만 봄) */
 const axe = async (page: Page, sel: string) => {
   const r = await new AxeBuilder({ page }).include(sel).analyze();
   expect(r.violations.map((v) => `${v.id}: ${v.help} ${v.nodes.map((n) => n.target.join(' ')).join(', ')}`)).toEqual([]);
@@ -19,8 +19,8 @@ test('첫 화면 맨 아래: 이 앱 이야기 → 의견 보내기 카드 → �
   expect((await page.locator('main.home a.privacy-link').boundingBox())!.height).toBeGreaterThanOrEqual(48);
   expect(await overflow(page)).toBeLessThanOrEqual(0);
   await axe(page, 'main.home .extra');
-  await card.click();
-  await expect(page.locator('.toast')).toHaveText('의견 보내기는 곧 열려요');
+  await expect(card).toHaveAttribute('href', 'https://forms.gle/4viSoD1yHn9D8ixS7');
+  await expect(card).toHaveAttribute('target', '_blank');
 });
 
 test('장면 상세 본문 끝 "이곳 정보가 달라졌나요?" 줄 — 높이 56 이상, 접근성', async ({ page }) => {
@@ -29,6 +29,10 @@ test('장면 상세 본문 끝 "이곳 정보가 달라졌나요?" 줄 — 높�
   await line.scrollIntoViewIfNeeded();
   await expect(line).toContainText('이곳 정보가 달라졌나요?');
   expect((await line.boundingBox())!.height).toBeGreaterThanOrEqual(56);
+  const u = new URL((await line.getAttribute('href'))!);
+  expect(u.origin + u.pathname).toBe('https://docs.google.com/forms/d/e/1FAIpQLSdjAaqo5JiEP8dDK-ofc0fQ93cNBI55SPXwAw-GRPK3zBiFOA/viewform');
+  expect(u.searchParams.get('usp')).toBe('pp_url');
+  expect(u.searchParams.get('entry.1390967997')).toBe('내장산 우화정');
   await axe(page, '.detail.open .body');
 });
 

@@ -9,8 +9,10 @@ import type { EventData, EventName } from '../analytics';
 import { h } from './dom';
 
 export interface FeedbackDeps {
-  /** 폼 주소(비어 있으면 아직 없음) */
+  /** 폼 주소 — 카드용(비어 있으면 아직 없음) */
   url: string;
+  /** 미리 채운 링크의 바탕 주소(…/viewform) — 장면 상세에서 장면 이름을 넣을 때. 비면 url */
+  prefillUrl: string;
   /** '어느 곳' 칸 번호(entry.…) — 비어 있으면 미리 넣지 않음 */
   placeField: string;
   toast(msg: string): void;
@@ -66,7 +68,7 @@ export function feedbackCard(d: FeedbackDeps, where: 'home' | 'saved'): HTMLAnch
 export function feedbackLine(d: FeedbackDeps, scene: { id: string; name: string }): HTMLAnchorElement {
   const a = h(
     'a',
-    { class: 'fb-line', href: feedbackHref(d.url, d.placeField, scene.name), 'aria-label': '이곳 정보가 달라졌나요? 알려 주기, 새 창' },
+    { class: 'fb-line', href: d.prefillUrl && d.placeField ? feedbackHref(d.prefillUrl, d.placeField, scene.name) : feedbackHref(d.url, '', scene.name), 'aria-label': '이곳 정보가 달라졌나요? 알려 주기, 새 창' },
     bubble('fb-ic sm'),
     h('span', { class: 'fb-txt' }, h('b', { text: '이곳 정보가 달라졌나요?' }), h('span', { class: 'fb-sub', text: '주차·길·입장 등 알려 주시면 고칠게요' })),
     h('span', { class: 'fb-go', 'aria-hidden': 'true', text: '›' }),
