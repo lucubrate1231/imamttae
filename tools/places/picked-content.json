@@ -1,0 +1,18 @@
+{
+ "format": "imamttae-picked/content-session",
+ "about": "콘텐츠 세션이 고른 좌표(D47, 10/6). 출처: 한국관광공사 관광정보·전국주차장정보표준데이터(candidates.json) 또는 오픈스트리트맵(ref에 osm:종류/번호). 카카오·네이버·구글 값은 쓰지 않음. needsCheck=true는 사용자 확인이 필요한 곳",
+ "picked": {
+  "s-010-seosan-udo": {
+   "spot": {"lat": 36.9303, "lng": 126.3398, "source": "manual", "ref": "osm:way/22786228"},
+   "dest": {"name": "벌말선착장(우도행 배)", "lat": 36.961253, "lng": 126.33339, "kind": "entrance", "source": "manual", "ref": "osm:node/12769422560"},
+   "needsCheck": false,
+   "why": "숨긴 장면. spot은 오픈스트리트맵 우도 해안선 가운데, dest는 오픈스트리트맵 '벌말선착장'"
+  },
+  "s-067-saseongam-seomjingang": {
+   "spot": {"lat": 35.179914, "lng": 127.48074, "source": "manual", "ref": "osm:way/1253493083"},
+   "dest": {"name": "사성암 아래 주차장(사성암 인증센터 옆)", "lat": 35.18243, "lng": 127.470096, "kind": "parking", "source": "manual", "ref": "osm:way/1159690880"},
+   "needsCheck": true,
+   "why": "숨긴 장면이라 급하지 않음. 오픈스트리트맵에 이름 없는 주차장이라, 셔틀버스 타는 곳이 여기인지 다시 꺼낼 때 확인"
+  }
+ }
+}
