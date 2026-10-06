@@ -58,6 +58,12 @@ describe('앱이 열릴 때', () => {
     expect(e[0]).toEqual({ mode: 'browser', from: 'share', first_month: '2026-10', returning: false });
   });
 
+  it('D45: 초대 주소 ?in=friends로 들어오면 app-open에 cohort(다음에 열어도)', async () => {
+    const store = memoryStore();
+    await start('?in=friends#/month/10', { store });
+    expect(events('app-open').at(-1)).toMatchObject({ cohort: 'friends' });
+  });
+
   it('화면 조회: 처음 한 번, 화면을 옮길 때마다 한 번(# 뒤까지)', async () => {
     await start('#/month/10', { store: memoryStore() });
     window.location.hash = '#/find/danpung';

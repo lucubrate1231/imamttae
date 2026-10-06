@@ -6,7 +6,8 @@ export type Route =
   | { name: 'month'; month: number | null }
   | { name: 'find'; type: SceneTypeId | null; region: RegionId | null }
   | { name: 'scene'; id: string }
-  | { name: 'saved' }; // 저장한 곳(F4, D24 — 옛 '내 수첩' #/stamps)
+  | { name: 'saved' } // 저장한 곳(F4, D24 — 옛 '내 수첩' #/stamps)
+  | { name: 'privacy' }; // 개인정보 안내(D45, design-guide 12-2)
 
 const SCENE_ID = /^[a-z0-9-]{3,80}$/;
 
@@ -36,6 +37,8 @@ export function parseRoute(hash: string): Route {
     case 'saved':
     case 'stamps': // 옛 주소도 저장한 곳으로
       return { name: 'saved' };
+    case 'privacy':
+      return { name: 'privacy' };
     default:
       return { name: 'month', month: null };
   }
@@ -52,5 +55,7 @@ export function routeHref(r: Route): string {
       return `#/scene/${r.id}`;
     case 'saved':
       return '#/saved';
+    case 'privacy':
+      return '#/privacy';
   }
 }
