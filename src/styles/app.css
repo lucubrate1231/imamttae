@@ -550,3 +550,35 @@ h1, h2, h3, p { margin: 0; }
 .dot.recdot { background: var(--pin-rec); box-shadow: 0 0 0 4px var(--line); }
 .find-records .sub { margin: 2px 0 6px; font-size: 16px; color: var(--ink-3); }
 .find-records h2 + .sub + .row { border-top: 0; }
+
+/* ── 출시 준비 화면(D45·D46, design-guide 12장) ── */
+/* 의견 보내기 카드: 설치 카드와 같은 크기·여백, 흰 바탕 + 1.5px 테두리, 계절 색 말풍선 */
+.feedback { display: flex; align-items: center; gap: 14px; padding: 16px 18px; border-radius: var(--r-card); border: 1.5px solid var(--line); background: #fff; color: inherit; text-decoration: none; }
+.fb-ic { flex: none; display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; background: var(--season-soft); color: var(--season); }
+.fb-ic.sm { width: 36px; height: 36px; }
+.feedback b { display: block; font-size: 18px; color: var(--ink); }
+.feedback .fb-sub { font-size: 15px; color: var(--ink-2); }
+/* 장면 상세 본문 끝 줄 */
+.fb-line { display: flex; align-items: center; gap: 12px; min-height: 56px; margin-top: 16px; padding: 10px 2px; border-top: 1px solid var(--line); color: inherit; text-decoration: none; }
+.fb-txt { flex: 1; min-width: 0; }
+.fb-line b { display: block; font-size: 16px; color: var(--ink); }
+.fb-line .fb-sub { font-size: 14px; color: var(--ink-3); }
+.fb-go { font-size: 22px; color: var(--ink-3); }
+/* 첫 화면 바닥줄 · 저장한 곳 상자 끝 링크 */
+.privacy-link { align-self: center; justify-self: center; display: inline-flex; align-items: center; min-height: var(--tap); padding: 0 8px; font-size: 15px; color: var(--ink-3); text-decoration: underline; }
+.privacy-more { display: inline-flex; align-items: center; min-height: var(--tap); /* 디자인은 44 이상 — 앱 기준 48(C-2)에 맞춤 */ font-weight: 800; color: var(--ink-2); text-decoration: underline; }
+/* 개인정보 안내 화면 */
+.privacy { padding: 8px var(--gutter) 120px; display: grid; gap: 0; }
+.pv-back { justify-self: start; min-height: var(--tap); padding: 0 4px; font-size: 17px; font-weight: 800; color: var(--ink-2); }
+.pv-title { margin: 8px 0 0; font-family: var(--font-display); font-size: 28px; font-weight: 700; color: var(--ink-title); }
+.pv-lead { margin: 12px 0 0; font-size: 18px; line-height: 1.65; color: var(--ink); }
+.pv-sec { margin-top: 28px; }
+.pv-h { margin: 0; font-size: 19px; font-weight: 800; color: var(--ink); }
+.pv-body { margin: 6px 0 0; font-size: 18px; line-height: 1.7; color: var(--ink-2); }
+.pv-contact { margin-top: 28px; padding: 18px; border-radius: 18px; background: var(--bg-soft); display: grid; gap: 8px; }
+.pv-contact h2 { margin: 0; font-size: 19px; font-weight: 800; }
+.pv-desc { margin: 0; font-size: 17px; color: var(--ink-2); }
+.pv-mail { margin: 0; font-size: 18px; font-weight: 800; color: var(--ink); overflow-wrap: anywhere; user-select: text; }
+.pv-mail.pending { font-weight: 400; color: var(--ink-3); }
+.pv-contact .btn { justify-self: start; }
+.pv-date { margin: 24px 0 0; font-size: 15px; color: var(--ink-3); }

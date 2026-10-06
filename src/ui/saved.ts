@@ -28,6 +28,8 @@ export interface SavedDeps {
   alert?: AlertCard;
   /** [홈 화면에 두기] 카드(F5, src/ui/a2hs.ts) */
   homeAdd(): HTMLElement;
+  /** 의견 보내기 카드(D46) — 설치 카드 아래 */
+  feedback?(): HTMLElement;
 }
 
 export interface Saved {
@@ -181,7 +183,7 @@ export function createSaved(d: SavedDeps): Saved {
     }
 
     // 맨 아래: 이 휴대폰에만 저장(F4-AC15) · 홈 화면에 두기(F5)
-    const note = h('p', { class: 'sv-note' }, h('span', { class: 'info', 'aria-hidden': 'true' }), '저장한 곳은 이 휴대폰에만 저장돼요. 로그인은 필요 없지만, 휴대폰을 바꾸거나 인터넷 사용 기록을 지우면 함께 지워져요.');
+    const note = h('p', { class: 'sv-note' }, h('span', { class: 'info', 'aria-hidden': 'true' }), '저장한 곳은 이 휴대폰에만 저장돼요. 로그인은 필요 없지만, 휴대폰을 바꾸거나 인터넷 사용 기록을 지우면 함께 지워져요. ', h('a', { class: 'privacy-more', href: '#/privacy', text: '개인정보 안내 보기 ›' }));
     (note.firstChild as HTMLElement).innerHTML = ICON.info;
     const homeAdd = d.homeAdd();
 
@@ -190,7 +192,7 @@ export function createSaved(d: SavedDeps): Saved {
       ...(d.store.saved ? [] : [h('p', { class: 'sv-warn', role: 'status', text: '이 브라우저에서는 저장되지 않아요.' })]),
       wishSec,
       visitSec,
-      h('section', { class: 'sv-sec sv-foot' }, note, homeAdd),
+      h('section', { class: 'sv-sec sv-foot' }, note, homeAdd, d.feedback?.() ?? null),
     );
   }
 
