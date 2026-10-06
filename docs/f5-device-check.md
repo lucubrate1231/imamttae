@@ -8,7 +8,7 @@
 - 설치 창(beforeinstallprompt)이 뜨는지는 휴대폰 브라우저와 판에 따라 다릅니다.
 
 ## 준비된 것 (PR `claude/f5-pwa-base`)
-- **매니페스트**(F5-AC1): 이름 '이맘때 풍경', 아이콘 이름 '이맘때', 전체 화면 표시. 아이콘은 디자인 세션 '나'안(`public/brand/`, design-guide 11-6 — PR #47로 임시 그림에서 바꿈).
+- **매니페스트**(F5-AC1): 이름 '이맘때 풍경', 아이콘 이름 '이맘때', 전체 화면 표시. 아이콘은 디자인 세션 '두 봉우리와 해'(`public/brand/`, design-guide 11-6 — 10/7에 '나'안에서 바꿈).
 - **서비스 워커**(F5-AC2): 크롬 자동 설치 창의 조건인 fetch 처리기가 있습니다. 화면을 열 때 늘 인터넷에서 새로 받고, 인터넷이 끊겼을 때만 마지막 화면을 보여 줍니다. github.io에서만 등록합니다.
   - 알파(`/imamttae/`)와 미리보기(`/imamttae/next/`)는 따로 설치되는 다른 앱입니다.
 - **확인 페이지:** `https://lucubrate1231.github.io/imamttae/next/_review/a2hs-lab.html`
