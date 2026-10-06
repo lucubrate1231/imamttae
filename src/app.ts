@@ -24,7 +24,7 @@ import { createSaved } from './ui/saved';
 import { createAlertCard, type AlertCard } from './ui/alertCard';
 import { createSavedStore, type SavedStore } from './storage/saved';
 import { createA2hs } from './ui/a2hs';
-import { a2hsEnv, type InstallEvent } from './pwa';
+import { a2hsEnv, inAppName, type InstallEvent } from './pwa';
 
 export interface AppDeps {
   root: HTMLElement;
@@ -134,6 +134,7 @@ export async function startApp(deps: AppDeps): Promise<AppHandle> {
     win,
     env: a2hsEnv(deps.ua ?? win.navigator.userAgent, launchMode(win) === 'home-screen'),
     android: /Android/i.test(deps.ua ?? win.navigator.userAgent),
+    inApp: inAppName(deps.ua ?? win.navigator.userAgent),
     scenes: deps.content.scenes,
     store,
     saved: savedStore,

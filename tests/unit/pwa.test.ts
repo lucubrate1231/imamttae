@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { chromeIntentUrl, kakaoExternalUrl, readCarry, shouldRegisterSw, withCarry } from '../../src/pwa';
+import { chromeIntentUrl, kakaoExternalUrl, readCarry, shouldRegisterSw, withCarry, a2hsEnv, inAppName, safariUrl } from '../../src/pwa';
 
 /** 홈 화면에 추가(F5-AC1·AC2) 준비 파일과 D33 실기기 확인용 주소 만들기 */
 const pub = (p: string) => resolve(__dirname, '../../public', p);
@@ -102,5 +102,45 @@ describe('D33 ②: 넘길 때 저장한 장면 번호를 주소에 붙이고 받
     expect(readCarry('?from=share')).toEqual([]);
     const many = Array.from({ length: 150 }, (_, i) => `s-${i}`).join(',');
     expect(readCarry(`?carry=${many}`)).toHaveLength(100);
+  });
+});
+
+/** D45(디자인 #107): 밴드·네이버 앱 등 다른 앱 안 화면 — 카톡 안처럼 안내. 브라우저 이름표는 실기기 확인 페이지(⑤)로 맞춤 */
+const IN = {
+  bandAndroid: 'Mozilla/5.0 (Linux; Android 14; SM-S918N Build/UP1A; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/125.0 Mobile Safari/537.36 BAND/14.4.0',
+  bandIos: 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 BAND/14.4.0',
+  naverAndroid: 'Mozilla/5.0 (Linux; Android 14; SM-S918N; wv) AppleWebKit/537.36 Chrome/125.0 Mobile Safari/537.36 NAVER(inapp; search; 2000; 12.6.2; 14)',
+  naverIos: 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_6 like Mac OS X) AppleWebKit/605.1.15 Mobile/15E148 NAVER(inapp; search; 1000; 12.6.2; 15PRO)',
+  instagram: 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_6 like Mac OS X) AppleWebKit/605.1.15 Mobile/15E148 Instagram 350.0.0.0',
+  facebook: 'Mozilla/5.0 (Linux; Android 14; wv) AppleWebKit/537.36 Chrome/125 Mobile Safari/537.36 [FB_IAB/FB4A;FBAV/470.0]',
+  line: 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_6 like Mac OS X) AppleWebKit/605.1.15 Mobile/15E148 Safari Line/14.10.0',
+  kakao: 'Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 Chrome/140 Mobile Safari/537.36 KAKAOTALK/25.8.0',
+  chrome: 'Mozilla/5.0 (Linux; Android 14; Pixel 7) AppleWebKit/537.36 Chrome/140.0 Mobile Safari/537.36',
+};
+
+describe('앱 안 화면 알아보기(D45)', () => {
+  it('밴드·네이버 앱·그 밖(인스타그램·페이스북·라인) — 안드로이드는 inapp-android, 아이폰은 inapp-ios', () => {
+    expect(a2hsEnv(IN.bandAndroid, false)).toBe('inapp-android');
+    expect(a2hsEnv(IN.bandIos, false)).toBe('inapp-ios');
+    expect(a2hsEnv(IN.naverAndroid, false)).toBe('inapp-android');
+    expect(a2hsEnv(IN.naverIos, false)).toBe('inapp-ios');
+    expect(a2hsEnv(IN.instagram, false)).toBe('inapp-ios');
+    expect(a2hsEnv(IN.facebook, false)).toBe('inapp-android');
+    expect(a2hsEnv(IN.line, false)).toBe('inapp-ios');
+  });
+  it('카톡은 그대로 카톡, 크롬은 그대로, 홈 화면 앱은 standalone', () => {
+    expect(a2hsEnv(IN.kakao, false)).toBe('kakao-android');
+    expect(a2hsEnv(IN.chrome, false)).toBe('chrome');
+    expect(a2hsEnv(IN.bandAndroid, true)).toBe('standalone');
+  });
+  it('어느 앱인가(안내 글에 씀): band · naver · other, 앱 안이 아니면 null', () => {
+    expect(inAppName(IN.bandIos)).toBe('band');
+    expect(inAppName(IN.naverAndroid)).toBe('naver');
+    expect(inAppName(IN.instagram)).toBe('other');
+    expect(inAppName(IN.chrome)).toBeNull();
+    expect(inAppName(IN.kakao)).toBeNull(); // 카톡은 따로
+  });
+  it('아이폰 앱 안 → 사파리: x-safari-https 주소(iOS 17부터)', () => {
+    expect(safariUrl('https://lucubrate1231.github.io/imamttae/?carry=s-1#/')).toBe('x-safari-https://lucubrate1231.github.io/imamttae/?carry=s-1#/');
   });
 });

@@ -3,10 +3,11 @@
  * 사용자가 휴대폰(카카오톡 안·크롬·삼성 인터넷·설치한 앱)에서 열어 버튼을 누르고, [결과 복사]로 Claude에게 보내 줍니다.
  * 확인할 것(D33): ① 카톡 → 바깥 브라우저 두 방법 ② 저장한 장면 번호 넘기기, 크롬 탭과 설치한 앱이 저장을 함께 쓰는지
  *                 ③ 크롬 설치 창(beforeinstallprompt) ④ 삼성 인터넷 설치 창 신호
+ *                 ⑤ 밴드·네이버 앱 안(D45, 디자인 #107): 바깥 브라우저로 넘어가는 방법 · 메뉴 이름 · 저장이 앱 안에 갇히는지
  */
 import './a2hsLab.css';
 import { launchMode } from '../analytics';
-import { chromeIntentUrl, kakaoExternalUrl, readCarry, withCarry } from '../pwa';
+import { chromeIntentUrl, inAppName, kakaoExternalUrl, readCarry, safariUrl, withCarry } from '../pwa';
 import { createSafeStore } from '../storage/safeStorage';
 import { createSavedStore } from '../storage/saved';
 
@@ -36,11 +37,15 @@ const saved = createSavedStore(store);
 const MARK = 'lab-mark';
 type Mark = { where: string; at: string } | null;
 const where = () => launchMode(win);
+/** ⑤ 사용자가 적는 메뉴 이름(바깥 브라우저로 여는 메뉴) */
+let menuName = '';
 
 function browserName(): string {
   const sam = /SamsungBrowser\/([\d.]+)/.exec(ua);
   if (sam) return `삼성 인터넷 ${sam[1]}`;
   if (/KAKAOTALK/i.test(ua)) return '카카오톡 안 화면';
+  const app = inAppName(ua);
+  if (app) return { band: '밴드 앱 안 화면', naver: '네이버 앱 안 화면', other: '다른 앱 안 화면' }[app];
   const cr = /(?:Chrome|CriOS)\/(\d+)/.exec(ua);
   if (cr) return `크롬 ${cr[1]}`;
   if (/Safari\//.test(ua)) return '사파리';
@@ -69,6 +74,7 @@ function summary(): string {
     `이 브라우저 저장한 곳: ${saved.wanted().join(', ') || '없음'} (저장 ${saved.saved ? '됨' : '막힘'})`,
     `주소로 받은 장면 번호: ${readCarry(location.search).join(', ') || '없음'}`,
     `실험 표시: ${mark ? `${mark.where}에서 ${mark.at}에 남김` : '없음'}`,
+    `앱 안 화면: ${inAppName(ua) ?? (/KAKAOTALK/i.test(ua) ? '카카오톡' : '아님')} · 메뉴에서 본 이름: ${menuName || '(안 적음)'}`,
     `브라우저 이름표: ${ua}`,
     ...log,
   ].join('\n');
@@ -83,6 +89,20 @@ function paint(): void {
   const intent = h('a', { class: 'btn', href: chromeIntentUrl(target()) }, '① 카톡 → 크롬으로 열기(intent)');
   openExt.addEventListener('click', () => log.push('openExternal 누름'));
   intent.addEventListener('click', () => log.push('intent 누름'));
+
+  // ⑤ 밴드·네이버 앱 안 → 바깥 브라우저(D45): 안드로이드 크롬 intent · 아이폰 x-safari-https · 그냥 새 창
+  const inChrome = h('a', { class: 'btn', href: chromeIntentUrl(target()) }, '⑤ 크롬으로 열기(안드로이드)');
+  const inSafari = h('a', { class: 'btn', href: safariUrl(target()) }, '⑤ 사파리로 열기(아이폰)');
+  const inBlank = h('a', { class: 'btn', href: target(), target: '_blank', rel: 'noopener' }, '⑤ 새 창으로 열기');
+  inChrome.addEventListener('click', () => log.push('앱 안 → 크롬 intent 누름'));
+  inSafari.addEventListener('click', () => log.push('앱 안 → x-safari-https 누름'));
+  inBlank.addEventListener('click', () => log.push('앱 안 → 새 창 누름'));
+  const menu = h('input', { type: 'text', class: 'menu-name', 'aria-label': '바깥 브라우저로 여는 메뉴 이름', placeholder: "예: 오른쪽 위 ⋯ → '다른 브라우저로 열기'" });
+  menu.value = menuName;
+  menu.addEventListener('change', () => {
+    menuName = menu.value.trim();
+    note(`메뉴 이름 적음: ${menuName}`);
+  });
 
   const merge = h('button', { type: 'button', class: 'btn' }, `② 받은 ${carry.length}곳을 저장한 곳에 합치기`);
   merge.toggleAttribute('disabled', !carry.length);
@@ -149,6 +169,12 @@ function paint(): void {
     h('h2', {}, '③·④ 설치 창'),
     h('p', { class: 'hint' }, '크롬·삼성 인터넷에서 열고 몇 초 기다리면 버튼이 켜져요. 켜지지 않으면 그대로 알려 주세요.'),
     install,
+    h('h2', {}, '⑤ 밴드·네이버 앱 안 → 바깥 브라우저'),
+    h('p', { class: 'hint' }, '밴드(또는 네이버 앱) 안에서 이 페이지를 연 뒤: 먼저 ②의 [실험 표시 남기기]를 누르고, 아래 버튼을 하나씩 눌러 무엇이 열리는지(크롬·사파리·앱 안 그대로·아무 일 없음) 봐 주세요. 크롬·사파리가 열렸으면 거기서 "실험 표시"가 보이는지도 봐 주세요(없음이면 저장이 앱 안에 갇힘). 그 앱의 메뉴 버튼(⋮·⋯)을 눌러 바깥 브라우저로 여는 메뉴 이름과 자리를 아래 칸에 적어 주세요.'),
+    inChrome,
+    inSafari,
+    inBlank,
+    menu,
     h('h2', {}, '보내기'),
     copy,
     pre,

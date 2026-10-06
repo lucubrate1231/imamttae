@@ -11,7 +11,7 @@
  */
 import type { Scene } from '../../shared/schema/content';
 import type { EventData, EventName } from '../analytics';
-import { chromeIntentUrl, kakaoExternalUrl, readCarry, withCarry, type A2hsEnv, type InstallEvent } from '../pwa';
+import { chromeIntentUrl, kakaoExternalUrl, readCarry, safariUrl, withCarry, type A2hsEnv, type InstallEvent } from '../pwa';
 import type { SafeStore } from '../storage/safeStorage';
 import type { SavedStore } from '../storage/saved';
 import { h } from './dom';
@@ -21,6 +21,8 @@ export interface A2hsDeps {
   env: A2hsEnv;
   /** 안드로이드 휴대폰·태블릿인가(브라우저 이름표에 Android) — 크롬·삼성 인터넷 첫 방문 띠(D37)는 안드로이드에만 */
   android: boolean;
+  /** 카톡이 아닌 앱 안 화면이면 어느 앱(그림 안내 설명에 씀, D45) */
+  inApp?: 'band' | 'naver' | 'other' | null;
   scenes: readonly Scene[];
   store: SafeStore;
   saved: SavedStore;
@@ -91,6 +93,23 @@ const GUIDES: Record<Exclude<A2hsEnv, 'standalone'>, Guide> = {
     ],
   },
   // 크롬 메뉴의 말 '앱 설치'를 먼저(10/6 실기기 — 옛 순서의 반대)
+  // 밴드·네이버 앱 등(D45 — 공통안, 설명은 앱 이름으로 바꿈: inAppDesc). 메뉴 자리·이름은 실기기 확인 뒤 앱별로
+  'inapp-android': {
+    title: '크롬이 열리지 않았나요?',
+    desc: '이 앱의 메뉴로 열 수 있어요.',
+    steps: [
+      { t: ['화면 위나 아래의 ', { b: '[⋮]' }, ' 또는 ', { b: '[⋯]' }, ' 버튼을 누르세요'], pic: { kind: 'key', at: 'tr', sym: '⋮' } },
+      { t: ["'", { b: '다른 브라우저로 열기' }, "'를 누르세요"], sub: "'기본 브라우저로 열기'나 'Safari로 열기'로 보일 수도 있어요.", pic: { kind: 'menu', item: '다른 브라우저로 열기', rows: ['링크 복사'], after: ['공유하기'] } },
+    ],
+  },
+  'inapp-ios': {
+    title: '사파리가 열리지 않았나요?',
+    desc: '이 앱의 메뉴로 열 수 있어요.',
+    steps: [
+      { t: ['화면 위나 아래의 ', { b: '[⋮]' }, ' 또는 ', { b: '[⋯]' }, ' 버튼을 누르세요'], pic: { kind: 'key', at: 'tr', sym: '⋯' } },
+      { t: ["'", { b: '다른 브라우저로 열기' }, "'를 누르세요"], sub: "'기본 브라우저로 열기'나 'Safari로 열기'로 보일 수도 있어요.", pic: { kind: 'menu', item: '다른 브라우저로 열기', rows: ['링크 복사'], after: ['공유하기'] } },
+    ],
+  },
   chrome: {
     title: '앱으로 설치하는 방법',
     desc: '크롬 메뉴로 할 수 있어요.',
@@ -165,7 +184,10 @@ export function createA2hs(d: A2hsDeps): A2hs {
   const flags = () => d.store.get<Flags>(KEY, {});
   const setFlag = (f: Flags) => d.store.set(KEY, { ...flags(), ...f });
   const track = (action: string) => d.track('a2hs', { action, env });
-  const kakao = env === 'kakao-android' || env === 'kakao-ios';
+  // 앱 안 화면(카톡·밴드·네이버 등, D33·D45): 설치할 수 없고 저장이 앱 안에 갇혀 바깥 브라우저로 넘김
+  const kakao = env === 'kakao-android' || env === 'kakao-ios' || env === 'inapp-android' || env === 'inapp-ios';
+  /** 앱 안 그림 안내의 설명(디자인 #107): 밴드·네이버 앱은 앱 이름, 그 밖은 '이 앱' */
+  const inAppDesc = { band: '밴드 메뉴로 열 수 있어요.', naver: '네이버 앱 메뉴로 열 수 있어요.', other: '이 앱의 메뉴로 열 수 있어요.' }[d.inApp ?? 'other'];
   // 카톡 안 띠: 안드로이드는 크롬, 아이폰은 사파리('으로'/'로'가 달라 통째로 둠)
   /**
    * 띠 확인용 주소 ?band=show(10/5 사용자): 닫은 적이 있어도, 카톡이 아니어도 띠를 보여 줌. 닫음 표시는 건드리지 않음.
@@ -175,8 +197,9 @@ export function createA2hs(d: A2hsDeps): A2hs {
   const bandPreview = previewParam === 'show';
   /** D37: 안드로이드 크롬·삼성 인터넷(설치 전)은 첫 방문부터 '홈 화면에 두기' 띠 */
   const installCapable = (env === 'chrome' || env === 'samsung') && d.android;
-  const bandEnv: 'kakao-android' | 'kakao-ios' = kakao ? env : env === 'ios-safari' ? 'kakao-ios' : 'kakao-android';
-  const via = bandEnv === 'kakao-ios' ? '사파리로' : '크롬으로';
+  const bandEnv: 'kakao-android' | 'kakao-ios' | 'inapp-android' | 'inapp-ios' = kakao ? (env as 'kakao-android' | 'kakao-ios' | 'inapp-android' | 'inapp-ios') : env === 'ios-safari' ? 'kakao-ios' : 'kakao-android';
+  const bandIos = bandEnv === 'kakao-ios' || bandEnv === 'inapp-ios';
+  const via = bandIos ? '사파리로' : '크롬으로';
   /** 카드·저장 판 버튼 이름: 아이폰은 사파리 메뉴 말 '홈 화면에 두기', 안드로이드·PC는 크롬 말에 맞춰 '앱으로 설치하기'(10/6) */
   const addWord = env === 'ios-safari' || env === 'kakao-ios' ? '홈 화면에 두기' : '앱으로 설치하기';
 
@@ -246,7 +269,8 @@ export function createA2hs(d: A2hsDeps): A2hs {
 
   function guide(which: A2hsEnv = env): void {
     if (which === 'standalone') return;
-    const g = GUIDES[which];
+    const base = GUIDES[which];
+    const g = which === 'inapp-android' || which === 'inapp-ios' ? { ...base, desc: inAppDesc } : base;
     const ok = h('button', { type: 'button', class: 'btn line a2-done', text: '알겠어요' });
     const s = sheet(g.title, [h('h2', { class: 'a2-gttl', text: g.title }), h('p', { class: 'a2-desc', text: g.desc }), stepList(g.steps), ok]);
     ok.addEventListener('click', () => s.close());
@@ -363,7 +387,8 @@ export function createA2hs(d: A2hsDeps): A2hs {
       track('band');
       if (!kakao) return guide(bandEnv); // 확인용 주소로 카톡 밖에서 본 띠: 넘어갈 곳이 없으니 안내만
       const target = withCarry(win.location.href, d.saved.wanted());
-      d.openUrl(env === 'kakao-android' ? chromeIntentUrl(target) : kakaoExternalUrl(target));
+      // 안드로이드 앱 안은 크롬을 콕 집는 주소, 카톡 아이폰은 카톡 바깥 브라우저 주소, 다른 앱 아이폰은 사파리 주소(iOS 17부터)
+      d.openUrl(env === 'kakao-android' || env === 'inapp-android' ? chromeIntentUrl(target) : env === 'inapp-ios' ? safariUrl(target) : kakaoExternalUrl(target));
       win.setTimeout(() => doc.visibilityState === 'visible' && guide(), d.waitMs);
     });
     x.addEventListener('click', () => {

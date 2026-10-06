@@ -114,11 +114,30 @@ export function captureInstallPrompt(win: Window): () => InstallEvent | null {
 }
 
 /** 어디서 열었나(design-guide 11-1). 홈 화면 아이콘으로 열면 standalone */
-export type A2hsEnv = 'standalone' | 'kakao-android' | 'kakao-ios' | 'samsung' | 'ios-safari' | 'chrome';
+export type A2hsEnv = 'standalone' | 'kakao-android' | 'kakao-ios' | 'inapp-android' | 'inapp-ios' | 'samsung' | 'ios-safari' | 'chrome';
+
+/**
+ * 카톡이 아닌 앱 안 화면(D45, 디자인 #107): 밴드 · 네이버 앱 · 그 밖(인스타그램·페이스북·라인). 아니면 null.
+ * 브라우저 이름표 모양은 실기기 확인 페이지(_review/a2hs-lab.html ⑤)로 맞춤 — 밴드 'BAND/', 네이버 앱 'NAVER(inapp'
+ */
+export function inAppName(ua: string): 'band' | 'naver' | 'other' | null {
+  if (/KAKAOTALK/i.test(ua)) return null; // 카톡은 따로(바깥 브라우저 주소가 있음)
+  if (/\bBAND\//i.test(ua)) return 'band';
+  if (/NAVER\(inapp/i.test(ua)) return 'naver';
+  if (/Instagram|FBAN|FBAV|FB_IAB|\bLine\//i.test(ua)) return 'other';
+  return null;
+}
+
+/** 아이폰 앱 안 → 사파리로 열기: x-safari-https://…(iOS 17부터. 안 되면 그 앱 메뉴 그림 안내) */
+export function safariUrl(target: string): string {
+  return `x-safari-${target}`;
+}
+
 export function a2hsEnv(ua: string, standalone: boolean): A2hsEnv {
   if (standalone) return 'standalone';
   const ios = /iPhone|iPad|iPod/i.test(ua);
   if (/KAKAOTALK/i.test(ua)) return ios ? 'kakao-ios' : 'kakao-android';
+  if (inAppName(ua)) return ios ? 'inapp-ios' : 'inapp-android';
   if (/SamsungBrowser/i.test(ua)) return 'samsung';
   if (ios) return 'ios-safari';
   return 'chrome'; // 안드로이드 크롬과 그 밖(PC 등)
