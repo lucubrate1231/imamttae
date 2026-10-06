@@ -95,14 +95,19 @@ describe('의견 보내기(D46, 12-1) — 세 자리', () => {
     expect(href).not.toMatch(/[가-힣 ]/);
   });
 
-  it('폼 주소가 아직 없으면 눌러도 어디로도 가지 않고 "곧 열려요" 안내(출시 전 미리보기)', async () => {
+  it('폼 주소가 비어 있으면 세 자리 모두 감춤(기획 10/6 — 주소를 받기 전)', async () => {
     await start('#/month/10', { feedbackUrl: '' });
-    const card = q<HTMLAnchorElement>('main.home a.feedback')!;
-    expect(card.getAttribute('target')).toBeNull();
-    const ev = new MouseEvent('click', { bubbles: true, cancelable: true });
-    card.dispatchEvent(ev);
-    expect(ev.defaultPrevented).toBe(true);
-    expect(q('.toast')!.textContent).toBe('의견 보내기는 곧 열려요');
+    expect(q<HTMLElement>('main.home a.feedback')!.hidden).toBe(true);
+    go('#/saved');
+    expect(q<HTMLElement>('.saved a.feedback')!.hidden).toBe(true);
+    go('#/scene/s-naejang');
+    expect(q<HTMLElement>('.detail.open a.fb-line')!.hidden).toBe(true);
+  });
+
+  it('문의 이메일은 설정 한 곳(src/config.ts)의 앱 전용 주소(D48)', async () => {
+    await start('#/privacy', { contactEmail: undefined });
+    expect(q('.privacy .pv-mail')!.textContent).toBe('imamttae.sight@gmail.com');
+    expect(q<HTMLAnchorElement>('.privacy .pv-contact a.btn')!.getAttribute('href')).toBe('mailto:imamttae.sight@gmail.com');
   });
 
   it('홈 화면 아이콘으로 열어도 보임(설치 카드와 달리 숨기지 않음)', async () => {

@@ -2,7 +2,7 @@
  * 의견 보내기(D46 — D32를 바꿈, design-guide 12-1·10-8)
  * - 카드: 첫 화면 '이 앱 이야기' 아래 · 저장한 곳 맨 아래 설치 카드 아래. 흰 바탕 + 테두리, 계절 색 말풍선
  * - 줄: 장면 상세 본문 끝 '이곳 정보가 달라졌나요?' — 폼의 '어느 곳' 칸에 장면 이름을 미리 넣음(구글 폼 미리 채운 링크)
- * - 누르면 구글 폼이 새 창. 폼 주소는 src/config.ts 한 곳. 아직 없으면 '곧 열려요' 안내만
+ * - 누르면 구글 폼이 새 창. 폼 주소는 src/config.ts 한 곳. 비어 있으면 감춤(기획 10/6 — 주소를 받기 전)
  * - 통계 feedback: where(home·saved·detail), 장면 상세는 scene도
  */
 import type { EventData, EventName } from '../analytics';
@@ -32,18 +32,10 @@ export function feedbackHref(url: string, placeField: string, place?: string): s
 }
 
 function wire(a: HTMLAnchorElement, d: FeedbackDeps, data: EventData): void {
-  if (d.url) {
-    a.target = '_blank';
-    a.rel = 'noopener';
-  }
-  a.addEventListener('click', (e) => {
-    if (!d.url) {
-      e.preventDefault();
-      d.toast('의견 보내기는 곧 열려요');
-      return;
-    }
-    d.track('feedback', data);
-  });
+  a.hidden = !d.url; // 폼 주소가 없으면 감춤
+  a.target = '_blank';
+  a.rel = 'noopener';
+  a.addEventListener('click', () => d.track('feedback', data));
 }
 
 function bubble(cls: string): HTMLElement {
