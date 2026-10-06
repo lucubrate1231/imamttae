@@ -34,6 +34,13 @@ describe('buildAppData: 장면 초안 → 앱 데이터', () => {
     const s = out.scenes[0]!;
     expect(s.kind === 'story' && s.trip).toBe('스무 번째 여행');
   });
+  it('D44: 풍경별 대표 사진(typeCovers)을 실음 — 없으면 칸도 없음', () => {
+    const withCovers = buildAppData(drafts, titles, '2026-10-03T00:00:00Z', { danpung: { scene: 's-a', photo: 1 } });
+    expect(withCovers.typeCovers).toEqual({ danpung: { scene: 's-a', photo: 1 } });
+    expect(() => ContentFile.parse(withCovers)).not.toThrow();
+    expect(out.typeCovers).toBeUndefined();
+    expect(() => buildAppData(drafts, titles, 'x', { danpung: { scene: 's-a', photo: 0 } })).toThrow(); // 사진 번호는 1부터
+  });
   it('규칙에 어긋난 초안이 있으면 만들지 않음(잘못된 데이터가 화면에 나가지 않게)', () => {
     expect(() => buildAppData([{ ...story, id: 'BAD ID' }], titles, '2026-10-03T00:00:00Z')).toThrow();
   });

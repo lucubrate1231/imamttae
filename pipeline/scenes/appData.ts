@@ -12,7 +12,8 @@ export function tripLabel(title: string): string | undefined {
   return m ? m[1] : undefined;
 }
 
-export function buildAppData(drafts: readonly unknown[], titles: ReadonlyMap<number, string>, generatedAt: string): ContentFile {
+/** typeCovers: 풍경별 대표 사진(D44, content/scenes/type-covers.json) — 비어 있으면 칸을 싣지 않음 */
+export function buildAppData(drafts: readonly unknown[], titles: ReadonlyMap<number, string>, generatedAt: string, typeCovers: Record<string, { scene: string; photo: number }> = {}): ContentFile {
   const scenes: StoryScene[] = [];
   for (const raw of drafts) {
     const s = StoryScene.parse(raw);
@@ -21,6 +22,6 @@ export function buildAppData(drafts: readonly unknown[], titles: ReadonlyMap<num
     const trip = title ? tripLabel(title) : undefined;
     scenes.push({ ...s, ...(trip ? { trip } : {}) });
   }
-  return ContentFile.parse({ version: 1, generatedAt, scenes });
+  return ContentFile.parse({ version: 1, generatedAt, scenes, ...(Object.keys(typeCovers).length ? { typeCovers } : {}) });
 }
 

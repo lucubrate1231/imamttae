@@ -13,7 +13,11 @@ const drafts = JSON.parse(readFileSync('content/scenes/drafts.json', 'utf8')) as
 const index = JSON.parse(readFileSync('content/brunch/index.json', 'utf8')) as { stories: { no: number; title: string }[] };
 const titles = new Map(index.stories.map((s) => [s.no, s.title]));
 
-const out = buildAppData(drafts.scenes, titles, new Date().toISOString());
+// 풍경별 대표 사진(D44): 사용자가 미리보기 '대표 사진 고르기'(/_review/covers/)에서 고른 결과. [결과 복사] 형식({ covers })도 그대로 받음
+const coversPath = 'content/scenes/type-covers.json';
+const coversRaw = existsSync(coversPath) ? (JSON.parse(readFileSync(coversPath, 'utf8')) as { covers?: Record<string, { scene: string; photo: number }> }) : {};
+const typeCovers = (coversRaw.covers ?? coversRaw) as Record<string, { scene: string; photo: number }>;
+const out = buildAppData(drafts.scenes, titles, new Date().toISOString(), typeCovers);
 mkdirSync('public/data', { recursive: true });
 writeFileSync('public/data/scenes.json', JSON.stringify(out));
 
