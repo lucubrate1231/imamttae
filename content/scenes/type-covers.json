@@ -1,0 +1,18 @@
+{
+ "note": "풍경 찾기 타일 대표 사진 — 사용자가 미리보기 '대표 사진 고르기'(/next/_review/covers/)에서 고름(D44, 10/6). photo는 그 장면의 몇 번째 사진(1부터). 검사: tests/contract/typeCovers.test.ts",
+ "covers": {
+  "maehwa": { "scene": "s-067-tammae-hongmaehwa", "photo": 4 },
+  "beotkkot": { "scene": "s-023-gaesimsa-cherry", "photo": 2 },
+  "jindallae": { "scene": "s-053-biseulsan-azalea", "photo": 1 },
+  "yeoreumkkot": { "scene": "s-056-grace-garden-hydrangea", "photo": 3 },
+  "kkotmureut": { "scene": "s-012-seonunsa-kkotmureut", "photo": 1 },
+  "danpung": { "scene": "s-014-baekmudong", "photo": 1 },
+  "eoksae": { "scene": "s-066-wondong-wetland-reeds", "photo": 1 },
+  "unhae": { "scene": "s-059-sebang-sunset", "photo": 3 },
+  "ilchul": { "scene": "s-026-yeongdeok-haemaji-sunrise", "photo": 2 },
+  "seolgyeong": { "scene": "s-050-balwangsan", "photo": 3 },
+  "gyegok": { "scene": "s-030-bidulginang", "photo": 1 },
+  "bada": { "scene": "s-071-ulleung-sea-cliffs", "photo": 1 },
+  "sinrok": { "scene": "s-057-daehan-dawon", "photo": 2 }
+ }
+}
