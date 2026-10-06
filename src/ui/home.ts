@@ -93,7 +93,7 @@ export function createHome(d: HomeDeps): Home {
     h('span', { 'aria-hidden': 'true', text: '›' }),
   );
   // 맨 아래: 설치 카드 → 이 앱 이야기 → 의견 보내기(D46) → 바닥줄 '개인정보 안내'(D45, design-guide 12장)
-  const extra = h('section', { class: 'extra' }, homeAdd, storyLink, d.feedback?.() ?? null, h('a', { class: 'privacy-link', href: '#/privacy', text: '개인정보 안내' }));
+  const extra = h('section', { class: 'extra' }, homeAdd, storyLink, d.feedback?.() ?? null, h('a', { class: 'privacy-link', href: '#/privacy', text: '이용 안내 · 개인정보' }));
 
   const main = h('main', { class: 'home' }, d.band ?? null, eyebrow, title, d.alert ?? null, months, peakSec, mapSec, recSec, extra);
 

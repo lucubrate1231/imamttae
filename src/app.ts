@@ -319,6 +319,7 @@ export async function startApp(deps: AppDeps): Promise<AppHandle> {
         home.render(thisMonth);
       }
       showScreen('privacy');
+      if (route.section) privacy.show(route.section); // 저장한 곳 링크 → '개인정보' 구역 제목이 맨 위로
     } else if (route.name !== 'scene') {
       // 장면 상세를 여는 동안에도 아래 화면은 보던 그대로
       const month = route.name === 'month' ? (route.month ?? thisMonth) : (shown ?? thisMonth);

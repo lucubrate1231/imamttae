@@ -559,6 +559,9 @@ h1, h2, h3, p { margin: 0; }
 .feedback b { display: block; font-size: 18px; color: var(--ink); }
 .feedback .fb-sub { font-size: 15px; color: var(--ink-2); }
 /* 장면 상세 본문 끝 줄 */
+/* 안전 안내(12-3 ①) — 상자·배경 없이 글자만, '이곳 정보가 달라졌나요?' 바로 위 */
+.safety { display: flex; gap: 6px; margin: 18px 0 0; font-size: 15px; line-height: 1.6; color: var(--ink-3); }
+.safety .info { margin-top: 4px; }
 .fb-line { display: flex; align-items: center; gap: 12px; min-height: 56px; margin-top: 16px; padding: 10px 2px; border-top: 1px solid var(--line); color: inherit; text-decoration: none; }
 .fb-txt { flex: 1; min-width: 0; }
 .fb-line b { display: block; font-size: 16px; color: var(--ink); }
@@ -571,12 +574,18 @@ h1, h2, h3, p { margin: 0; }
 .privacy { padding: 8px var(--gutter) 120px; display: grid; gap: 0; }
 .pv-back { justify-self: start; min-height: var(--tap); padding: 0 4px; font-size: 17px; font-weight: 800; color: var(--ink-2); }
 .pv-title { margin: 8px 0 0; font-family: var(--font-display); font-size: 28px; font-weight: 700; color: var(--ink-title); }
+/* 구역 제목 둘('이 앱의 정보는' · '개인정보', 12-2) — 고운바탕 22. 저장한 곳 링크로 열면 '개인정보' 구역이 맨 위(scroll-margin) */
+.pv-zone { margin: 30px 0 0; font-family: var(--font-display); font-size: 22px; font-weight: 700; color: var(--ink-title); }
+.pv-zone-sec { scroll-margin-top: 8px; }
+.pv-band { height: 8px; margin: 32px calc(-1 * var(--gutter)) 0; background: var(--bg-soft); }
 .pv-lead { margin: 12px 0 0; font-size: 18px; line-height: 1.65; color: var(--ink); }
+.pv-list { margin: 8px 0 0; padding-left: 1.1em; display: grid; gap: 4px; font-size: 18px; line-height: 1.7; color: var(--ink-2); }
+.pv-list li::marker { color: var(--ink-3); }
 .pv-sec { margin-top: 28px; }
 .pv-h { margin: 0; font-size: 19px; font-weight: 800; color: var(--ink); }
 .pv-body { margin: 6px 0 0; font-size: 18px; line-height: 1.7; color: var(--ink-2); }
 .pv-contact { margin-top: 28px; padding: 18px; border-radius: 18px; background: var(--bg-soft); display: grid; gap: 8px; }
-.pv-contact h2 { margin: 0; font-size: 19px; font-weight: 800; }
+.pv-contact h3 { margin: 0; font-size: 19px; font-weight: 800; }
 .pv-desc { margin: 0; font-size: 17px; color: var(--ink-2); }
 .pv-mail { margin: 0; font-size: 18px; font-weight: 800; color: var(--ink); overflow-wrap: anywhere; user-select: text; }
 .pv-mail.pending { font-weight: 400; color: var(--ink-3); }

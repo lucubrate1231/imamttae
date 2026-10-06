@@ -16,7 +16,7 @@ import { isYearRound, visitedMonth } from '../domain/sceneTier';
 import { SCENE_TYPES } from '../domain/sceneTypes';
 import { admissionLink, newsLink, timingNotice, type TimingNotice } from '../domain/timingNotice';
 import type { Month } from '../domain/month';
-import { fmtDate, h, paintBrowserBar, photoImg, sized } from './dom';
+import { fmtDate, h, infoIcon, paintBrowserBar, photoImg, sized } from './dom';
 import type { Navi } from './navi';
 import { shareUrl, type EventData, type EventName } from '../analytics';
 import type { SavedStore } from '../storage/saved';
@@ -24,6 +24,8 @@ import { createVisitBox, type VisitBox } from './visited';
 
 const AUTHOR = '이상호';
 const APP_NAME = '이맘때 풍경';
+/** 안전 안내(10/7 기획 초안 · design-guide 10-8 표) — 다녀온 때 기준 · 떠나기 전 현장 확인 · 무리하지 않기 */
+const SAFETY = '정보는 작가가 다녀온 때를 기준으로 해요. 길·주차·출입 통제는 떠나기 전에 현장 안내를 확인하시고, 날씨와 몸 상태에 맞게 무리하지 마세요.';
 
 type Photo = StoryScene['photos'][number];
 
@@ -341,6 +343,8 @@ export function createDetail(d: DetailDeps): Detail {
         h('section', { class: 'dsec', 'aria-label': '브런치 전체 이야기' }, brunchLink(s)),
         // 작게 '다른 앱으로 길찾기'(10/4 결정). 아래 막대가 높아지지 않게, 누르는 곳 48px을 지키려고 본문 맨 아래에 둠
         other && h('div', { class: 'navi-row' }, other),
+        // 안전 안내(10/7, C-12 · design-guide 12-3) — 모든 장면, '이곳 정보가 달라졌나요?' 바로 위. ⓘ는 장식
+        h('p', { class: 'safety' }, infoIcon(), h('span', { text: SAFETY })),
         // 이곳 정보가 달라졌나요?(D46, design-guide 12-1) — 폼에 장면 이름을 미리 넣음
         d.feedback?.(s) ?? null,
       ),
