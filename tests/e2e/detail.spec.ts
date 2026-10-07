@@ -209,3 +209,16 @@ test('작가 서명 그림이 실제로 뜨고(높이 22), 장면 상세를 연 
   expect((await bar())[0]).toBe(under);
   expect(under).not.toBe('#e9f3ed');
 });
+
+test('#10: 장면 상세 맨 위(사진 칸) 바탕은 그 장면의 계절 옅은 색 — 아이폰 사파리가 사진 뜨기 전 색으로 위 막대를 칠해도 계절 색', async ({ page }) => {
+  await page.route(/img1\.daumcdn\.net|t1\.daumcdn\.net|kakaocdn/, (r) => r.abort()); // 사진이 안 뜬 순간
+  await page.goto('./?map=fake&motion=0#/scene/s-013-daeseung-falls'); // 10월에 다녀옴 → 가을
+  await expect(page.locator('.detail.open')).toBeVisible();
+  const c = await page.evaluate(() => {
+    const d = document.querySelector('.detail.open') as HTMLElement;
+    return { slide: getComputedStyle(d.querySelector('.gallery .slide')!).backgroundColor, soft: getComputedStyle(d).getPropertyValue('--season-soft').trim(), theme: document.querySelector('meta[name=theme-color]')!.getAttribute('content') };
+  });
+  expect(c.soft).toBe('#fbefe8');
+  expect(c.slide).toBe('rgb(251, 239, 232)');
+  expect(c.theme).toBe('#fbefe8');
+});
