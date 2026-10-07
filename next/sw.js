@@ -5,7 +5,8 @@
  * 사진·데이터·스크립트는 건드리지 않습니다(배포하면 바로 새것이 보이게).
  * 같은 파일이 /imamttae/(알파)와 /imamttae/next/(미리보기)에서 각자 등록됩니다.
  */
-const CACHE = 'imamttae-shell-v1';
+// v2(10/8, D63): v1은 앱 화면이 아닌 페이지도 '앱 화면'으로 저장할 수 있어 지움
+const CACHE = 'imamttae-shell-v2';
 
 self.addEventListener('install', () => self.skipWaiting());
 self.addEventListener('activate', (e) => {
@@ -25,10 +26,14 @@ self.addEventListener('fetch', (e) => {
   if (url.origin !== scope.origin || !url.pathname.startsWith(scope.pathname)) return;
   // 알파(/imamttae/)의 워커는 미리보기(/imamttae/next/) 화면을 건드리지 않음
   if (url.pathname.startsWith(scope.pathname + 'next/')) return;
+  // 장면 공유 페이지(s/<번호>/, D63)는 건드리지 않음 — 카톡 카드용 작은 페이지라 열면 바로 앱으로 넘어감
+  if (url.pathname.startsWith(scope.pathname + 's/')) return;
+  // 앱 화면(폴더 주소·index.html)만 '마지막에 받은 화면'으로 저장. 다른 페이지(확인 페이지 등)가 그 자리를 덮지 않게
+  const isApp = url.pathname === scope.pathname || url.pathname === scope.pathname + 'index.html';
   e.respondWith(
     fetch(req)
       .then((res) => {
-        if (res.ok) {
+        if (res.ok && isApp) {
           const copy = res.clone();
           e.waitUntil(caches.open(CACHE).then((c) => c.put(scope.href, copy)));
         }

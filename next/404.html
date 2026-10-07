@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>이맘때 풍경</title>
+    <!--
+      없는 주소(D63): 없어진·숨긴 장면의 공유 페이지(s/<번호>/) 등으로 들어오면 멈추지 않고 앱 첫 화면으로 보냄.
+      GitHub Pages는 사이트 맨 위의 404.html 하나만 써서, 미리보기를 올릴 때도 맨 위에 둠(scripts/publish-pages.sh).
+    -->
+    <script>
+    function homeFor(path) {
+      var i = path.indexOf('/s/');
+      if (i >= 0) return path.slice(0, i + 1);
+      return path.indexOf('/imamttae/next/') === 0 ? '/imamttae/next/' : '/imamttae/';
+    }
+    location.replace(homeFor(location.pathname) + location.search);
+    </script>
+    <style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#fbf9f4;color:#1f2a24;font:18px/1.7 system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;padding:24px;text-align:center}a{color:#2f5d46;font-weight:700}</style>
+  </head>
+  <body>
+    <p>찾는 곳이 없어요. <a href="/imamttae/">이맘때 풍경 첫 화면으로</a></p>
+  </body>
+</html>
