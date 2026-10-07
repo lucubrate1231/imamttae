@@ -99,7 +99,11 @@ export function createDetail(d: DetailDeps): Detail {
   function gallery(s: StoryScene): { node: HTMLElement; dots: HTMLElement | null } {
     const n = s.photos.length;
     const photoEl = (p: Photo, i: number): HTMLElement => {
-      const pic = photoImg(p, i === 0 ? `${s.name} 풍경` : '', { eager: i === 0, src: sized(p.src, 1080, 75) });
+      // 10/8 아이폰 카톡 안: 옆으로 넘기는 칸 안의 '늦게 받기(lazy)'가 안 불릴 때가 있어 모두 바로 받음(첫 장만 먼저)
+      const pic = photoImg(p, i === 0 ? `${s.name} 풍경` : '', { eager: true, src: sized(p.src, 1080, 75) });
+      if (i > 0) pic.removeAttribute('fetchpriority');
+      // 다 받기 전에는 숨겼다가 다 받으면 보임 — 느린 망에서 반쯤 그려진 모습을 보이지 않게(그동안 계절 옅은 색 바탕)
+      pic.addEventListener('load', () => pic.closest('.slide')?.classList.add('ready'));
       pic.addEventListener('error', () => {
         // F2-AC10: 사진을 못 불러오면 회색 자리와 안내
         const slide = pic.closest('.slide');
@@ -118,6 +122,10 @@ export function createDetail(d: DetailDeps): Detail {
       return box;
     };
     const slides = h('div', { class: 'rail', tabindex: '0', 'aria-label': `사진 ${n}장, 옆으로 넘겨 보세요` }, ...s.photos.map((p, i) => h('div', { class: 'slide' }, photoEl(p, i))));
+    // 이미 받아 둔 사진(다시 열 때)은 load가 다시 오지 않을 수 있어 바로 보임
+    slides.querySelectorAll<HTMLImageElement>('.slide img').forEach((img) => {
+      if (img.complete && img.naturalWidth > 0) img.closest('.slide')?.classList.add('ready');
+    });
     /** 지금 사진(i)만 처음부터 움직이고, 나머지는 멈춰 출발 자세로 */
     const playKb = (i: number) => {
       if (!d.motion || reduceMotion) return;
