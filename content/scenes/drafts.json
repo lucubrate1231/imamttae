@@ -8427,8 +8427,8 @@
     }
    ],
    "spot": {
-    "lat": 37.707708,
-    "lng": 128.798927
+    "lat": 37.70801453755232,
+    "lng": 128.7990246722837
    },
    "dest": {
     "name": "국립대관령치유의숲 아래 주차장",
@@ -8450,7 +8450,7 @@
    ],
    "coordSource": "manual",
    "coordRef": {
-    "spot": "osm:way/1209256156",
+    "spot": "tour:2554069",
     "dest": "manual"
    }
   },
@@ -8501,14 +8501,14 @@
     }
    ],
    "spot": {
-    "lat": 37.694049,
-    "lng": 128.859258
+    "lat": 37.6978609536847,
+    "lng": 128.861712598147
    },
    "dest": {
-    "name": "강릉솔향수목원 주차장",
-    "lat": 37.6955,
-    "lng": 128.8605,
-    "kind": "parking"
+    "name": "강릉솔향수목원 입구",
+    "lat": 37.6978609536847,
+    "lng": 128.861712598147,
+    "kind": "entrance"
    },
    "review": {
     "best": "draft",
@@ -8522,10 +8522,10 @@
     "소나무 숲",
     "데크로드"
    ],
-   "coordSource": "manual",
+   "coordSource": "public-data",
    "coordRef": {
-    "spot": "osm:way/1171495739",
-    "dest": "manual"
+    "spot": "tour:2414769",
+    "dest": "tour:2414769"
    },
    "checkAdmission": true
   }

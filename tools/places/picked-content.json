@@ -467,10 +467,10 @@
   },
   "s-128-daegwallyeong-healing-forest": {
    "spot": {
-    "lat": 37.707708,
-    "lng": 128.798927,
-    "source": "manual",
-    "ref": "osm:way/1209256156"
+    "lat": 37.70801453755232,
+    "lng": 128.7990246722837,
+    "source": "public-data",
+    "ref": "tour:2554069"
    },
    "dest": {
     "name": "국립대관령치유의숲 아래 주차장",
@@ -481,25 +481,24 @@
     "ref": "manual"
    },
    "needsCheck": true,
-   "why": "입구는 예약 차량만 — 작가 글대로 바깥 주차장에서 300m 걸어 오름. 주차장 위치가 오픈스트리트맵에 없어 확인 필요"
+   "why": "치유의 숲 입구(대관령옛길 127-42)는 예약 차량만 들어감 — 작가 글대로 바깥 주차장에서 300m 걸어 오름. 그 주차장이 공공데이터·오픈스트리트맵에 없어 확인 필요"
   },
   "s-128-solhyang-arboretum": {
    "spot": {
-    "lat": 37.694049,
-    "lng": 128.859258,
-    "source": "manual",
-    "ref": "osm:way/1171495739"
+    "lat": 37.6978609536847,
+    "lng": 128.861712598147,
+    "source": "public-data",
+    "ref": "tour:2414769"
    },
    "dest": {
-    "name": "강릉솔향수목원 주차장",
-    "lat": 37.6955,
-    "lng": 128.8605,
-    "kind": "parking",
-    "source": "manual",
-    "ref": "manual"
+    "name": "강릉솔향수목원 입구",
+    "lat": 37.6978609536847,
+    "lng": 128.861712598147,
+    "kind": "entrance",
+    "source": "public-data",
+    "ref": "tour:2414769"
    },
-   "needsCheck": true,
-   "why": "수목원 주차장 위치가 오픈스트리트맵에 없음 — 공공데이터로 확인"
+   "needsCheck": false
   }
  }
 }
