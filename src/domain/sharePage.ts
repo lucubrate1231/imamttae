@@ -26,8 +26,8 @@ export interface ShareCard {
 export function shareCard(s: CardScene): ShareCard {
   return {
     title: `${s.name} — 이맘때 풍경`,
-    // 마케팅 M11(10/8 프프): 아이폰 카드에서 앞이 길어 잘려 추천 시기·'직접'을 뺌
-    description: `${s.region} · 작가가 아내와 다녀온 곳`,
+    // 마케팅 M11·M12(10/8 프프): 추천 시기·'직접'은 빼고(아이폰에서 잘림) '산악인'을 더함 — 지역이 모두 5자라 25자
+    description: `${s.region} · 산악인 작가가 아내와 다녀온 곳`,
     image: `https://img1.daumcdn.net/thumb/C1200x630.q75/?fname=${encodeURIComponent(s.photos[0]!.src)}`,
     fallbackImage: COMMON_IMAGE,
   };
