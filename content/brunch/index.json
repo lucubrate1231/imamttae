@@ -1,7 +1,7 @@
 {
  "version": 1,
- "generatedAt": "2026-10-07T12:28:42.611Z",
- "count": 81,
+ "generatedAt": "2026-10-07T12:42:28.914Z",
+ "count": 82,
  "stories": [
   {
    "no": 1,
@@ -13906,6 +13906,232 @@
      "h": 1385,
      "cap": "",
      "section": "✍ 하슬라아트월드의 밤"
+    }
+   ]
+  },
+  {
+   "no": 128,
+   "title": "여든한 번째 여행 - 대관령 치유의 숲과 솔향수목원",
+   "url": "https://brunch.co.kr/@caed5ea4c3d74d9/128",
+   "publishTime": 1791376679000,
+   "contentHash": "5158664bd4d9c7e19ffc0c8ec59b6944c81682a4",
+   "dateLine": "26년 9월 26일~27일(1박2일)",
+   "visit": {
+    "year": 2026,
+    "month": 9,
+    "day": 26,
+    "endDay": 27
+   },
+   "sections": [
+    "정동진에서 맺은 추석 나들이",
+    "길에서 주운 붉은 가방",
+    "조명이 켜진 솔향수목원의 밤",
+    "아침의 솔향수목원",
+    "둘이라서 좋은 여행, 묵호"
+   ],
+   "photos": [
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/uquHtEqgCG_teyMRxNS4S0tvSHs.jpg",
+     "w": 1385,
+     "h": 640,
+     "cap": "",
+     "section": "정동진에서 맺은 추석 나들이"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/PGzpanUl1N0jEb9CrKldXQhTUA0.jpg",
+     "w": 1385,
+     "h": 640,
+     "cap": "",
+     "section": "정동진에서 맺은 추석 나들이"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/EG-IHDImL7OGDzSxTrYpGJRA2-U.jpg",
+     "w": 1385,
+     "h": 640,
+     "cap": "",
+     "section": "정동진에서 맺은 추석 나들이"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/B04tgtc07odG1i-3-0XyNaGqjjQ.jpg",
+     "w": 1385,
+     "h": 640,
+     "cap": "국립 대관령 치유의 숲",
+     "section": "길에서 주운 붉은 가방"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/XjEgV6ZoNE6xSKGYxjP7GHgnL9Q.jpg",
+     "w": 640,
+     "h": 1385,
+     "cap": "홍송이 아름다운 치유의 숲",
+     "section": "길에서 주운 붉은 가방"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/hIL5AiInJpjEfNhfA0FZakM3rHw.jpg",
+     "w": 640,
+     "h": 1385,
+     "cap": "",
+     "section": "길에서 주운 붉은 가방"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/6yslQr-OAlPx9GdTTyyOq68OULk.jpg",
+     "w": 640,
+     "h": 1385,
+     "cap": "",
+     "section": "길에서 주운 붉은 가방"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/k76i1WV5q7YRD3SR6134ZDr6KJQ.jpg",
+     "w": 640,
+     "h": 1385,
+     "cap": "",
+     "section": "길에서 주운 붉은 가방"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/Eo3pwDQTbBB8dfR2pJMJ4cSTPfw.jpg",
+     "w": 640,
+     "h": 1385,
+     "cap": "",
+     "section": "길에서 주운 붉은 가방"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/iUDOvwEzXNknTj_qo9bcO9oXr7Y.jpg",
+     "w": 1385,
+     "h": 640,
+     "cap": "",
+     "section": "길에서 주운 붉은 가방"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/5z4z4aEl9E4arQEfuowpmcEYYmw.jpg",
+     "w": 1385,
+     "h": 640,
+     "cap": "강릉 솔향수목원의 야경",
+     "section": "조명이 켜진 솔향수목원의 밤"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/3_KaHLOw-w_Dx7Pmr9h3Uvp2PcE.jpg",
+     "w": 1385,
+     "h": 640,
+     "cap": "",
+     "section": "조명이 켜진 솔향수목원의 밤"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/CE-djK9DiA2A1se7uorJwHGx-QE.jpg",
+     "w": 1385,
+     "h": 640,
+     "cap": "",
+     "section": "조명이 켜진 솔향수목원의 밤"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/qUFXZvDG986aqz_TuS_KnnAkFTo.jpg",
+     "w": 1385,
+     "h": 640,
+     "cap": "",
+     "section": "조명이 켜진 솔향수목원의 밤"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/q1CE-gEQWSsSDiG3D9FlXkKGSpU.jpg",
+     "w": 1385,
+     "h": 640,
+     "cap": "",
+     "section": "조명이 켜진 솔향수목원의 밤"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/mDdh1dDyN4qbOAMHFyX9P3MMb3Y.jpg",
+     "w": 1385,
+     "h": 640,
+     "cap": "",
+     "section": "조명이 켜진 솔향수목원의 밤"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/Ey67DvjMl0WMYiMgrXlPN5UseiU.jpg",
+     "w": 1385,
+     "h": 640,
+     "cap": "",
+     "section": "조명이 켜진 솔향수목원의 밤"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/kl2raGrXB-GAQFLglTv1NMZ6cmc.jpg",
+     "w": 640,
+     "h": 1385,
+     "cap": "",
+     "section": "아침의 솔향수목원"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/YRyNm--dh9uaFt-NwIIsvLN8asY.jpg",
+     "w": 640,
+     "h": 1385,
+     "cap": "연인송",
+     "section": "아침의 솔향수목원"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/pKCcyGtvjB2nkYAA_NkWJaEJmH8.jpg",
+     "w": 1385,
+     "h": 640,
+     "cap": "강릉 솔향수목원 하늘정원 연인송 옆에서",
+     "section": "아침의 솔향수목원"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/DXA60k6Jw13hvClG1gC6qQHkxuM.jpg",
+     "w": 1385,
+     "h": 640,
+     "cap": "",
+     "section": "아침의 솔향수목원"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/wHYRsHT0bTTQAJciabEAlNasGoY.jpg",
+     "w": 1385,
+     "h": 640,
+     "cap": "",
+     "section": "아침의 솔향수목원"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/ORMQmrKRzqqQ6rsFakBKtJQkq3Q.jpg",
+     "w": 1385,
+     "h": 640,
+     "cap": "",
+     "section": "아침의 솔향수목원"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/9BF9tU_nu21KC2TgI8I1mQJ_CZo.jpg",
+     "w": 640,
+     "h": 1385,
+     "cap": "",
+     "section": "아침의 솔향수목원"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/KwAKSmq0jy8IqShZYX9Gzi6DLwQ.jpg",
+     "w": 640,
+     "h": 1385,
+     "cap": "소나무에 더부살이하고 있는 신비로운 봉선화",
+     "section": "아침의 솔향수목원"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/klirJg9UDeCEdT1RuCt2xDq-tXc.jpg",
+     "w": 1385,
+     "h": 640,
+     "cap": "",
+     "section": "둘이라서 좋은 여행, 묵호"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/CU23zpQvUa5p7vHlDguVrRxJMtM.jpg",
+     "w": 640,
+     "h": 1385,
+     "cap": "",
+     "section": "둘이라서 좋은 여행, 묵호"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/9DuCx_tNfMQQTGk5esk8kwmKO9U.jpg",
+     "w": 640,
+     "h": 1385,
+     "cap": "큰바위 얼굴",
+     "section": "둘이라서 좋은 여행, 묵호"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/2omnZoJDqxLTZkOIrAyNt-fpxqs.jpg",
+     "w": 1385,
+     "h": 640,
+     "cap": "",
+     "section": "둘이라서 좋은 여행, 묵호"
     }
    ]
   }

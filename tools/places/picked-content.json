@@ -40,75 +40,72 @@
   },
   "s-075-arahongryeon": {
    "spot": {
-    "lat": 35.2715,
-    "lng": 128.408,
-    "source": "manual",
-    "ref": "manual"
+    "lat": 35.2805661724,
+    "lng": 128.3949658344,
+    "source": "public-data",
+    "ref": "tour:2754745"
    },
    "dest": {
-    "name": "함안연꽃테마파크 주차장",
-    "lat": 35.27269,
-    "lng": 128.406676,
+    "name": "함주공원 공영주차장",
+    "lat": 35.28040771,
+    "lng": 128.3975977,
     "kind": "parking",
-    "source": "manual",
-    "ref": "osm:way/566754334"
+    "source": "public-data",
+    "ref": "parking:390-2-000015"
    },
-   "needsCheck": true,
-   "why": "오픈스트리트맵에 연꽃테마파크 이름이 없어 아라공원 옆 주차장으로 잡음 — 공공데이터 후보로 확인"
+   "needsCheck": false
   },
   "s-075-gangju-sunflower": {
    "spot": {
-    "lat": 35.3285,
-    "lng": 128.3877,
-    "source": "manual",
-    "ref": "manual"
+    "lat": 35.3213521361,
+    "lng": 128.3331507132,
+    "source": "public-data",
+    "ref": "tour:2745423"
    },
    "dest": {
-    "name": "강주해바라기마을 제1주차장",
-    "lat": 35.328509,
-    "lng": 128.387745,
-    "kind": "parking",
-    "source": "manual",
-    "ref": "osm:way/842058832"
+    "name": "강주해바라기마을 입구",
+    "lat": 35.3213521361,
+    "lng": 128.3331507132,
+    "kind": "entrance",
+    "source": "public-data",
+    "ref": "tour:2745423"
    },
    "needsCheck": true,
-   "why": "마을 위치를 오픈스트리트맵에서 확정하지 못함(이름 없음) — 축제장 제1주차장 확인 필요"
+   "why": "축제 때 임시 주차장을 쓰는 마을이라 공식 주차장이 공공데이터에 없음 — 마을 입구로 안내"
   },
   "s-076-bomunho-sunrise": {
    "spot": {
-    "lat": 35.8425,
-    "lng": 129.279,
-    "source": "manual",
-    "ref": "manual"
+    "lat": 35.8447,
+    "lng": 129.27,
+    "source": "public-data",
+    "ref": "tour:126134"
    },
    "dest": {
-    "name": "보문호 호반 공영주차장",
-    "lat": 35.840915,
-    "lng": 129.286462,
+    "name": "북군동 제1공용주차장",
+    "lat": 35.851968,
+    "lng": 129.26405,
     "kind": "parking",
-    "source": "manual",
-    "ref": "osm:way/711296807"
+    "source": "public-data",
+    "ref": "parking:352-2-000016"
    },
-   "needsCheck": true,
-   "why": "호숫가 주차장이 여러 곳이고 이름이 없음 — 공공데이터 이름으로 확인"
+   "needsCheck": false
   },
   "s-078-o2-unhae": {
    "spot": {
-    "lat": 37.1591,
-    "lng": 128.9492,
-    "source": "manual",
-    "ref": "manual"
+    "lat": 37.154,
+    "lng": 128.9424,
+    "source": "public-data",
+    "ref": "tour:3072027"
    },
    "dest": {
-    "name": "오투리조트 주차장",
-    "lat": 37.159119,
-    "lng": 128.949183,
-    "kind": "parking",
-    "source": "manual",
-    "ref": "osm:way/536796895"
+    "name": "오투전망대",
+    "lat": 37.154,
+    "lng": 128.9424,
+    "kind": "entrance",
+    "source": "public-data",
+    "ref": "tour:3072027"
    },
-   "needsCheck": true,
-   "why": "오투전망대 위치가 오픈스트리트맵에 없어 오투리조트 주차장으로 임시 지정 — 확인 필요"
+   "needsCheck": false
   },
   "s-079-hwasan-sunrise": {
    "spot": {
@@ -180,21 +177,20 @@
   },
   "s-083-wollyubong": {
    "spot": {
-    "lat": 36.2282,
-    "lng": 127.8876,
-    "source": "manual",
-    "ref": "osm:node/5187546525"
+    "lat": 36.2343157417,
+    "lng": 127.8917176682,
+    "source": "public-data",
+    "ref": "tour:2638586"
    },
    "dest": {
-    "name": "월류봉 광장 주차장",
+    "name": "월류봉 주차장",
     "lat": 36.234104,
     "lng": 127.88917,
     "kind": "parking",
     "source": "manual",
     "ref": "osm:way/1268561421"
    },
-   "needsCheck": true,
-   "why": "월류봉 주차장 이름이 오픈스트리트맵에 없음 — 공공데이터 이름으로 확인"
+   "needsCheck": false
   },
   "s-084-buryeongsa-autumn": {
    "spot": {
@@ -232,21 +228,20 @@
   },
   "s-085-cheonnyeon-forest": {
    "spot": {
-    "lat": 35.8345,
-    "lng": 129.2535,
-    "source": "manual",
-    "ref": "manual"
+    "lat": 35.8119093136,
+    "lng": 129.2421248589,
+    "source": "public-data",
+    "ref": "tour:3032505"
    },
    "dest": {
-    "name": "경북천년숲정원 주차장",
-    "lat": 35.833286,
-    "lng": 129.251442,
+    "name": "경북천년숲정원(산림환경연구원) 주차장",
+    "lat": 35.811808,
+    "lng": 129.24151,
     "kind": "parking",
-    "source": "manual",
-    "ref": "osm:way/1554792850"
+    "source": "public-data",
+    "ref": "parking:352-1-000022"
    },
-   "needsCheck": true,
-   "why": "천년숲정원 위치가 오픈스트리트맵에 없어 근처 주차장으로 임시 지정 — 확인 필요"
+   "needsCheck": false
   },
   "s-085-bulguksa-maple": {
    "spot": {
@@ -273,15 +268,14 @@
     "ref": "manual"
    },
    "dest": {
-    "name": "진하해수욕장 공영주차장",
-    "lat": 35.3855,
-    "lng": 129.3455,
+    "name": "진하 공영주차장",
+    "lat": 35.38112791,
+    "lng": 129.3413268,
     "kind": "parking",
-    "source": "manual",
-    "ref": "manual"
+    "source": "public-data",
+    "ref": "parking:196-2-000018"
    },
-   "needsCheck": true,
-   "why": "명선교·진하 공영주차장 위치가 오픈스트리트맵에 없음 — 공공데이터로 확인"
+   "needsCheck": false
   },
   "s-087-songdo-coast": {
    "spot": {
@@ -353,21 +347,20 @@
   },
   "s-091-yeongcheondam-cherry": {
    "spot": {
-    "lat": 36.0621154,
-    "lng": 129.0153308,
-    "source": "manual",
-    "ref": "osm:way/727911127"
+    "lat": 36.0635725234,
+    "lng": 129.0136259452,
+    "source": "public-data",
+    "ref": "tour:126930"
    },
    "dest": {
-    "name": "영천댐 공원 주차장",
-    "lat": 36.0625,
-    "lng": 129.0145,
+    "name": "영천댐공원 주차장",
+    "lat": 36.05650522,
+    "lng": 129.0112647,
     "kind": "parking",
-    "source": "manual",
-    "ref": "manual"
+    "source": "public-data",
+    "ref": "parking:357-3-000002"
    },
-   "needsCheck": true,
-   "why": "영천댐 공원 주차장 위치가 오픈스트리트맵에 없음 — 공공데이터로 확인"
+   "needsCheck": false
   },
   "s-092-munsuam-sunrise": {
    "spot": {
@@ -388,39 +381,38 @@
   },
   "s-093-odosan-sunrise": {
    "spot": {
-    "lat": 35.6739155,
+    "lat": 35.673915,
     "lng": 128.075258,
-    "source": "manual",
-    "ref": "osm:node/1942545046"
+    "source": "public-data",
+    "ref": "tour:1914614"
    },
    "dest": {
-    "name": "오도산 전망대 주차장",
-    "lat": 35.6735,
-    "lng": 128.0748,
-    "kind": "parking",
+    "name": "오도산 정상 전망대",
+    "lat": 35.673706,
+    "lng": 128.076198,
+    "kind": "entrance",
     "source": "manual",
-    "ref": "manual"
+    "ref": "osm:node/1942545045"
    },
    "needsCheck": true,
-   "why": "정상 전망대 주차장 위치가 오픈스트리트맵에 없음 — 차로 오르는 길·주차장 확인 필요"
+   "why": "정상까지 차로 오르는 길(통신 중계소 길)과 주차 가능 여부 확인 필요"
   },
   "s-095-eosagil": {
    "spot": {
-    "lat": 35.89,
-    "lng": 127.768,
-    "source": "manual",
-    "ref": "manual"
+    "lat": 35.9012219783,
+    "lng": 127.7753080803,
+    "source": "public-data",
+    "ref": "tour:2673996"
    },
    "dest": {
-    "name": "구천동탐방지원센터 주차장",
-    "lat": 35.895396,
-    "lng": 127.776496,
+    "name": "구천동 어사길 입구 주차장",
+    "lat": 35.901232,
+    "lng": 127.77578,
     "kind": "parking",
     "source": "manual",
-    "ref": "osm:node/7588061242"
+    "ref": "osm:way/1175523222"
    },
-   "needsCheck": true,
-   "why": "어사길 들머리 주차장(구천동 탐방지원센터 앞)을 오픈스트리트맵 지원센터 자리로 잡음 — 확인 필요"
+   "needsCheck": false
   },
   "s-096-goraebul-sunrise": {
    "spot": {
@@ -472,6 +464,42 @@
     "ref": "manual"
    },
    "needsCheck": false
+  },
+  "s-128-daegwallyeong-healing-forest": {
+   "spot": {
+    "lat": 37.707708,
+    "lng": 128.798927,
+    "source": "manual",
+    "ref": "osm:way/1209256156"
+   },
+   "dest": {
+    "name": "국립대관령치유의숲 아래 주차장",
+    "lat": 37.7072,
+    "lng": 128.7982,
+    "kind": "parking",
+    "source": "manual",
+    "ref": "manual"
+   },
+   "needsCheck": true,
+   "why": "입구는 예약 차량만 — 작가 글대로 바깥 주차장에서 300m 걸어 오름. 주차장 위치가 오픈스트리트맵에 없어 확인 필요"
+  },
+  "s-128-solhyang-arboretum": {
+   "spot": {
+    "lat": 37.694049,
+    "lng": 128.859258,
+    "source": "manual",
+    "ref": "osm:way/1171495739"
+   },
+   "dest": {
+    "name": "강릉솔향수목원 주차장",
+    "lat": 37.6955,
+    "lng": 128.8605,
+    "kind": "parking",
+    "source": "manual",
+    "ref": "manual"
+   },
+   "needsCheck": true,
+   "why": "수목원 주차장 위치가 오픈스트리트맵에 없음 — 공공데이터로 확인"
   }
  }
 }
