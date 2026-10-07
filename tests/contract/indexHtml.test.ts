@@ -60,3 +60,15 @@ describe('카톡 미리보기 그림(og:image)', () => {
     expect(sh).toContain('echo imamttae.site > site/CNAME'); // D64: 배포마다 사이트 주소 파일을 지킴(지우면 GitHub 주소 연결이 풀림)
   });
 });
+
+/** 베타 자리(맨 앞 주소)의 '곧 문을 열어요' 안내(10/8) — v0.1.0 전까지. 옛 '이맘때 자연 · 지인 알파' 안내를 바꿈 */
+describe('맨 앞 주소 준비 중 안내', () => {
+  const sh = readFileSync('scripts/publish-pages.sh', 'utf8');
+  it('미리보기를 올릴 때, 맨 앞이 아직 앱이 아니면(앱 파일 assets/main- 이 없으면) 안내를 새로 씀 — 앱이 올라간 뒤에는 건드리지 않음', () => {
+    expect(sh).toContain("if [ ! -f site/index.html ] || ! grep -q 'assets/main-' site/index.html; then");
+    expect(sh).toContain('<h1>이맘때 풍경</h1><p>곧 문을 열어요. 조금만 기다려 주세요.</p>');
+    const start = sh.indexOf("cat > site/index.html <<'HTML'");
+    const page = sh.slice(start, sh.indexOf('\nHTML', start));
+    expect(page).not.toMatch(/이맘때 자연|알파/);
+  });
+});
