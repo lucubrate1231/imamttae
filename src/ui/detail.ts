@@ -316,7 +316,7 @@ export function createDetail(d: DetailDeps): Detail {
       }
     };
     // 공유 문장(마케팅 M11, 10/8 프프 — D58 ③을 바꿈): 받는 날 철이 안 맞을 수 있어 추천 시기를 빼고 한 줄로
-    const shareText = `${s.name}, 한번 볼래요?`;
+    const shareText = `${s.name}, "이맘때 풍경"에서 봤어요. 한번 볼래요?`; // D58 ③ 10/8: 받은 사람이 보낸 사람의 말로 착각하지 않게 서비스 이름을 큰따옴표로
     share.addEventListener('click', () => void doShare('detail', `${s.name} · ${APP_NAME}`, shareText));
     visitBox = createVisitBox({
       win,

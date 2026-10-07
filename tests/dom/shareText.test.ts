@@ -28,12 +28,12 @@ async function shareScene(id: string) {
 }
 
 describe('장면 [공유] 문장(마케팅 M11, 10/8 — 받는 날 철이 안 맞을 수 있어 추천 시기를 뺌)', () => {
-  it('"{장면 이름}, 한번 볼래요?" 한 줄', async () => {
+  it('D58 ③(10/8 바꿈): \'{장면 이름}, "이맘때 풍경"에서 봤어요. 한번 볼래요?\' — 앱이 넣은 말인 걸 알게 서비스 이름을 곧은 큰따옴표로', async () => {
     const d = await shareScene('s-naejang');
-    expect(d.text).toBe('내장산 우화정, 한번 볼래요?');
+    expect(d.text).toBe('내장산 우화정, "이맘때 풍경"에서 봤어요. 한번 볼래요?');
     expect(d.url).toMatch(/\/s\/s-naejang\/\?from=share$/); // D63 장면 공유 페이지
   });
   it('추천 시기가 없는 장면도 같은 한 줄', async () => {
-    expect((await shareScene('s-nobest')).text).toBe('군위 아미산 암릉, 한번 볼래요?');
+    expect((await shareScene('s-nobest')).text).toBe('군위 아미산 암릉, "이맘때 풍경"에서 봤어요. 한번 볼래요?');
   });
 });
