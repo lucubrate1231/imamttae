@@ -29,3 +29,33 @@ describe('공유 미리보기(카톡 카드)와 한 줄 메시지', () => {
     expect(manifest.description).not.toContain('이상호');
   });
 });
+
+/** 카톡 미리보기 그림(D58, 10/7 프프 최종 — 고래불 일출 #96) */
+describe('카톡 미리보기 그림(og:image)', () => {
+  const html = readFileSync('index.html', 'utf8');
+  const meta = (attr: string) => html.match(new RegExp(`<meta ${attr} content="([^"]*)"`))?.[1];
+  it('절대 주소(베타 주소) · 1200×630 · 대체 글', () => {
+    expect(meta('property="og:image"')).toBe('https://lucubrate1231.github.io/imamttae/brand/og-image.jpg');
+    expect(meta('property="og:image:width"')).toBe('1200');
+    expect(meta('property="og:image:height"')).toBe('630');
+    expect(meta('property="og:image:alt"')).toBe('부서지는 파도 위로 떠오르는 해');
+  });
+  it('그림 파일이 정말 1200×630 JPEG(카톡 카드 1.91:1)', () => {
+    const b = readFileSync('public/brand/og-image.jpg');
+    expect(b.subarray(0, 2).toString('hex')).toBe('ffd8');
+    let i = 2;
+    let size = '';
+    while (i < b.length) {
+      if (b[i] !== 0xff) { i++; continue; }
+      const m = b[i + 1]!;
+      if (m >= 0xc0 && m <= 0xc2) { size = `${b.readUInt16BE(i + 7)}x${b.readUInt16BE(i + 5)}`; break; }
+      i += 2 + b.readUInt16BE(i + 2);
+    }
+    expect(size).toBe('1200x630');
+    expect(b.length).toBeLessThan(300_000); // 카톡이 빨리 받게
+  });
+  it('미리보기(/next/)에 올릴 때는 그림 주소를 /next/ 쪽으로 바꿈(베타 주소에는 v0.1.0 전까지 그림이 없음)', () => {
+    const sh = readFileSync('scripts/publish-pages.sh', 'utf8');
+    expect(sh).toMatch(/sed -i 's#github\.io\/imamttae\/brand\/#github\.io\/imamttae\/next\/brand\/#g' site\/next\/index\.html/);
+  });
+});
