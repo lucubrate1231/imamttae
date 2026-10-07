@@ -94,11 +94,12 @@ describe('내용', () => {
     expect(q('.detail .when-off')).toBeNull();
   });
 
-  it('추천 시기 밖이면 풍경 종류만, 추천 시기 칸 맨 위에 "N월부터 가기 좋아요"(D29)', async () => {
+  it('추천 시기 밖이면 풍경 종류만 — "N월부터 가기 좋아요" 줄은 두지 않음(D66: 바로 아래 추천 시기와 같은 말)', async () => {
     await start('#/scene/s-sanggodae');
     expect([...root.querySelectorAll('.detail .body .badges .badge')].map((b) => b.textContent)).toEqual(['설경·상고대']);
-    const box = q('.detail .when-box')!;
-    expect(box.firstElementChild!.textContent).toBe('1월부터 가기 좋아요');
+    expect(q('.detail .when-off')).toBeNull();
+    expect(q('.detail .when-box')!.firstElementChild!.classList.contains('when-row')).toBe(true);
+    expect(text('.detail .when-box')).not.toContain('부터 가기 좋아요');
   });
 
   it('일 년 내내 볼 수 있는 곳은 [일 년 내내] + 풍경 종류', async () => {
@@ -137,8 +138,9 @@ describe('내용', () => {
     expect(q('.detail .when-box .when-link')).toBeNull();
     const card = q('.detail .dsec[aria-label="추천 시기"] .precheck')!;
     expect(card.tagName).toBe('SECTION');
-    expect(card.getAttribute('aria-label')).toBe('떠나기 전에 확인하세요');
-    expect(text('.precheck .pc-ttl')).toBe('떠나기 전에 확인하세요');
+    expect(card.getAttribute('aria-label')).toBe('찾아보기'); // D66: 제목 글자는 지우고 읽기 이름만
+    expect(q('.precheck .pc-ttl')).toBeNull();
+    expect(card.textContent).not.toContain('떠나기 전에 확인하세요');
     expect(card.previousElementSibling!.classList.contains('when-box')).toBe(true);
     const rows = [...card.querySelectorAll<HTMLAnchorElement>('a.pc-row')];
     expect(rows.map((r) => r.className)).toEqual(['pc-row news']);

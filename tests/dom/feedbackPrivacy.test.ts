@@ -120,13 +120,16 @@ describe('의견 보내기(D46, 12-1) — 세 자리', () => {
 
 describe('안전 안내(10/7, C-12 · design-guide 12-3)', () => {
   const SAFE = '정보는 작가가 다녀온 때를 기준으로 해요. 길·주차·출입 통제는 떠나기 전에 현장 안내를 확인하시고, 날씨와 몸 상태에 맞게 무리하지 마세요.';
-  it('모든 장면 본문 끝, "다른 앱으로 길찾기" 아래 · "이곳 정보가 달라졌나요?" 바로 위 — ⓘ는 장식', async () => {
+  it('모든 장면 본문 끝, 브런치 버튼 아래 · "이곳 정보가 달라졌나요?" 바로 위 — ⓘ는 장식 · "다른 앱으로 길찾기"는 그 뒤 맨 끝(D67)', async () => {
     await start('#/scene/s-naejang', { ua: 'Mozilla/5.0 (Linux; Android 14; Pixel 7) AppleWebKit/537.36 Chrome/140 Mobile Safari/537.36' });
     const safe = q('.detail.open .safety')!;
     expect(safe.textContent).toBe(SAFE);
     expect(safe.querySelector('.info')!.getAttribute('aria-hidden')).toBe('true');
-    expect(safe.previousElementSibling!.matches('.navi-row')).toBe(true);
+    expect(safe.previousElementSibling!.getAttribute('aria-label')).toBe('브런치 전체 이야기');
     expect(safe.nextElementSibling!.matches('a.fb-line')).toBe(true);
+    const body = q('.detail.open .body')!;
+    expect(body.lastElementChild!.matches('.navi-row')).toBe(true); // D67: 맨 끝(아래 막대 [길찾기] 바로 위)
+    expect(body.lastElementChild!.previousElementSibling!.matches('a.fb-line')).toBe(true);
     expect(root.querySelectorAll('.detail.open .precheck .safety')).toHaveLength(0); // '떠나기 전에 확인하세요' 카드에는 넣지 않음
   });
 
