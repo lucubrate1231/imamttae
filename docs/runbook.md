@@ -30,9 +30,11 @@ Claude의 클라우드 작업 공간은 GitHub에 바로 올릴 수 없어서, �
 - 스크립트 원본은 저장소의 `scripts/relay/imamttae-sync.sh`입니다.
 - GitHub 로그인은 이 공간에 저장되어 있습니다(gh CLI).
 
-**Codex와 함께 일하는 지금의 순서 (10/3부터, `AGENTS.md` 규칙)**
+**순서 (`AGENTS.md` 규칙)**
+
+> **10/7 저장소를 새로 만들었어요(깨끗한 기록).** 새 스크립트는 `pull` 때 옛 사본을 알아서 새 main으로 맞추고, 10/7 전 옛 기록 위에 만든 꾸러미·가지는 올리지 않아요(옛 카카오 좌표가 다시 공개되지 않게). 옛 스크립트가 "refusing to merge unrelated histories"로 멈추면 한 번만: `rm -rf ~/imamttae && git clone https://github.com/lucubrate1231/imamttae.git ~/imamttae && cp ~/imamttae/scripts/relay/imamttae-sync.sh ~/bin/ && chmod +x ~/bin/imamttae-sync.sh` (올릴 때 로그인을 물으면 `~/bin/gh auth setup-git`)
 1. **작업 전에 최신본 받기:** `imamttae-sync.sh pull`
-   - GitHub main(Codex가 합친 것 포함)을 꾸러미로 만들어 `band-to-brunch/imamttae-app/.sync/outgoing.bundle`에 둡니다.
+   - GitHub main을 꾸러미로 만들어 `band-to-brunch/imamttae-app/.sync/outgoing.bundle`에 둡니다.
    - Claude는 그 꾸러미를 받아 그 위에서 작업합니다.
 2. **작업은 `claude/<주제>` 가지에서** 하고, 검사(`npm run check`, `npm run e2e`)를 통과시킵니다.
 3. **꾸러미로 내려놓기:** 가지를 꾸러미로 만들어 `.sync/incoming.bundle`에 둡니다. PR 설명은 `.sync/pr-body.md`에 둡니다.
@@ -41,9 +43,9 @@ Claude의 클라우드 작업 공간은 GitHub에 바로 올릴 수 없어서, �
    - 사용자가 GitHub에서 PR을 보고 **Merge**를 누르면 main에 들어가고 `/next/`에 배포됩니다.
 5. 사용자가 허락한 작은 변경만 `imamttae-sync.sh push`로 main에 바로 올립니다.
 
-- `band-to-brunch/imamttae-app/`에는 중계 파일(`.sync/`)만 둡니다. 예전에 두던 코드 사본은 10/3에 정리했습니다. 이제 코드는 GitHub과 사용자 컴퓨터의 클론에서 봅니다(Codex `C:\dev\imamttae`, Claude Code `C:\dev\imamttae-claude`).
+- `band-to-brunch/imamttae-app/`에는 중계 파일(`.sync/`)만 둡니다. 예전에 두던 코드 사본은 10/3에 정리했습니다. 이제 코드는 GitHub과 사용자 컴퓨터의 클론에서 봅니다(Claude Code `C:\dev\imamttae-claude`).
   - 연결된 폴더에서는 파일을 지울 수 없어서, git이 자기 임시 파일을 지우지 못합니다. 그래서 git 저장소 자체는 그 폴더에 두지 않고 리눅스 공간의 `~/imamttae`에 둡니다.
-- 지금 이 중계는 **Cowork의 Claude**만 씁니다(콘텐츠·데이터 PR). Claude Code와 Codex는 클론에서 GitHub에 바로 올립니다.
+- 지금 이 중계는 **Cowork의 Claude**만 씁니다(콘텐츠·데이터 PR). Claude Code는 클론에서 GitHub에 바로 올립니다.
 - 새 Cowork 세션에서는 그 리눅스 공간이 비어 있을 수 있습니다. 그때는 다음 순서로 다시 준비합니다.
   1. GitHub에서 저장소를 새로 받습니다(clone).
   2. 기기 로그인 코드를 다시 받습니다.
