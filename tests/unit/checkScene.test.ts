@@ -37,6 +37,17 @@ describe('checkScene: 장면 초안 검사', () => {
     s.visited = '2019-11-12';
     expect(checkScene(s, story).join()).toMatch(/다녀온 날/);
   });
+  it("추천 시기 달 범위를 '10~11월'로 적으면 문제, '10월~11월'·'10월 하순~11월 초'는 통과(D68)", () => {
+    const s = good() as Record<string, unknown>;
+    s.best = { from: 10, to: 11, note: '10~11월', season: '가을', tip: '7~8월엔 무궁화' };
+    const issues = checkScene(s, story).join();
+    expect(issues).toMatch(/best\.note/);
+    expect(issues).toMatch(/best\.tip/);
+    s.best = { from: 10, to: 11, note: '10월~11월', season: '가을', tip: '7월~8월엔 무궁화' };
+    expect(checkScene(s, story)).toEqual([]);
+    s.best = { from: 10, to: 11, note: '10월 하순~11월 초', season: '가을' };
+    expect(checkScene(s, story)).toEqual([]);
+  });
   it('데이터 규칙(zod) 위반도 알려 준다', () => {
     const s = good();
     s.types = ['차박'];

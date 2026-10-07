@@ -5,12 +5,25 @@
  * - 사진이 그 글에 실제로 있는 사진인가
  * - 가는 곳(주차장·입구)이 장면에서 15km 안인가 (예: 서산 부석사 / 영주 부석사 혼동 방지)
  * - 다녀온 날이 글의 날짜 줄과 맞는가
+ * - 추천 시기의 달 범위를 'N월~N월'로 적었는가(D68, 'N~N월' 꼴 금지)
  */
 import { StoryScene } from '../../shared/schema/content';
 import { distanceKm } from '../../src/domain/geo';
 import { normalizePhotoUrl, type Story } from '../brunch/normalize';
 
 export const MAX_DEST_KM = 15;
+
+/** D68(10/8): 추천 시기의 달 범위는 '10월~11월'처럼 두 달 모두 '월'을 붙임. '10~11월' 꼴을 잡음 */
+export const SHORT_MONTH_RANGE = /\d{1,2}\s*~\s*\d{1,2}\s*월/;
+
+export function monthRangeIssues(best: { note?: string; tip?: string } | undefined): string[] {
+  const out: string[] = [];
+  for (const k of ['note', 'tip'] as const) {
+    const v = best?.[k];
+    if (v && SHORT_MONTH_RANGE.test(v)) out.push(`추천 시기 표기: best.${k} '${v}' — 'N~N월' 대신 'N월~N월'로(D68)`);
+  }
+  return out;
+}
 
 export function storyPhotoSet(story: Story): Set<string> {
   const set = new Set<string>();
@@ -33,6 +46,8 @@ export function checkScene(raw: unknown, story: Story): string[] {
 
   const paras = story.items.filter((x): x is { t: 'p'; text: string } => x.t === 'p').map((x) => x.text);
   if (!paras.some((p) => p.includes(s.excerpt))) out.push('작가 글 대목이 원문과 다름(한 문단 안의 원문 그대로여야 함)');
+
+  out.push(...monthRangeIssues(s.best));
 
   const photos = storyPhotoSet(story);
   s.photos.forEach((p, i) => {
