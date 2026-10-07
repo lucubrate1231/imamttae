@@ -1,3 +1,47 @@
-<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>이맘때 풍경</title>
-<style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#fbf9f4;color:#1f2a24;font:18px/1.7 system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;word-break:keep-all;padding:24px;text-align:center}h1{color:#2f5d46;font-size:26px;margin:0 0 8px}</style></head>
-<body><main><h1>이맘때 풍경</h1><p>곧 문을 열어요. 조금만 기다려 주세요.</p></main></body></html>
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <!-- 알파·베타 동안 검색엔진에 노출하지 않습니다. 공개 베타 때 지웁니다. -->
+    <meta name="robots" content="noindex, nofollow" />
+    <title>이맘때 풍경</title>
+    <!-- 공유 문구(D58, 10/7 기획 — 마케팅 M2). 달 이름 없음, 매달 안 바꿈. 작가 이름은 앱 문구에 넣지 않음. 카드 그림(og:image)은 디자인 세션이 줌 -->
+    <meta name="description" content="산악인 작가가 아내와 직접 다녀온, 지금 가면 딱 좋은 풍경" />
+    <meta property="og:title" content="이맘때 풍경 — 지금 가면 딱 좋은 곳" />
+    <meta property="og:description" content="산악인 작가가 아내와 직접 다녀온 곳만 모았어요" />
+    <meta property="og:type" content="website" />
+    <!-- 카톡 미리보기 그림(D58, 10/7 프프 최종 — 브런치 #96 고래불 일출, 1200×630. 응모작이라 수상하면 예비 그림 #62 한가위 외설악으로 바꿈). 절대 주소는 베타 주소, 미리보기(/next/)에 올릴 때 scripts/publish-pages.sh가 /next/ 주소로 바꿈 -->
+    <meta property="og:image" content="https://imamttae.site/brand/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="부서지는 파도 위로 떠오르는 해" />
+    <meta name="theme-color" content="#FBEFE8" />
+    <!-- 홈 화면에 추가(F5-AC1). 앱 아이콘은 디자인 세션 '나'안(public/brand/, design-guide 11-6) -->
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="./brand/apple-touch-icon-180.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="./brand/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="48x48" href="./brand/favicon-48.png" />
+    <meta name="apple-mobile-web-app-title" content="이맘때" />
+    <!-- 글꼴은 src/styles/tokens.css 가 내려받습니다(C-9). 여기서는 글꼴 서버에 미리 연결만 합니다 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- 카카오 지도 서버에 미리 연결(#77): SDK(dapi) → SDK 본체(t1) → 지도 그림(mts). 지도 그림은 서비스 워커에 저장하지 않음(카카오 약관) -->
+    <link rel="preconnect" href="https://dapi.kakao.com" />
+    <link rel="preconnect" href="https://t1.daumcdn.net" />
+    <link rel="preconnect" href="https://mts.daumcdn.net" />
+    <link rel="dns-prefetch" href="https://dapi.kakao.com" />
+    <link rel="dns-prefetch" href="https://t1.daumcdn.net" />
+    <link rel="dns-prefetch" href="https://mts.daumcdn.net" />
+    <script type="module" crossorigin src="./assets/main-D1DH-U_N.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/sceneTypes-CipIWKwm.js">
+    <link rel="modulepreload" crossorigin href="./assets/sceneTier-D7a2h-Z6.js">
+    <link rel="modulepreload" crossorigin href="./assets/pwa-CClrUArI.js">
+    <link rel="modulepreload" crossorigin href="./assets/kakaoSdk-bojacYbx.js">
+    <link rel="stylesheet" crossorigin href="./assets/main-5a-W98dF.css">
+  </head>
+  <body>
+    <div id="app"></div>
+    <noscript>이 앱은 자바스크립트가 켜져 있어야 볼 수 있어요.</noscript>
+  </body>
+</html>
