@@ -19,7 +19,7 @@
 | `scene-open` | 장면 상세가 열릴 때 | `scene`(장면 id, 예 `s-005-biryong`), `from`: photo-card(첫 화면 큰 카드·준비 중 카드) / map-pin(지도 점) / visited-row(첫 화면 '작가 부부가 다녀온 곳' 줄) / find-list(풍경 찾기 목록 줄) / link(주소로 바로) · saved / stamp / alert-card는 F4 때 | 지금 |
 | `navi` ★ | 길찾기 버튼, '다른 앱으로 길찾기'에서 고른 앱, 티맵이 안 열렸을 때 고른 다른 앱 | `app`(tmap / naver / kakao), `how`(main / other), `scene`, `where`(detail, F4 때 saved) | 지금 |
 | `navi-no-app` | 티맵이 안 열렸을 때 '티맵 설치'를 누름 | `app` | 지금 |
-| `share` | 공유 버튼 | `scene`, `where`(detail, F4 때 stamp), `how`(share-sheet / copy) | 지금 |
+| `share` | 공유 버튼·카톡으로 알리기 — 보내는 주소는 장면 공유 페이지 `s/<장면>/?from=share`(D63). 받은 사람이 열면 앱으로 넘어가며 `?from=share`가 그대로 따라가 app-open의 from=share로 셈 | `scene`, `where`(detail / stamp), `how`(share-sheet / copy) | 지금 |
 | `save` | [저장]을 누르거나 다시 눌러 뺄 때(옛 '가고 싶어요', D28) | `scene`, `on`(true / false) | 지금 |
 | `brunch` | '브런치에서 전체 이야기 읽기' | `scene` | 지금 |
 | `news` | '떠나기 전에 확인하세요' 카드의 시기 줄 '올해 ○○ 찾아보기'(디자인 #61) | `scene` | 지금 |

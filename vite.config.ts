@@ -3,6 +3,7 @@ import { resolve } from 'node:path';
 import { readFileSync } from 'node:fs';
 import { placesPageData } from './pipeline/places/pageData';
 import { coversPageData } from './pipeline/covers/pageData';
+import { sharePages } from './src/domain/sharePage';
 
 /**
  * 좌표 확인 페이지를 미리보기에 올림: /next/_review/places/ (10/5 — 콘텐츠 세션에서 이어서 하려고).
@@ -19,6 +20,8 @@ const placesPage = {
     const app = read('public/data/scenes.json');
     this.emitFile({ type: 'asset', fileName: '_review/covers/index.html', source: readFileSync(resolve(__dirname, 'tools/covers/index.html'), 'utf8') });
     this.emitFile({ type: 'asset', fileName: '_review/covers/data.json', source: JSON.stringify(coversPageData(app.scenes, app.typeCovers ?? {})) });
+    // 장면별 카톡 미리보기(D63): 보이는 장면마다 s/<번호>/index.html — 그 장면의 카드 정보, 열면 앱의 그 장면으로
+    for (const p of sharePages(app)) this.emitFile({ type: 'asset', fileName: p.fileName, source: p.html });
   },
 };
 

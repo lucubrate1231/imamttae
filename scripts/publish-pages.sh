@@ -17,7 +17,9 @@ fi
 if [ "$TARGET" = next ]; then
   rm -rf site/next && mkdir -p site/next && cp -r dist/. site/next/
   # 카톡 미리보기 그림 주소(og:image)는 베타 주소로 적혀 있어, 미리보기에서는 /next/ 쪽 그림을 가리키게 바꿈(D58)
-  sed -i 's#github.io/imamttae/brand/#github.io/imamttae/next/brand/#g' site/next/index.html
+  sed -i 's#github.io/imamttae/brand/#github.io/imamttae/next/brand/#g' site/next/index.html site/next/s/*/index.html
+  # 없는 주소(없어진 장면의 공유 페이지 등)는 GitHub이 사이트 맨 위의 404.html만 써서 맨 위에 둠(D63)
+  cp dist/404.html site/404.html
   if [ ! -f site/index.html ]; then
     cat > site/index.html <<'HTML'
 <!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>이맘때 풍경</title>

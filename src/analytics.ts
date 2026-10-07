@@ -94,7 +94,9 @@ export function firstMonth(store: SafeStore, now: Date): { first_month: string; 
 
 /** 공유 주소: 장면 주소에 ?from=share 만. utm_*·me 같은 꼬리표는 받은 사람에게 의미가 없어 뺌 */
 export function shareUrl(loc: URL | Location, sceneId: string): string {
-  return `${loc.origin}${loc.pathname}?from=share#/scene/${sceneId}`;
+  // D63: 장면 공유 페이지(s/<번호>/ — 그 장면의 카톡 카드가 뜨고, 열면 앱의 그 장면으로 넘어감). 앱 폴더 기준(index.html 빼고)
+  const dir = loc.pathname.replace(/[^/]*$/, '');
+  return `${loc.origin}${dir}s/${sceneId}/?from=share`;
 }
 
 /** 우리 식구 빼기: ?me=off 면 이 브라우저는 통계에서 빠지고, ?me=on 이면 다시 들어감(브라우저마다 따로) */

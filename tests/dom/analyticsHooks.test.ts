@@ -156,7 +156,7 @@ describe('장면 상세의 버튼', () => {
     await start(`#/scene/${story.id}`, { store: memoryStore() });
     [...root.querySelectorAll<HTMLButtonElement>('.detail .dact')].find((b) => b.textContent?.includes('공유'))!.click();
     await vi.waitFor(() => expect(writeText).toHaveBeenCalled());
-    expect(writeText.mock.calls[0]![0]).toMatch(new RegExp(`\\?from=share#/scene/${story.id}$`));
+    expect(writeText.mock.calls[0]![0]).toMatch(new RegExp(`/s/${story.id}/\\?from=share$`)); // D63 장면 공유 페이지
     expect(events('share')).toEqual([{ scene: story.id, where: 'detail', how: 'copy' }]);
   });
 

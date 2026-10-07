@@ -89,9 +89,10 @@ describe('처음 연 달(D27)', () => {
 });
 
 describe('공유 주소', () => {
-  it('장면 주소에 ?from=share 만 붙이고, utm_*·me 같은 꼬리표는 뺌', () => {
+  it('D63: 장면 공유 페이지 주소(s/<번호>/)에 ?from=share 만 붙이고, utm_*·me 같은 꼬리표는 뺌', () => {
     const loc = new URL('https://lucubrate1231.github.io/imamttae/next/?utm_source=band&me=off&map=fake#/month/10');
-    expect(shareUrl(loc, 's-005-biryong')).toBe('https://lucubrate1231.github.io/imamttae/next/?from=share#/scene/s-005-biryong');
+    expect(shareUrl(loc, 's-005-biryong')).toBe('https://lucubrate1231.github.io/imamttae/next/s/s-005-biryong/?from=share');
+    expect(shareUrl(new URL('https://lucubrate1231.github.io/imamttae/index.html#/scene/a'), 's-1')).toBe('https://lucubrate1231.github.io/imamttae/s/s-1/?from=share');
   });
 });
 
