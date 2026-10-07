@@ -72,3 +72,16 @@ describe('맨 앞 주소 준비 중 안내', () => {
     expect(page).not.toMatch(/이맘때 자연|알파/);
   });
 });
+
+/** 10/8: 사진 움직임 층(will-change)은 지금 움직이는 사진 하나에만 — 장마다 두면 아이폰이 메모리가 모자라 사진 일부를 그리지 못함 */
+describe('사진 칸 스타일', () => {
+  const css = readFileSync('src/styles/app.css', 'utf8');
+  it('.kb에는 will-change를 두지 않고 .kb-on에만', () => {
+    expect(css).not.toMatch(/\.kb \{[^}]*will-change/);
+    expect(css).toMatch(/\.kb\.kb-on \{[^}]*will-change: transform/);
+  });
+  it('사진은 다 받기 전에는 투명, 다 받으면(.ready) 보임', () => {
+    expect(css).toMatch(/\.gallery \.slide img \{[^}]*opacity: 0/);
+    expect(css).toMatch(/\.gallery \.slide\.ready img \{[^}]*opacity: 1/);
+  });
+});

@@ -284,3 +284,20 @@ describe('아래 붙박이 막대', () => {
     expect(opened[0]).toMatch(/^https:\/\/map\.kakao\.com\/link\/to\//);
   });
 });
+
+describe('사진 불러오기(10/8 아이폰 카톡 안에서 사진이 반만 그려지거나 안 뜸)', () => {
+  it('사진은 모두 바로 받음(옆으로 넘기는 칸 안의 늦게 받기는 아이폰에서 안 불릴 때가 있음)', async () => {
+    await start('#/scene/s-detail');
+    const imgs = [...root.querySelectorAll<HTMLImageElement>('.detail.open .gallery .slide img')];
+    expect(imgs.length).toBeGreaterThan(1);
+    expect(imgs.every((i) => i.getAttribute('loading') === 'eager')).toBe(true);
+  });
+  it('다 받기 전에는 사진을 숨겼다가(반쯤 그려진 모습을 보이지 않게) 다 받으면 보임', async () => {
+    await start('#/scene/s-detail');
+    const img = root.querySelector<HTMLImageElement>('.detail.open .gallery .slide img')!;
+    const slide = img.closest('.slide')!;
+    expect(slide.classList.contains('ready')).toBe(false);
+    img.dispatchEvent(new Event('load'));
+    expect(slide.classList.contains('ready')).toBe(true);
+  });
+});
