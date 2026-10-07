@@ -50,7 +50,7 @@ describe('풍경 고르기(#/find)', () => {
     expect(big.querySelector('.on-photo-status')).toBeNull(); // 큰 타일 사진 위 상태는 없앰(#55)
     expect(big.textContent).not.toContain('지금 좋아요');
     expect(big.textContent).not.toContain('제철');
-    expect(big.querySelector('.tile-line')!.textContent).toMatch(/^9~10월 · \d+곳$/);
+    expect(big.querySelector('.tile-line')!.textContent).toMatch(/^9월~10월 · \d+곳$/); // D68 달 범위 표기
   });
 
   it('D17: 언제나 볼 수 있는 풍경 — 일출·낙조, 바다 절경(한 줄은 "언제나 · N곳")', async () => {
@@ -62,7 +62,7 @@ describe('풍경 고르기(#/find)', () => {
   it('D22: 다른 때 풍경 — 다음 달부터 가까운 순, 같으면 표 순서', async () => {
     await start('#/find');
     expect(names('.sec-other .tile')).toEqual(['설경·상고대', '매화·산수유', '벚꽃', '진달래·철쭉', '여름꽃']);
-    expect(all('.sec-other .tile')[0]!.querySelector('.tile-line')!.textContent).toMatch(/^11~2월 · /);
+    expect(all('.sec-other .tile')[0]!.querySelector('.tile-line')!.textContent).toMatch(/^11월~2월 · /);
   });
 
   it('작은 타일이 홀수여도 가로 타일을 쓰지 않음 — 2열 그대로, 마지막 칸은 비움(8-1, 10/4 사용자)', async () => {
@@ -96,13 +96,13 @@ describe('풍경을 고른 뒤(#/find/<풍경>)', () => {
     expect(line.querySelector('.dot.now')).not.toBeNull();
   });
 
-  it('F3-AC2: 곧(다음 달 시작) — ○ 곧 · 11~2월에 가장 좋아요 / 그 밖 — 점 없이 "2~3월에 가장 좋아요" / 언제나', async () => {
+  it('F3-AC2·D68: 곧(다음 달 시작) — ○ 곧 · 11월~2월에 가장 좋아요 / 그 밖 — 점 없이 "2월~3월에 가장 좋아요" / 언제나', async () => {
     await start('#/find/seolgyeong');
-    expect(q('.when-line')!.textContent).toBe('곧 · 11~2월에 가장 좋아요');
+    expect(q('.when-line')!.textContent).toBe('곧 · 11월~2월에 가장 좋아요');
     expect(q('.when-line .dot.soon')).not.toBeNull();
     window.location.hash = '#/find/maehwa';
     hashChange();
-    expect(q('.when-line')!.textContent).toBe('2~3월에 가장 좋아요');
+    expect(q('.when-line')!.textContent).toBe('2월~3월에 가장 좋아요');
     expect(q('.when-line .dot')).toBeNull();
     window.location.hash = '#/find/bada';
     hashChange();

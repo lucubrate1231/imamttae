@@ -2,7 +2,7 @@
  * 장면 상세(F2) — 확정 시안 v2를 실제 앱으로 옮기고 10/4 기획 결정을 반영
  * - 구역 순서: 제목 → 추천 시기 → 작가의 한마디 → 브런치 전체 이야기
  * - 꼬리표는 오늘(한국 날짜) 기준: [지금 좋아요] · [일 년 내내] · 그 밖은 풍경 종류만
- * - 추천 시기 밖이면 추천 시기 칸 맨 위에 "N월부터 가기 좋아요"
+ * - 추천 시기 밖이어도 따로 안내 줄을 두지 않음(D66 — 바로 아래 '추천 시기'와 같은 말이라)
  * - 사진 안내 "N월에 찍은 사진"은 모든 장면에 — 사진 바로 아래 캡션, 오른쪽에 사진 점(디자인 #66·#69·#73). 사진 위 크레딧은 "사진 이상호" + 서명(#69)
  * - 글자는 design-guide 10장 '화면 글자 표'가 기준(D28~D30)
  * - 저장한 장면은 제목 구역 아래 [다녀왔어요] 상자(F4, src/ui/visited.ts)
@@ -23,7 +23,6 @@ import type { SavedStore } from '../storage/saved';
 import { createVisitBox, type VisitBox } from './visited';
 
 const AUTHOR = '이상호';
-const APP_NAME = '이맘때 풍경';
 /** 안전 안내(10/7 기획 초안 · design-guide 10-8 표) — 다녀온 때 기준 · 떠나기 전 현장 확인 · 무리하지 않기 */
 const SAFETY = '정보는 작가가 다녀온 때를 기준으로 해요. 길·주차·출입 통제는 떠나기 전에 현장 안내를 확인하시고, 날씨와 몸 상태에 맞게 무리하지 마세요.';
 
@@ -245,7 +244,8 @@ export function createDetail(d: DetailDeps): Detail {
       rows.push(checkRow('admission', ICONS.ticket, '입장료와 운영 시간은 미리 확인하세요', '입장료·운영 시간 찾아보기', url, () => d.track('admission', { scene: s.id })));
     }
     if (!rows.length) return null;
-    return h('section', { class: 'precheck', 'aria-label': '떠나기 전에 확인하세요' }, h('p', { class: 'pc-ttl', 'aria-hidden': 'true', text: '떠나기 전에 확인하세요' }), ...rows);
+    // D66(10/8 프프): 제목 글자 '떠나기 전에 확인하세요'는 지우고 찾아보기 줄만. 읽기 이름은 '찾아보기'
+    return h('section', { class: 'precheck', 'aria-label': '찾아보기' }, ...rows);
   }
 
   function brunchLink(s: StoryScene): HTMLElement {
@@ -269,7 +269,6 @@ export function createDetail(d: DetailDeps): Detail {
       ? h(
           'div',
           { class: 'when-box' },
-          state === 'off' && h('p', { class: 'when-off', text: `${s.best.from}월부터 가기 좋아요` }),
           h('p', { class: 'when-row' }, h('span', { class: 'lbl', text: '추천 시기' }), h('b', { text: s.best.note }), s.review.best === 'draft' && draft()),
           s.best.tip && h('p', { class: 'when-tip' }, h('span', { class: 'lbl', text: '이럴 때 더 좋아요' }), h('span', { text: s.best.tip })),
         )
@@ -299,13 +298,14 @@ export function createDetail(d: DetailDeps): Detail {
     const share = h('button', { class: 'dact', type: 'button' });
     share.innerHTML = `${svg('M12 3v12M7 8l5-5 5 5M5 13v6a2 2 0 002 2h10a2 2 0 002-2v-6', 24)}<span>공유</span>`;
     /** 공유 창(없으면 주소 복사). where: detail(아래 막대) / stamp(도장 순간의 카톡으로 알리기, F4-AC9) */
-    const doShare = async (where: 'detail' | 'stamp', title: string, text: string) => {
+    // 10/8 새벽 프프: 아이폰 카톡이 글과 주소(url) 사이에 빈 줄을 넣어서, 주소를 글 끝에 한 칸 띄워 붙여 text 하나로 넘김(제목·url은 따로 넘기지 않음)
+    const doShare = async (where: 'detail' | 'stamp', text: string) => {
       const nav = win.navigator;
       const url = shareUrl(win.location, s.id); // 받은 사람이 열면 from=share로 셈(통계)
       try {
         if (nav.share) {
           d.track('share', { scene: s.id, where, how: 'share-sheet' });
-          await nav.share({ title, text, url });
+          await nav.share({ text: `${text} ${url}` });
         } else {
           d.track('share', { scene: s.id, where, how: 'copy' });
           await nav.clipboard.writeText(url);
@@ -316,15 +316,15 @@ export function createDetail(d: DetailDeps): Detail {
       }
     };
     // 공유 문장(마케팅 M11, 10/8 프프 — D58 ③을 바꿈): 받는 날 철이 안 맞을 수 있어 추천 시기를 빼고 한 줄로
-    const shareText = `${s.name}, "이맘때 풍경"에서 봤어요. 한번 볼래요?`; // D58 ③ 10/8: 받은 사람이 보낸 사람의 말로 착각하지 않게 서비스 이름을 큰따옴표로
-    share.addEventListener('click', () => void doShare('detail', `${s.name} · ${APP_NAME}`, shareText));
+    const shareText = `${s.name}, "이맘때 풍경"에서 봤어요. 한번 보실래요?`; // D58 ③ 10/8: 받은 사람이 보낸 사람의 말로 착각하지 않게 서비스 이름을 큰따옴표로
+    share.addEventListener('click', () => void doShare('detail', shareText));
     visitBox = createVisitBox({
       win,
       scene: s,
       store: d.saved,
       todayDate: d.todayDate,
       track: d.track,
-      share: (text) => void doShare('stamp', text, text),
+      share: (text) => void doShare('stamp', text),
       host: el,
       onChange: paintWant,
     });
@@ -343,12 +343,12 @@ export function createDetail(d: DetailDeps): Detail {
         h('section', { class: 'dsec when-sec', 'aria-label': '추천 시기' }, when, precheck(s, tn)),
         h('section', { class: 'dsec', 'aria-label': '작가의 한마디' }, h('h3', { class: 'dlbl', text: '작가의 한마디' }), h('blockquote', { class: 'quote' }, h('p', { text: s.excerpt }), h('cite', { text: fmtDate(s.visited) }))),
         h('section', { class: 'dsec', 'aria-label': '브런치 전체 이야기' }, brunchLink(s)),
-        // 작게 '다른 앱으로 길찾기'(10/4 결정). 아래 막대가 높아지지 않게, 누르는 곳 48px을 지키려고 본문 맨 아래에 둠
-        other && h('div', { class: 'navi-row' }, other),
         // 안전 안내(10/7, C-12 · design-guide 12-3) — 모든 장면, '이곳 정보가 달라졌나요?' 바로 위. ⓘ는 장식
         h('p', { class: 'safety' }, infoIcon(), h('span', { text: SAFETY })),
         // 이곳 정보가 달라졌나요?(D46, design-guide 12-1) — 폼에 장면 이름을 미리 넣음
         d.feedback?.(s) ?? null,
+        // 작게 '다른 앱으로 길찾기'(10/4 결정) — D67(10/8): 화면 맨 끝, 아래 막대 [길찾기] 바로 위. 숨기지 않음(기본 앱을 바꾸는 길, D14)
+        other && h('div', { class: 'navi-row' }, other),
       ),
       bar,
     ];

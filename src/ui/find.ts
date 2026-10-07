@@ -42,7 +42,7 @@ const ahead = (from: Month, to: Month) => (to - from + 12) % 12;
 
 function whenText(w: TypeWhen): string {
   if (w.kind === 'always') return '언제나';
-  if (w.kind === 'range') return w.from === w.to ? `${w.from}월` : `${w.from}~${w.to}월`;
+  if (w.kind === 'range') return w.from === w.to ? `${w.from}월` : `${w.from}월~${w.to}월`; // D68(10/8): '10~11월' → '10월~11월'
   return '';
 }
 /** 받침이 있으면 '이', 없으면 '가' */

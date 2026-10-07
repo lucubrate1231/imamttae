@@ -222,3 +222,18 @@ test('#10: 장면 상세 맨 위(사진 칸) 바탕은 그 장면의 계절 옅�
   expect(c.slide).toBe('rgb(251, 239, 232)');
   expect(c.theme).toBe('#fbefe8');
 });
+
+test('D67: "다른 앱으로 길찾기"는 장면 상세 맨 끝 — 맨 아래까지 내리면 아래 막대에 가리지 않고 다 보이며 누를 수 있음(48 이상)', async ({ page }) => {
+  await page.goto('./?map=fake&motion=0#/scene/s-013-daeseung-falls');
+  await expect(page.locator('.detail.open')).toBeVisible();
+  await page.evaluate(() => { const d = document.querySelector('.detail.open')!; d.scrollTop = d.scrollHeight; });
+  const r = await page.evaluate(() => {
+    const row = document.querySelector('.detail.open .navi-row')!;
+    const btn = row.querySelector('button, a')!.getBoundingClientRect();
+    const bar = document.querySelector('.detail.open .dbar')!.getBoundingClientRect();
+    return { last: row.parentElement!.lastElementChild === row, bottom: Math.round(btn.bottom), barTop: Math.round(bar.top), h: Math.round(btn.height) };
+  });
+  expect(r.last).toBe(true);
+  expect(r.bottom).toBeLessThanOrEqual(r.barTop);
+  expect(r.h).toBeGreaterThanOrEqual(48);
+});
