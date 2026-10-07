@@ -315,8 +315,8 @@ export function createDetail(d: DetailDeps): Detail {
         /* 사용자가 취소 */
       }
     };
-    // 공유 문장(D58): '{장면 이름}({지역}) · 추천 시기 {추천 시기}' — 지역은 region(도·시군) 그대로, 추천 시기가 없으면 이름(지역)만
-    const shareText = `${s.name}(${s.region})${s.best?.note ? ` · 추천 시기 ${s.best.note}` : ''}`;
+    // 공유 문장(마케팅 M11, 10/8 프프 — D58 ③을 바꿈): 받는 날 철이 안 맞을 수 있어 추천 시기를 빼고 한 줄로
+    const shareText = `${s.name}, 한번 볼래요?`;
     share.addEventListener('click', () => void doShare('detail', `${s.name} · ${APP_NAME}`, shareText));
     visitBox = createVisitBox({
       win,

@@ -7,7 +7,7 @@
  */
 import './a2hsLab.css';
 import { launchMode } from '../analytics';
-import { chromeIntentUrl, inAppName, kakaoExternalUrl, readCarry, safariUrl, withCarry } from '../pwa';
+import { chromeIntentUrl, inAppName, kakaoExternalUrl, readCarry, safariUrl, shouldRegisterSw, withCarry } from '../pwa';
 import { createSafeStore } from '../storage/safeStorage';
 import { createSavedStore } from '../storage/saved';
 
@@ -188,7 +188,7 @@ async function checkSw(): Promise<void> {
     return paint();
   }
   try {
-    if (location.hostname === 'lucubrate1231.github.io') await navigator.serviceWorker.register('../sw.js', { scope: '../' });
+    if (shouldRegisterSw(location.hostname)) await navigator.serviceWorker.register('../sw.js', { scope: '../' });
     const reg = await navigator.serviceWorker.getRegistration('../');
     swState = !reg ? '없음' : navigator.serviceWorker.controller ? '등록됨 · 이 화면을 맡음' : '등록됨(새로고침하면 맡음)';
   } catch (e) {

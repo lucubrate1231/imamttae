@@ -11,7 +11,7 @@
 import type { ContentFile, StoryScene } from '../../shared/schema/content';
 
 /** 앱 공통 카드 그림(D58 — 고래불 일출 #96). 장면 사진을 카톡이 못 불러올 때의 다음 후보 */
-export const COMMON_IMAGE = 'https://lucubrate1231.github.io/imamttae/brand/og-image.jpg';
+export const COMMON_IMAGE = 'https://imamttae.site/brand/og-image.jpg'; // D64 새 주소(src/config.ts SITE_ORIGIN과 같게)
 
 type CardScene = Pick<StoryScene, 'id' | 'name' | 'region' | 'best' | 'photos'>;
 
@@ -24,10 +24,10 @@ export interface ShareCard {
 }
 
 export function shareCard(s: CardScene): ShareCard {
-  const when = s.best?.note ? ` · 추천 시기 ${s.best.note}` : '';
   return {
     title: `${s.name} — 이맘때 풍경`,
-    description: `${s.region}${when} · 작가가 아내와 직접 다녀온 곳`,
+    // 마케팅 M11(10/8 프프): 아이폰 카드에서 앞이 길어 잘려 추천 시기·'직접'을 뺌
+    description: `${s.region} · 작가가 아내와 다녀온 곳`,
     image: `https://img1.daumcdn.net/thumb/C1200x630.q75/?fname=${encodeURIComponent(s.photos[0]!.src)}`,
     fallbackImage: COMMON_IMAGE,
   };

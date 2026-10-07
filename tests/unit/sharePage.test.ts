@@ -11,19 +11,17 @@ const visible = content.scenes.filter((s) => s.kind === 'story' && !s.hidden);
 
 describe('카드 정보(작가 이름 없이 — D58·D59, "제철"은 쓰지 않음 — D12)', () => {
   const s = story('s-x', { name: '내장산 우화정', region: '전북 정읍', visited: '2021-11-09', best: { from: 10, to: 11, note: '10월 말~11월 초' } });
-  it('제목 "{장면 이름} — 이맘때 풍경", 설명 "{지역} · 추천 시기 {추천 시기} · 작가가 아내와 직접 다녀온 곳"', () => {
+  it('제목 "{장면 이름} — 이맘때 풍경", 설명 "{지역} · 작가가 아내와 다녀온 곳"(마케팅 M11 — 아이폰에서 앞이 길어 잘려 추천 시기·\'직접\'을 뺌, 10/8)', () => {
     const c = shareCard(s);
     expect(c.title).toBe('내장산 우화정 — 이맘때 풍경');
-    expect(c.description).toBe('전북 정읍 · 추천 시기 10월 말~11월 초 · 작가가 아내와 직접 다녀온 곳');
-  });
-  it('추천 시기가 없으면 그 조각만 뺌', () => {
-    expect(shareCard({ ...s, best: undefined }).description).toBe('전북 정읍 · 작가가 아내와 직접 다녀온 곳');
+    expect(c.description).toBe('전북 정읍 · 작가가 아내와 다녀온 곳');
+    expect(shareCard({ ...s, best: undefined }).description).toBe('전북 정읍 · 작가가 아내와 다녀온 곳');
   });
   it('그림은 그 장면의 첫 사진을 1200×630으로 가운데 맞춰 자른 카카오 썸네일, 다음 후보로 앱 공통 그림', () => {
     const c = shareCard(s);
     expect(c.image).toBe(`https://img1.daumcdn.net/thumb/C1200x630.q75/?fname=${encodeURIComponent(s.photos[0]!.src)}`);
     expect(c.fallbackImage).toBe(COMMON_IMAGE);
-    expect(COMMON_IMAGE).toBe('https://lucubrate1231.github.io/imamttae/brand/og-image.jpg');
+    expect(COMMON_IMAGE).toBe('https://imamttae.site/brand/og-image.jpg'); // D64 새 주소
   });
   it('실제 장면 모두: 작가 이름·"제철"이 없음', () => {
     for (const v of visible) {
@@ -69,12 +67,16 @@ describe('공유 페이지 목록', () => {
 describe('없어진 장면 주소(404.html) — 멈추지 않고 앱 첫 화면으로', () => {
   const html = readFileSync('public/404.html', 'utf8');
   const homeFor = new Function(`${html.match(/function homeFor[\s\S]*?\n {4}\}/)![0]}; return homeFor;`)() as (p: string) => string;
-  it('미리보기·베타의 공유 페이지 주소면 그 앱의 첫 화면으로(?from=share는 그대로 붙여 감)', () => {
+  it('미리보기·베타의 공유 페이지 주소면 그 앱의 첫 화면으로(?from=share는 그대로 붙여 감) — 새 주소(D64)·옛 주소 둘 다', () => {
+    expect(homeFor('/next/s/s-old-scene/')).toBe('/next/');
+    expect(homeFor('/s/s-old-scene/')).toBe('/');
     expect(homeFor('/imamttae/next/s/s-old-scene/')).toBe('/imamttae/next/');
     expect(homeFor('/imamttae/s/s-old-scene/')).toBe('/imamttae/');
     expect(html).toContain('location.replace(homeFor(location.pathname) + location.search)');
   });
   it('그 밖의 없는 주소도 미리보기면 미리보기 첫 화면, 아니면 베타 첫 화면', () => {
+    expect(homeFor('/next/없는/곳')).toBe('/next/');
+    expect(homeFor('/없는')).toBe('/');
     expect(homeFor('/imamttae/next/없는/곳')).toBe('/imamttae/next/');
     expect(homeFor('/imamttae/없는')).toBe('/imamttae/');
   });

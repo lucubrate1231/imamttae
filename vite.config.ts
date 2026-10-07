@@ -25,7 +25,7 @@ const placesPage = {
   },
 };
 
-// base './' : 같은 빌드가 /imamttae/ 와 /imamttae/next/ 어디에 올라가도 작동하도록 상대 경로를 씁니다.
+// base './' : 같은 빌드가 베타(imamttae.site/)와 미리보기(imamttae.site/next/) 어디에 올라가도 작동하도록 상대 경로를 씁니다(D64 — 옛 /imamttae/도).
 // _review/ : 디자인 시안 페이지(검토용). 앱과 같은 부품(카카오 지도 연결 등)을 씁니다.
 export default defineConfig({
   base: './',

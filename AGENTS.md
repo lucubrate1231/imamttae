@@ -89,7 +89,7 @@ Cowork(기획·콘텐츠·디자인 세션)와 Claude Code(개발 리드)가 함
   - `npm run check`: 타입, 단위·데이터 규칙 테스트, 비밀 키 검사, 빌드, 성능 예산
   - `npm run e2e`: 390·360px 화면 흐름과 접근성 검사. 가짜 지도를 써서 카카오 키 없이 돌아갑니다.
   - `npm run dev`: http://localhost:8080
-- 실제 카카오 지도는 등록된 주소(`localhost:8080`, `lucubrate1231.github.io`)에서만 뜹니다.
+- 실제 카카오 지도는 등록된 주소(`localhost:8080`, `imamttae.site`, 옛 `lucubrate1231.github.io`)에서만 뜹니다.
   - JS 키는 `.env.local`에 둡니다. 이 파일은 저장소에 올라가지 않습니다.
 - 장면 초안(`content/scenes/drafts.json`)을 고쳤다면 `npx tsx pipeline/scenes/build.ts`로 앱 데이터를 다시 만듭니다.
   - 다시 만들지 않으면 `npm run check`의 계약 테스트가 알려 줍니다.

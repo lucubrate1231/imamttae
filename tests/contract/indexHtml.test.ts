@@ -35,7 +35,7 @@ describe('카톡 미리보기 그림(og:image)', () => {
   const html = readFileSync('index.html', 'utf8');
   const meta = (attr: string) => html.match(new RegExp(`<meta ${attr} content="([^"]*)"`))?.[1];
   it('절대 주소(베타 주소) · 1200×630 · 대체 글', () => {
-    expect(meta('property="og:image"')).toBe('https://lucubrate1231.github.io/imamttae/brand/og-image.jpg');
+    expect(meta('property="og:image"')).toBe('https://imamttae.site/brand/og-image.jpg'); // D64 새 주소
     expect(meta('property="og:image:width"')).toBe('1200');
     expect(meta('property="og:image:height"')).toBe('630');
     expect(meta('property="og:image:alt"')).toBe('부서지는 파도 위로 떠오르는 해');
@@ -56,6 +56,7 @@ describe('카톡 미리보기 그림(og:image)', () => {
   });
   it('미리보기(/next/)에 올릴 때는 그림 주소를 /next/ 쪽으로 바꿈(베타 주소에는 v0.1.0 전까지 그림이 없음)', () => {
     const sh = readFileSync('scripts/publish-pages.sh', 'utf8');
-    expect(sh).toMatch(/sed -i 's#github\.io\/imamttae\/brand\/#github\.io\/imamttae\/next\/brand\/#g' site\/next\/index\.html/);
+    expect(sh).toContain("sed -i 's#imamttae.site/brand/#imamttae.site/next/brand/#g' site/next/index.html site/next/s/*/index.html");
+    expect(sh).toContain('echo imamttae.site > site/CNAME'); // D64: 배포마다 사이트 주소 파일을 지킴(지우면 GitHub 주소 연결이 풀림)
   });
 });

@@ -17,7 +17,7 @@ fi
 if [ "$TARGET" = next ]; then
   rm -rf site/next && mkdir -p site/next && cp -r dist/. site/next/
   # 카톡 미리보기 그림 주소(og:image)는 베타 주소로 적혀 있어, 미리보기에서는 /next/ 쪽 그림을 가리키게 바꿈(D58)
-  sed -i 's#github.io/imamttae/brand/#github.io/imamttae/next/brand/#g' site/next/index.html site/next/s/*/index.html
+  sed -i 's#imamttae.site/brand/#imamttae.site/next/brand/#g' site/next/index.html site/next/s/*/index.html
   # 없는 주소(없어진 장면의 공유 페이지 등)는 GitHub이 사이트 맨 위의 404.html만 써서 맨 위에 둠(D63)
   cp dist/404.html site/404.html
   if [ ! -f site/index.html ]; then
@@ -36,6 +36,8 @@ else
   echo "TARGET must be next or root" >&2; exit 1
 fi
 touch site/.nojekyll
+# 앱 주소(D64): GitHub Pages의 사이트 주소 파일. 배포가 지우면 주소 연결이 풀려서 배포마다 다시 씀
+echo imamttae.site > site/CNAME
 cd site
 git add -A
 if git diff --cached --quiet; then echo "바뀐 것 없음"; exit 0; fi

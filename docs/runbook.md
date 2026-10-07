@@ -2,8 +2,8 @@
 
 ## 주소
 - **저장소:** https://github.com/lucubrate1231/imamttae (공개)
-- **미리보기:** https://lucubrate1231.github.io/imamttae/next/. main에 올릴 때마다 자동으로 바뀝니다. 개발 중 확인용입니다.
-- **베타 주소(예전 이름 알파 주소, D45):** https://lucubrate1231.github.io/imamttae/. 버전 태그(v0.1.0 등)를 붙였을 때만 바뀝니다. 지인에게 주는 주소입니다.
+- **미리보기:** https://imamttae.site/next/. main에 올릴 때마다 자동으로 바뀝니다. 개발 중 확인용입니다.
+- **베타 주소(예전 이름 알파 주소, D45):** https://imamttae.site/ (D64, 10/8 — 옛 https://lucubrate1231.github.io/imamttae/… 는 GitHub이 새 주소로 넘겨 줌). 버전 태그(v0.1.0 등)를 붙였을 때만 바뀝니다. 지인에게 주는 주소입니다.
 
 ## 자주 하는 일
 | 하고 싶은 일 | 방법 |
@@ -22,7 +22,8 @@
 - 카카오 키는 카카오 개발자 콘솔 [앱] → [플랫폼 키]에서 확인합니다.
 - JS 키는 등록한 도메인에서만 작동합니다. 카카오 콘솔의 JavaScript SDK 도메인에는 다음 두 개가 있어야 합니다.
   - `http://localhost:8080`
-  - `https://lucubrate1231.github.io`
+  - `https://imamttae.site`(D64)
+  - `https://lucubrate1231.github.io`(옛 주소 — 새 주소로 넘어가는 것이 확인될 때까지 둠)
 
 ## 코드를 GitHub에 올리는 길 (Cowork 작업 공간)
 Claude의 클라우드 작업 공간은 GitHub에 바로 올릴 수 없어서, 사용자 컴퓨터를 거쳐 올립니다.
@@ -54,3 +55,30 @@ Claude의 클라우드 작업 공간은 GitHub에 바로 올릴 수 없어서, �
 ## 문제가 생겼을 때
 - **지도가 안 뜨고 목록만 나옴:** 카카오 콘솔에 주소가 등록되어 있는지, `KAKAO_JS_KEY` 변수가 있는지, 카카오맵 사용 설정이 ON인지 확인합니다.
 - **Actions가 빨간색:** Actions에서 실패한 단계를 엽니다. 휴대폰 화면 테스트가 실패했으면 `playwright-report` 파일을 내려받아 확인합니다.
+
+## 앱 주소 `imamttae.site` 연결 (D64, 10/8)
+GitHub Pages에 우리 주소를 붙여요. 베타 `https://imamttae.site/`, 미리보기 `https://imamttae.site/next/`. 앱은 상대 경로로 만들어서 빌드는 그대로이고, 배포할 때마다 사이트 주소 파일(`CNAME`)을 다시 써요(`scripts/publish-pages.sh`).
+
+**1) Spaceship DNS 레코드**(Spaceship → Domain Manager → `imamttae.site` → **Nameservers & DNS** → **DNS records**). 처음 들어 있는 주차(parking)용 `@`·`www` 레코드가 있으면 지워요.
+| 종류 | 이름(Host) | 값 | TTL |
+|---|---|---|---|
+| A | `@` | `185.199.108.153` | 기본값 |
+| A | `@` | `185.199.109.153` | 기본값 |
+| A | `@` | `185.199.110.153` | 기본값 |
+| A | `@` | `185.199.111.153` | 기본값 |
+| AAAA | `@` | `2606:50c0:8000::153` | 기본값 |
+| AAAA | `@` | `2606:50c0:8001::153` | 기본값 |
+| AAAA | `@` | `2606:50c0:8002::153` | 기본값 |
+| AAAA | `@` | `2606:50c0:8003::153` | 기본값 |
+| CNAME | `www` | `lucubrate1231.github.io` | 기본값 |
+
+**2) (권장) GitHub 도메인 확인** — 다른 사람이 이 주소를 자기 GitHub 사이트에 붙이지 못하게 막아요. GitHub 오른쪽 위 내 사진 → **Settings** → 왼쪽 **Pages** → **Add a domain** → `imamttae.site` → GitHub이 보여 주는 TXT 값을 Spaceship에 넣고 → **Verify**.
+| 종류 | 이름(Host) | 값 |
+|---|---|---|
+| TXT | `_github-pages-challenge-lucubrate1231` | GitHub 화면에 나온 값(사람마다 다름) |
+
+**3) 순서**
+1. 프프: 위 DNS 값 넣기(+ 도메인 확인) · 카카오 개발자 콘솔 [앱] → [플랫폼 키] → JavaScript 키의 **JavaScript SDK 도메인**에 `https://imamttae.site` 더하기(옛 `https://lucubrate1231.github.io`는 지우지 않음)
+2. Claude Code: DNS가 퍼진 것 확인 → PR 합치기 → 저장소 Settings → Pages → Custom domain `imamttae.site`(배포가 `CNAME`을 써서 같이 붙음) → 보안 인증서가 붙으면 **Enforce HTTPS** 켜기
+3. 확인: 새 주소·미리보기·공유 페이지·지도가 열리고, 옛 주소 `lucubrate1231.github.io/imamttae/…`(`/next/` 포함)가 새 주소로 넘어가는지
+4. 프프: 새 주소에서 `?me=off`를 브라우저마다 다시(주소마다 따로 저장) · 카카오 공유 디버거에서 새 주소 캐시 · 기획: 초대 글 주소 바꾸기
