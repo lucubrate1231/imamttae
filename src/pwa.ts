@@ -2,14 +2,14 @@
  * 홈 화면에 추가(F5) 준비 — 서비스 워커 등록과 D33 '카카오톡 → 크롬' 주소 만들기
  * 화면(띠·설치 안내)은 디자인 세션의 F5 PR이 오면 만듭니다. 실기기 확인은 /_review/a2hs-lab.html
  */
-const HOST = 'lucubrate1231.github.io';
+import { APP_HOSTS } from './config';
 
 /** 내 컴퓨터·화면 테스트에서는 등록하지 않음(저장해 둔 화면이 테스트를 흐리지 않게) */
 export function shouldRegisterSw(hostname: string): boolean {
-  return hostname === HOST;
+  return APP_HOSTS.includes(hostname); // 새 주소 imamttae.site · 옛 github.io(D64)
 }
 
-/** F5-AC2: 작은 서비스 워커(./sw.js). 같은 빌드가 /imamttae/와 /imamttae/next/에서 각자 등록 */
+/** F5-AC2: 작은 서비스 워커(./sw.js). 같은 빌드가 베타(/)와 미리보기(/next/)에서 각자 등록 */
 export function registerServiceWorker(win: Window, url = './sw.js'): void {
   const nav = win.navigator;
   if (!shouldRegisterSw(win.location.hostname) || !('serviceWorker' in nav)) return;

@@ -8,7 +8,7 @@ const CASES = ['normal', 'slow4g', 'kakao-slow', 'kakao-blocked'];
 const METRICS = ['data', 'cards', 'mapTiles', 'pins', 'sdk'];
 
 export function parseArgs(args) {
-  let url = 'https://lucubrate1231.github.io/imamttae/next/';
+  let url = 'https://imamttae.site/next/';
   let runs = 5;
   let caseName = 'all';
   let hasUrl = false;
@@ -148,7 +148,7 @@ async function selfTest() {
   const { test } = await import('node:test');
   const assert = await import('node:assert/strict');
   test('기본 주소·횟수·네 경우를 사용한다', () => {
-    assert.deepEqual(parseArgs([]), { url: 'https://lucubrate1231.github.io/imamttae/next/', runs: 5, caseName: 'all' });
+    assert.deepEqual(parseArgs([]), { url: 'https://imamttae.site/next/', runs: 5, caseName: 'all' });
   });
   test('주소와 옵션의 순서가 달라도 읽는다', () => {
     assert.deepEqual(parseArgs(['--runs', '3', 'http://localhost:8080/', '--case', 'normal']),

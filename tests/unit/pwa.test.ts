@@ -69,7 +69,8 @@ describe('F5-AC2: 서비스 워커', () => {
     expect(sw).toMatch(/\.mode [!=]== 'navigate'/);
   });
 
-  it('github.io에서만 등록(내 컴퓨터·화면 테스트에서는 등록하지 않음)', () => {
+  it('앱 주소(새 imamttae.site · 옛 github.io)에서만 등록(내 컴퓨터·화면 테스트에서는 등록하지 않음)', () => {
+    expect(shouldRegisterSw('imamttae.site')).toBe(true);
     expect(shouldRegisterSw('lucubrate1231.github.io')).toBe(true);
     expect(shouldRegisterSw('localhost')).toBe(false);
     expect(shouldRegisterSw('127.0.0.1')).toBe(false);

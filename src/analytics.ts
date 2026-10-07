@@ -6,6 +6,7 @@
  * - 보내지 않는 것: 이름·연락처·위치·좌표·적은 글·저장 목록 전체·개인 번호(umami.identify를 쓰지 않음).
  */
 import type { SafeStore } from './storage/safeStorage';
+import { APP_HOSTS } from './config';
 
 export type EventName =
   | 'app-open'
@@ -38,12 +39,12 @@ export interface Tracker {
  */
 export const SITE_ID = '84ee01a2-a3bf-43cc-aec5-9368dcd23fa7';
 const SCRIPT_SRC = 'https://cloud.umami.is/script.js';
-const DOMAINS = 'lucubrate1231.github.io'; // 이 주소에서만 보냄 → 내 컴퓨터·화면 테스트는 저절로 빠짐
+const DOMAINS = APP_HOSTS.join(','); // 앱 주소(새 imamttae.site · 옛 github.io, D64)에서만 보냄 → 내 컴퓨터·화면 테스트는 저절로 빠짐
 const QUEUE_MAX = 50;
 
-/** 주소가 /imamttae/next/ 로 시작하면 preview, 아니면 beta(D45) */
+/** 주소가 /next/ 로 시작하면 preview, 아니면 beta(D45). 새 주소(imamttae.site/next/, D64)와 옛 주소(/imamttae/next/) 둘 다 */
 export function tagFor(pathname: string): 'preview' | 'beta' {
-  return /^\/imamttae\/next(\/|$)/.test(pathname) ? 'preview' : 'beta';
+  return /^(\/imamttae)?\/next(\/|$)/.test(pathname) ? 'preview' : 'beta';
 }
 
 /**
@@ -124,7 +125,7 @@ export function createUmamiTracker(win: Window, opts: { siteId: string; tag: str
   type Item = { kind: 'page'; url: string } | { kind: 'event'; name: EventName; data?: EventData };
   let queue: Item[] = [];
   const host = opts.host ?? win.location.hostname;
-  let state: 'off' | 'waiting' | 'ready' | 'failed' = opts.siteId && host === DOMAINS ? 'waiting' : 'off';
+  let state: 'off' | 'waiting' | 'ready' | 'failed' = opts.siteId && APP_HOSTS.includes(host) ? 'waiting' : 'off';
   let referrer = '';
 
   const umami = () => (win as unknown as { umami?: Umami }).umami;

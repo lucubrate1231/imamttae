@@ -14,7 +14,7 @@ node scripts/measure-speed.mjs --case kakao-blocked
 node scripts/measure-speed.mjs --self-test
 ```
 
-기본 주소는 `https://lucubrate1231.github.io/imamttae/next/`입니다. `--case`는 `all`(기본), `normal`, `slow4g`, `kakao-slow`, `kakao-blocked` 중 하나입니다. 횟수는 양의 정수입니다. 실제 지도와 비교하려는 도구이므로 `?map=fake` 주소는 받지 않습니다. 로컬 실제 지도에는 등록된 `localhost:8080` 주소와 공개 JS 키가 필요합니다. 키는 문서나 커밋에 쓰지 않습니다.
+기본 주소는 `https://imamttae.site/next/`입니다. `--case`는 `all`(기본), `normal`, `slow4g`, `kakao-slow`, `kakao-blocked` 중 하나입니다. 횟수는 양의 정수입니다. 실제 지도와 비교하려는 도구이므로 `?map=fake` 주소는 받지 않습니다. 로컬 실제 지도에는 등록된 `localhost:8080` 주소와 공개 JS 키가 필요합니다. 키는 문서나 커밋에 쓰지 않습니다.
 
 `--self-test`는 도구 자체의 검사입니다. 검사 전용 작은 페이지와 가짜 응답으로 시간 기록·지연·차단·새 브라우저 문맥을 확인합니다. 실제 앱의 속도 표와는 별개입니다. 작업 범위가 두 파일로 정해져 있어 검사를 스크립트 안에 두었습니다. 새 도구나 의존성은 추가하지 않았습니다.
 

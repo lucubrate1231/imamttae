@@ -5,7 +5,7 @@ test('공유 페이지: 그 장면의 카드 정보(og)가 있고, 열면 바로
   const id = 's-013-daeseung-falls';
   const html = await (await page.request.get(`./s/${id}/`)).text();
   expect(html).toContain('<meta property="og:title" content="설악 대승폭포 단풍길 — 이맘때 풍경" />');
-  expect(html).toMatch(/<meta property="og:description" content="강원 인제 · 추천 시기 [^"]+ · 작가가 아내와 직접 다녀온 곳" \/>/);
+  expect(html).toContain('<meta property="og:description" content="강원 인제 · 작가가 아내와 다녀온 곳" />');
   expect(html).toContain('<meta name="robots" content="noindex, nofollow" />');
   await page.goto(`./s/${id}/?from=share&map=fake`);
   await expect(page).toHaveURL(new RegExp(`/\?from=share&map=fake#/scene/${id}$`));

@@ -7,7 +7,7 @@
 ## 1. 실제로 확인한 것 (Umami 추적 스크립트를 내려받아 읽음, 10/4)
 - **Umami 기본 설정은 이 앱의 화면 이동을 세지 못합니다.** Umami는 주소가 `pushState`·`replaceState`로 바뀔 때만 화면 조회를 셉니다. 이 앱은 `#` 뒤만 바꿔(`#/scene/…`, `#/find/…`) 화면을 옮기므로, **처음 연 화면 한 번만** 세고 그 뒤 이동과 휴대폰 뒤로 가기는 세지 않습니다.
   - 그래서 **앱이 화면을 옮길 때마다 직접 화면 조회를 보냅니다**(자동 조회는 끔, 아래 3장). 주소의 `#` 뒤까지 그대로 보냅니다(`exclude-hash` 끔 — 기본값).
-- `data-domains`: 지금 주소의 호스트가 목록에 없으면 아무것도 보내지 않습니다 → `lucubrate1231.github.io`만 적으면 내 컴퓨터(localhost)와 화면 테스트(CI)는 저절로 빠집니다.
+- `data-domains`: 지금 주소의 호스트가 목록에 없으면 아무것도 보내지 않습니다 → 앱 주소 `imamttae.site`와 옛 `lucubrate1231.github.io`(D64)만 적어서 내 컴퓨터(localhost)와 화면 테스트(CI)는 저절로 빠집니다.
 - `umami.disabled`: 브라우저 저장소에 이 값이 있으면 아무것도 보내지 않습니다 → '우리 식구 빼기'(`?me=off`)에 그대로 씁니다.
 
 ## 2. 사건 → 앱의 어디에 다나
@@ -31,24 +31,25 @@
 | `a2hs` | 홈 화면에 두기(F5, design-guide 11장) | `action`: band(맨 위 띠 — 카톡·크롬·삼성 인터넷, D37) / band-close / card(홈 화면에 두기 카드) / save-sheet(처음 저장 판이 뜸) / save-sheet-add / guide(그림 안내) / prompt(크롬 설치 창) / prompt-accepted / prompt-dismissed / installed · `env`: kakao-android / kakao-ios / chrome / samsung / ios-safari | 지금 |
 
 - 버튼·문구 글자는 디자인 세션의 design-guide '화면 글자 표'를 따릅니다(D28~D30). 사건은 글자가 아니라 버튼에 달기 때문에 글자가 바뀌어도 사건 이름은 그대로입니다.
-- **화면 조회:** 화면을 옮길 때마다 `#` 뒤까지 포함한 주소로 보냅니다. 예: `/imamttae/#/find/danpung/gangwon`, `/imamttae/#/scene/s-005-biryong`. 풍경·권역·장면 인기는 이 조회로 봅니다(따로 사건 없음).
+- **주소가 바뀌면 `?me=off`를 다시(D64):** '우리 식구 빼기'는 주소마다 따로 저장돼요. 새 주소 `https://imamttae.site/?me=off`를 프프·작가님 휴대폰의 브라우저마다(카톡 안 화면 포함) 한 번씩 다시 엽니다.
+- **화면 조회:** 화면을 옮길 때마다 `#` 뒤까지 포함한 주소로 보냅니다. 예: `/#/find/danpung/gangwon`, `/#/scene/s-005-biryong`(미리보기는 `/next/#/…`, 10/8 전 옛 주소는 `/imamttae/…`). 풍경·권역·장면 인기는 이 조회로 봅니다(따로 사건 없음).
 - **퍼널(첫 화면 → 상세 → 길찾기):** `app-open` → `scene-open` → `navi`.
 
 ## 3. 붙이는 방법
 - **한 곳에서만 보냄:** `src/analytics.ts`의 `track(사건, 값)`과 `pageview(주소)` 두 함수만 화면 코드가 부릅니다. 화면 코드는 Umami를 직접 모릅니다.
 - **사이트 하나, 꼬리표 둘(10/4 사용자 · 10/6 D45로 alpha → beta):** Umami 무료 계정은 사이트를 하나만 만들 수 있어서 베타와 미리보기가 웹사이트 ID 하나(`84ee01a2-…`, `src/analytics.ts`의 `SITE_ID`)를 같이 씁니다. ID는 비밀 키가 아니라 공개 번호라 코드에 적어 둡니다.
-  - 주소가 `/imamttae/next/`로 시작하면 꼬리표 `data-tag="preview"`, 아니면 `data-tag="beta"`를 붙입니다(D45 — 알파와 비공개 베타를 하나로). 빌드를 둘로 나눌 필요가 없습니다.
+  - 주소가 `/next/`로 시작하면(옛 주소 `/imamttae/next/`도) 꼬리표 `data-tag="preview"`, 아니면 `data-tag="beta"`를 붙입니다(D45 — 알파와 비공개 베타를 하나로). 빌드를 둘로 나눌 필요가 없습니다.
   - **대시보드에서 거르기:** 필터에서 꼬리표(Tag)를 `beta` 또는 `preview`로 고릅니다. 꼬리표 필터가 안 보이면 주소(URL) 필터로 `/imamttae/next/`가 들어간 것(미리보기)과 아닌 것(베타)을 나눕니다. 화면 조회 주소에 `/next/`가 그대로 들어가서 두 방법 모두 됩니다.
 - **초대 묶음(1차 지인 · 2차 밴드 등, D45 · 10/6):** 초대 주소 끝에 `?in=묶음이름`을 붙여 보냅니다(영문 소문자·숫자·- 20자까지). 예: 1차 지인 `https://lucubrate1231.github.io/imamttae/?in=friends`, 밴드 `?in=band`, 산악회 `?in=sanak`, 동창 `?in=alumni`.
   - 앱은 그 휴대폰에 **처음 들어온 묶음**을 기억하고(다른 초대 주소로 다시 들어와도 그대로), 주소에서는 지웁니다 — 그 사람이 다시 공유해도 묶음이 섞이지 않게.
   - 앱을 열 때마다 `app-open`에 `cohort`로 보냅니다. **대시보드:** 이벤트(Events) → `app-open` → 속성 `cohort`로 묶음별 사람 수·방문을 봅니다. 묶음 없이 들어온 사람(공유받은 장면 주소 등)은 칸이 없습니다.
   - 꼬리표는 `beta` 하나로 두어 전체를 한 번에 보고, 묶음은 이 속성으로 나눠 봅니다.
-- **github.io에서만 보냄:** 지금 주소가 `lucubrate1231.github.io`가 아니면(내 컴퓨터·화면 테스트) 스크립트를 부르지도 않습니다. 스크립트의 `data-domains`도 같은 주소라 이중으로 막힙니다.
-- **스크립트:** 첫 화면을 다 그린 뒤 `defer`로 부릅니다. 속성 — `data-website-id`, `data-domains="lucubrate1231.github.io"`, `data-auto-track="false"`(화면 이동은 앱이 직접 보냄), `data-tag`(preview/beta). 스크립트가 오기 전에 생긴 사건(`app-open`, 첫 화면 조회)은 **최대 50개까지 줄 세워 두었다가** 스크립트가 오면 순서대로 보냅니다(구현하며 바꿈: 버리면 `app-open`이 늘 사라짐). 광고 차단기 등으로 못 불러오면 줄을 비우고 앱은 그대로입니다.
+- **앱 주소에서만 보냄:** 지금 주소가 `imamttae.site`나 옛 `lucubrate1231.github.io`가 아니면(내 컴퓨터·화면 테스트) 스크립트를 부르지도 않습니다(`src/config.ts` `APP_HOSTS`). 스크립트의 `data-domains`도 같은 주소라 이중으로 막힙니다.
+- **스크립트:** 첫 화면을 다 그린 뒤 `defer`로 부릅니다. 속성 — `data-website-id`, `data-domains="imamttae.site,lucubrate1231.github.io"`, `data-auto-track="false"`(화면 이동은 앱이 직접 보냄), `data-tag`(preview/beta). 스크립트가 오기 전에 생긴 사건(`app-open`, 첫 화면 조회)은 **최대 50개까지 줄 세워 두었다가** 스크립트가 오면 순서대로 보냅니다(구현하며 바꿈: 버리면 `app-open`이 늘 사라짐). 광고 차단기 등으로 못 불러오면 줄을 비우고 앱은 그대로입니다.
 - **같은 주소를 연달아 두 번 세지 않습니다.**
 - **우리 식구 빼기:** 주소에 `?me=off`가 있으면 이 브라우저 저장소에 `umami.disabled`를 넣고 "이 브라우저는 통계에서 빠졌어요" 한 줄을 띄웁니다. `?me=on`이면 지우고 "다시 통계에 들어가요". 그 뒤 주소에서 `me`는 지웁니다(다시 열거나 공유돼도 반복되지 않게). 브라우저마다 따로라 카카오톡 안 화면에서도 한 번 열어야 합니다.
 - **처음 연 달(D27):** 휴대폰 저장소에 `first-month` 한 칸('YYYY-MM', 한국 날짜)만 둡니다. 처음이면 지금 달을 적고 `returning=false`, 있으면 그 값과 `returning=(그 달 < 이번 달)`. 저장이 막히면 `first_month=none`, `returning=false`, 그리고 `error`(storage-blocked).
-- **공유 주소:** 공유할 때 주소를 새로 만듭니다 — `https://…/imamttae/?from=share#/scene/<id>`. 받은 사람에게 의미 없는 꼬리표(`utm_*`, `me`)는 빼고 `from=share`만 붙입니다. 앱 안 화면 이동은 `#` 뒤만 바꾸므로 `?from=share`·`utm_*`는 지워지지 않습니다.
+- **공유 주소:** 공유할 때 장면 공유 페이지 주소를 만듭니다 — `https://imamttae.site/s/<id>/?from=share`(D63·D64, 미리보기는 `/next/s/<id>/`). 받은 사람에게 의미 없는 꼬리표(`utm_*`, `me`)는 빼고 `from=share`만 붙입니다. 앱 안 화면 이동은 `#` 뒤만 바꾸므로 `?from=share`·`utm_*`는 지워지지 않습니다.
 - **열린 방식(`mode`):** 홈 화면 앱(`display-mode: standalone` 또는 아이폰 `navigator.standalone`) → home-screen, 카카오톡 안 브라우저(브라우저 이름표에 `KAKAOTALK`) → kakao-inapp, 그 밖 → browser.
 
 ## 4. 보내지 않는 것

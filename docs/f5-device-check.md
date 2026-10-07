@@ -10,9 +10,9 @@
 ## 준비된 것 (PR `claude/f5-pwa-base`)
 - **매니페스트**(F5-AC1): 이름 '이맘때 풍경', 아이콘 이름 '이맘때', 전체 화면 표시. 아이콘은 디자인 세션 '두 봉우리와 해'(`public/brand/`, design-guide 11-6 — 10/7에 '나'안에서 바꿈).
 - **서비스 워커**(F5-AC2): 크롬 자동 설치 창의 조건인 fetch 처리기가 있습니다. 화면을 열 때 늘 인터넷에서 새로 받고, 인터넷이 끊겼을 때만 마지막 화면을 보여 줍니다. github.io에서만 등록합니다.
-  - 알파(`/imamttae/`)와 미리보기(`/imamttae/next/`)는 따로 설치되는 다른 앱입니다.
-- **확인 페이지:** `https://lucubrate1231.github.io/imamttae/next/_review/a2hs-lab.html`
-- **띠 다시 보기(확인용):** 주소 끝에 `?band=show`를 붙이면(예: `https://lucubrate1231.github.io/imamttae/next/?band=show`) 띠를 닫은 적이 있어도 다시 보여요. 닫음 표시는 그대로라 꼬리표 없이 열면 다시 숨어요. 카톡이 아닌 브라우저에서도 띠 모양을 볼 수 있고, 그때 띠를 누르면 넘어가지 않고 '열리지 않았나요?' 안내만 보여요.
+  - 베타(`imamttae.site/`)와 미리보기(`imamttae.site/next/`)는 따로 설치되는 다른 앱입니다(D64 — 10/8 전 옛 github.io 주소에서 설치한 앱은 새 주소로 다시 설치).
+- **확인 페이지:** `https://imamttae.site/next/_review/a2hs-lab.html`
+- **띠 다시 보기(확인용):** 주소 끝에 `?band=show`를 붙이면(예: `https://imamttae.site/next/?band=show`) 띠를 닫은 적이 있어도 다시 보여요. 닫음 표시는 그대로라 꼬리표 없이 열면 다시 숨어요. 카톡이 아닌 브라우저에서도 띠 모양을 볼 수 있고, 그때 띠를 누르면 넘어가지 않고 '열리지 않았나요?' 안내만 보여요.
 
 ## 확인 순서 (안드로이드 휴대폰)
 1. **카카오톡 → 바깥 브라우저(①)**

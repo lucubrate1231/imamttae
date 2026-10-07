@@ -28,10 +28,14 @@ describe('웹사이트 ID와 꼬리표(무료 계정은 사이트 1개 — 10/4 
   it('베타·미리보기가 ID 하나를 같이 씀', () => {
     expect(SITE_ID).toBe('84ee01a2-a3bf-43cc-aec5-9368dcd23fa7');
   });
-  it('주소가 /imamttae/next/ 로 시작하면 꼬리표 preview, 아니면 beta(D45 — 알파와 비공개 베타를 하나로, 대시보드에서 거름)', () => {
+  it('주소가 /next/ 로 시작하면 꼬리표 preview, 아니면 beta(D45) — 새 주소 imamttae.site(D64)와 옛 /imamttae/ 둘 다', () => {
+    expect(tagFor('/next/')).toBe('preview');
+    expect(tagFor('/next/index.html')).toBe('preview');
+    expect(tagFor('/')).toBe('beta');
+    expect(tagFor('/s/s-1/')).toBe('beta');
     expect(tagFor('/imamttae/next/')).toBe('preview');
-    expect(tagFor('/imamttae/next/index.html')).toBe('preview');
     expect(tagFor('/imamttae/')).toBe('beta');
+    expect(tagFor('/nextday/')).toBe('beta');
   });
 });
 
@@ -149,16 +153,24 @@ describe('Umami 추적기', () => {
     expect(script).toBeNull();
   });
 
-  it('ID가 있으면 늦게(defer) 스크립트를 붙임: github.io에서만, 자동 화면 조회는 끔', () => {
+  it('ID가 있으면 늦게(defer) 스크립트를 붙임: 앱 주소(imamttae.site · 옛 github.io)에서만, 자동 화면 조회는 끔', () => {
     const t = createUmamiTracker(window, { siteId: 'P-ID', tag: 'preview', host: 'lucubrate1231.github.io', attach });
     t.load();
     const s = script!;
     expect(s.src).toBe('https://cloud.umami.is/script.js');
     expect(s.defer).toBe(true);
     expect(s.getAttribute('data-website-id')).toBe('P-ID');
-    expect(s.getAttribute('data-domains')).toBe('lucubrate1231.github.io');
+    expect(s.getAttribute('data-domains')).toBe('imamttae.site,lucubrate1231.github.io');
     expect(s.getAttribute('data-auto-track')).toBe('false');
     expect(s.getAttribute('data-tag')).toBe('preview');
+  });
+
+  it('D64: 새 주소 imamttae.site에서도 스크립트를 붙이고, 다른 주소(내 컴퓨터 등)에서는 붙이지 않음', () => {
+    for (const [host, on] of [['imamttae.site', true], ['www.imamttae.site', false], ['localhost', false]] as const) {
+      script = null;
+      createUmamiTracker(window, { siteId: 'P-ID', tag: 'beta', host, attach }).load();
+      expect(script !== null, host).toBe(on);
+    }
   });
 
   it('스크립트가 오기 전 사건은 줄 세웠다가, 오면 순서대로 보냄(app-open이 사라지지 않게)', () => {

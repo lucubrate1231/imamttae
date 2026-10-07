@@ -26,7 +26,7 @@ Claude(또는 도우미 에이전트)가 이 문서대로 작업하고, `pipelin
     - 자신 없으면 공식 주차장 쪽으로 고르고 `needsCheck: true`와 `why`(짧은 이유)를 붙여 사용자에게 목록(장소 이름·고른 주차장·이유)으로 알려요. 비공개 베타 기준이 '길찾기 오안내 0'이에요.
   - **넣는 법:** 고른 값을 picked 형식(`{ "장면번호": { spot:{lat,lng,source,ref}, dest:{name,lat,lng,kind,source,ref} } }`)으로 `tools/places/picked-content.json`(콘텐츠 세션이 고른 값)에 적어요. 사용자가 고른 값은 `tools/places/picked-seed.json`에 있고 바꾸지 않아요. 그다음
     `npx tsx pipeline/places/apply.ts tools/places/picked-content.json` → `npx tsx pipeline/scenes/check-cli.ts content/scenes/drafts.json` → `npx tsx pipeline/scenes/build.ts` → PR. apply가 `coordSource`(public-data·manual)와 `coordRef`(tour:번호·parking:번호·manual)를 남겨요. 실행 환경이 없으면 picked 파일만 고친 PR을 올리고 Claude Code가 이어서 해요.
-  - **사용자가 직접 볼 때(애매한 곳):** 좌표 확인 페이지 https://lucubrate1231.github.io/imamttae/next/_review/places/ (휴대폰도 됨) 또는 사용자 컴퓨터 `npm run places`. 다 하면 **[결과 복사]** → 콘텐츠 세션이 `tools/places/picked-seed.json`에 넣어 PR.
+  - **사용자가 직접 볼 때(애매한 곳):** 좌표 확인 페이지 https://imamttae.site/next/_review/places/ (휴대폰도 됨) 또는 사용자 컴퓨터 `npm run places`. 다 하면 **[결과 복사]** → 콘텐츠 세션이 `tools/places/picked-seed.json`에 넣어 PR.
 
 ## 무엇을 장면으로 고르나
 - **자연 풍경만** 고릅니다. 단풍, 꽃, 운해, 물안개, 일출·낙조, 설경·상고대, 억새, 계곡, 폭포, 숲길, 바다 절경 같은 것들입니다.

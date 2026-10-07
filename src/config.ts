@@ -23,3 +23,12 @@ export const FEEDBACK_PLACE_FIELD = 'entry.1390967997';
  * ('개인 이름·연락처 금지' 규칙과 별개). 구글 폼도 이 계정으로 만듦. 비어 있으면 '준비 중'
  */
 export const CONTACT_EMAIL = 'imamttae.sight@gmail.com';
+
+/**
+ * 앱 주소(D64, 10/8 프프 — Spaceship에서 산 도메인). 베타 https://imamttae.site/ · 미리보기 https://imamttae.site/next/
+ * 옛 주소 lucubrate1231.github.io/imamttae/…는 GitHub이 새 주소로 넘겨 줌. 넘기기 전·도중에도 앱이 멈추지 않게 둘 다 '앱 주소'로 봄
+ */
+export const SITE_HOST = 'imamttae.site';
+export const SITE_ORIGIN = `https://${SITE_HOST}`;
+export const OLD_HOST = 'lucubrate1231.github.io';
+export const APP_HOSTS: readonly string[] = [SITE_HOST, OLD_HOST];
