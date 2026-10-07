@@ -133,7 +133,7 @@ export function createVisitBox(d: VisitDeps): VisitBox {
     );
     const talk = h('button', { type: 'button', class: 'btn line sm-talk' });
     talk.innerHTML = `${ICON.talk}<span>카톡으로 알리기</span>`;
-    talk.addEventListener('click', () => d.share(`${s.name}에 다녀왔어요 — 이맘때 풍경`));
+    talk.addEventListener('click', () => d.share(`${s.name}에 다녀왔어요. 이맘때 풍경에서 보고 찾아갔어요.`)); // D58
     const ok = h('button', { type: 'button', class: 'btn fill sm-ok', text: '확인' });
     const card = h(
       'div',
