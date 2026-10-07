@@ -104,7 +104,7 @@ test('넘김 화살표로 다음 사진에 가면 버튼이 숨었다가 약 0.5
 test('추천 시기 칸의 안내 글은 내어쓰기 없이 "올해 ○○ 소식 찾아보기"와 왼쪽이 맞음', async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 740 });
   await open(page, '?m=10');
-  await page.locator('.big').first().click();
+  await page.locator('.big', { hasText: '단풍·은행' }).first().click(); // '올해 단풍 소식' 줄이 있는 단풍 장면(10월 첫 카드가 아닐 수 있음)
   await expect(page.locator('.detail.open')).toBeVisible();
   const r = await page.evaluate(() => {
     const vary = document.querySelector('.when-vary')!;
@@ -123,7 +123,7 @@ test('추천 시기 칸의 안내 글은 내어쓰기 없이 "올해 ○○ 소�
 
 test('올해 소식 찾아보기: 단풍 장면은 "올해 + 단풍지도 + 시기"로 구글 검색(D40)', async ({ page }) => {
   await open(page, '?m=10');
-  await page.locator('.big').first().click();
+  await page.locator('.big', { hasText: '단풍·은행' }).first().click();
   const link = page.locator('.when-link');
   await expect(link).toHaveText('올해 단풍지도 찾아보기 ›');
   const q = new URL((await link.getAttribute('href'))!).searchParams.get('q');

@@ -491,16 +491,16 @@ describe('실제 앱 데이터의 풍경 찾기 규칙 (F3-AC2·AC3·AC4·AC7)',
     expect(find.typeWhen(scenes, 'ilchul')).toEqual({ kind: 'always' });
     expect(find.typeWhen(scenes, 'bada')).toEqual({ kind: 'always' });
   });
-  it('10월(D61): 그때만 보는 풍경 먼저 — 단풍 → 억새 → 계곡 → 운해, 언제나는 일출·바다, 다른 때는 겨울부터다', () => {
+  it('10월(D61): 그때만 보는 풍경 먼저 — 가을꽃(9~10월, 10월에 끝남) → 단풍 → 억새 → 계곡 → 운해 → 신록, 언제나는 일출·바다, 다른 때는 겨울부터다', () => {
     const scenes = ContentFile.parse(appData).scenes.filter((s) => s.kind === 'story');
     const g = find.typeGroups(scenes, 10);
-    expect(g.good.map((x) => x.type)).toEqual(['danpung', 'eoksae', 'gyegok', 'unhae']);
+    expect(g.good.map((x) => x.type)).toEqual(['kkotmureut', 'danpung', 'eoksae', 'gyegok', 'unhae', 'sinrok']);
     expect(g.always).toEqual(['ilchul', 'bada']);
-    expect(g.other).toEqual(['seolgyeong', 'maehwa', 'beotkkot', 'jindallae', 'sinrok', 'yeoreumkkot', 'kkotmureut']);
+    expect(g.other).toEqual(['seolgyeong', 'maehwa', 'beotkkot', 'jindallae', 'yeoreumkkot']);
   });
-  it('5월(D61): 진달래·철쭉 → 벚꽃 → 여름꽃 → 신록 → 계곡 → 운해(기획이 main 데이터로 계산한 값과 같음)', () => {
+  it('5월(D61): 진달래·철쭉 → 벚꽃 → 여름꽃 → 계곡 → 신록 → 운해', () => {
     const scenes = ContentFile.parse(appData).scenes.filter((s) => s.kind === 'story');
-    expect(find.typeGroups(scenes, 5).good.map((x) => x.type)).toEqual(['jindallae', 'beotkkot', 'yeoreumkkot', 'sinrok', 'gyegok', 'unhae']);
+    expect(find.typeGroups(scenes, 5).good.map((x) => x.type)).toEqual(['jindallae', 'beotkkot', 'yeoreumkkot', 'gyegok', 'sinrok', 'unhae']);
   });
   it('모든 달에서 모든 풍경은 정확히 한 묶음에 들어가고 good 수는 실제 추천 시기 장면 수다', () => {
     const scenes = ContentFile.parse(appData).scenes.filter((s) => s.kind === 'story');

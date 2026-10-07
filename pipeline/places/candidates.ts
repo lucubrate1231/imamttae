@@ -4,13 +4,36 @@
  * - 장면 위치: 한국관광공사 국문 관광정보(TourAPI KorService2, 장면 이름으로 검색)
  * - 목적지: 전국주차장정보표준데이터(.cache/public-data/전국주차장정보표준데이터.csv) 중 장면 위치에서 가까운 것
  * - 기존(카카오) 좌표는 출발점으로도 쓰지 않습니다.
- *   npx tsx pipeline/places/candidates.ts   → .cache/places/candidates.json + 요약
+ *   npx tsx pipeline/places/candidates.ts            → 초안(drafts.json)에서 후보가 아직 없는 장면만 찾아 tools/places/candidates.json에 더함
+ *   npx tsx pipeline/places/candidates.ts --all      → 모든 장면을 다시 찾음
+ *   npx tsx pipeline/places/candidates.ts s-075-…   → 이름을 집은 장면만(숨긴 장면도)
+ *   (좌표 확인 페이지 `npm run places`가 읽는 .cache/places/candidates.json 에도 같은 내용을 씀)
  * 키: .env.local 의 DATA_GO_KR_KEY(화면·파일에 찍지 않음)
  */
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { distanceKm } from '../../src/domain/geo';
 
 type Scene = { id: string; kind: string; name: string; region: string; hidden?: boolean };
+export type Candidate = { id: string; name: string; region: string; spot: unknown; parking: unknown[] };
+
+/** 찾을 장면: 초안의 이야기 장면(숨김 빼고) 중 후보가 없는 것. all이면 모두, ids면 그 장면만 */
+export function scenesToSearch(drafts: readonly Scene[], existing: readonly { id: string }[], o: { all?: boolean; ids?: readonly string[] } = {}): Scene[] {
+  if (o.ids?.length) return drafts.filter((s) => o.ids!.includes(s.id));
+  const have = new Set(existing.map((c) => c.id));
+  return drafts.filter((s) => s.kind === 'story' && !s.hidden && (o.all || !have.has(s.id)));
+}
+
+/** 옛 후보에 새로 찾은 것을 더함(같은 장면은 새 값). 순서는 초안 순서, 초안에 없는 옛 후보는 끝에 그대로 */
+export function mergeCandidates<T extends { id: string }>(existing: readonly T[], fresh: readonly T[], drafts: readonly { id: string }[]): T[] {
+  const byId = new Map(existing.map((c) => [c.id, c]));
+  for (const c of fresh) byId.set(c.id, c);
+  const out: T[] = [];
+  for (const d of drafts) {
+    const c = byId.get(d.id);
+    if (c) (out.push(c), byId.delete(d.id));
+  }
+  return [...out, ...byId.values()];
+}
 export interface TourHit { title: string; addr: string; lat: number; lng: number; contentId: string }
 export interface Parking { id: string; name: string; type: string; addr: string; lat: number; lng: number; org: string }
 
@@ -77,9 +100,12 @@ export function regionMatch(region: string, addr: string): boolean {
 
 async function main(): Promise<void> {
   const key = envKey();
-  const scenes = (JSON.parse(readFileSync('public/data/scenes.json', 'utf8')).scenes as Scene[]).filter((s) => s.kind === 'story' && !s.hidden);
+  const drafts = JSON.parse(readFileSync('content/scenes/drafts.json', 'utf8')).scenes as Scene[];
+  const existing = JSON.parse(readFileSync('tools/places/candidates.json', 'utf8')) as Candidate[];
+  const args = process.argv.slice(2);
+  const scenes = scenesToSearch(drafts, existing, { all: args.includes('--all'), ids: args.filter((a) => a.startsWith('s-')) });
   const parking = loadParking();
-  const out: unknown[] = [];
+  const out: Candidate[] = [];
   let spotFound = 0;
   let destFound = 0;
   for (const s of scenes) {
@@ -102,10 +128,14 @@ async function main(): Promise<void> {
     if (spot) spotFound++;
     if (near.length) destFound++;
     out.push({ id: s.id, name: s.name, region: s.region, spot, parking: near });
+    console.log(`  ${s.id} ${s.name}: 장면 위치 ${spot ? spot.title : '없음'} · 주차장 ${near.length}곳`);
   }
+  const merged = mergeCandidates(existing, out, drafts);
+  const text = JSON.stringify(merged, null, 2);
+  writeFileSync('tools/places/candidates.json', text);
   mkdirSync('.cache/places', { recursive: true });
-  writeFileSync('.cache/places/candidates.json', JSON.stringify(out, null, 2));
-  console.log(`장면 ${scenes.length}곳 · 관광정보로 장면 위치 후보 ${spotFound}곳 · 3km 안 공영주차장 후보 ${destFound}곳`);
+  writeFileSync('.cache/places/candidates.json', text);
+  console.log(`새로 찾은 장면 ${scenes.length}곳(후보 파일 전체 ${merged.length}곳) · 관광정보로 장면 위치 후보 ${spotFound}곳 · 3km 안 공영주차장 후보 ${destFound}곳`);
 }
 
 if (import.meta.url === `file://${process.argv[1]?.replace(/\\/g, '/')}` || process.argv[1]?.endsWith('candidates.ts')) void main();
