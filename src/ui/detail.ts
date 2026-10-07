@@ -23,7 +23,6 @@ import type { SavedStore } from '../storage/saved';
 import { createVisitBox, type VisitBox } from './visited';
 
 const AUTHOR = '이상호';
-const APP_NAME = '이맘때 풍경';
 /** 안전 안내(10/7 기획 초안 · design-guide 10-8 표) — 다녀온 때 기준 · 떠나기 전 현장 확인 · 무리하지 않기 */
 const SAFETY = '정보는 작가가 다녀온 때를 기준으로 해요. 길·주차·출입 통제는 떠나기 전에 현장 안내를 확인하시고, 날씨와 몸 상태에 맞게 무리하지 마세요.';
 
@@ -299,13 +298,14 @@ export function createDetail(d: DetailDeps): Detail {
     const share = h('button', { class: 'dact', type: 'button' });
     share.innerHTML = `${svg('M12 3v12M7 8l5-5 5 5M5 13v6a2 2 0 002 2h10a2 2 0 002-2v-6', 24)}<span>공유</span>`;
     /** 공유 창(없으면 주소 복사). where: detail(아래 막대) / stamp(도장 순간의 카톡으로 알리기, F4-AC9) */
-    const doShare = async (where: 'detail' | 'stamp', title: string, text: string) => {
+    // 10/8 새벽 프프: 아이폰 카톡이 글과 주소(url) 사이에 빈 줄을 넣어서, 주소를 글 끝에 한 칸 띄워 붙여 text 하나로 넘김(제목·url은 따로 넘기지 않음)
+    const doShare = async (where: 'detail' | 'stamp', text: string) => {
       const nav = win.navigator;
       const url = shareUrl(win.location, s.id); // 받은 사람이 열면 from=share로 셈(통계)
       try {
         if (nav.share) {
           d.track('share', { scene: s.id, where, how: 'share-sheet' });
-          await nav.share({ title, text, url });
+          await nav.share({ text: `${text} ${url}` });
         } else {
           d.track('share', { scene: s.id, where, how: 'copy' });
           await nav.clipboard.writeText(url);
@@ -316,15 +316,15 @@ export function createDetail(d: DetailDeps): Detail {
       }
     };
     // 공유 문장(마케팅 M11, 10/8 프프 — D58 ③을 바꿈): 받는 날 철이 안 맞을 수 있어 추천 시기를 빼고 한 줄로
-    const shareText = `${s.name}, "이맘때 풍경"에서 봤어요. 한번 볼래요?`; // D58 ③ 10/8: 받은 사람이 보낸 사람의 말로 착각하지 않게 서비스 이름을 큰따옴표로
-    share.addEventListener('click', () => void doShare('detail', `${s.name} · ${APP_NAME}`, shareText));
+    const shareText = `${s.name}, "이맘때 풍경"에서 봤어요. 한번 보실래요?`; // D58 ③ 10/8: 받은 사람이 보낸 사람의 말로 착각하지 않게 서비스 이름을 큰따옴표로
+    share.addEventListener('click', () => void doShare('detail', shareText));
     visitBox = createVisitBox({
       win,
       scene: s,
       store: d.saved,
       todayDate: d.todayDate,
       track: d.track,
-      share: (text) => void doShare('stamp', text, text),
+      share: (text) => void doShare('stamp', text),
       host: el,
       onChange: paintWant,
     });

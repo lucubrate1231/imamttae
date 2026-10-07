@@ -28,12 +28,14 @@ async function shareScene(id: string) {
 }
 
 describe('장면 [공유] 문장(마케팅 M11, 10/8 — 받는 날 철이 안 맞을 수 있어 추천 시기를 뺌)', () => {
-  it('D58 ③(10/8 바꿈): \'{장면 이름}, "이맘때 풍경"에서 봤어요. 한번 볼래요?\' — 앱이 넣은 말인 걸 알게 서비스 이름을 곧은 큰따옴표로', async () => {
+  it('D58 ③(10/8 새벽 바꿈): \'{장면 이름}, "이맘때 풍경"에서 봤어요. 한번 보실래요? {주소}\' — 높임말, 주소는 한 칸 띄워 같은 글에(아이폰 카톡의 빈 줄을 없애려고 url은 따로 넘기지 않음)', async () => {
     const d = await shareScene('s-naejang');
-    expect(d.text).toBe('내장산 우화정, "이맘때 풍경"에서 봤어요. 한번 볼래요?');
-    expect(d.url).toMatch(/\/s\/s-naejang\/\?from=share$/); // D63 장면 공유 페이지
+    expect(d.text).toMatch(/^내장산 우화정, "이맘때 풍경"에서 봤어요\. 한번 보실래요\? https?:\/\/\S+\/s\/s-naejang\/\?from=share$/); // D63 장면 공유 페이지
+    expect(d.url).toBeUndefined();
+    expect(d.title).toBeUndefined();
+    expect(d.text).not.toContain('\n');
   });
   it('추천 시기가 없는 장면도 같은 한 줄', async () => {
-    expect((await shareScene('s-nobest')).text).toBe('군위 아미산 암릉, "이맘때 풍경"에서 봤어요. 한번 볼래요?');
+    expect((await shareScene('s-nobest')).text).toMatch(/^군위 아미산 암릉, "이맘때 풍경"에서 봤어요\. 한번 보실래요\? \S+\/s\/s-nobest\/\?from=share$/);
   });
 });
