@@ -31,7 +31,7 @@ describe('장면 [공유] 문장', () => {
   it('"{장면 이름}({지역}) · 추천 시기 {추천 시기}" — 지역은 데이터 region(도·시군) 그대로', async () => {
     const d = await shareScene('s-naejang');
     expect(d.text).toBe('내장산 우화정(강원 양양) · 추천 시기 10월 말~11월 초');
-    expect(d.url).toMatch(/\?from=share#\/scene\/s-naejang$/);
+    expect(d.url).toMatch(/\/s\/s-naejang\/\?from=share$/); // D63 장면 공유 페이지
   });
   it('추천 시기가 없는 장면은 이름(지역)만', async () => {
     expect((await shareScene('s-nobest')).text).toBe('군위 아미산 암릉(경북 군위)');

@@ -159,7 +159,7 @@ describe('F4-AC5: 도장 찍히는 순간', () => {
     expect(share).toHaveBeenCalledTimes(1);
     const arg = share.mock.calls[0]![0] as unknown as ShareData;
     expect(arg.text).toBe('남설악 주전골에 다녀왔어요. 이맘때 풍경에서 보고 찾아갔어요.');
-    expect(arg.url).toMatch(/\?from=share#\/scene\/s-v$/);
+    expect(arg.url).toMatch(/\/s\/s-v\/\?from=share$/); // D63 장면 공유 페이지
     expect(events.filter(([n]) => n === 'share').map(([, d]) => d)).toEqual([{ scene: 's-v', where: 'stamp', how: 'share-sheet' }]);
     Object.defineProperty(navigator, 'share', { value: undefined, configurable: true });
   });

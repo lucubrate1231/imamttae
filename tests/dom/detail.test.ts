@@ -226,7 +226,7 @@ describe('아래 붙박이 막대', () => {
     Object.defineProperty(navigator, 'clipboard', { value: { writeText }, configurable: true });
     await start('#/scene/s-detail');
     [...root.querySelectorAll<HTMLButtonElement>('.detail .dact')].find((b) => b.textContent?.includes('공유'))!.click();
-    await vi.waitFor(() => expect(writeText).toHaveBeenCalledWith(expect.stringContaining('#/scene/s-detail')));
+    await vi.waitFor(() => expect(writeText).toHaveBeenCalledWith(expect.stringContaining('/s/s-detail/?from=share')));
     await vi.waitFor(() => expect(text('.toast')).toBe('주소를 복사했어요'));
   });
 

@@ -144,3 +144,41 @@ describe('앱 안 화면 알아보기(D45)', () => {
     expect(safariUrl('https://lucubrate1231.github.io/imamttae/?carry=s-1#/')).toBe('x-safari-https://lucubrate1231.github.io/imamttae/?carry=s-1#/');
   });
 });
+
+/** sw.js를 가짜 워커 환경에서 돌려 봄: 어떤 화면 이동을 받고, 무엇을 '앱 화면'으로 저장하는지 */
+async function runSw(url: string) {
+  const { runInNewContext } = await import('node:vm');
+  const handlers: Record<string, (e: unknown) => void> = {};
+  const puts: string[] = [];
+  let responded = false;
+  const self = {
+    registration: { scope: 'https://lucubrate1231.github.io/imamttae/next/' },
+    addEventListener: (t: string, f: (e: unknown) => void) => (handlers[t] = f),
+    skipWaiting() {},
+    clients: { claim: async () => {} },
+  };
+  const res = { ok: true, clone: () => res };
+  const caches = { open: async () => ({ put: async (k: string) => void puts.push(k) }), match: async () => undefined, keys: async () => [] };
+  runInNewContext(readFileSync(pub('sw.js'), 'utf8'), { self, caches, fetch: async () => res, URL, Promise, Response });
+  const waits: Promise<unknown>[] = [];
+  handlers.fetch!({
+    request: { mode: 'navigate', method: 'GET', url },
+    respondWith: (p: Promise<unknown>) => ((responded = true), waits.push(p)),
+    waitUntil: (p: Promise<unknown>) => void waits.push(p),
+  });
+  await Promise.all(waits);
+  await Promise.all(waits);
+  return { responded, puts };
+}
+
+describe('D63: 서비스 워커와 장면 공유 페이지', () => {
+  it('앱 화면(/next/)은 받아서 저장(인터넷이 끊겼을 때 보여 줌)', async () => {
+    expect(await runSw('https://lucubrate1231.github.io/imamttae/next/?from=share')).toEqual({ responded: true, puts: ['https://lucubrate1231.github.io/imamttae/next/'] });
+  });
+  it('장면 공유 페이지(s/<번호>/)는 건드리지 않음 — 앱 화면 자리에 공유 페이지가 저장되지 않게', async () => {
+    expect(await runSw('https://lucubrate1231.github.io/imamttae/next/s/s-013-daeseung-falls/?from=share')).toEqual({ responded: false, puts: [] });
+  });
+  it('앱 화면이 아닌 다른 페이지(확인 페이지 등)는 앱 화면으로 저장하지 않음', async () => {
+    expect((await runSw('https://lucubrate1231.github.io/imamttae/next/_review/places/')).puts).toEqual([]);
+  });
+});

@@ -26,5 +26,5 @@ test('공유 주소에는 ?from=share 만 붙음(복사로 확인)', async ({ pa
   await page.locator('.detail .dact', { hasText: '공유' }).click();
   await expect(page.locator('.toast')).toHaveText('주소를 복사했어요');
   const copied = await page.evaluate(() => navigator.clipboard.readText());
-  expect(copied).toMatch(/\/\?from=share#\/scene\/[a-z0-9-]+$/);
+  expect(copied).toMatch(/\/s\/[a-z0-9-]+\/\?from=share$/); // D63 장면 공유 페이지
 });
