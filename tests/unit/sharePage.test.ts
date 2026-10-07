@@ -11,11 +11,14 @@ const visible = content.scenes.filter((s) => s.kind === 'story' && !s.hidden);
 
 describe('카드 정보(작가 이름 없이 — D58·D59, "제철"은 쓰지 않음 — D12)', () => {
   const s = story('s-x', { name: '내장산 우화정', region: '전북 정읍', visited: '2021-11-09', best: { from: 10, to: 11, note: '10월 말~11월 초' } });
-  it('제목 "{장면 이름} — 이맘때 풍경", 설명 "{지역} · 작가가 아내와 다녀온 곳"(마케팅 M11 — 아이폰에서 앞이 길어 잘려 추천 시기·\'직접\'을 뺌, 10/8)', () => {
+  it('제목 "{장면 이름} — 이맘때 풍경", 설명 "{지역} · 산악인 작가가 아내와 다녀온 곳"(마케팅 M12, 10/8 — 지역이 모두 5자라 25자, 아이폰에서 안 잘림)', () => {
     const c = shareCard(s);
     expect(c.title).toBe('내장산 우화정 — 이맘때 풍경');
-    expect(c.description).toBe('전북 정읍 · 작가가 아내와 다녀온 곳');
-    expect(shareCard({ ...s, best: undefined }).description).toBe('전북 정읍 · 작가가 아내와 다녀온 곳');
+    expect(c.description).toBe('전북 정읍 · 산악인 작가가 아내와 다녀온 곳');
+    expect(shareCard({ ...s, best: undefined }).description).toBe('전북 정읍 · 산악인 작가가 아내와 다녀온 곳');
+  });
+  it('M12: 실제 장면 카드 설명은 모두 25자 이하', () => {
+    for (const v of visible) expect([...shareCard(v as never).description].length, v.id).toBeLessThanOrEqual(25);
   });
   it('그림은 그 장면의 첫 사진을 1200×630으로 가운데 맞춰 자른 카카오 썸네일, 다음 후보로 앱 공통 그림', () => {
     const c = shareCard(s);
