@@ -6975,16 +6975,16 @@
    "excerpt": "붉은 보라색 파도가 산사면에서 너울거리고 있는 이른 아침인데 행락객들은 만개된 아스타국화 파도 속으로 거닐며 자신의 가장 멋진 포즈를 취하며 사진을 찍고 또 찍고 있었다.",
    "photos": [
     {
-     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/FLcZm0o1oM6ETcSIDj4PlnoGjmY.jpg",
-     "w": 1370,
-     "h": 640,
-     "cap": ""
-    },
-    {
      "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/DA74vgSq7cqsnWBA3TLtff8z4lg.jpg",
      "w": 1370,
      "h": 640,
      "cap": "아스타국화"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/FLcZm0o1oM6ETcSIDj4PlnoGjmY.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": ""
     },
     {
      "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/tOW8WSUHEBkcAU5qaMKnx7MDQCo.jpg",
@@ -7010,10 +7010,10 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
    "hidden": false,
@@ -7141,10 +7141,10 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
    "hidden": false,
@@ -7756,16 +7756,16 @@
    "excerpt": "입장료는 경로우대의 혜택으로 공짜로 입장하여 제방둑을 따라 끝이 보이지 않는 갈대 군락지를 걸었다.",
    "photos": [
     {
-     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/qLIyXLXnfT0ra-Dkn8RMjN9bkJs.jpg",
-     "w": 1370,
-     "h": 640,
-     "cap": "순천만 습지"
-    },
-    {
      "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/brlU9U96hWhn4xUT9pBPs9joB-c.jpg",
      "w": 1370,
      "h": 640,
      "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/qLIyXLXnfT0ra-Dkn8RMjN9bkJs.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": "순천만 습지"
     },
     {
      "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/hVPiv7sQ6iSTjOVVKCy5223z8gU.jpg",
@@ -7791,10 +7791,10 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
    "hidden": false,
@@ -7860,10 +7860,10 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
    "hidden": false,
@@ -8078,10 +8078,10 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
    "hidden": false,
@@ -8146,10 +8146,10 @@
     "kind": "entrance"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
    "hidden": false,
@@ -8395,6 +8395,12 @@
    "excerpt": "세월을 되돌아 상상해 보니 주목들이 삼국시대 때부터 살아온 듯하여 정말 시간여행을 하고 있다는 생각이 들었다.",
    "photos": [
     {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/AtKegthfE1OpgLr4xuauo2dCzHA.jpg",
+     "w": 640,
+     "h": 1385,
+     "cap": "서울대 나무"
+    },
+    {
      "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/D_FZ0ldO8socHnKTU2LVL3HszYU.jpg",
      "w": 640,
      "h": 1385,
@@ -8405,12 +8411,6 @@
      "w": 640,
      "h": 1385,
      "cap": ""
-    },
-    {
-     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/AtKegthfE1OpgLr4xuauo2dCzHA.jpg",
-     "w": 640,
-     "h": 1385,
-     "cap": "서울대 나무"
     },
     {
      "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/q-rBxaMY-00e1XuRFZ4gHtpMlGg.jpg",
@@ -8430,10 +8430,10 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
    "hidden": false,
