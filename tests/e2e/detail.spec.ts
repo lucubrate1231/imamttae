@@ -108,7 +108,9 @@ test("'떠나기 전에 확인하세요' 카드(#61): 추천 시기 상자 바�
 });
 
 test('카드 줄의 검색(구글, D40): 단풍은 "올해 + 단풍지도 + 시기", 입장료는 "{장소 이름} 입장료 운영시간"(금액은 적지 않음)', async ({ page }) => {
-  await openFirst(page);
+  await home(page, '#/month/10');
+  await page.locator('.rail .big', { hasText: '단풍·은행' }).first().click(); // 10월 첫 카드가 단풍이 아닐 수 있음(새 글 뒤)
+  await expect(page.locator('.detail.open')).toBeVisible();
   const news = page.locator('.precheck .pc-row.news');
   await expect(news.locator('.pc-go')).toHaveText('올해 단풍지도 찾아보기');
   expect(new URL((await news.getAttribute('href'))!).searchParams.get('q')).toBe(`${new Date().getFullYear()} 단풍지도 시기`);
