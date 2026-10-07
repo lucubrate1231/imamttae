@@ -471,12 +471,12 @@ describe('실제 앱 데이터의 풍경 찾기 규칙 (F3-AC2·AC3·AC4·AC7)',
     expect(find.typeWhen(scenes, 'ilchul')).toEqual({ kind: 'always' });
     expect(find.typeWhen(scenes, 'bada')).toEqual({ kind: 'always' });
   });
-  it('10월 첫 풍경은 단풍이며 언제나는 일출·바다, 다른 때는 겨울부터다', () => {
+  it('10월은 이번 달 장면이 많은 순(D22 — 새 글 #75~#128 뒤 운해 10·단풍 9), 언제나는 일출·바다, 다른 때는 겨울부터다', () => {
     const scenes = ContentFile.parse(appData).scenes.filter((s) => s.kind === 'story');
     const g = find.typeGroups(scenes, 10);
-    expect(g.good.map((x) => x.type)).toEqual(['danpung', 'unhae', 'eoksae', 'gyegok']);
+    expect(g.good.map((x) => x.type)).toEqual(['unhae', 'danpung', 'sinrok', 'eoksae', 'gyegok', 'kkotmureut']);
     expect(g.always).toEqual(['ilchul', 'bada']);
-    expect(g.other).toEqual(['seolgyeong', 'maehwa', 'beotkkot', 'jindallae', 'sinrok', 'yeoreumkkot', 'kkotmureut']);
+    expect(g.other).toEqual(['seolgyeong', 'maehwa', 'beotkkot', 'jindallae', 'yeoreumkkot']);
   });
   it('모든 달에서 모든 풍경은 정확히 한 묶음에 들어가고 good 수는 실제 추천 시기 장면 수다', () => {
     const scenes = ContentFile.parse(appData).scenes.filter((s) => s.kind === 'story');
