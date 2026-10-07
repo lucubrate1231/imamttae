@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { homeView, seasonOf } from '../../src/domain/home';
-import { HOME_SCENES } from '../fixtures/homeScenes';
+import { HOME_SCENES, story } from '../fixtures/homeScenes';
+import { ContentFile } from '../../shared/schema/content';
+import appData from '../../public/data/scenes.json';
 
 /** 첫 화면에 무엇을 어떤 순서로 보여 줄지 계산 — docs/features/F1-지금-볼-만한-곳.md */
 const ids = (xs: readonly { id: string }[]) => xs.map((x) => x.id);
@@ -14,11 +16,26 @@ describe('계절 (F1-AC12)', () => {
 });
 
 describe('첫 화면 계산 homeView', () => {
-  it('F1-AC3 제철 순서: 그달에 찍은 곳 → 찍은 달이 가까운 곳 → 가장 좋은 때가 곧 끝나는 곳 (같으면 최근에 다녀온 곳)', () => {
+  it('F1-AC3·D62 제철 순서: 추천 시기가 짧은 곳 → 찍은 달이 가까운 곳 → 가장 좋은 때가 곧 끝나는 곳 (같으면 최근에 다녀온 곳)', () => {
     const v = homeView(HOME_SCENES.scenes, 10);
     // 주전골·대승폭포: 10월에 찍음(차이 0), 둘 다 10월에 끝남 → 최근(2022) 먼저
     // 백무동(9월, 차이 1, 10월에 끝남=남은 달 1) · 내장산(11월, 차이 1, 남은 달 2) → 곧 끝나는 백무동 먼저
     expect(ids(v.peak)).toEqual(['s-jujeon', 's-jujeon-old', 's-baekmu', 's-naejang']);
+  });
+
+  it('D62: 그달에 찍었어도 추천 시기가 긴 곳(신록 5~10월)은 짧은 곳(단풍 10~11월) 뒤로', () => {
+    const long = story('s-long', { name: '메타세쿼이아 숲', visited: '2025-10-04', types: ['sinrok'], best: { from: 5, to: 10, note: '5~10월' } });
+    const short = story('s-short', { name: '단풍길', visited: '2021-11-09', best: { from: 10, to: 11, note: '10월 말~11월 초' } });
+    expect(ids(homeView([long, short], 10).peak)).toEqual(['s-short', 's-long']);
+  });
+
+  it('D62 실제 데이터: 10월은 1개월짜리 단풍 3곳이 맨 앞, 5월은 1개월짜리(해인사·핫들)가 맨 앞이고 고창 청보리밭(4~5월)은 그 뒤', () => {
+    const scenes = ContentFile.parse(appData).scenes;
+    const names = (m: 5 | 10) => homeView(scenes, m).peak.map((s) => s.name);
+    expect(names(10).slice(0, 3).sort()).toEqual(['남설악 주전골', '설악 대승폭포 단풍길', '설악산 비룡폭포'].sort());
+    const may = names(5);
+    expect(may.slice(0, 2).sort()).toEqual(['핫들생태공원 작약꽃', '해인사 연초록 계곡'].sort());
+    expect(may.indexOf('고창 청보리밭')).toBeGreaterThan(1);
   });
 
   it('F1-AC11 작가 부부가 다녀온 곳: 다녀온 달에만, 제철과 겹치지 않게. 숨긴 장면은 빼기', () => {

@@ -112,6 +112,7 @@ export function typeGroups(scenes: readonly FindInput[], month: Month): TypeGrou
   const stories = scenes.filter(isVisibleStory);
   const groups: TypeGroups = { good: [], always: [], other: [], empty: [] };
   const other: { type: SceneTypeId; distance: number }[] = [];
+  const order = new Map<SceneTypeId, { length: number; left: number }>();
   // 표 순서로 넣고 안정 정렬하여 같은 수·같은 시작 달이면 표 순서를 지킵니다.
   for (const { id: type } of SCENE_TYPES) {
     const matching = stories.filter((scene) => scene.types.includes(type));
@@ -119,10 +120,16 @@ export function typeGroups(scenes: readonly FindInput[], month: Month): TypeGrou
     const w = typeWhen(matching, type);
     if (w.kind === 'always') { groups.always.push(type); continue; }
     const count = matching.filter((scene) => scene.best && !isYearRound(scene.best) && inWindow(month, scene.best)).length;
-    if (count) groups.good.push({ type, count });
+    if (count) {
+      groups.good.push({ type, count });
+      // D61: 합친 달 범위의 길이(개월)와 고른 달부터 끝나는 달까지 남은 달 수
+      if (w.kind === 'range') order.set(type, { length: monthsUntil(w.from, w.to) + 1, left: monthsUntil(month, w.to) });
+    }
     else other.push({ type, distance: w.kind === 'range' ? monthsUntil(month, w.from) : MONTHS.length });
   }
-  groups.good.sort((a, b) => b.count - a.count);
+  // D61(10/7 프프): '그때만' 볼 수 있는 풍경이 앞에 — ① 볼 수 있는 때가 짧은 순 ② 먼저 끝나는 순 ③ 그달 장면이 많은 순 ④ 표 순서(안정 정렬)
+  const key = (t: SceneTypeId) => order.get(t) ?? { length: MONTHS.length, left: MONTHS.length };
+  groups.good.sort((a, b) => key(a.type).length - key(b.type).length || key(a.type).left - key(b.type).left || b.count - a.count);
   groups.other = other.sort((a, b) => a.distance - b.distance).map((row) => row.type);
   return groups;
 }

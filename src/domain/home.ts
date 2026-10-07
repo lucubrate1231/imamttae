@@ -42,13 +42,21 @@ function monthsLeft(s: StoryScene, m: Month): number {
   return k;
 }
 
+/** 추천 시기의 길이(개월 수) — 짧을수록 '그때만' 볼 수 있는 곳 */
+function windowMonths(s: StoryScene): number {
+  let n = 0;
+  for (let m = 1; m <= 12; m++) if (inWindow(m, s.best!)) n++;
+  return n;
+}
+
 /**
- * F1-AC3 제철 순서: ① 사진을 바로 그달에 찍은 곳 → ② 찍은 달이 가까운 곳 → ③ 가장 좋은 때가 곧 끝나는 곳.
- * 그래도 같으면 최근에 다녀온 곳, 그것도 같으면 데이터에 적힌 순서(확정 시안 v2와 같음).
+ * F1-AC3 제철 순서(D62, 10/7 프프 — '그때만' 볼 수 있는 곳 먼저): ① 추천 시기(개월 수)가 짧은 곳 → ② 찍은 달이 가까운 곳(그달 사진 먼저)
+ * → ③ 가장 좋은 때가 곧 끝나는 곳 → ④ 최근에 다녀온 곳. 그것도 같으면 데이터에 적힌 순서(확정 시안 v2와 같음).
  */
 function orderPeak(scenes: readonly StoryScene[], m: Month): StoryScene[] {
   return [...scenes].sort(
     (a, b) =>
+      windowMonths(a) - windowMonths(b) ||
       monthGap(visitedMonth(a.visited), m) - monthGap(visitedMonth(b.visited), m) ||
       monthsLeft(a, m) - monthsLeft(b, m) ||
       b.visited.localeCompare(a.visited),

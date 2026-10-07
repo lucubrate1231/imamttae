@@ -239,8 +239,28 @@ describe('whenStatus: 이번 달과 추천 범위의 관계 (F3-AC2)', () => {
   });
 });
 
-describe('typeGroups: 고르기 화면 묶음 (D22, F3-AC1·AC5)', () => {
-  it('지금 좋은 장면 수 내림차순, 같으면 표 순서로 놓고 여러 풍경도 각각 센다', () => {
+describe('typeGroups: 고르기 화면 묶음 (D22·D61, F3-AC1·AC5)', () => {
+  it('D61 ①: 볼 수 있는 때(합친 달 범위)가 짧은 풍경 먼저 — 장면이 더 많아도 긴 운해는 뒤로', () => {
+    const g = find.typeGroups([
+      scene('운해 1', { types: ['unhae'], best: { from: 4, to: 11 } }), scene('운해 2', { types: ['unhae'], best: { from: 4, to: 11 } }),
+      scene('운해 3', { types: ['unhae'], best: { from: 4, to: 11 } }),
+      scene('단풍'),
+    ], 10);
+    expect(g.good).toEqual([{ type: 'danpung', count: 1 }, { type: 'unhae', count: 3 }]);
+  });
+  it('D61 ②: 길이가 같으면 고른 달부터 먼저 끝나는 풍경 먼저(12월→1월도 이어서 셈)', () => {
+    const g = find.typeGroups([
+      scene('단풍 1'), scene('단풍 2'), // 10~11
+      scene('억새', { types: ['eoksae'], best: { from: 9, to: 10 } }), // 9~10 — 10월에 끝남
+    ], 10);
+    expect(g.good.map((x) => x.type)).toEqual(['eoksae', 'danpung']);
+    const winter = find.typeGroups([
+      scene('설경', { types: ['seolgyeong'], best: { from: 12, to: 1 } }),
+      scene('매화', { types: ['maehwa'], best: { from: 11, to: 12 } }),
+    ], 12);
+    expect(winter.good.map((x) => x.type)).toEqual(['maehwa', 'seolgyeong']);
+  });
+  it('D61 ③④: 길이·끝나는 때가 같으면 그달 장면이 많은 순, 그것도 같으면 표 순서로 놓고 여러 풍경도 각각 센다', () => {
     const g = find.typeGroups([
       scene('단풍 1'), scene('단풍 2'),
       scene('매화와 단풍', { types: ['maehwa', 'danpung', 'danpung'] }),
@@ -471,12 +491,16 @@ describe('실제 앱 데이터의 풍경 찾기 규칙 (F3-AC2·AC3·AC4·AC7)',
     expect(find.typeWhen(scenes, 'ilchul')).toEqual({ kind: 'always' });
     expect(find.typeWhen(scenes, 'bada')).toEqual({ kind: 'always' });
   });
-  it('10월은 이번 달 장면이 많은 순(D22 — 새 글 #75~#128 뒤 운해 10·단풍 9), 언제나는 일출·바다, 다른 때는 겨울부터다', () => {
+  it('10월(D61): 그때만 보는 풍경 먼저 — 가을꽃(9~10월, 10월에 끝남) → 단풍 → 억새 → 계곡 → 운해 → 신록, 언제나는 일출·바다, 다른 때는 겨울부터다', () => {
     const scenes = ContentFile.parse(appData).scenes.filter((s) => s.kind === 'story');
     const g = find.typeGroups(scenes, 10);
-    expect(g.good.map((x) => x.type)).toEqual(['unhae', 'danpung', 'sinrok', 'eoksae', 'gyegok', 'kkotmureut']);
+    expect(g.good.map((x) => x.type)).toEqual(['kkotmureut', 'danpung', 'eoksae', 'gyegok', 'unhae', 'sinrok']);
     expect(g.always).toEqual(['ilchul', 'bada']);
     expect(g.other).toEqual(['seolgyeong', 'maehwa', 'beotkkot', 'jindallae', 'yeoreumkkot']);
+  });
+  it('5월(D61): 진달래·철쭉 → 벚꽃 → 여름꽃 → 계곡 → 신록 → 운해', () => {
+    const scenes = ContentFile.parse(appData).scenes.filter((s) => s.kind === 'story');
+    expect(find.typeGroups(scenes, 5).good.map((x) => x.type)).toEqual(['jindallae', 'beotkkot', 'yeoreumkkot', 'gyegok', 'sinrok', 'unhae']);
   });
   it('모든 달에서 모든 풍경은 정확히 한 묶음에 들어가고 good 수는 실제 추천 시기 장면 수다', () => {
     const scenes = ContentFile.parse(appData).scenes.filter((s) => s.kind === 'story');
