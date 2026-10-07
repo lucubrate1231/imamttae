@@ -16,6 +16,8 @@ else
 fi
 if [ "$TARGET" = next ]; then
   rm -rf site/next && mkdir -p site/next && cp -r dist/. site/next/
+  # 카톡 미리보기 그림 주소(og:image)는 베타 주소로 적혀 있어, 미리보기에서는 /next/ 쪽 그림을 가리키게 바꿈(D58)
+  sed -i 's#github.io/imamttae/brand/#github.io/imamttae/next/brand/#g' site/next/index.html
   if [ ! -f site/index.html ]; then
     cat > site/index.html <<'HTML'
 <!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>이맘때 풍경</title>
