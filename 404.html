@@ -13,13 +13,15 @@
     function homeFor(path) {
       var i = path.indexOf('/s/');
       if (i >= 0) return path.slice(0, i + 1);
-      return path.indexOf('/imamttae/next/') === 0 ? '/imamttae/next/' : '/imamttae/';
+      // 새 주소 imamttae.site(D64)는 맨 위가 앱, 옛 주소는 /imamttae/ 아래
+      var root = path.indexOf('/imamttae/') === 0 ? '/imamttae/' : '/';
+      return path.indexOf(root + 'next/') === 0 ? root + 'next/' : root;
     }
     location.replace(homeFor(location.pathname) + location.search);
     </script>
     <style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#fbf9f4;color:#1f2a24;font:18px/1.7 system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;padding:24px;text-align:center}a{color:#2f5d46;font-weight:700}</style>
   </head>
   <body>
-    <p>찾는 곳이 없어요. <a href="/imamttae/">이맘때 풍경 첫 화면으로</a></p>
+    <p>찾는 곳이 없어요. <a href="/">이맘때 풍경 첫 화면으로</a></p>
   </body>
 </html>
