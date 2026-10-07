@@ -20,7 +20,8 @@ if [ "$TARGET" = next ]; then
   sed -i 's#imamttae.site/brand/#imamttae.site/next/brand/#g' site/next/index.html site/next/s/*/index.html
   # 없는 주소(없어진 장면의 공유 페이지 등)는 GitHub이 사이트 맨 위의 404.html만 써서 맨 위에 둠(D63)
   cp dist/404.html site/404.html
-  if [ ! -f site/index.html ]; then
+  # 맨 앞 주소(베타 자리)가 아직 앱이 아니면 '곧 문을 열어요' 안내를 새로 씀(10/8 — 옛 '이맘때 자연 · 지인 알파' 안내를 바꿈). 앱이 올라간 뒤(v0.1.0~)에는 건드리지 않음
+  if [ ! -f site/index.html ] || ! grep -q 'assets/main-' site/index.html; then
     cat > site/index.html <<'HTML'
 <!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>이맘때 풍경</title>
 <style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#fbf9f4;color:#1f2a24;font:18px/1.7 system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;word-break:keep-all;padding:24px;text-align:center}h1{color:#2f5d46;font-size:26px;margin:0 0 8px}</style></head>
