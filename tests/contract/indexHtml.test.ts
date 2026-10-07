@@ -30,7 +30,7 @@ describe('공유 미리보기(카톡 카드)와 한 줄 메시지', () => {
   });
 });
 
-/** 카톡 미리보기 그림(D58, 10/7 프프 — 화산 풍차전망대 운해 #65) */
+/** 카톡 미리보기 그림(D58, 10/7 프프 최종 — 고래불 일출 #96) */
 describe('카톡 미리보기 그림(og:image)', () => {
   const html = readFileSync('index.html', 'utf8');
   const meta = (attr: string) => html.match(new RegExp(`<meta ${attr} content="([^"]*)"`))?.[1];
@@ -38,7 +38,7 @@ describe('카톡 미리보기 그림(og:image)', () => {
     expect(meta('property="og:image"')).toBe('https://lucubrate1231.github.io/imamttae/brand/og-image.jpg');
     expect(meta('property="og:image:width"')).toBe('1200');
     expect(meta('property="og:image:height"')).toBe('630');
-    expect(meta('property="og:image:alt"')).toBe('겹겹이 이어진 산줄기 사이로 깔린 구름바다');
+    expect(meta('property="og:image:alt"')).toBe('부서지는 파도 위로 떠오르는 해');
   });
   it('그림 파일이 정말 1200×630 JPEG(카톡 카드 1.91:1)', () => {
     const b = readFileSync('public/brand/og-image.jpg');
