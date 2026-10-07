@@ -171,7 +171,7 @@ describe('이용 안내와 개인정보(#/privacy, 12-2 — 글 10/7)', () => {
     expect(p.querySelector('.pv-contact h3')!.textContent).toBe('문의');
     expect(p.querySelector('.pv-mail')!.textContent).toBe('hello@example.com');
     expect(p.querySelector<HTMLAnchorElement>('.pv-contact a.btn')!.getAttribute('href')).toBe('mailto:hello@example.com');
-    expect(p.querySelector('.pv-date')!.textContent).toMatch(/^운영: 이맘때 풍경/);
+    expect(p.querySelector('.pv-date')!.textContent).toBe('운영: 이맘때 풍경 · 2026년 10월 8일부터 적용해요.'); // v0.1.0(비공개 베타 시작) 날
     expect(root.querySelectorAll('.tabs [aria-current]')).toHaveLength(0);
   });
 
