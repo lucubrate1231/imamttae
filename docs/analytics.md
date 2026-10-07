@@ -25,7 +25,7 @@
 | `news` | '떠나기 전에 확인하세요' 카드의 시기 줄 '올해 ○○ 찾아보기'(디자인 #61) | `scene` | 지금 |
 | `admission` | '떠나기 전에 확인하세요' 카드의 입장료 줄 '입장료·운영 시간 찾아보기'(D4, 디자인 #61, `checkAdmission` 장면만) | `scene` | 지금 |
 | `error` | 지도를 못 불러옴 / 장면 데이터를 못 불러옴 / 저장이 막힘 | `kind`(map-fail / data-fail / storage-blocked) | 지금 |
-| `feedback` | 의견 보내기 버튼(구글 폼) | — | **출시 준비(3단계)에 버튼과 함께**(D46 — 처음엔 알파는 말로 듣기로 했던 D32를 바꿈, D32 · 6장 ①) |
+| `feedback` | 의견 보내기(구글 폼) — 첫 화면·저장한 곳 카드, 장면 상세 '이곳 정보가 달라졌나요?' | `where`(home / saved / detail), `scene`(장면 상세에서만) | 지금(D46 — 옛 #108·#110) |
 | `alert-card` | 제철 알림 카드 | `action`, `where`, `count` | F4 화면과 함께 |
 | `visited` | 다녀왔어요·취소·날짜 고치기 | `scene`, `action` | F4 화면과 함께 |
 | `a2hs` | 홈 화면에 두기(F5, design-guide 11장) | `action`: band(맨 위 띠 — 카톡·크롬·삼성 인터넷, D37) / band-close / card(홈 화면에 두기 카드) / save-sheet(처음 저장 판이 뜸) / save-sheet-add / guide(그림 안내) / prompt(크롬 설치 창) / prompt-accepted / prompt-dismissed / installed · `env`: kakao-android / kakao-ios / chrome / samsung / ios-safari | 지금 |
