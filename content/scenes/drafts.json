@@ -2930,13 +2930,6 @@
      "focus": "50% 50%"
     },
     {
-     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/FtMXNx-2mYYEgnVBSZjQFapJe04.jpg",
-     "w": 1363,
-     "h": 640,
-     "cap": "",
-     "focus": "45% 50%"
-    },
-    {
      "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/UoL4YJRP5F6KwCzw3H-oGsVhyK0.jpg",
      "w": 1389,
      "h": 640,
@@ -6601,6 +6594,1785 @@
     "해안 절벽",
     "다도해",
     "해무"
+   ],
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
+  },
+  {
+   "id": "s-075-arahongryeon",
+   "kind": "story",
+   "brunchNo": 75,
+   "brunchUrl": "https://brunch.co.kr/@caed5ea4c3d74d9/75",
+   "name": "함안 연꽃테마파크 아라홍련",
+   "region": "경남 함안",
+   "types": [
+    "yeoreumkkot"
+   ],
+   "visited": "2025-06-29",
+   "best": {
+    "from": 7,
+    "to": 8,
+    "note": "7월~8월 초",
+    "season": "한여름",
+    "tip": "이른 아침"
+   },
+   "oneLiner": "칠백 년 전 씨앗에서 피어난 연꽃 사이 징검다리",
+   "excerpt": "아라홍련이 많이 개화되어 있는 곳에 징검다리가 있어 징검다리를 건너면서 아라홍련의 고귀한 모습에 흠뻑 빠져들었다.",
+   "photos": [
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/lKxleUhljTCnCPIz3EZoqeANTEE.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/AXcga5O66DI_O6TAJoownbwuRj4.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": "함안연꽃테마파크(아라홍련)"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/g1jicwh0EjuDaGl-dhOdiPgLd_E.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": "함안연꽃테마파크"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/vP1FQ2ylJCAtlQaamWGWtN_7KW4.jpg",
+     "w": 640,
+     "h": 1370,
+     "cap": "아라홍련"
+    }
+   ],
+   "spot": {
+    "lat": 35.2715,
+    "lng": 128.408
+   },
+   "dest": {
+    "name": "함안연꽃테마파크 주차장",
+    "lat": 35.27269,
+    "lng": 128.406676,
+    "kind": "parking"
+   },
+   "review": {
+    "best": "draft",
+    "dest": "draft",
+    "oneLiner": "draft",
+    "types": "draft"
+   },
+   "contestEntry": false,
+   "hidden": false,
+   "details": [
+    "연꽃",
+    "징검다리"
+   ],
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "osm:way/566754334"
+   }
+  },
+  {
+   "id": "s-075-gangju-sunflower",
+   "kind": "story",
+   "brunchNo": 75,
+   "brunchUrl": "https://brunch.co.kr/@caed5ea4c3d74d9/75",
+   "name": "함안 강주 해바라기 마을",
+   "region": "경남 함안",
+   "types": [
+    "yeoreumkkot"
+   ],
+   "visited": "2025-06-29",
+   "best": {
+    "from": 6,
+    "to": 7,
+    "note": "6월 하순~7월 중순",
+    "season": "초여름",
+    "tip": "축제 기간 이른 아침"
+   },
+   "oneLiner": "수만 평 언덕을 덮은 수백만 송이 해바라기",
+   "excerpt": "수만 평의 밭에 수백만 송이의 해바라기가 만개되어 해가 뜨는 방향으로 하늘을 올려다보고 있었다.",
+   "photos": [
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/9mSbhD_f23yfj0w9Chc8iuh_b2s.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": "강주해바라기"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/XEayepVtMVdxgyuG4uRXL5oD1XY.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/fijz8dc3lRU0-qu7ZB2HvocA28A.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": ""
+    }
+   ],
+   "spot": {
+    "lat": 35.3285,
+    "lng": 128.3877
+   },
+   "dest": {
+    "name": "강주해바라기마을 제1주차장",
+    "lat": 35.328509,
+    "lng": 128.387745,
+    "kind": "parking"
+   },
+   "review": {
+    "best": "draft",
+    "dest": "draft",
+    "oneLiner": "draft",
+    "types": "draft"
+   },
+   "contestEntry": false,
+   "hidden": false,
+   "details": [
+    "해바라기"
+   ],
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "osm:way/842058832"
+   },
+   "checkAdmission": true
+  },
+  {
+   "id": "s-076-bomunho-sunrise",
+   "kind": "story",
+   "brunchNo": 76,
+   "brunchUrl": "https://brunch.co.kr/@caed5ea4c3d74d9/76",
+   "name": "경주 보문호 일출",
+   "region": "경북 경주",
+   "types": [
+    "ilchul"
+   ],
+   "visited": "2025-08-03",
+   "oneLiner": "호수 물속에서 한 번 더 피어나는 붉은 아침 해",
+   "excerpt": "보문호 호반 둘레길을 따라 걸어가니 머언 산 위로 인사를 하는 붉은 태양이 보문호 물속에서도 더 붉게 피어있었다.",
+   "photos": [
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/VRIBt1Dsk7VwIzFVUfGMnKDmeM4.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/yK1tuJUhCnJF-6_aWDRmbqIX45c.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/iJTeY2aJAJzEJX4lEqBTGAhdT4U.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": "보문호의 일출"
+    }
+   ],
+   "spot": {
+    "lat": 35.8425,
+    "lng": 129.279
+   },
+   "dest": {
+    "name": "보문호 호반 공영주차장",
+    "lat": 35.840915,
+    "lng": 129.286462,
+    "kind": "parking"
+   },
+   "review": {
+    "best": "draft",
+    "dest": "draft",
+    "oneLiner": "draft",
+    "types": "draft"
+   },
+   "contestEntry": false,
+   "hidden": false,
+   "details": [
+    "호수 일출",
+    "호반길"
+   ],
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "osm:way/711296807"
+   }
+  },
+  {
+   "id": "s-078-o2-unhae",
+   "kind": "story",
+   "brunchNo": 78,
+   "brunchUrl": "https://brunch.co.kr/@caed5ea4c3d74d9/78",
+   "name": "태백 오투전망대 운해",
+   "region": "강원 태백",
+   "types": [
+    "unhae"
+   ],
+   "visited": "2025-08-05",
+   "best": {
+    "from": 7,
+    "to": 10,
+    "note": "7~10월",
+    "season": "여름~가을",
+    "tip": "비 갠 뒤 이른 아침"
+   },
+   "oneLiner": "발아래 산줄기마다 흰 운해가 번지는 고원 전망대",
+   "excerpt": "아내가 전망대에 올라 운무가 펼쳐가는 다양한 수채화를 보더니 생의 가장 아름다운 운무를 본다며 이번 여행은 이 운무의 수많은 작품을 보는 것으로 충분하다고 소감을 말했다.",
+   "photos": [
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/iicEdF_u2UoSuoNyD_-C9zCHSxc.jpg",
+     "w": 1369,
+     "h": 640,
+     "cap": "오투전망대의 아침 운해"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/SLDyWKN4ZWlJXGZ8vVJ29v-UkI0.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": "오투전망대에서 아침 운해"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/6Svbz98vHARebNdOrPyt7TT4miU.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": "오투전망대의 아침 운해"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/9CFUkhswmMY6qNh06utXXwREtuY.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": "오투전망대 아침 운해"
+    }
+   ],
+   "spot": {
+    "lat": 37.1591,
+    "lng": 128.9492
+   },
+   "dest": {
+    "name": "오투리조트 주차장",
+    "lat": 37.159119,
+    "lng": 128.949183,
+    "kind": "parking"
+   },
+   "review": {
+    "best": "draft",
+    "dest": "draft",
+    "oneLiner": "draft",
+    "types": "draft"
+   },
+   "contestEntry": false,
+   "hidden": false,
+   "details": [
+    "운해",
+    "산그리메"
+   ],
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "osm:way/536796895"
+   }
+  },
+  {
+   "id": "s-079-hwasan-sunrise",
+   "kind": "story",
+   "brunchNo": 79,
+   "brunchUrl": "https://brunch.co.kr/@caed5ea4c3d74d9/79",
+   "name": "화산마을 운해바다 일출",
+   "region": "경북 군위",
+   "types": [
+    "unhae"
+   ],
+   "visited": "2025-09-21",
+   "best": {
+    "from": 9,
+    "to": 11,
+    "note": "9~11월",
+    "season": "가을",
+    "tip": "일교차 큰 맑은 새벽"
+   },
+   "oneLiner": "솜이불 같은 운해 위로 해가 솟는 풍차 전망대",
+   "excerpt": "거대한 하얀 솜이불을 덮고 늦잠을 자고 있는 산들은 운해 이불을 덮고 있는데 높은 산들은 솜이불 밖으로 머리를 내밀어 아름다운 수채화를 그리고 있었다.",
+   "photos": [
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/Zms7heqnJEd_GxfK0_zoMMWtfIM.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/ajer57bteNDXUFsSP6NUh5hg52c.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/gQ1z0SbUYedlClk7UqlF38v18_w.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/G81a0NFZyDzRFThsXUZaG_wyEIY.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": ""
+    }
+   ],
+   "spot": {
+    "lat": 36.1057484,
+    "lng": 128.7785625
+   },
+   "dest": {
+    "name": "군위 화산산성 풍차전망대 주차장",
+    "lat": 36.1055469,
+    "lng": 128.7788388,
+    "kind": "parking"
+   },
+   "review": {
+    "best": "draft",
+    "dest": "draft",
+    "oneLiner": "draft",
+    "types": "draft"
+   },
+   "contestEntry": false,
+   "hidden": false,
+   "details": [
+    "운해",
+    "풍차",
+    "일출"
+   ],
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
+  },
+  {
+   "id": "s-080-gamaksan-aster",
+   "kind": "story",
+   "brunchNo": 80,
+   "brunchUrl": "https://brunch.co.kr/@caed5ea4c3d74d9/80",
+   "name": "감악산 아스타국화와 구절초",
+   "region": "경남 거창",
+   "types": [
+    "kkotmureut"
+   ],
+   "visited": "2025-09-28",
+   "best": {
+    "from": 9,
+    "to": 10,
+    "note": "9월 하순~10월 초",
+    "season": "초가을",
+    "tip": "맑은 날 이른 아침"
+   },
+   "oneLiner": "보랏빛 국화 파도와 하얀 구절초가 덮은 산마루",
+   "excerpt": "붉은 보라색 파도가 산사면에서 너울거리고 있는 이른 아침인데 행락객들은 만개된 아스타국화 파도 속으로 거닐며 자신의 가장 멋진 포즈를 취하며 사진을 찍고 또 찍고 있었다.",
+   "photos": [
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/FLcZm0o1oM6ETcSIDj4PlnoGjmY.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/DA74vgSq7cqsnWBA3TLtff8z4lg.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": "아스타국화"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/tOW8WSUHEBkcAU5qaMKnx7MDQCo.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": "구절초"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/OXEbUQEq7a-39fVw3RRMiKWNNlo.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": ""
+    }
+   ],
+   "spot": {
+    "lat": 35.5903362,
+    "lng": 127.9183245
+   },
+   "dest": {
+    "name": "감악산 별바람언덕 주차장",
+    "lat": 35.5910167,
+    "lng": 127.9202235,
+    "kind": "parking"
+   },
+   "review": {
+    "best": "draft",
+    "dest": "draft",
+    "oneLiner": "draft",
+    "types": "draft"
+   },
+   "contestEntry": false,
+   "hidden": false,
+   "details": [
+    "아스타국화",
+    "구절초"
+   ],
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
+  },
+  {
+   "id": "s-081-jangtaesan-metasequoia",
+   "kind": "story",
+   "brunchNo": 81,
+   "brunchUrl": "https://brunch.co.kr/@caed5ea4c3d74d9/81",
+   "name": "장태산 메타세쿼이아 숲",
+   "region": "대전 서구",
+   "types": [
+    "sinrok"
+   ],
+   "visited": "2025-10-04",
+   "best": {
+    "from": 5,
+    "to": 10,
+    "note": "5~10월",
+    "season": "봄~가을",
+    "tip": "11월엔 갈색 단풍"
+   },
+   "oneLiner": "하늘을 찌를 듯 늘어선 메타세쿼이아 숲길",
+   "excerpt": "이른 아침에 눈을 뜨니 먹구름 가득 덮은 하늘에 메타세콰이어가 하늘을 찌를 듯이 울창한 숲을 펼쳐놓았다.",
+   "photos": [
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/WMW23HanPp8IlCPgSpshPMXaLBY.jpg",
+     "w": 640,
+     "h": 1370,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/JcM1M1xsZx6fmjbNmuCxDsKTvzs.jpg",
+     "w": 640,
+     "h": 1370,
+     "cap": ""
+    }
+   ],
+   "spot": {
+    "lat": 36.2191,
+    "lng": 127.3377
+   },
+   "dest": {
+    "name": "장태산자연휴양림 주차장",
+    "lat": 36.217247,
+    "lng": 127.336879,
+    "kind": "parking"
+   },
+   "review": {
+    "best": "draft",
+    "dest": "draft",
+    "oneLiner": "draft",
+    "types": "draft"
+   },
+   "contestEntry": false,
+   "hidden": false,
+   "details": [
+    "메타세쿼이아",
+    "숲길"
+   ],
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "osm:way/1453235499"
+   }
+  },
+  {
+   "id": "s-082-daecheongho-trail",
+   "kind": "story",
+   "brunchNo": 82,
+   "brunchUrl": "https://brunch.co.kr/@caed5ea4c3d74d9/82",
+   "name": "대청호 오백리길 4구간",
+   "region": "대전 동구",
+   "types": [
+    "unhae",
+    "sinrok"
+   ],
+   "visited": "2025-10-06",
+   "best": {
+    "from": 9,
+    "to": 11,
+    "note": "9~11월",
+    "season": "가을",
+    "tip": "바람 없는 이른 아침"
+   },
+   "oneLiner": "물안개 걸린 호숫가를 따라 걷는 숲속 데크길",
+   "excerpt": "약간은 몽환적인 대청호의 아침 세상은 감탄사가 발자욱마다 물결치며 가슴으로 스며들었다.",
+   "photos": [
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/pg6Gwmnw64tuUDuTQbKaFUzsrp4.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": "대청호 윗말뫼 주차장에서"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/u3NtU9iHaVrmFhVLe6aHX2FFypA.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": "슬픈연가 촬영지"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/ff0e-n37Soym-LagIHYXduypMmk.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": ""
+    }
+   ],
+   "spot": {
+    "lat": 36.3807,
+    "lng": 127.4825
+   },
+   "dest": {
+    "name": "윗말뫼 주차장",
+    "lat": 36.38588,
+    "lng": 127.486622,
+    "kind": "parking"
+   },
+   "review": {
+    "best": "draft",
+    "dest": "draft",
+    "oneLiner": "draft",
+    "types": "draft"
+   },
+   "contestEntry": false,
+   "hidden": false,
+   "details": [
+    "호수 데크길",
+    "물안개"
+   ],
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "osm:way/1539613083"
+   }
+  },
+  {
+   "id": "s-083-wollyubong",
+   "kind": "story",
+   "brunchNo": 83,
+   "brunchUrl": "https://brunch.co.kr/@caed5ea4c3d74d9/83",
+   "name": "영동 월류봉 둘레길",
+   "region": "충북 영동",
+   "types": [
+    "gyegok",
+    "danpung"
+   ],
+   "visited": "2025-10-07",
+   "best": {
+    "from": 10,
+    "to": 11,
+    "note": "10월 하순~11월",
+    "season": "가을",
+    "tip": "단풍 드는 맑은 날"
+   },
+   "oneLiner": "달도 머물다 간다는 바위 봉우리 아래 강변 데크길",
+   "excerpt": "우거진 녹음 사이로 설치된 데크 산책로 아래는 황톳빛 급류가 흘러가고, 산사면의 작은 계곡들은 폭포를 만들어 평소에는 만날 수 없는 풍광을 펼쳐놓았다.",
+   "photos": [
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/-V0Yq5TOPyDE6PPLhCmpGHPNjdE.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/YYKy5cEXwlvPHmJRmEwCPzuWFZs.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/SSm8QMxVg2peq8pSm7yxs4-B8uY.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/gA3-3nFuGJo7qqlUZjscGFuJPkM.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": ""
+    }
+   ],
+   "spot": {
+    "lat": 36.2282,
+    "lng": 127.8876
+   },
+   "dest": {
+    "name": "월류봉 광장 주차장",
+    "lat": 36.234104,
+    "lng": 127.88917,
+    "kind": "parking"
+   },
+   "review": {
+    "best": "draft",
+    "dest": "draft",
+    "oneLiner": "draft",
+    "types": "draft"
+   },
+   "contestEntry": false,
+   "hidden": false,
+   "details": [
+    "바위봉우리",
+    "강변 데크길"
+   ],
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "osm:node/5187546525",
+    "dest": "osm:way/1268561421"
+   }
+  },
+  {
+   "id": "s-084-buryeongsa-autumn",
+   "kind": "story",
+   "brunchNo": 84,
+   "brunchUrl": "https://brunch.co.kr/@caed5ea4c3d74d9/84",
+   "name": "불영사 만추",
+   "region": "경북 울진",
+   "types": [
+    "danpung"
+   ],
+   "visited": "2025-11-12",
+   "best": {
+    "from": 10,
+    "to": 11,
+    "note": "10월 하순~11월 중순",
+    "season": "늦가을",
+    "tip": "햇살 드는 오전"
+   },
+   "oneLiner": "선홍빛 단풍과 노란 은행잎이 연못에 비치는 절집",
+   "excerpt": "불영사 경내를 햇살과 함께 들어가니 붉은 단풍들은 선홍빛으로 잎마다 빛나고, 돌담과 길가 가로수, 숲속에 자리한 은행잎들은 노오란 옷들을 입었으며 산자락의 활엽수는 모두가 황금빛으로 빛나고 있었다.",
+   "photos": [
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/YE2PhpcPaR0ipN8lq-QK2r15-78.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": "불영사"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/HOYZpn_KVQ5yWjMsh5sOszG_wNE.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": "불영사"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/zsKP9pv3npGKbIBr6NQnd67qEEE.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": "불영사"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/w2Jg2UurNuApNbZb7g84UBa1amk.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": "불영사 들어가는 길"
+    }
+   ],
+   "spot": {
+    "lat": 36.9409485,
+    "lng": 129.2741811
+   },
+   "dest": {
+    "name": "불영사 주차장",
+    "lat": 36.9407384,
+    "lng": 129.273693,
+    "kind": "parking"
+   },
+   "review": {
+    "best": "draft",
+    "dest": "draft",
+    "oneLiner": "draft",
+    "types": "draft"
+   },
+   "contestEntry": false,
+   "hidden": false,
+   "details": [
+    "단풍",
+    "은행나무",
+    "연못"
+   ],
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
+  },
+  {
+   "id": "s-085-tongiljeon-ginkgo",
+   "kind": "story",
+   "brunchNo": 85,
+   "brunchUrl": "https://brunch.co.kr/@caed5ea4c3d74d9/85",
+   "name": "경주 통일전 은행나무길",
+   "region": "경북 경주",
+   "types": [
+    "danpung"
+   ],
+   "visited": "2025-11-16",
+   "best": {
+    "from": 11,
+    "to": 11,
+    "note": "11월 초~중순",
+    "season": "늦가을",
+    "tip": "해 뜰 무렵"
+   },
+   "oneLiner": "아침 해에 더 노랗게 빛나는 은행나무 가로수길",
+   "excerpt": "길 위의 노란 카펫을 밟으며 산마루를 솟아오르는 태양을 맞이하니 노오란 은행잎들이 더욱 선명한 노란색으로 반짝인다.",
+   "photos": [
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/vv0vk1YlSMYvzYiW1MrYg5L3Bzo.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/X0tXQcgEm-sRSGjpi459jkfqR_Y.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/wbo5d3prjt6pn06JE2XCwlf3nfk.jpg",
+     "w": 1369,
+     "h": 640,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/-tgrk3eU60l5tZwzHfyJH8g-S0Q.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": ""
+    }
+   ],
+   "spot": {
+    "lat": 35.7975,
+    "lng": 129.2445
+   },
+   "dest": {
+    "name": "통일전 주차장",
+    "lat": 35.79881,
+    "lng": 129.242424,
+    "kind": "parking"
+   },
+   "review": {
+    "best": "draft",
+    "dest": "draft",
+    "oneLiner": "draft",
+    "types": "draft"
+   },
+   "contestEntry": false,
+   "hidden": false,
+   "details": [
+    "은행나무",
+    "가로수길"
+   ],
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "osm:way/469086171"
+   }
+  },
+  {
+   "id": "s-085-cheonnyeon-forest",
+   "kind": "story",
+   "brunchNo": 85,
+   "brunchUrl": "https://brunch.co.kr/@caed5ea4c3d74d9/85",
+   "name": "경주 천년숲정원 메타세쿼이아",
+   "region": "경북 경주",
+   "types": [
+    "danpung"
+   ],
+   "visited": "2025-11-16",
+   "best": {
+    "from": 11,
+    "to": 11,
+    "note": "11월 중순",
+    "season": "늦가을",
+    "tip": "햇살 비치는 오전"
+   },
+   "oneLiner": "갈색 옷을 입은 메타세쿼이아가 하늘에 닿은 숲",
+   "excerpt": "경주를 찾을 때마다 즐겨 찾는 천년의 숲인데 메타세콰이어가 갈색으로 가을 옷을 입고 있을 때가 나는 가장 좋았다.",
+   "photos": [
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/WFV7D_3uHHn9aqc-61ci9QQzxbg.jpg",
+     "w": 640,
+     "h": 1370,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/Q4wQ39Etqr8tnpxUtgu6Tg-tS5w.jpg",
+     "w": 640,
+     "h": 1370,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/4XeSnHcNT12FzhEjALaoH5XNcJw.jpg",
+     "w": 640,
+     "h": 1370,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/-TXNUhil44pQU50CdO6LDTEdcDE.jpg",
+     "w": 640,
+     "h": 1370,
+     "cap": ""
+    }
+   ],
+   "spot": {
+    "lat": 35.8345,
+    "lng": 129.2535
+   },
+   "dest": {
+    "name": "경북천년숲정원 주차장",
+    "lat": 35.833286,
+    "lng": 129.251442,
+    "kind": "parking"
+   },
+   "review": {
+    "best": "draft",
+    "dest": "draft",
+    "oneLiner": "draft",
+    "types": "draft"
+   },
+   "contestEntry": false,
+   "hidden": false,
+   "details": [
+    "메타세쿼이아",
+    "갈색 단풍"
+   ],
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "osm:way/1554792850"
+   }
+  },
+  {
+   "id": "s-085-bulguksa-maple",
+   "kind": "story",
+   "brunchNo": 85,
+   "brunchUrl": "https://brunch.co.kr/@caed5ea4c3d74d9/85",
+   "name": "경주 불국사 단풍",
+   "region": "경북 경주",
+   "types": [
+    "danpung"
+   ],
+   "visited": "2025-11-16",
+   "best": {
+    "from": 11,
+    "to": 11,
+    "note": "11월 중순~하순",
+    "season": "늦가을",
+    "tip": "맑은 날 오전"
+   },
+   "oneLiner": "붉은 단풍 터널과 연못이 이어지는 천년 고찰",
+   "excerpt": "보문호의 은행나무 아래에서 커피를 마시고, 불국사의 붉은 단풍 터널을 거닐며 가까운 경주가 단풍 여행의 최고임을 알았다.",
+   "photos": [
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/bUG8CCa2ei8nb8uueHoJuvlFE_k.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/Sb1H9cCnB7QeBNMg_ZSqmtYb91I.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/ZJPqwdZ0Po9qaA5r4iutz2mI7bA.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/wCNkWTLVhHGgXAdB67yxwCwsZs8.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": ""
+    }
+   ],
+   "spot": {
+    "lat": 35.7894,
+    "lng": 129.332
+   },
+   "dest": {
+    "name": "불국사 정문주차장",
+    "lat": 35.786558,
+    "lng": 129.332375,
+    "kind": "parking"
+   },
+   "review": {
+    "best": "draft",
+    "dest": "draft",
+    "oneLiner": "draft",
+    "types": "draft"
+   },
+   "contestEntry": false,
+   "hidden": false,
+   "details": [
+    "단풍 터널",
+    "연못"
+   ],
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "osm:way/382655135",
+    "dest": "osm:way/161547558"
+   }
+  },
+  {
+   "id": "s-086-myeongseon-sunrise",
+   "kind": "story",
+   "brunchNo": 86,
+   "brunchUrl": "https://brunch.co.kr/@caed5ea4c3d74d9/86",
+   "name": "울산 진하 명선교 일출",
+   "region": "울산 울주",
+   "types": [
+    "ilchul",
+    "bada"
+   ],
+   "visited": "2025-12-07",
+   "oneLiner": "고깃배가 꼬리를 그리며 나가는 바다 위 해돋이",
+   "excerpt": "붉은 태양이 수평선 위로 느린 듯이 빠르게 솟아오르니 사진작가들의 셔터 누르는 소리가 요란하다.",
+   "photos": [
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/2hjHE8AgsXMJ0K7UEsr33JgFE6M.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": "강양항의 일출"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/MvZ2nRTf-K8i_N2TyI2JM2Dk0s8.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": "강양항 해뜨기 전"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/LIApaHTDAFUyulezCEjECc_IyD8.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": "진하해수욕장의 명성도"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/AgBHC2LoZpp-mlZM67_35ZmLcYI.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": "강양항의 일출"
+    }
+   ],
+   "spot": {
+    "lat": 35.3878,
+    "lng": 129.3445
+   },
+   "dest": {
+    "name": "진하해수욕장 공영주차장",
+    "lat": 35.3855,
+    "lng": 129.3455,
+    "kind": "parking"
+   },
+   "review": {
+    "best": "draft",
+    "dest": "draft",
+    "oneLiner": "draft",
+    "types": "draft"
+   },
+   "contestEntry": false,
+   "hidden": false,
+   "details": [
+    "일출",
+    "명선도"
+   ],
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "manual"
+   }
+  },
+  {
+   "id": "s-087-songdo-coast",
+   "kind": "story",
+   "brunchNo": 87,
+   "brunchUrl": "https://brunch.co.kr/@caed5ea4c3d74d9/87",
+   "name": "부산 송도 용궁구름다리 해안길",
+   "region": "부산 서구",
+   "types": [
+    "bada",
+    "ilchul"
+   ],
+   "visited": "2025-12-14",
+   "oneLiner": "절벽 따라 이어진 해안길과 바다 위 구름다리",
+   "excerpt": "햇살은 바다에 은비늘 카펫을 펼치고 용오름 전망대는 머리띠를 동여매고 25년의 며칠 남지 않은 오늘을 더 아름답게 꾸미고 있었다.",
+   "photos": [
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/gQnuTnDfqhbNvZ8TtzaW5da6K8I.jpg",
+     "w": 1374,
+     "h": 640,
+     "cap": "용오름 전망대"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/s7jk42JzHz2VPeQZ6AJDAgY0Smo.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": "암남 주차장에서 일출"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/7AsAEkIbrMEkAnVSezxppvoyYaE.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": "케이블카에서 내려다본 풍경"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/YpNtmvkNwxFOXl1-IvoOGRl9uRc.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": "케이블카에서 내려다본 해안 산책로"
+    }
+   ],
+   "spot": {
+    "lat": 35.061921,
+    "lng": 129.021948
+   },
+   "dest": {
+    "name": "송도 암남공원 공영주차장",
+    "lat": 35.063148,
+    "lng": 129.020632,
+    "kind": "parking"
+   },
+   "review": {
+    "best": "draft",
+    "dest": "draft",
+    "oneLiner": "draft",
+    "types": "draft"
+   },
+   "contestEntry": false,
+   "hidden": false,
+   "details": [
+    "해안 산책로",
+    "구름다리"
+   ],
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "osm:node/11247798205",
+    "dest": "osm:way/1217945681"
+   }
+  },
+  {
+   "id": "s-088-upo-winter",
+   "kind": "story",
+   "brunchNo": 88,
+   "brunchUrl": "https://brunch.co.kr/@caed5ea4c3d74d9/88",
+   "name": "겨울 우포늪 산밖벌",
+   "region": "경남 창녕",
+   "types": [
+    "eoksae"
+   ],
+   "visited": "2026-01-25",
+   "oneLiner": "꽁꽁 언 늪과 마른 갈대 위로 새들이 노니는 겨울 습지",
+   "excerpt": "산밖벌 산책을 하는데 물과 얼음 위에 백로와 청둥오리가 무리 지어 놀고 있었고, 기온은 차가운데 바람은 쉬어가고 햇살이 내려앉아 있으니 산책하기가 너무 좋아서 나는 행복했다.",
+   "photos": [
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/ZKdkmkub6kATHxsHtmuG25XKzx0.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/xy2cp5tSt245NvGGxooKfZon6bw.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": "제2전망대에서"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/xBcKf0wbTmPbR5Z9v8XStDgGOPY.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": "우포늪"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/2dNmTNfIxmwwpI4P-DFtw9a2Opo.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": "산밖벌"
+    }
+   ],
+   "spot": {
+    "lat": 35.5537,
+    "lng": 128.4146
+   },
+   "dest": {
+    "name": "우포늪 무료주차장",
+    "lat": 35.5435059,
+    "lng": 128.4174514,
+    "kind": "parking"
+   },
+   "review": {
+    "best": "draft",
+    "dest": "draft",
+    "oneLiner": "draft",
+    "types": "draft"
+   },
+   "contestEntry": false,
+   "hidden": false,
+   "details": [
+    "겨울 습지",
+    "백로",
+    "버드나무"
+   ],
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "osm:way/37220944",
+    "dest": "manual"
+   }
+  },
+  {
+   "id": "s-089-suncheonman-reeds",
+   "kind": "story",
+   "brunchNo": 89,
+   "brunchUrl": "https://brunch.co.kr/@caed5ea4c3d74d9/89",
+   "name": "순천만 갈대숲과 일몰",
+   "region": "전남 순천",
+   "types": [
+    "eoksae"
+   ],
+   "visited": "2026-02-15",
+   "best": {
+    "from": 10,
+    "to": 11,
+    "note": "10월~11월",
+    "season": "가을",
+    "tip": "해 질 녘 썰물 때"
+   },
+   "oneLiner": "끝없는 갈대숲과 물길에 번지는 붉은 노을",
+   "excerpt": "물 빠진 뻘에 해가 서산을 넘어가면서 연출하는 붉은 노을은 나에게 신비로운 감명을 준다.",
+   "photos": [
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/brlU9U96hWhn4xUT9pBPs9joB-c.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/V5stNKaCzChMAopIadSeUxfXvF8.jpg",
+     "w": 1369,
+     "h": 640,
+     "cap": "용산전망대의 일몰"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/fKkcl7rZcWhXgk9h7KXLkff-4CU.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/hVPiv7sQ6iSTjOVVKCy5223z8gU.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": ""
+    }
+   ],
+   "spot": {
+    "lat": 34.872082,
+    "lng": 127.517425
+   },
+   "dest": {
+    "name": "순천만습지 주차장",
+    "lat": 34.887441,
+    "lng": 127.509382,
+    "kind": "parking"
+   },
+   "review": {
+    "best": "draft",
+    "dest": "draft",
+    "oneLiner": "draft",
+    "types": "draft"
+   },
+   "contestEntry": false,
+   "hidden": false,
+   "details": [
+    "갈대",
+    "갯벌 노을",
+    "흑두루미"
+   ],
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "osm:node/11233673837",
+    "dest": "osm:way/481373133"
+   },
+   "checkAdmission": true
+  },
+  {
+   "id": "s-090-tongdosa-jajangmae",
+   "kind": "story",
+   "brunchNo": 90,
+   "brunchUrl": "https://brunch.co.kr/@caed5ea4c3d74d9/90",
+   "name": "양산 통도사 자장매",
+   "region": "경남 양산",
+   "types": [
+    "maehwa"
+   ],
+   "visited": "2026-02-22",
+   "best": {
+    "from": 2,
+    "to": 3,
+    "note": "2월 중순~3월 초",
+    "season": "이른 봄",
+    "tip": "이른 아침"
+   },
+   "oneLiner": "천년 고찰 처마 아래 그윽한 향을 피우는 홍매화",
+   "excerpt": "일주문 들어가니 우측에 홍매화(자장매)가 그윽한 향기를 경내에 피우면서 수많은 사람들의 발길을 붙들고, 사람들은 각자의 카메라 속에 홍매화를 넣는다고 셔터를 누르고 있었다.",
+   "photos": [
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/70shv4Ea13FQyYhANXoqcVYvY4k.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/O_RnaMRupgLFpSRE7w3CyjeBEbM.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": "통도사 자장매^^"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/7cn99I6T7tVy1V4mkVuVzsaeDW8.jpg",
+     "w": 640,
+     "h": 1286,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/tsOLeiagfca7e225o5xtw4VXiXY.jpg",
+     "w": 640,
+     "h": 1370,
+     "cap": ""
+    }
+   ],
+   "spot": {
+    "lat": 35.488,
+    "lng": 129.0637
+   },
+   "dest": {
+    "name": "통도사 주차장",
+    "lat": 35.487512,
+    "lng": 129.067044,
+    "kind": "parking"
+   },
+   "review": {
+    "best": "draft",
+    "dest": "draft",
+    "oneLiner": "draft",
+    "types": "draft"
+   },
+   "contestEntry": false,
+   "hidden": false,
+   "details": [
+    "홍매화",
+    "고찰"
+   ],
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "osm:way/472095264",
+    "dest": "osm:way/472094215"
+   }
+  },
+  {
+   "id": "s-091-yeongcheondam-cherry",
+   "kind": "story",
+   "brunchNo": 91,
+   "brunchUrl": "https://brunch.co.kr/@caed5ea4c3d74d9/91",
+   "name": "영천댐 백리 벚꽃길",
+   "region": "경북 영천",
+   "types": [
+    "beotkkot"
+   ],
+   "visited": "2026-04-05",
+   "best": {
+    "from": 4,
+    "to": 4,
+    "note": "4월 초",
+    "season": "봄",
+    "tip": "물안개 피는 이른 아침"
+   },
+   "oneLiner": "물안개 피는 호수를 따라 이어진 하얀 벚꽃길",
+   "excerpt": "영천댐 수문 있는 곳으로 올라가니 백리 벚꽃길에 모든 벚나무는 하얀 꽃을 피워놓았는데 영천댐의 수면에는 옅은 물안개가 피어오르고 개나리는 벚나무 아래서 노란 봄의 노래를 속삭이듯이 부르고 있었다.",
+   "photos": [
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/yKVoI7OZMaljC7akr6EnHF5ibqU.jpg",
+     "w": 1385,
+     "h": 640,
+     "cap": "영천댐"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/-IMQkV5ud7_xBchT1QccyU5OS6g.jpg",
+     "w": 1385,
+     "h": 640,
+     "cap": "영천댐"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/f0gtwnBAT2y-Etc9aUqXLRUEt3Y.jpg",
+     "w": 1385,
+     "h": 640,
+     "cap": "백리벚꽃길"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/4ZlAI9wvIJwtHRmG7xg0F6Taexk.jpg",
+     "w": 1386,
+     "h": 640,
+     "cap": "인공습지공원"
+    }
+   ],
+   "spot": {
+    "lat": 36.0621154,
+    "lng": 129.0153308
+   },
+   "dest": {
+    "name": "영천댐 공원 주차장",
+    "lat": 36.0625,
+    "lng": 129.0145,
+    "kind": "parking"
+   },
+   "review": {
+    "best": "draft",
+    "dest": "draft",
+    "oneLiner": "draft",
+    "types": "draft"
+   },
+   "contestEntry": false,
+   "hidden": false,
+   "details": [
+    "벚꽃",
+    "호수",
+    "개나리"
+   ],
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "osm:way/727911127",
+    "dest": "manual"
+   }
+  },
+  {
+   "id": "s-092-munsuam-sunrise",
+   "kind": "story",
+   "brunchNo": 92,
+   "brunchUrl": "https://brunch.co.kr/@caed5ea4c3d74d9/92",
+   "name": "고성 문수암 다도해 일출",
+   "region": "경남 고성",
+   "types": [
+    "ilchul",
+    "bada"
+   ],
+   "visited": "2026-04-26",
+   "oneLiner": "절벽 위 암자에서 내려다보는 다도해와 해돋이",
+   "excerpt": "구름에 가리어 만나지 못할 것 같았던 태양이 떠오르면서 구름이 일순간 자리를 비켜주어 둥근 태양과 아침 인사를 나누었다.",
+   "photos": [
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/6AL9lDXmga9WPXfcMlzvfxZaL_4.jpg",
+     "w": 1385,
+     "h": 640,
+     "cap": "무이산 정상에서 내려다본 약사전"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/dEZd37VNRx03A6iiQgzhqfwps2k.jpg",
+     "w": 1385,
+     "h": 640,
+     "cap": "문수암 주차장에서 바라본 다도해"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/I3EjknpFaRw56XsUXEoHcSgsjRw.jpg",
+     "w": 1385,
+     "h": 640,
+     "cap": "문수암 주차장에서 일출"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/9nkh6BtPjWehdaZ2ZjelBGvohOw.jpg",
+     "w": 1384,
+     "h": 640,
+     "cap": ""
+    }
+   ],
+   "spot": {
+    "lat": 34.979028,
+    "lng": 128.211509
+   },
+   "dest": {
+    "name": "문수암 주차장",
+    "lat": 34.978429,
+    "lng": 128.211231,
+    "kind": "parking"
+   },
+   "review": {
+    "best": "draft",
+    "dest": "draft",
+    "oneLiner": "draft",
+    "types": "draft"
+   },
+   "contestEntry": false,
+   "hidden": false,
+   "details": [
+    "다도해",
+    "일출"
+   ],
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "osm:way/1268942582",
+    "dest": "osm:way/1533450592"
+   }
+  },
+  {
+   "id": "s-093-odosan-sunrise",
+   "kind": "story",
+   "brunchNo": 93,
+   "brunchUrl": "https://brunch.co.kr/@caed5ea4c3d74d9/93",
+   "name": "합천 오도산 전망대 일출",
+   "region": "경남 합천",
+   "types": [
+    "ilchul",
+    "unhae"
+   ],
+   "visited": "2026-05-17",
+   "oneLiner": "발아래 산들이 키재기하는 산꼭대기 해돋이",
+   "excerpt": "오도산 전망대는 산의 꼭대기에 있고 주변에서 가장 높아서 바라보이는 산들이 발아래 무리 지어 키재기를 하고 있었다.",
+   "photos": [
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/kTLEno2vWN_4alwZ-I8kkRRUQE0.jpg",
+     "w": 1385,
+     "h": 640,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/8LtoP6mieoLRWL43KeiwhDRGHVk.jpg",
+     "w": 1385,
+     "h": 640,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/PQIseDjm-Z2__FRxI07snO-nbmI.jpg",
+     "w": 1385,
+     "h": 640,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/cdKjVtBWuIGr3V_b9dHLQ2BF-Vk.jpg",
+     "w": 1385,
+     "h": 640,
+     "cap": ""
+    }
+   ],
+   "spot": {
+    "lat": 35.6739155,
+    "lng": 128.075258
+   },
+   "dest": {
+    "name": "오도산 전망대 주차장",
+    "lat": 35.6735,
+    "lng": 128.0748,
+    "kind": "parking"
+   },
+   "review": {
+    "best": "draft",
+    "dest": "draft",
+    "oneLiner": "draft",
+    "types": "draft"
+   },
+   "contestEntry": false,
+   "hidden": false,
+   "details": [
+    "일출",
+    "산그리메"
+   ],
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "osm:node/1942545046",
+    "dest": "manual"
+   }
+  },
+  {
+   "id": "s-095-eosagil",
+   "kind": "story",
+   "brunchNo": 95,
+   "brunchUrl": "https://brunch.co.kr/@caed5ea4c3d74d9/95",
+   "name": "무주 구천동 어사길",
+   "region": "전북 무주",
+   "types": [
+    "gyegok"
+   ],
+   "visited": "2026-09-20",
+   "best": {
+    "from": 6,
+    "to": 10,
+    "note": "6~10월",
+    "season": "여름~가을",
+    "tip": "단풍 드는 10월 중순"
+   },
+   "oneLiner": "비취빛 계곡물을 따라 걷는 숲속 옛길",
+   "excerpt": "몇 그루의 나무들이 서둘러 가을을 시작하면서 녹색의 잎에 화장을 하기 시작하고 비취빛 계곡물과 어울려 눈길 닿는 곳마다 한 폭 한 폭의 그림을 그려놓았다.",
+   "photos": [
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/HVp1RQrpYDhEsUrjNscIpR5qlzA.jpg",
+     "w": 1384,
+     "h": 640,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/OlVGjF_OE0LrU8hA5IJy0Hrz5IY.jpg",
+     "w": 1385,
+     "h": 640,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/4CznhzWo3YpANWQI9M8NNa4meM0.jpg",
+     "w": 1386,
+     "h": 640,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/6E_FPBikWrL4xjadPYNU2AukBUI.jpg",
+     "w": 1384,
+     "h": 640,
+     "cap": ""
+    }
+   ],
+   "spot": {
+    "lat": 35.89,
+    "lng": 127.768
+   },
+   "dest": {
+    "name": "구천동탐방지원센터 주차장",
+    "lat": 35.895396,
+    "lng": 127.776496,
+    "kind": "parking"
+   },
+   "review": {
+    "best": "draft",
+    "dest": "draft",
+    "oneLiner": "draft",
+    "types": "draft"
+   },
+   "contestEntry": false,
+   "hidden": false,
+   "details": [
+    "계곡",
+    "숲길"
+   ],
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "osm:node/7588061242"
+   }
+  },
+  {
+   "id": "s-096-goraebul-sunrise",
+   "kind": "story",
+   "brunchNo": 96,
+   "brunchUrl": "https://brunch.co.kr/@caed5ea4c3d74d9/96",
+   "name": "영덕 고래불 해수욕장 일출",
+   "region": "경북 영덕",
+   "types": [
+    "ilchul",
+    "bada"
+   ],
+   "visited": "2026-09-24",
+   "oneLiner": "구름 한 점 없는 수평선을 뚫고 솟는 동해 해돋이",
+   "excerpt": "구름 한 점 없는 날 수평선을 올라오는 태양을 마주하면 숭고한 느낌이 든다.",
+   "photos": [
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/o2-sNlWwKU9dbgtQrRIVG6hRokY.jpg",
+     "w": 1386,
+     "h": 640,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/Afx2Pqs-R0TuO0PO0Xe7Vfl0A8s.jpg",
+     "w": 1387,
+     "h": 640,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/0KFOJlrcpz2zIM1rW5zqsCqbpII.jpg",
+     "w": 1385,
+     "h": 640,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/BSKSu7ASpyBcb2QVOy-HTTHh_-A.jpg",
+     "w": 1385,
+     "h": 640,
+     "cap": ""
+    }
+   ],
+   "spot": {
+    "lat": 36.598052,
+    "lng": 129.41174
+   },
+   "dest": {
+    "name": "고래불해수욕장 주차장",
+    "lat": 36.599682,
+    "lng": 129.411231,
+    "kind": "parking"
+   },
+   "review": {
+    "best": "draft",
+    "dest": "draft",
+    "oneLiner": "draft",
+    "types": "draft"
+   },
+   "contestEntry": false,
+   "hidden": false,
+   "details": [
+    "일출",
+    "파도"
+   ],
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "osm:way/1262656200",
+    "dest": "osm:way/473630876"
+   }
+  },
+  {
+   "id": "s-096-woljeongsa-fir",
+   "kind": "story",
+   "brunchNo": 96,
+   "brunchUrl": "https://brunch.co.kr/@caed5ea4c3d74d9/96",
+   "name": "오대산 월정사 전나무숲길",
+   "region": "강원 평창",
+   "types": [
+    "sinrok"
+   ],
+   "visited": "2026-09-24",
+   "best": {
+    "from": 5,
+    "to": 10,
+    "note": "5~10월",
+    "season": "봄~가을",
+    "tip": "맑은 날 오전"
+   },
+   "oneLiner": "하늘에 닿은 전나무 사이로 걷는 평탄한 숲길",
+   "excerpt": "또 사람을 겁내지 않고 산책을 함께 즐기는 다람쥐들과도 인증사진을 남기면서 하늘에 닿은 전나무 숲길을 걸었다.",
+   "photos": [
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/yQ6-iPWOGzD1scVw3Gnou1SW7BY.jpg",
+     "w": 640,
+     "h": 1385,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/6u-8rLbbHBBBwnSYibzBtEbRXSY.jpg",
+     "w": 640,
+     "h": 1385,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/IJouyXSG6IgyFodcQs0Sw7oMYPs.jpg",
+     "w": 1386,
+     "h": 640,
+     "cap": ""
+    }
+   ],
+   "spot": {
+    "lat": 37.728,
+    "lng": 128.595
+   },
+   "dest": {
+    "name": "월정사 주차장",
+    "lat": 37.730389,
+    "lng": 128.595315,
+    "kind": "parking"
+   },
+   "review": {
+    "best": "draft",
+    "dest": "draft",
+    "oneLiner": "draft",
+    "types": "draft"
+   },
+   "contestEntry": false,
+   "hidden": false,
+   "details": [
+    "전나무 숲길",
+    "다람쥐"
+   ],
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "manual",
+    "dest": "osm:way/1319746153"
+   }
+  },
+  {
+   "id": "s-097-balwangsan-yew",
+   "kind": "story",
+   "brunchNo": 97,
+   "brunchUrl": "https://brunch.co.kr/@caed5ea4c3d74d9/97",
+   "name": "발왕산 천년주목 숲길 가을",
+   "region": "강원 평창",
+   "types": [
+    "unhae"
+   ],
+   "visited": "2026-09-25",
+   "best": {
+    "from": 9,
+    "to": 10,
+    "note": "9월 하순~10월",
+    "season": "초가을",
+    "tip": "안개 낀 날"
+   },
+   "oneLiner": "안개 속 천 년 주목 사이로 걷는 산꼭대기 데크길",
+   "excerpt": "세월을 되돌아 상상해 보니 주목들이 삼국시대 때부터 살아온 듯하여 정말 시간여행을 하고 있다는 생각이 들었다.",
+   "photos": [
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/D_FZ0ldO8socHnKTU2LVL3HszYU.jpg",
+     "w": 640,
+     "h": 1385,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/UWXVU5QNX088NnRtAO_gbhZzr0I.jpg",
+     "w": 640,
+     "h": 1385,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/AtKegthfE1OpgLr4xuauo2dCzHA.jpg",
+     "w": 640,
+     "h": 1385,
+     "cap": "서울대 나무"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/q-rBxaMY-00e1XuRFZ4gHtpMlGg.jpg",
+     "w": 640,
+     "h": 1385,
+     "cap": ""
+    }
+   ],
+   "spot": {
+    "lat": 37.6117922,
+    "lng": 128.6719286
+   },
+   "dest": {
+    "name": "용평리조트 발왕산 케이블카 주차장",
+    "lat": 37.6432064,
+    "lng": 128.6781514,
+    "kind": "parking"
+   },
+   "review": {
+    "best": "draft",
+    "dest": "draft",
+    "oneLiner": "draft",
+    "types": "draft"
+   },
+   "contestEntry": false,
+   "hidden": false,
+   "details": [
+    "주목",
+    "안개 숲",
+    "데크길"
    ],
    "coordSource": "manual",
    "coordRef": {
