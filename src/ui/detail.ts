@@ -315,7 +315,9 @@ export function createDetail(d: DetailDeps): Detail {
         /* 사용자가 취소 */
       }
     };
-    share.addEventListener('click', () => void doShare('detail', `${s.name} · ${APP_NAME}`, s.oneLiner));
+    // 공유 문장(D58): '{장면 이름}({지역}) · 추천 시기 {추천 시기}' — 지역은 region(도·시군) 그대로, 추천 시기가 없으면 이름(지역)만
+    const shareText = `${s.name}(${s.region})${s.best?.note ? ` · 추천 시기 ${s.best.note}` : ''}`;
+    share.addEventListener('click', () => void doShare('detail', `${s.name} · ${APP_NAME}`, shareText));
     visitBox = createVisitBox({
       win,
       scene: s,

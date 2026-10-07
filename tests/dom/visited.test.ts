@@ -150,7 +150,7 @@ describe('F4-AC5: 도장 찍히는 순간', () => {
     expect(document.activeElement?.textContent?.trim()).toBe('확인');
   });
 
-  it('F4-AC9: [카톡으로 알리기]는 공유 창에 "○○에 다녀왔어요 — 이맘때 풍경"과 장면 링크, 통계 share(where=stamp)', async () => {
+  it('F4-AC9·D58: [카톡으로 알리기]는 공유 창에 "○○에 다녀왔어요. 이맘때 풍경에서 보고 찾아갔어요."와 장면 링크, 통계 share(where=stamp)', async () => {
     const share = vi.fn(async (_d: ShareData) => {});
     Object.defineProperty(navigator, 'share', { value: share, configurable: true });
     await stampNow();
@@ -158,7 +158,7 @@ describe('F4-AC5: 도장 찍히는 순간', () => {
     await Promise.resolve();
     expect(share).toHaveBeenCalledTimes(1);
     const arg = share.mock.calls[0]![0] as unknown as ShareData;
-    expect(arg.text).toBe('남설악 주전골에 다녀왔어요 — 이맘때 풍경');
+    expect(arg.text).toBe('남설악 주전골에 다녀왔어요. 이맘때 풍경에서 보고 찾아갔어요.');
     expect(arg.url).toMatch(/\?from=share#\/scene\/s-v$/);
     expect(events.filter(([n]) => n === 'share').map(([, d]) => d)).toEqual([{ scene: 's-v', where: 'stamp', how: 'share-sheet' }]);
     Object.defineProperty(navigator, 'share', { value: undefined, configurable: true });

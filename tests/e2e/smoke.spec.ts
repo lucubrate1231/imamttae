@@ -61,8 +61,8 @@ test('실제 앱 첫 화면도 시안과 같은 디자인 토큰을 씀(기본 �
   expect(t.body).toContain('IBM Plex Sans KR');
 });
 
-test('앱 이름은 "이맘때 풍경"(10/4 결정 D6): 창 제목·공유 정보', async ({ page }) => {
+test('앱 이름은 "이맘때 풍경"(10/4 결정 D6): 창 제목 · 카톡 카드 제목은 앱 이름으로 시작(D58)', async ({ page }) => {
   await page.goto('./?map=fake');
   await expect(page).toHaveTitle('이맘때 풍경');
-  await expect(page.locator('meta[property="og:title"]')).toHaveAttribute('content', '이맘때 풍경');
+  await expect(page.locator('meta[property="og:title"]')).toHaveAttribute('content', '이맘때 풍경 — 지금 가면 딱 좋은 곳');
 });
