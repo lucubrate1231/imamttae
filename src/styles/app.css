@@ -145,7 +145,8 @@ h1, h2, h3, p { margin: 0; }
 .gallery { position: relative; overflow: hidden; }
 .gallery .rail { padding: 0; gap: 0; scroll-padding: 0; overscroll-behavior-x: contain; }
 .gallery .rail > * { flex: 0 0 100%; }
-.gallery .slide { aspect-ratio: 3 / 2; background: #d9ddd8; overflow: hidden; }
+/* #10: 장면 상세는 맨 위가 사진 칸이라, 사진이 뜨기 전 바탕도 계절 옅은 색(아이폰 사파리가 이 색으로 위 막대를 칠함) */
+.gallery .slide { aspect-ratio: 3 / 2; background: var(--season-soft); overflow: hidden; }
 .gallery .slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
 /* 사진 위에 얹는 버튼: 작고 검정 반투명(10/3 2차 코멘트). 보이는 크기는 작아도 누르는 범위는 48px 이상 */
 .gallery .ov { position: absolute; z-index: 3; display: grid; place-items: center; border-radius: 50%; color: #fff; background: rgba(12, 16, 14, .42); }
