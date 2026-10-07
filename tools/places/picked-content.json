@@ -70,8 +70,8 @@
     "source": "public-data",
     "ref": "tour:2745423"
    },
-   "needsCheck": true,
-   "why": "축제 때 임시 주차장을 쓰는 마을이라 공식 주차장이 공공데이터에 없음 — 마을 입구로 안내"
+   "needsCheck": false,
+   "why": "축제 때 임시 주차장을 쓰는 마을이라 공식 주차장이 공공데이터에 없음 — 마을 입구로 안내 → 10/7 프프가 확인표에서 이대로 확정"
   },
   "s-076-bomunho-sunrise": {
    "spot": {
@@ -394,8 +394,8 @@
     "source": "manual",
     "ref": "osm:node/1942545045"
    },
-   "needsCheck": true,
-   "why": "정상까지 차로 오르는 길(통신 중계소 길)과 주차 가능 여부 확인 필요"
+   "needsCheck": false,
+   "why": "정상까지 차로 오르는 길(통신 중계소 길)과 주차 가능 여부 확인 필요 → 10/7 프프가 확인표에서 이대로 확정"
   },
   "s-095-eosagil": {
    "spot": {
@@ -480,8 +480,8 @@
     "source": "manual",
     "ref": "manual"
    },
-   "needsCheck": true,
-   "why": "치유의 숲 입구(대관령옛길 127-42)는 예약 차량만 들어감 — 작가 글대로 바깥 주차장에서 300m 걸어 오름. 그 주차장이 공공데이터·오픈스트리트맵에 없어 확인 필요"
+   "needsCheck": false,
+   "why": "치유의 숲 입구(대관령옛길 127-42)는 예약 차량만 들어감 — 작가 글대로 바깥 주차장에서 300m 걸어 오름. 그 주차장이 공공데이터·오픈스트리트맵에 없어 확인 필요 → 10/7 프프가 확인표에서 이대로 확정"
   },
   "s-128-solhyang-arboretum": {
    "spot": {
@@ -499,6 +499,24 @@
     "ref": "tour:2414769"
    },
    "needsCheck": false
+  },
+  "s-089-suncheonman-sunset": {
+   "spot": {
+    "lat": 34.8730163,
+    "lng": 127.5192889,
+    "source": "manual",
+    "ref": "osm:node/4977102332"
+   },
+   "dest": {
+    "name": "순천만습지 주차장",
+    "lat": 34.887441,
+    "lng": 127.509382,
+    "kind": "parking",
+    "source": "manual",
+    "ref": "osm:way/481373133"
+   },
+   "needsCheck": false,
+   "why": "10/7 순천만 장면을 갈대숲·일몰로 나눔(프프 메모). spot은 오픈스트리트맵 '용산전망대', dest는 갈대숲과 같은 순천만습지 주차장"
   }
  }
 }

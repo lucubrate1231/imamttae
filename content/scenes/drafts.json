@@ -469,7 +469,7 @@
     "types": "confirmed"
    },
    "contestEntry": false,
-   "hidden": false,
+   "hidden": true,
    "details": [
     "은행나무",
     "절집"
@@ -6658,10 +6658,10 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
    "hidden": false,
@@ -6726,10 +6726,10 @@
     "kind": "entrance"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
    "hidden": false,
@@ -6787,10 +6787,10 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
    "hidden": false,
@@ -6861,10 +6861,10 @@
     "kind": "entrance"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
    "hidden": false,
@@ -6935,10 +6935,10 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
    "hidden": false,
@@ -7072,10 +7072,10 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
    "hidden": false,
@@ -7112,6 +7112,12 @@
    "excerpt": "약간은 몽환적인 대청호의 아침 세상은 감탄사가 발자욱마다 물결치며 가슴으로 스며들었다.",
    "photos": [
     {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/ff0e-n37Soym-LagIHYXduypMmk.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": ""
+    },
+    {
      "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/pg6Gwmnw64tuUDuTQbKaFUzsrp4.jpg",
      "w": 1370,
      "h": 640,
@@ -7122,12 +7128,6 @@
      "w": 1370,
      "h": 640,
      "cap": "슬픈연가 촬영지"
-    },
-    {
-     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/ff0e-n37Soym-LagIHYXduypMmk.jpg",
-     "w": 1370,
-     "h": 640,
-     "cap": ""
     }
    ],
    "spot": {
@@ -7216,10 +7216,10 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
    "hidden": false,
@@ -7290,10 +7290,10 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
    "hidden": false,
@@ -7365,10 +7365,10 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
    "hidden": false,
@@ -7439,10 +7439,10 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
    "hidden": false,
@@ -7513,10 +7513,10 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
    "hidden": false,
@@ -7581,10 +7581,10 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
    "hidden": false,
@@ -7649,10 +7649,10 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
    "hidden": false,
@@ -7716,10 +7716,10 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
    "hidden": false,
@@ -7739,7 +7739,7 @@
    "kind": "story",
    "brunchNo": 89,
    "brunchUrl": "https://brunch.co.kr/@caed5ea4c3d74d9/89",
-   "name": "순천만 갈대숲과 일몰",
+   "name": "순천만 갈대숲",
    "region": "전남 순천",
    "types": [
     "eoksae"
@@ -7750,11 +7750,17 @@
     "to": 11,
     "note": "10월~11월",
     "season": "가을",
-    "tip": "해 질 녘 썰물 때"
+    "tip": "햇살 좋은 오후"
    },
-   "oneLiner": "끝없는 갈대숲과 물길에 번지는 붉은 노을",
-   "excerpt": "물 빠진 뻘에 해가 서산을 넘어가면서 연출하는 붉은 노을은 나에게 신비로운 감명을 준다.",
+   "oneLiner": "끝이 보이지 않는 갈대 사이로 걷는 제방둑과 데크길",
+   "excerpt": "입장료는 경로우대의 혜택으로 공짜로 입장하여 제방둑을 따라 끝이 보이지 않는 갈대 군락지를 걸었다.",
    "photos": [
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/qLIyXLXnfT0ra-Dkn8RMjN9bkJs.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": "순천만 습지"
+    },
     {
      "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/brlU9U96hWhn4xUT9pBPs9joB-c.jpg",
      "w": 1370,
@@ -7762,20 +7768,14 @@
      "cap": ""
     },
     {
-     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/V5stNKaCzChMAopIadSeUxfXvF8.jpg",
-     "w": 1369,
-     "h": 640,
-     "cap": "용산전망대의 일몰"
-    },
-    {
-     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/fKkcl7rZcWhXgk9h7KXLkff-4CU.jpg",
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/hVPiv7sQ6iSTjOVVKCy5223z8gU.jpg",
      "w": 1370,
      "h": 640,
      "cap": ""
     },
     {
-     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/hVPiv7sQ6iSTjOVVKCy5223z8gU.jpg",
-     "w": 1370,
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/pXq4aQKr9SPNQ0mbiQQYdcqQFZY.jpg",
+     "w": 1369,
      "h": 640,
      "cap": ""
     }
@@ -7800,12 +7800,80 @@
    "hidden": false,
    "details": [
     "갈대",
-    "갯벌 노을",
+    "데크 산책로",
     "흑두루미"
    ],
    "coordSource": "manual",
    "coordRef": {
     "spot": "osm:node/11233673837",
+    "dest": "osm:way/481373133"
+   },
+   "checkAdmission": true
+  },
+  {
+   "id": "s-089-suncheonman-sunset",
+   "kind": "story",
+   "brunchNo": 89,
+   "brunchUrl": "https://brunch.co.kr/@caed5ea4c3d74d9/89",
+   "name": "순천만 용산전망대 일몰",
+   "region": "전남 순천",
+   "types": [
+    "ilchul"
+   ],
+   "visited": "2026-02-15",
+   "oneLiner": "물 빠진 갯벌 물길 위로 번지는 붉은 노을",
+   "excerpt": "물 빠진 뻘에 해가 서산을 넘어가면서 연출하는 붉은 노을은 나에게 신비로운 감명을 준다.",
+   "photos": [
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/V5stNKaCzChMAopIadSeUxfXvF8.jpg",
+     "w": 1369,
+     "h": 640,
+     "cap": "용산전망대의 일몰"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/fKkcl7rZcWhXgk9h7KXLkff-4CU.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/zQnKZ_NmNn7Z2YEQzouE7CY0Vjs.jpg",
+     "w": 1370,
+     "h": 640,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/skLQnt3EYFcAwt6pmdyVI_8Zdwk.jpg",
+     "w": 640,
+     "h": 1370,
+     "cap": ""
+    }
+   ],
+   "spot": {
+    "lat": 34.8730163,
+    "lng": 127.5192889
+   },
+   "dest": {
+    "name": "순천만습지 주차장",
+    "lat": 34.887441,
+    "lng": 127.509382,
+    "kind": "parking"
+   },
+   "review": {
+    "best": "draft",
+    "dest": "draft",
+    "oneLiner": "draft",
+    "types": "draft"
+   },
+   "contestEntry": false,
+   "hidden": false,
+   "details": [
+    "갯벌 노을",
+    "용산전망대"
+   ],
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "osm:node/4977102332",
     "dest": "osm:way/481373133"
    },
    "checkAdmission": true
@@ -7867,10 +7935,10 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
    "hidden": false,
@@ -7941,10 +8009,10 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
    "hidden": false,
@@ -7975,6 +8043,12 @@
    "excerpt": "구름에 가리어 만나지 못할 것 같았던 태양이 떠오르면서 구름이 일순간 자리를 비켜주어 둥근 태양과 아침 인사를 나누었다.",
    "photos": [
     {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/9nkh6BtPjWehdaZ2ZjelBGvohOw.jpg",
+     "w": 1384,
+     "h": 640,
+     "cap": ""
+    },
+    {
      "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/6AL9lDXmga9WPXfcMlzvfxZaL_4.jpg",
      "w": 1385,
      "h": 640,
@@ -7991,12 +8065,6 @@
      "w": 1385,
      "h": 640,
      "cap": "문수암 주차장에서 일출"
-    },
-    {
-     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/9nkh6BtPjWehdaZ2ZjelBGvohOw.jpg",
-     "w": 1384,
-     "h": 640,
-     "cap": ""
     }
    ],
    "spot": {
@@ -8043,13 +8111,13 @@
    "excerpt": "오도산 전망대는 산의 꼭대기에 있고 주변에서 가장 높아서 바라보이는 산들이 발아래 무리 지어 키재기를 하고 있었다.",
    "photos": [
     {
-     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/kTLEno2vWN_4alwZ-I8kkRRUQE0.jpg",
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/8LtoP6mieoLRWL43KeiwhDRGHVk.jpg",
      "w": 1385,
      "h": 640,
      "cap": ""
     },
     {
-     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/8LtoP6mieoLRWL43KeiwhDRGHVk.jpg",
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/kTLEno2vWN_4alwZ-I8kkRRUQE0.jpg",
      "w": 1385,
      "h": 640,
      "cap": ""
@@ -8152,10 +8220,10 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
    "hidden": false,
@@ -8220,10 +8288,10 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
    "hidden": false,
@@ -8288,10 +8356,10 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
    "hidden": false,
@@ -8437,10 +8505,10 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
    "hidden": false,
@@ -8511,10 +8579,10 @@
     "kind": "entrance"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
    "hidden": false,
