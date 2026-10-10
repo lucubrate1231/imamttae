@@ -12,6 +12,8 @@ import { timingNotice } from '../domain/timingNotice';
 import type { MapAdapter, MapPin } from '../map/types';
 import { calIcon, fmtDate, h, infoIcon, paintBrowserBar, photoImg, sized, thumb } from './dom';
 
+const withoutPriority = (img: HTMLImageElement, drop: boolean) => (drop && img.removeAttribute('fetchpriority'), img);
+
 const RECOMMENDER = '산악인 이상호 작가'; // 맨 위 작은 글씨(10/3 사용자 결정 → 10/10 '산악인'을 더함)
 const STORY_URL = 'https://brunch.co.kr/@caed5ea4c3d74d9/1'; // 이 앱 이야기
 
@@ -111,7 +113,8 @@ export function createHome(d: HomeDeps): Home {
       h(
         'div',
         { class: 'photo' },
-        photoImg(s.photos[0]!, '', { eager: i === 0, src: sized(s.photos[0]!.src, 720) }),
+        // 옆으로 넘기는 칸 안의 늦게 받기는 아이폰에서 안 불릴 때가 있어 모두 바로 받음(먼저 받기는 첫 장만, 10/11)
+        withoutPriority(photoImg(s.photos[0]!, '', { eager: true, src: sized(s.photos[0]!.src, 720) }), i > 0),
         h('span', { class: 'badges' }, h('span', { class: 'badge on-photo', text: typeLabel(s) })),
         h('span', { class: 'cap' }, h('b', { text: s.name }), h('span', { text: s.region })),
       ),
