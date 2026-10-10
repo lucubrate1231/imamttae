@@ -2,7 +2,7 @@
  * 길찾기 앱 주소 만들기. 이름이 아니라 좌표(주차장·입구)로 넘깁니다.
  * - 카카오맵: 공식 URL https://map.kakao.com/link/to/이름,위도,경도 (앱이 있으면 앱으로 열림)
  * - 네이버지도: nmap://route/car?dlat&dlng&dname&appname (appname 필수)
- * - 티맵: tmap://route?rGoName&rGoX=경도&rGoY=위도 (실기기 확인 전까지 숨김)
+ * - 티맵: tmap://route?goalname&goalx=경도&goaly=위도 — 요즘 티맵(10/10 안드로이드에서 옛 rGo…만 보내면 목적지가 빈 값). 옛 티맵을 위해 rGoName·rGoX·rGoY도 같이
  */
 export type NaviAppId = 'kakao' | 'naver' | 'tmap';
 
@@ -45,7 +45,7 @@ export function naviUrl(app: NaviAppId, dest: NaviDest, opts: { appname?: string
       return `nmap://route/car?${q.toString()}`;
     }
     case 'tmap': {
-      const q = new URLSearchParams({ rGoName: name, rGoX: String(lng), rGoY: String(lat) });
+      const q = new URLSearchParams({ goalname: name, goalx: String(lng), goaly: String(lat), rGoName: name, rGoX: String(lng), rGoY: String(lat) });
       return `tmap://route?${q.toString()}`;
     }
   }
