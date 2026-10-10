@@ -85,3 +85,11 @@ describe('사진 칸 스타일', () => {
     expect(css).toMatch(/\.gallery \.slide\.ready img \{[^}]*opacity: 1/);
   });
 });
+
+/** 10/10 버그(안드로이드): 카카오가 지도 안쪽 칸에 touch-action:none을 붙여 크롬이 화면 스크롤을 막음 → 지도 칸과 그 안 모두 위아래 스크롤 허용 */
+describe('지도 칸 스크롤', () => {
+  it('.kmap과 그 안의 모든 칸에 touch-action: pan-y !important', () => {
+    const css = readFileSync('src/styles/app.css', 'utf8');
+    expect(css).toMatch(/\.kmap, \.kmap \* \{ touch-action: pan-y !important; \}/);
+  });
+});
