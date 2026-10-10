@@ -124,6 +124,10 @@ export function createKakaoMap(kakao: KakaoNS, opts: { focusLevel?: number } = {
     kind: 'kakao',
     async mount(el) {
       host = el;
+      // 10/10 버그: 움직이지 않는 지도인데도 카카오가 터치를 붙잡아 화면이 스크롤되지 않았음.
+      // 터치·누름 시작은 지도 칸에서 막아 카카오에 닿지 않게 하고(위아래 스크롤은 브라우저가 함). 핀 누르기(click)는 그대로
+      el.style.touchAction = 'pan-y';
+      for (const t of ['touchstart', 'touchmove', 'pointerdown', 'pointermove', 'mousedown']) el.addEventListener(t, (e) => e.stopPropagation(), { capture: true });
       if (typeof ResizeObserver === 'function') {
         watcher = new ResizeObserver(() => onResize());
         watcher.observe(el);

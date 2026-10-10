@@ -71,6 +71,24 @@ describe('카카오 지도 어댑터 (가짜 SDK로 확인)', () => {
     expect(log.maps[0]!.zoomable).toBe(false);
   });
 
+  it('10/10 버그: 지도 위를 손가락으로 밀면 화면이 스크롤됨 — 터치가 카카오 지도에 닿지 않고(카카오가 막지 못하게), 위아래 스크롤은 브라우저가 함', async () => {
+    const stub = createKakaoStub();
+    const m = createKakaoMap(stub.kakao);
+    const host = document.createElement('div');
+    const inner = document.createElement('div'); // 카카오가 만드는 안쪽 칸
+    host.append(inner);
+    await m.mount(host);
+    const seen: string[] = [];
+    for (const t of ['touchstart', 'touchmove', 'pointerdown', 'pointermove', 'mousedown']) inner.addEventListener(t, () => seen.push(t));
+    for (const t of ['touchstart', 'touchmove', 'pointerdown', 'pointermove', 'mousedown']) inner.dispatchEvent(new Event(t, { bubbles: true }));
+    expect(seen).toEqual([]);
+    expect(host.style.touchAction).toBe('pan-y');
+    let clicked = false; // 핀 누르기(click)는 그대로
+    inner.addEventListener('click', () => (clicked = true));
+    inner.dispatchEvent(new Event('click', { bubbles: true }));
+    expect(clicked).toBe(true);
+  });
+
   it('핀을 위도·경도 순서로 올리고, 다시 그리면 이전 핀을 지운다. 종류는 class로', async () => {
     const { log, m } = await mount();
     m.setPins(pins);
