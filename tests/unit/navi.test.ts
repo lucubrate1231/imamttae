@@ -36,6 +36,13 @@ describe('naviUrl: 이름이 아니라 좌표로 길찾기 앱을 연다', () =>
     expect(url.searchParams.get('rGoName')).toBe('오색약수터주차장');
   });
 
+  it('10/10 버그: 요즘 티맵은 목적지를 goalname·goalx·goaly로 읽음(옛 rGo… 만 보내면 안드로이드 티맵 목적지가 빈 값) — 둘 다 보냄', () => {
+    const url = new URL(naviUrl('tmap', dest));
+    expect(url.searchParams.get('goalx')).toBe('128.4398');
+    expect(url.searchParams.get('goaly')).toBe('38.0601');
+    expect(url.searchParams.get('goalname')).toBe('오색약수터주차장');
+  });
+
   it('한국 밖 좌표(위도·경도 뒤바뀜 포함)는 거부한다', () => {
     expect(() => naviUrl('kakao', { name: 'x', lat: 128.4398, lng: 38.0601 })).toThrow(/좌표/);
     expect(() => naviUrl('kakao', { name: 'x', lat: Number.NaN, lng: 128 })).toThrow(/좌표/);
