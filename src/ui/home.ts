@@ -1,6 +1,6 @@
 /**
  * 첫 화면 '지금 볼 만한 곳'(기능 ①) — 확정 시안 v2를 실제 앱으로 옮김
- * 위에서 아래로: 이상호 작가의 추천 → N월에 만나는 풍경 → 달 띠 → N월에 좋은 풍경 카드 → 작은 지도 → 작가가 다녀온 곳 → 홈 화면에 두기·이 앱 이야기
+ * 위에서 아래로: 산악인 이상호 작가의 추천 → N월에 만나는 풍경 → 달 띠 → N월에 좋은 풍경 카드 → 작은 지도 → 작가가 다녀온 곳 → 홈 화면에 두기·이 앱 이야기
  * 완성 기준: docs/features/F1-지금-볼-만한-곳.md, 화면 규칙: docs/design-guide.md
  */
 import type { PlaceholderScene, Scene, StoryScene } from '../../shared/schema/content';
@@ -12,7 +12,7 @@ import { timingNotice } from '../domain/timingNotice';
 import type { MapAdapter, MapPin } from '../map/types';
 import { calIcon, fmtDate, h, infoIcon, paintBrowserBar, photoImg, sized, thumb } from './dom';
 
-const RECOMMENDER = '이상호 작가'; // 맨 위 작은 글씨(10/3 사용자 결정)
+const RECOMMENDER = '산악인 이상호 작가'; // 맨 위 작은 글씨(10/3 사용자 결정 → 10/10 '산악인'을 더함)
 const STORY_URL = 'https://brunch.co.kr/@caed5ea4c3d74d9/1'; // 이 앱 이야기
 
 export interface HomeDeps {
