@@ -10,9 +10,9 @@ async function open(page: Page, hash = ''): Promise<void> {
   await page.evaluate(() => document.fonts.ready);
 }
 
-test('머리 작은 글씨 "이상호 작가의 추천", 큰 제목 "N월에 만나는 풍경"', async ({ page }) => {
+test('머리 작은 글씨 "산악인 이상호 작가의 추천"(10/10), 큰 제목 "N월에 만나는 풍경"', async ({ page }) => {
   await open(page, '#/month/10');
-  await expect(page.locator('.eyebrow')).toHaveText('이상호 작가의 추천');
+  await expect(page.locator('.eyebrow')).toHaveText('산악인 이상호 작가의 추천');
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('10월에 만나는 풍경');
 });
 

@@ -27,7 +27,7 @@ describe('머리와 달 띠', () => {
     await start();
     expect(all('.mchip')).toHaveLength(12);
     expect(all('.mchip[aria-pressed="true"]').map((c) => c.textContent)).toEqual(['10월']);
-    expect(text('.eyebrow')).toBe('이상호 작가의 추천');
+    expect(text('.eyebrow')).toBe('산악인 이상호 작가의 추천'); // 10/10 프프
     expect(text('h1.ttl')).toBe('10월에 만나는 풍경');
   });
 
