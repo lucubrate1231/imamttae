@@ -1,0 +1,107 @@
+{
+ "about": "예측 지점 이름표(영문 소문자) → 한글 이름. 기관 지점 번호는 확인한 것만 적음(아직 없음). D70, docs/forecast-design.md 1장",
+ "sites": {
+  "aewol-gotjawal": {
+   "name": "애월곶자왈"
+  },
+  "byeonsan": {
+   "name": "변산반도"
+  },
+  "chungnyeongsan": {
+   "name": "축령산"
+  },
+  "daea-arboretum": {
+   "name": "대아수목원"
+  },
+  "daegu-arboretum": {
+   "name": "대구수목원"
+  },
+  "duryunsan": {
+   "name": "두륜산"
+  },
+  "gangwon-hwamokwon": {
+   "name": "강원도립화목원"
+  },
+  "gayasan-chungnam": {
+   "name": "가야산(충남)"
+  },
+  "gayasan-gyeongbuk": {
+   "name": "가야산(경북)"
+  },
+  "geumgang-arboretum": {
+   "name": "금강수목원"
+  },
+  "geumwonsan": {
+   "name": "금원산"
+  },
+  "gwangdeoksan": {
+   "name": "광덕산"
+  },
+  "gyeongnam-arboretum": {
+   "name": "경남수목원"
+  },
+  "gyeryongsan": {
+   "name": "계룡산"
+  },
+  "halla-arboretum": {
+   "name": "한라수목원"
+  },
+  "hallasan": {
+   "name": "한라산"
+  },
+  "hallasan-1100road": {
+   "name": "한라산 1100도로"
+  },
+  "hwaaksan": {
+   "name": "화악산"
+  },
+  "jirisan-seseok": {
+   "name": "지리산 세석"
+  },
+  "juwangsan": {
+   "name": "주왕산"
+  },
+  "midongsan-arboretum": {
+   "name": "미동산수목원"
+  },
+  "mulhyanggi-arboretum": {
+   "name": "물향기수목원"
+  },
+  "naejangsan": {
+   "name": "내장산"
+  },
+  "national-arboretum": {
+   "name": "국립수목원"
+  },
+  "palgongsan": {
+   "name": "팔공산"
+  },
+  "seoraksan": {
+   "name": "설악산"
+  },
+  "seoraksan-native-garden": {
+   "name": "설악산자생식물원"
+  },
+  "sobaeksan": {
+   "name": "소백산"
+  },
+  "songnisan": {
+   "name": "속리산"
+  },
+  "soribong": {
+   "name": "소리봉"
+  },
+  "surisan": {
+   "name": "수리산"
+  },
+  "wando-arboretum": {
+   "name": "완도수목원"
+  },
+  "wolchulsan": {
+   "name": "월출산"
+  },
+  "yongmunsan": {
+   "name": "용문산"
+  }
+ }
+}
