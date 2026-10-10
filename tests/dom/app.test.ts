@@ -171,3 +171,16 @@ describe('#77 지도를 기다리지 않음', () => {
     expect(mount).toHaveBeenCalledTimes(1);
   });
 });
+
+describe('첫 화면 카드 사진(10/11 아이폰: 사진이 위쪽만 그려짐)', () => {
+  it('옆으로 넘기는 카드 사진은 모두 바로 받고, 다 받기 전에는 숨겼다가 받으면 보임', async () => {
+    await start();
+    const imgs = [...root.querySelectorAll<HTMLImageElement>('.rail .big .photo img')];
+    expect(imgs.length).toBeGreaterThan(1);
+    expect(imgs.every((i) => i.getAttribute('loading') === 'eager')).toBe(true);
+    expect(imgs[0]!.classList.contains('pimg')).toBe(true);
+    expect(imgs[0]!.classList.contains('ready')).toBe(false);
+    imgs[0]!.dispatchEvent(new Event('load'));
+    expect(imgs[0]!.classList.contains('ready')).toBe(true);
+  });
+});

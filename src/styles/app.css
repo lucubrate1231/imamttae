@@ -61,6 +61,9 @@ h1, h2, h3, p { margin: 0; }
 .big { text-align: left; display: block; width: 100%; }
 .big .photo { position: relative; aspect-ratio: 3 / 2; border-radius: var(--r-card); overflow: hidden; background: #d9ddd8; }
 .big .photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* 10/11: 모든 사진 — 다 받기 전에는 투명(바탕색이 보임), 다 받으면 보임 */
+img.pimg { opacity: 0; transition: opacity .25s ease; }
+img.pimg.ready { opacity: 1; }
 .big .photo::after { content: ''; position: absolute; inset: 45% 0 0 0; background: linear-gradient(to bottom, transparent, rgba(8, 14, 10, 0.72)); }
 .badges { position: absolute; left: 14px; top: 14px; z-index: 2; display: flex; gap: 6px; }
 .badge { font-size: 15px; font-weight: 800; line-height: 1; padding: 8px 12px; border-radius: var(--r-pill); background: #fff; color: var(--ink); }

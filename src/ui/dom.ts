@@ -49,6 +49,9 @@ export const sized = (src: string, width: number, q = 70) =>
 export function photoImg(p: Photo, alt: string, opts: { src?: string; eager?: boolean } = {}): HTMLImageElement {
   const i = h('img', { src: opts.src ?? p.src, alt, loading: opts.eager ? 'eager' : 'lazy', decoding: 'async' });
   if (opts.eager) i.setAttribute('fetchpriority', 'high');
+  // 10/11: 다 받기 전에는 숨겼다가 받으면 보임(느린 망에서 위쪽만 그려진 사진이 보이지 않게 — 모든 사진 공통)
+  i.classList.add('pimg');
+  i.addEventListener('load', () => i.classList.add('ready'));
   if (p.focus) i.style.objectPosition = p.focus;
   if (p.rotate) {
     const r = (Math.abs(p.rotate) * Math.PI) / 180;
