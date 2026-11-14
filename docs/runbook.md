@@ -82,3 +82,11 @@ GitHub Pages에 우리 주소를 붙여요. 베타 `https://imamttae.site/`, 미
 2. Claude Code: DNS가 퍼진 것 확인 → PR 합치기 → 저장소 Settings → Pages → Custom domain `imamttae.site`(배포가 `CNAME`을 써서 같이 붙음) → 보안 인증서가 붙으면 **Enforce HTTPS** 켜기
 3. 확인: 새 주소·미리보기·공유 페이지·지도가 열리고, 옛 주소 `lucubrate1231.github.io/imamttae/…`(`/next/` 포함)가 새 주소로 넘어가는지
 4. 프프: 새 주소에서 `?me=off`를 브라우저마다 다시(주소마다 따로 저장) · 카카오 공유 디버거에서 새 주소 캐시 · 기획: 초대 글 주소 바꾸기
+
+## 검색 노출과 검색 등록 (D72, 11/14 — 정식 출시 v1.0)
+- **켜지는 곳:** 맨 앞 주소 `https://imamttae.site/`만. 앱 화면의 검색 막기(noindex)를 빼고 `robots.txt`·`sitemap.xml`을 둬요. v1.0.0 태그로 올릴 때부터 적용돼요.
+- **계속 막는 곳:** 미리보기 `/next/`(올릴 때 noindex를 넣음 — `scripts/publish-pages.sh`), 확인 페이지(`_review`), 없는 주소 안내(404), 장면 공유 페이지(`/s/` — 열면 바로 앱으로 넘어가는 페이지라 검색엔진이 첫 주소와 같은 페이지로 봄).
+- **검색 등록(프프 계정으로, v1.0.0을 올린 뒤).** 화면 이름은 조금 다를 수 있어요.
+  1. **구글 서치 콘솔**(search.google.com/search-console) → 속성 추가 → **도메인** → `imamttae.site` → 화면에 나오는 TXT 값(`google-site-verification=…`)을 Spaceship DNS 레코드에 넣어요(종류 TXT, 이름 `@`). → 몇 분 뒤 **확인** → 왼쪽 **Sitemaps**에 `https://imamttae.site/sitemap.xml` 제출.
+  2. **네이버 서치어드바이저**(searchadvisor.naver.com) → 웹마스터 도구 → 사이트 등록 `https://imamttae.site` → 소유 확인 방법 **HTML 태그** → 나오는 `naver-site-verification` 값(공개 값이라 비밀이 아님)을 Claude Code에 알려 주면 `index.html`에 넣어 PR로 올려요 → 합치고 v 태그로 올린 뒤 **소유 확인** → 요청 → 사이트맵 제출에 `sitemap.xml`.
+  3. 검색 결과에 잡히는 데는 며칠~몇 주 걸려요.

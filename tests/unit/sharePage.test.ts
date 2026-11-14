@@ -38,7 +38,7 @@ describe('공유 페이지(/s/<장면 번호>/)', () => {
   const s = story('s-x', { name: '바위 & "절벽" <길>', region: '강원 인제', visited: '2020-10-20', best: { from: 10, to: 10, note: '10월' } });
   const html = sharePageHtml(s);
   const meta = (p: string) => html.match(new RegExp(`<meta property="${p}" content="([^"]*)"`))?.[1];
-  it('카드 정보(og)와 크기, 검색 막기(noindex, 정식 출시 전까지)', () => {
+  it('카드 정보(og)와 크기, 검색 막기(noindex — D72 뒤에도 그대로: 바로 넘어가는 페이지라)', () => {
     expect(meta('og:title')).toBe('바위 &amp; &quot;절벽&quot; &lt;길&gt; — 이맘때 풍경');
     expect(meta('og:image')).toContain('img1.daumcdn.net/thumb/C1200x630');
     expect(meta('og:image:width')).toBe('1200');

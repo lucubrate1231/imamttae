@@ -45,9 +45,12 @@ test('접근성 검사(axe) 위반 0', async ({ page }) => {
   expect(r.violations.map((v) => `${v.id}: ${v.help}`)).toEqual([]);
 });
 
-test('검색엔진 노출 막음(noindex)', async ({ page }) => {
+test('검색 노출 켬(D72): 앱 화면에 검색 막기가 없고 대표 주소는 맨 앞 주소 · robots.txt·sitemap.xml이 열림', async ({ page }) => {
   await page.goto('./?map=fake');
-  await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', /noindex/);
+  await expect(page.locator('meta[name="robots"]')).toHaveCount(0);
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://imamttae.site/');
+  expect(await (await page.request.get('./robots.txt')).text()).toContain('Sitemap: https://imamttae.site/sitemap.xml');
+  expect(await (await page.request.get('./sitemap.xml')).text()).toContain('<loc>https://imamttae.site/</loc>');
 });
 
 test('실제 앱 첫 화면도 시안과 같은 디자인 토큰을 씀(기본 계절색 가을, 제목 글꼴 고운바탕)', async ({ page }) => {

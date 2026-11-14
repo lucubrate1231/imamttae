@@ -4,6 +4,8 @@ import { readFileSync } from 'node:fs';
 import { placesPageData } from './pipeline/places/pageData';
 import { coversPageData } from './pipeline/covers/pageData';
 import { sharePages } from './src/domain/sharePage';
+import { sitemapXml } from './src/domain/sitemap';
+import { SITE_ORIGIN } from './src/config';
 
 /**
  * 좌표 확인 페이지를 미리보기에 올림: /next/_review/places/ (10/5 — 콘텐츠 세션에서 이어서 하려고).
@@ -22,6 +24,8 @@ const placesPage = {
     this.emitFile({ type: 'asset', fileName: '_review/covers/data.json', source: JSON.stringify(coversPageData(app.scenes, app.typeCovers ?? {})) });
     // 장면별 카톡 미리보기(D63): 보이는 장면마다 s/<번호>/index.html — 그 장면의 카드 정보, 열면 앱의 그 장면으로
     for (const p of sharePages(app)) this.emitFile({ type: 'asset', fileName: p.fileName, source: p.html });
+    // 사이트맵(D72): 지금은 앱 첫 주소만(src/domain/sitemap.ts). 날짜는 장면 데이터를 만든 날
+    this.emitFile({ type: 'asset', fileName: 'sitemap.xml', source: sitemapXml(SITE_ORIGIN, ['/'], String(app.generatedAt).slice(0, 10)) });
   },
 };
 
