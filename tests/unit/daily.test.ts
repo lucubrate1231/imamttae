@@ -28,6 +28,15 @@ describe('매일 동기화: 글 내용이 바뀐 경우에만 검사와 PR 준�
     const after = index([story(2), { contentHash: 'hash-1', url: 'https://brunch.co.kr/@writer/1', title: '글 1', no: 1 }], 'after');
     expect(compareIndexes(before, after).changed).toBe(false);
   });
+  it('11/14: 발행 시각의 1초 미만 차이는 변경이 아니다(브런치가 줄 때마다 밀리초가 달라져 매일 빈 PR이 생김) — 1초 넘게 다르면 변경', async () => {
+    const { compareIndexes } = await import('../../pipeline/daily');
+    const at = (t: number) => index([story(1, { publishTime: t })]);
+    expect(compareIndexes(at(1790944329984), at(1790944329000))).toMatchObject({ changed: false, updated: [] });
+    expect(compareIndexes(at(1790776421000), at(1790776421251)).changed).toBe(false);
+    const moved = compareIndexes(at(1790944329984), at(1790944331000));
+    expect(moved.changed).toBe(true);
+    expect(moved.updated.map((e) => e.no)).toEqual([1]);
+  });
   it('새 글과 바뀐 글을 번호순으로 나눈다', async () => {
     const { compareIndexes } = await import('../../pipeline/daily');
     const result = compareIndexes(index([story(1), story(2)]), index([story(3), story(2, { contentHash: 'new' }), story(1)]));
