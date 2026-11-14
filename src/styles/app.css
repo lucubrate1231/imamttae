@@ -597,5 +597,5 @@ img.pimg.ready { opacity: 1; }
 .pv-desc { margin: 0; font-size: 17px; color: var(--ink-2); }
 .pv-mail { margin: 0; font-size: 18px; font-weight: 800; color: var(--ink); overflow-wrap: anywhere; user-select: text; }
 .pv-mail.pending { font-weight: 400; color: var(--ink-3); }
-.pv-contact .btn { justify-self: start; }
+.pv-contact .btn { justify-self: start; padding-inline: 24px; } /* 디자인 BN(11/14): 글자가 테두리에 붙지 않게 — 글자 폭 + 좌우 24px, 높이 56 그대로 */
 .pv-date { margin: 24px 0 0; font-size: 15px; color: var(--ink-3); }
