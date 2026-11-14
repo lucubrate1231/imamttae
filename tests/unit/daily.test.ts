@@ -82,7 +82,23 @@ describe('매일 동기화: 글 내용이 바뀐 경우에만 검사와 PR 준�
     expect(result.title).toBe('브런치 새 글 1편 (2026-10-06)');
     expect(result.body).toContain('1번');
   });
-  it.each(['pipeline/sync.ts', 'pipeline/scenes/check-cli.ts', 'pipeline/scenes/build.ts', 'check'])('명령 실패는 PR 준비까지 진행하지 않는다: %s', async failure => {
+  it('11/14: 장면 검사가 실패해도(작가님이 글을 고침) 글 목록만 담아 [확인 필요] PR을 준비한다 — 앱 데이터는 그대로', async () => {
+    const { runDaily } = await import('../../pipeline/daily');
+    const f = fixture(index([])); const calls: string[] = []; const original = readFileSync(f.scenesPath, 'utf8');
+    const result = runDaily({ root: f.root, now, runUrl, runCommand: (command, args) => {
+      calls.push([command, ...args].join(' '));
+      if (args.includes('pipeline/sync.ts')) writeFileSync(f.indexPath, JSON.stringify(index()));
+      if (args.includes('pipeline/scenes/check-cli.ts')) throw new Error('동기화 명령 실패: 24곳 문제');
+    } });
+    expect(calls).toEqual(['npx tsx pipeline/sync.ts', 'npx tsx pipeline/scenes/check-cli.ts content/scenes/drafts.json']);
+    expect(result.changed).toBe(true);
+    if (!result.changed) throw new Error('PR을 준비해야 합니다.');
+    expect(result.title).toBe('[확인 필요] 브런치 새 글 1편 (2026-10-06)');
+    expect(result.body).toContain('장면 검사에서 문제');
+    expect(result.body).toContain(runUrl);
+    expect(readFileSync(f.scenesPath, 'utf8')).toBe(original);
+  });
+  it.each(['pipeline/sync.ts', 'pipeline/scenes/build.ts', 'check'])('그 밖의 명령 실패는 PR 준비까지 진행하지 않는다: %s', async failure => {
     const { runDaily } = await import('../../pipeline/daily');
     const f = fixture(index([])); const calls: string[] = [];
     expect(() => runDaily({ root: f.root, now, runUrl, runCommand: (_command, args) => {

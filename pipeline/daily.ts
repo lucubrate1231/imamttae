@@ -84,7 +84,20 @@ export function runDaily(options: { root?: string; now?: Date; runUrl?: string; 
     writeFileSync(indexPath, beforeIndex);
     return { changed: false as const };
   }
-  run('npx', ['tsx', 'pipeline/scenes/check-cli.ts', 'content/scenes/drafts.json']);
+  // 11/14: 작가님이 글을 고치면 장면 대목·사진이 원문과 달라져 검사가 실패함. 그때 멈추면 PR이 영영 안 와서(10/7~11/14),
+  // 글 목록만 담아 '[확인 필요]' PR을 만들고 앱 데이터는 그대로 둠 — 콘텐츠 세션이 장면을 고친 뒤 합침
+  try {
+    run('npx', ['tsx', 'pipeline/scenes/check-cli.ts', 'content/scenes/drafts.json']);
+  } catch {
+    const s = formatDailySummary(diff, options.now ?? new Date(), options.runUrl ?? 'https://github.com/lucubrate1231/imamttae/actions');
+    const runUrl = options.runUrl ?? 'https://github.com/lucubrate1231/imamttae/actions';
+    return {
+      changed: true as const,
+      needsReview: true as const,
+      title: `[확인 필요] ${s.title}`,
+      body: `> ⚠ **장면 검사에서 문제가 나왔어요.** 작가님이 글을 고쳐서 장면의 작가 글 대목·사진이 원문과 달라진 곳이 있어요. 어느 장면인지는 [실행 기록](${runUrl})의 '✗' 줄에 있어요.\n> 이 PR에는 **글 목록(content/brunch/index.json)만** 담았고 앱 데이터는 바꾸지 않았어요. **콘텐츠 세션이 장면을 고친 뒤** 합쳐 주세요(이 PR에 이어 올리거나 먼저 합친 뒤 따로).\n\n` + s.body,
+    };
+  }
   run('npx', ['tsx', 'pipeline/scenes/build.ts']);
   const afterScenes = readFileSync(scenesPath, 'utf8');
   if (canonical(withoutTime(JSON.parse(beforeScenes))) === canonical(withoutTime(JSON.parse(afterScenes)))) writeFileSync(scenesPath, beforeScenes);
