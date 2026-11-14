@@ -16,6 +16,10 @@ else
 fi
 if [ "$TARGET" = next ]; then
   rm -rf site/next && mkdir -p site/next && cp -r dist/. site/next/
+  # 검색 노출(D72): 맨 앞 주소만 켜고 미리보기는 계속 검색에서 뺌 — 앱 화면에 noindex를 넣고 대표 주소 줄을 뺌. 안 들어갔으면 여기서 멈춤
+  sed -i 's#<head>#<head><meta name="robots" content="noindex, nofollow" />#' site/next/index.html
+  sed -i '/rel="canonical"/d' site/next/index.html
+  grep -q 'name="robots" content="noindex' site/next/index.html
   # 카톡 미리보기 그림 주소(og:image)는 베타 주소로 적혀 있어, 미리보기에서는 /next/ 쪽 그림을 가리키게 바꿈(D58)
   sed -i 's#imamttae.site/brand/#imamttae.site/next/brand/#g' site/next/index.html site/next/s/*/index.html
   # 없는 주소(없어진 장면의 공유 페이지 등)는 GitHub이 사이트 맨 위의 404.html만 써서 맨 위에 둠(D63)

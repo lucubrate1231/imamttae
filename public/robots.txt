@@ -1,0 +1,4 @@
+# 검색 노출 켬(D72 — 정식 출시 v1.0). 미리보기(/next/)는 페이지에 noindex를 넣어 막음(scripts/publish-pages.sh)
+User-agent: *
+Allow: /
+Sitemap: https://imamttae.site/sitemap.xml
