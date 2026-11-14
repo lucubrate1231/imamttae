@@ -24,7 +24,7 @@ describe('F5-AC1: 웹 앱 매니페스트', () => {
     expect(m.scope).toBe('./');
     expect(m.id).toBe('./');
     expect(m.display).toBe('standalone');
-    expect(m.background_color.toLowerCase()).toBe('#ddecd9'); // 아이콘 바탕과 같게(design-guide 11-6)
+    expect(m.background_color.toLowerCase()).toBe('#ffffff'); // 흰 바탕(design-guide 11-6 · 디자인 BN 11/14 — 안드로이드 시작 화면에서 아이콘이 또렷하게)
     expect(m.theme_color).toMatch(/^#[0-9a-f]{6}$/i);
   });
 

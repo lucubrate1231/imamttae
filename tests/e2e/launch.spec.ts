@@ -53,6 +53,9 @@ test('이용 안내와 개인정보: 바닥줄 → 화면(제목·구역 둘·�
   expect((await h1.boundingBox())!.height).toBeLessThan(lh * 1.6);
   expect(await overflow(page)).toBeLessThanOrEqual(0);
   await axe(page, '.privacy');
+  // 디자인 BN(11/14): [메일 쓰기] 글자가 테두리에 붙지 않게 좌우 24px, 높이 56 그대로
+  const mail = await p.locator('.pv-contact a.btn').evaluate((e) => { const c = getComputedStyle(e); return { l: c.paddingLeft, r: c.paddingRight, h: Math.round(e.getBoundingClientRect().height) }; });
+  expect(mail).toEqual({ l: '24px', r: '24px', h: 56 });
   await p.getByRole('button', { name: '뒤로' }).click();
   await expect(page).toHaveURL(/#\/month\/10$/);
   await expect(page.locator('main.home')).toBeVisible();
