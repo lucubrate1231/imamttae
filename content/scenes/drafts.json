@@ -8633,6 +8633,311 @@
     "dest": "tour:2414769"
    },
    "checkAdmission": true
+  },
+  {
+   "id": "s-130-camellia-hill",
+   "kind": "story",
+   "brunchNo": 130,
+   "brunchUrl": "https://brunch.co.kr/@caed5ea4c3d74d9/130",
+   "name": "카멜리아힐 가을 정원",
+   "region": "제주 서귀포",
+   "types": [
+    "kkotmureut"
+   ],
+   "visited": "2026-10-18",
+   "best": {
+    "from": 10,
+    "to": 11,
+    "note": "10월~11월",
+    "season": "가을",
+    "tip": "맑은 날 오전"
+   },
+   "oneLiner": "핑크뮬리와 억새, 가을 국화가 물결치는 동백 숲 정원",
+   "excerpt": "핑크뮬리, 연두뮬리, 억새, 팜파스, 가을국화 등이 각자의 예쁜 꽃을 피우고 이곳을 찾아온 사람들에게 미소를 짓게 만들었다.",
+   "photos": [
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/WKvtKPKXtiMKIc4fm6s4-JuDZhs.jpg",
+     "w": 1385,
+     "h": 640,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/NI1u3Xd2Ws5tJ4tZv205Tyy9tNE.jpg",
+     "w": 1386,
+     "h": 640,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/6OnPqJ6wK3UW2Uplk9t1WEm_Er4.jpg",
+     "w": 1385,
+     "h": 640,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/xDyx7ta0E_krWG2sn6U-kJi-sJc.jpg",
+     "w": 1385,
+     "h": 640,
+     "cap": ""
+    }
+   ],
+   "spot": {
+    "lat": 33.289817,
+    "lng": 126.369774
+   },
+   "dest": {
+    "name": "카멜리아힐 주차장",
+    "lat": 33.29022,
+    "lng": 126.368123,
+    "kind": "parking"
+   },
+   "review": {
+    "best": "draft",
+    "dest": "draft",
+    "oneLiner": "draft",
+    "types": "draft"
+   },
+   "contestEntry": false,
+   "hidden": false,
+   "details": [
+    "핑크뮬리",
+    "억새",
+    "국화",
+    "동백나무"
+   ],
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "osm:way/375165594",
+    "dest": "osm:way/375165581"
+   },
+   "checkAdmission": true
+  },
+  {
+   "id": "s-130-chagwido",
+   "kind": "story",
+   "brunchNo": 130,
+   "brunchUrl": "https://brunch.co.kr/@caed5ea4c3d74d9/130",
+   "name": "차귀도 억새 바람길",
+   "region": "제주 제주시",
+   "types": [
+    "eoksae",
+    "bada"
+   ],
+   "visited": "2026-10-18",
+   "best": {
+    "from": 10,
+    "to": 11,
+    "note": "10월~11월",
+    "season": "가을",
+    "tip": "바람 잔잔한 맑은 날"
+   },
+   "oneLiner": "억새 바람길을 따라 걷는 무인도 해안 둘레길",
+   "excerpt": "바람은 억새 군락지 사이로 바람길을 만들고 우리는 그 바람길을 걸어서 차귀도 둘레길을 걸었다.",
+   "photos": [
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/_7mLJg6wBm9NIOKjPUYAkAYgl5k.jpg",
+     "w": 1385,
+     "h": 640,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/9o-TBZX7MVEPFW_FcblzQ4adg7U.jpg",
+     "w": 1385,
+     "h": 640,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/zeNyMd7nqkxIMB9UAuw1vPZrk6I.jpg",
+     "w": 1385,
+     "h": 640,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/4IapZDoG1IiuafFSbkPCCEMy2VA.jpg",
+     "w": 1384,
+     "h": 640,
+     "cap": ""
+    }
+   ],
+   "spot": {
+    "lat": 33.311626,
+    "lng": 126.150615
+   },
+   "dest": {
+    "name": "차귀도포구(유람선 타는 곳)",
+    "lat": 33.309837,
+    "lng": 126.165442,
+    "kind": "entrance"
+   },
+   "review": {
+    "best": "draft",
+    "dest": "draft",
+    "oneLiner": "draft",
+    "types": "draft"
+   },
+   "contestEntry": false,
+   "hidden": false,
+   "details": [
+    "억새",
+    "등대",
+    "해안 절벽"
+   ],
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "osm:way/22784610",
+    "dest": "osm:node/3738004312"
+   },
+   "checkAdmission": true
+  },
+  {
+   "id": "s-131-marado",
+   "kind": "story",
+   "brunchNo": 131,
+   "brunchUrl": "https://brunch.co.kr/@caed5ea4c3d74d9/131",
+   "name": "마라도 빠삐용 절벽",
+   "region": "제주 서귀포",
+   "types": [
+    "bada"
+   ],
+   "visited": "2026-10-19",
+   "best": {
+    "from": 1,
+    "to": 12,
+    "note": "일 년 내내",
+    "season": "사계절",
+    "tip": "파도 잔잔한 날"
+   },
+   "oneLiner": "검은 절벽과 망망대해를 따라 걷는 국토 최남단 섬",
+   "excerpt": "모슬포항에서 배에 탑승하여 약 25분간 파도가 배를 흔드는 바닷길을 달려서 마라도에 도착하니 검은 절벽이 눈앞에 펼쳐져 있었다. 빠삐용 절벽이다.",
+   "photos": [
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/XK_7fVLg3HuuiyzEuZLoz-SW_Bc.jpg",
+     "w": 1385,
+     "h": 640,
+     "cap": "빠삐용 절벽"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/MIKHIT6xl84myzxBgRSWKgA9y8U.jpg",
+     "w": 1385,
+     "h": 640,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/HQJfp88vgcGAWz9mkLZmR_Gryys.jpg",
+     "w": 1385,
+     "h": 640,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/XyJsw2BfUHXduWAynZf2AJ9Z8N0.jpg",
+     "w": 1385,
+     "h": 640,
+     "cap": ""
+    }
+   ],
+   "spot": {
+    "lat": 33.11847,
+    "lng": 126.26749
+   },
+   "dest": {
+    "name": "운진항(마라도 가는 배)",
+    "lat": 33.209693,
+    "lng": 126.259159,
+    "kind": "entrance"
+   },
+   "review": {
+    "best": "draft",
+    "dest": "draft",
+    "oneLiner": "draft",
+    "types": "draft"
+   },
+   "contestEntry": false,
+   "hidden": false,
+   "details": [
+    "해안 절벽",
+    "등대",
+    "최남단 기념비"
+   ],
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "osm:way/548729234",
+    "dest": "osm:node/3776252034"
+   },
+   "checkAdmission": true
+  },
+  {
+   "id": "s-131-seogwipo-healing-forest",
+   "kind": "story",
+   "brunchNo": 131,
+   "brunchUrl": "https://brunch.co.kr/@caed5ea4c3d74d9/131",
+   "name": "서귀포 치유의 숲 삼나무길",
+   "region": "제주 서귀포",
+   "types": [
+    "sinrok"
+   ],
+   "visited": "2026-10-19",
+   "best": {
+    "from": 5,
+    "to": 6,
+    "note": "5월~6월",
+    "season": "초여름",
+    "tip": "비 갠 뒤 안개 낀 날"
+   },
+   "oneLiner": "안개 속 거대한 삼나무 사이로 걷는 숲속 데크길",
+   "excerpt": "거대한 삼나무 군락지 사이로 걷는데 밑둥치는 하나인데 거대한 몸통이 둘인 것도 있고 셋인 것도 있었으며 넷인 것까지도 있었다.",
+   "photos": [
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/J3XzoGHRUnndBjNDuLdcXEI18CA.jpg",
+     "w": 640,
+     "h": 1385,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/pQ7tJoiVVm8xI_7uuhtdwHJ2P-k.jpg",
+     "w": 640,
+     "h": 1385,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/mE7N2O9-zhK_wifN2lNf3nwX0yA.jpg",
+     "w": 640,
+     "h": 1386,
+     "cap": ""
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/Y2YKBCXmQgZbW2QCdNm59Gh_3iw.jpg",
+     "w": 640,
+     "h": 1385,
+     "cap": ""
+    }
+   ],
+   "spot": {
+    "lat": 33.290527,
+    "lng": 126.530439
+   },
+   "dest": {
+    "name": "서귀포 치유의숲 주차장",
+    "lat": 33.291757,
+    "lng": 126.527917,
+    "kind": "parking"
+   },
+   "review": {
+    "best": "draft",
+    "dest": "draft",
+    "oneLiner": "draft",
+    "types": "draft"
+   },
+   "contestEntry": false,
+   "hidden": false,
+   "details": [
+    "삼나무",
+    "데크길"
+   ],
+   "coordSource": "manual",
+   "coordRef": {
+    "spot": "osm:node/11338570139",
+    "dest": "osm:way/1299941854"
+   },
+   "checkAdmission": true
   }
  ]
 }
