@@ -8640,7 +8640,7 @@
    "brunchNo": 130,
    "brunchUrl": "https://brunch.co.kr/@caed5ea4c3d74d9/130",
    "name": "카멜리아힐 가을 정원",
-   "region": "제주 서귀포",
+   "region": "제주 안덕",
    "types": [
     "kkotmureut"
    ],
@@ -8691,10 +8691,10 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
    "hidden": false,
@@ -8717,7 +8717,7 @@
    "brunchNo": 130,
    "brunchUrl": "https://brunch.co.kr/@caed5ea4c3d74d9/130",
    "name": "차귀도 억새 바람길",
-   "region": "제주 제주시",
+   "region": "제주 한경",
    "types": [
     "eoksae",
     "bada"
@@ -8769,10 +8769,10 @@
     "kind": "entrance"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
    "hidden": false,
@@ -8794,7 +8794,7 @@
    "brunchNo": 131,
    "brunchUrl": "https://brunch.co.kr/@caed5ea4c3d74d9/131",
    "name": "마라도 빠삐용 절벽",
-   "region": "제주 서귀포",
+   "region": "제주 대정",
    "types": [
     "bada"
    ],
@@ -8845,10 +8845,10 @@
     "kind": "entrance"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
    "hidden": false,
@@ -8870,7 +8870,7 @@
    "brunchNo": 131,
    "brunchUrl": "https://brunch.co.kr/@caed5ea4c3d74d9/131",
    "name": "서귀포 치유의 숲 삼나무길",
-   "region": "제주 서귀포",
+   "region": "제주 호근",
    "types": [
     "sinrok"
    ],
@@ -8921,10 +8921,10 @@
     "kind": "parking"
    },
    "review": {
-    "best": "draft",
-    "dest": "draft",
-    "oneLiner": "draft",
-    "types": "draft"
+    "best": "confirmed",
+    "dest": "confirmed",
+    "oneLiner": "confirmed",
+    "types": "confirmed"
    },
    "contestEntry": false,
    "hidden": false,
