@@ -44,13 +44,13 @@ describe('풍경 고르기(#/find)', () => {
     expect(h2.querySelector('.dot.now')!.getAttribute('aria-hidden')).toBe('true');
     expect(h2.querySelector('.sr')!.textContent).toBe(', 지금 가기 좋아요');
     expect(h2.textContent).toBe('10월에 좋은 풍경, 지금 가기 좋아요');
-    expect(names('.sec-good .tile')).toEqual(['꽃무릇·가을꽃', '단풍·은행', '억새·갈대', '계곡·폭포', '운해·물안개', '신록·초원']);
+    expect(names('.sec-good .tile')).toEqual(['단풍·은행', '억새·갈대', '꽃무릇·가을꽃', '계곡·폭포', '운해·물안개', '신록·초원']);
     const big = q('.sec-good .tile')!;
     expect(big.classList.contains('big-tile')).toBe(true);
     expect(big.querySelector('.on-photo-status')).toBeNull(); // 큰 타일 사진 위 상태는 없앰(#55)
     expect(big.textContent).not.toContain('지금 좋아요');
     expect(big.textContent).not.toContain('제철');
-    expect(big.querySelector('.tile-line')!.textContent).toMatch(/^9월~10월 · \d+곳$/); // D68 달 범위 표기
+    expect(big.querySelector('.tile-line')!.textContent).toMatch(/^10월~11월 · \d+곳$/); // D68 달 범위 표기
   });
 
   it('D17: 언제나 볼 수 있는 풍경 — 일출·낙조, 바다 절경(한 줄은 "언제나 · N곳")', async () => {
@@ -75,15 +75,15 @@ describe('풍경 고르기(#/find)', () => {
     const chips = all('.sec-region .chip');
     expect(chips[0]!.textContent).toBe('전국');
     expect(chips[0]!.getAttribute('aria-pressed')).toBe('true');
-    expect(chips.slice(1).map((c) => c.firstChild?.textContent)).toEqual(['강원', '경상', '전라', '충청', '수도권']);
+    expect(chips.slice(1).map((c) => c.firstChild?.textContent)).toEqual(['강원', '경상', '전라', '충청', '수도권', '제주']); // 11/14 새 글로 제주 장면이 생김
     chips[1]!.click();
     expect(window.location.hash).toBe('#/find/all/gangwon');
   });
 
-  it('타일을 누르면 그 풍경 화면(10월 첫 타일 꽃무릇·가을꽃 → #/find/kkotmureut)', async () => {
+  it('타일을 누르면 그 풍경 화면(10월 첫 타일 단풍·은행 → #/find/danpung)', async () => {
     await start('#/find');
     all('.sec-good .tile')[0]!.click();
-    expect(window.location.hash).toBe('#/find/kkotmureut');
+    expect(window.location.hash).toBe('#/find/danpung');
   });
 });
 
@@ -160,9 +160,11 @@ describe('풍경을 고른 뒤(#/find/<풍경>)', () => {
   });
 
   it('F3-AC9: 제철 장면이 없는 풍경(억새·갈대) — 안내와 "지금 함께 보기 좋은 풍경" 타일 2개, 범례 없음', async () => {
-    await start('#/find/eoksae');
+    // 11/14 새 글로 억새에도 제철 장면(차귀도)이 생겨, 그 장면을 뺀 데이터로 '제철 장면이 없을 때'를 확인
+    const data = appData as ContentFile;
+    await start('#/find/eoksae', { content: { ...data, scenes: data.scenes.filter((s) => s.id !== 's-130-chagwido') } });
     expect(q('.few-note')!.textContent).toBe('억새가 가장 좋을 때 다녀온 이야기는 아직 없어요. 다른 계절에 다녀온 모습이에요.');
-    expect(names('.together .tile')).toEqual(['꽃무릇·가을꽃', '단풍·은행']); // 10월 좋은 풍경 중 억새 빼고 앞 둘(D61 순서)
+    expect(names('.together .tile')).toEqual(['단풍·은행', '꽃무릇·가을꽃']); // 10월 좋은 풍경 중 억새 빼고 앞 둘(D61 순서)
     expect(q('.find .legend')).toBeNull();
   });
 
