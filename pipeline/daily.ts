@@ -45,11 +45,16 @@ export function compareIndexes(beforeValue: unknown, afterValue: unknown): Index
   const old = new Map(before.stories.map(entry => [entry.no, entry]));
   const current = new Map(after.stories.map(entry => [entry.no, entry]));
   const sorted = (entries: Entry[]) => entries.sort((a, b) => a.no - b.no);
-  const normalize = (index: Index) => ({ ...withoutTime(index), stories: sorted([...index.stories]) });
+  // 11/14: 브런치가 발행 시각(publishTime)의 밀리초를 줄 때마다 다르게 줘서, 초 단위로 맞춰 비교함(그대로 두면 매일 '새 글 0편' 빈 PR)
+  const seconds = (entry: Entry): Entry => {
+    const t = (entry as { publishTime?: unknown }).publishTime;
+    return typeof t === 'number' ? ({ ...entry, publishTime: Math.floor(t / 1000) } as Entry) : entry;
+  };
+  const normalize = (index: Index) => ({ ...withoutTime(index), stories: sorted(index.stories.map(seconds)) });
   return {
     changed: canonical(normalize(before)) !== canonical(normalize(after)),
     added: sorted(after.stories.filter(entry => !old.has(entry.no))),
-    updated: sorted(after.stories.filter(entry => old.has(entry.no) && canonical(old.get(entry.no)) !== canonical(entry))),
+    updated: sorted(after.stories.filter(entry => old.has(entry.no) && canonical(seconds(old.get(entry.no)!)) !== canonical(seconds(entry)))),
     removed: sorted(before.stories.filter(entry => !current.has(entry.no))),
   };
 }
