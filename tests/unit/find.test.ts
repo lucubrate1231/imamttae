@@ -491,10 +491,10 @@ describe('실제 앱 데이터의 풍경 찾기 규칙 (F3-AC2·AC3·AC4·AC7)',
     expect(find.typeWhen(scenes, 'ilchul')).toEqual({ kind: 'always' });
     expect(find.typeWhen(scenes, 'bada')).toEqual({ kind: 'always' });
   });
-  it('10월(D61): 그때만 보는 풍경 먼저 — 가을꽃(9~10월, 10월에 끝남) → 단풍 → 억새 → 계곡 → 운해 → 신록, 언제나는 일출·바다, 다른 때는 겨울부터다', () => {
+  it('10월(D61): 그때만 보는 풍경 먼저 — 단풍·억새(10월~11월) → 가을꽃(9월~11월, 카멜리아힐이 들어와 길어짐) → 계곡 → 운해 → 신록, 언제나는 일출·바다, 다른 때는 겨울부터다', () => {
     const scenes = ContentFile.parse(appData).scenes.filter((s) => s.kind === 'story');
     const g = find.typeGroups(scenes, 10);
-    expect(g.good.map((x) => x.type)).toEqual(['kkotmureut', 'danpung', 'eoksae', 'gyegok', 'unhae', 'sinrok']);
+    expect(g.good.map((x) => x.type)).toEqual(['danpung', 'eoksae', 'kkotmureut', 'gyegok', 'unhae', 'sinrok']);
     expect(g.always).toEqual(['ilchul', 'bada']);
     expect(g.other).toEqual(['seolgyeong', 'maehwa', 'beotkkot', 'jindallae', 'yeoreumkkot']);
   });
