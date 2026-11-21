@@ -1,6 +1,6 @@
 {
  "version": 1,
- "generatedAt": "2026-11-14T07:16:40.746Z",
+ "generatedAt": "2026-11-21T01:50:42.102Z",
  "count": 86,
  "stories": [
   {
@@ -166,7 +166,7 @@
    "no": 4,
    "title": "네 번째 여행 - 여름의 지리산",
    "url": "https://brunch.co.kr/@caed5ea4c3d74d9/4",
-   "publishTime": 1754567820079,
+   "publishTime": 1754567820000,
    "contentHash": "b8f183617e817b0961e4d42b76e2af1304ccc480",
    "dateLine": "2019년 9월 23일",
    "visit": {
@@ -1875,7 +1875,7 @@
    "no": 15,
    "title": "열다섯 번째 여행 - 거제와 사량도",
    "url": "https://brunch.co.kr/@caed5ea4c3d74d9/15",
-   "publishTime": 1790944329984,
+   "publishTime": 1790944329000,
    "contentHash": "df56c0633f394893e2db6a4ea092624b14976afa",
    "dateLine": "20년 12월 2일~3일",
    "visit": {
@@ -2385,7 +2385,7 @@
    "no": 18,
    "title": "열여덟 번째 여행 - 창녕 우포늪",
    "url": "https://brunch.co.kr/@caed5ea4c3d74d9/18",
-   "publishTime": 1790946598527,
+   "publishTime": 1790946598000,
    "contentHash": "273c4a35d8e010672a800411e2c7e4364517125d",
    "dateLine": "21년 8월 18~19일",
    "visit": {
@@ -2679,7 +2679,7 @@
    "no": 20,
    "title": "스무 번째 여행 - 내장산과 담양",
    "url": "https://brunch.co.kr/@caed5ea4c3d74d9/20",
-   "publishTime": 1790948369091,
+   "publishTime": 1790948369000,
    "contentHash": "979f5d034f11809d6a0fbafa856febca42691029",
    "dateLine": "21년 11월 9일~10일",
    "visit": {
@@ -3294,7 +3294,7 @@
    "no": 23,
    "title": "스물세 번째 여행 - 서산과 태안",
    "url": "https://brunch.co.kr/@caed5ea4c3d74d9/23",
-   "publishTime": 1790954057648,
+   "publishTime": 1790954057000,
    "contentHash": "72f076a39a2f92c9c43dc4820e19ba735e23a4af",
    "dateLine": "22년 4월 26~27일",
    "visit": {
@@ -3459,7 +3459,7 @@
    "no": 24,
    "title": "스물네 번째 여행 - 정선·삼척·영월·봉화",
    "url": "https://brunch.co.kr/@caed5ea4c3d74d9/24",
-   "publishTime": 1790992988859,
+   "publishTime": 1790992988000,
    "contentHash": "8c8aba6130e695e7fee35ddb19364b37051c1aa3",
    "dateLine": "22년 8월 2.3.4일(2박3일)",
    "visit": {
@@ -3760,7 +3760,7 @@
    "no": 25,
    "title": "스물다섯 번째 여행 - 진양호와 진주 유등축제",
    "url": "https://brunch.co.kr/@caed5ea4c3d74d9/25",
-   "publishTime": 1790994020816,
+   "publishTime": 1790994020000,
    "contentHash": "7d2fbc945d4d456b66ad8091f802b41db3adf87f",
    "dateLine": "22년 10월 23일",
    "visit": {
@@ -4485,7 +4485,7 @@
    "no": 29,
    "title": "스물아홉 번째 여행 - 포항 내연산과 보경사",
    "url": "https://brunch.co.kr/@caed5ea4c3d74d9/29",
-   "publishTime": 1790998627060,
+   "publishTime": 1790998627000,
    "contentHash": "bb8fdd887069792a894c4f10d7b10bbb850ecafb",
    "dateLine": "23년 7월 2일",
    "visit": {
@@ -5124,7 +5124,7 @@
    "no": 49,
    "title": "서른세 번째 여행 - 부산 태종대와 법기수원지",
    "url": "https://brunch.co.kr/@caed5ea4c3d74d9/49",
-   "publishTime": 1791005872850,
+   "publishTime": 1791005872000,
    "contentHash": "a0e93166cfe8b5869c9abfd81b1ff708e421056e",
    "dateLine": "23년 11월 26일",
    "visit": {
@@ -9041,7 +9041,7 @@
    "no": 72,
    "title": "쉰다섯 번째 여행 - 울릉도 ② 관음도와 행남 해안길",
    "url": "https://brunch.co.kr/@caed5ea4c3d74d9/72",
-   "publishTime": 1791115327491,
+   "publishTime": 1791115327000,
    "contentHash": "58c04b97bbb73c86d26784b519f9b69aa6329e6d",
    "dateLine": null,
    "visit": null,
@@ -12155,7 +12155,7 @@
    "no": 93,
    "title": "일흔여섯 번째 여행 - 오도산 일출과 합천호 소원길",
    "url": "https://brunch.co.kr/@caed5ea4c3d74d9/93",
-   "publishTime": 1791373466085,
+   "publishTime": 1791373466000,
    "contentHash": "492b24974445fea4d2afe06617d7caa505e6426c",
    "dateLine": "26년 5월 17일",
    "visit": {
@@ -13692,7 +13692,7 @@
    "title": "여든네 번째 여행 - 마라도와 서귀포 치유의 숲",
    "url": "https://brunch.co.kr/@caed5ea4c3d74d9/131",
    "publishTime": 1794633556000,
-   "contentHash": "c46313380f480893b74f276d28f0cb4f132da2fa",
+   "contentHash": "c7caab1bd60dc6ef1dab60a594f68e3d924c06a4",
    "dateLine": "26년 10월 19일",
    "visit": {
     "year": 2026,
@@ -13702,7 +13702,7 @@
    "sections": [
     "국토 최남단, 마라도",
     "서귀포 치유의 숲 삼나무 아래",
-    "맛집"
+    "이번에 발견한 맛집"
    ],
    "photos": [
     {
@@ -13854,13 +13854,6 @@
     },
     {
      "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/NoxEvP7gUwHtQM7HU5i5dANfhsg.jpg",
-     "w": 640,
-     "h": 1385,
-     "cap": "",
-     "section": "서귀포 치유의 숲 삼나무 아래"
-    },
-    {
-     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/J3XzoGHRUnndBjNDuLdcXEI18CA.jpg",
      "w": 640,
      "h": 1385,
      "cap": "",
