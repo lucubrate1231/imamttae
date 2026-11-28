@@ -1,7 +1,7 @@
 {
  "version": 1,
- "generatedAt": "2026-11-14T07:16:40.746Z",
- "count": 86,
+ "generatedAt": "2026-11-28T02:58:54.250Z",
+ "count": 87,
  "stories": [
   {
    "no": 1,
@@ -40,7 +40,7 @@
    "title": "두 번째 여행- 경상북도 수목원",
    "url": "https://brunch.co.kr/@caed5ea4c3d74d9/2",
    "publishTime": 1754562893000,
-   "contentHash": "580d436ebdaea613a93cce60bc0b37257d672239",
+   "contentHash": "4e8c0b552aac4ac35e435336539bc0fc55b58236",
    "dateLine": "2019년 7월 29일 - 구름 약간",
    "visit": {
     "year": 2019,
@@ -166,8 +166,8 @@
    "no": 4,
    "title": "네 번째 여행 - 여름의 지리산",
    "url": "https://brunch.co.kr/@caed5ea4c3d74d9/4",
-   "publishTime": 1754567820079,
-   "contentHash": "b8f183617e817b0961e4d42b76e2af1304ccc480",
+   "publishTime": 1754567820000,
+   "contentHash": "5ca14247b45b104d1fec9e887981b424460be3b6",
    "dateLine": "2019년 9월 23일",
    "visit": {
     "year": 2019,
@@ -245,7 +245,7 @@
    "title": "다섯 번째 여행 - 설악산",
    "url": "https://brunch.co.kr/@caed5ea4c3d74d9/5",
    "publishTime": 1754615907000,
-   "contentHash": "713f75175766a4a255bed73fb8aba5f35ce04fc7",
+   "contentHash": "7bbf8646f3f67bcf72d14f156a9e89bdae530e92",
    "dateLine": "2019. 10. 12",
    "visit": {
     "year": 2019,
@@ -1875,7 +1875,7 @@
    "no": 15,
    "title": "열다섯 번째 여행 - 거제와 사량도",
    "url": "https://brunch.co.kr/@caed5ea4c3d74d9/15",
-   "publishTime": 1790944329984,
+   "publishTime": 1790944329000,
    "contentHash": "df56c0633f394893e2db6a4ea092624b14976afa",
    "dateLine": "20년 12월 2일~3일",
    "visit": {
@@ -2064,7 +2064,7 @@
    "title": "열여섯 번째 여행 - 부안 내소사와 선유도",
    "url": "https://brunch.co.kr/@caed5ea4c3d74d9/16",
    "publishTime": 1790945012000,
-   "contentHash": "399470ebb89169f48b3682b397a7a383ab6321a5",
+   "contentHash": "79bdcbc9371ffeb98cf8707ef3eb87b17b50e6af",
    "dateLine": "21년 5월 20~21일",
    "visit": {
     "year": 2021,
@@ -2385,7 +2385,7 @@
    "no": 18,
    "title": "열여덟 번째 여행 - 창녕 우포늪",
    "url": "https://brunch.co.kr/@caed5ea4c3d74d9/18",
-   "publishTime": 1790946598527,
+   "publishTime": 1790946598000,
    "contentHash": "273c4a35d8e010672a800411e2c7e4364517125d",
    "dateLine": "21년 8월 18~19일",
    "visit": {
@@ -2495,7 +2495,7 @@
    "title": "열아홉 번째 여행 - 영주 부석사와 봉화 청량사",
    "url": "https://brunch.co.kr/@caed5ea4c3d74d9/19",
    "publishTime": 1790947650000,
-   "contentHash": "f3c03acc9fb5932844de053d214bc6a138e156b0",
+   "contentHash": "978881f6a62f98814b80d4df2d5bf102f67d204f",
    "dateLine": "21년 10월 4일~5일",
    "visit": {
     "year": 2021,
@@ -2679,8 +2679,8 @@
    "no": 20,
    "title": "스무 번째 여행 - 내장산과 담양",
    "url": "https://brunch.co.kr/@caed5ea4c3d74d9/20",
-   "publishTime": 1790948369091,
-   "contentHash": "979f5d034f11809d6a0fbafa856febca42691029",
+   "publishTime": 1790948369000,
+   "contentHash": "33e3cd3fbf7680e8068de19515f8fb8ed37d80df",
    "dateLine": "21년 11월 9일~10일",
    "visit": {
     "year": 2021,
@@ -3294,7 +3294,7 @@
    "no": 23,
    "title": "스물세 번째 여행 - 서산과 태안",
    "url": "https://brunch.co.kr/@caed5ea4c3d74d9/23",
-   "publishTime": 1790954057648,
+   "publishTime": 1790954057000,
    "contentHash": "72f076a39a2f92c9c43dc4820e19ba735e23a4af",
    "dateLine": "22년 4월 26~27일",
    "visit": {
@@ -3459,7 +3459,7 @@
    "no": 24,
    "title": "스물네 번째 여행 - 정선·삼척·영월·봉화",
    "url": "https://brunch.co.kr/@caed5ea4c3d74d9/24",
-   "publishTime": 1790992988859,
+   "publishTime": 1790992988000,
    "contentHash": "8c8aba6130e695e7fee35ddb19364b37051c1aa3",
    "dateLine": "22년 8월 2.3.4일(2박3일)",
    "visit": {
@@ -3760,7 +3760,7 @@
    "no": 25,
    "title": "스물다섯 번째 여행 - 진양호와 진주 유등축제",
    "url": "https://brunch.co.kr/@caed5ea4c3d74d9/25",
-   "publishTime": 1790994020816,
+   "publishTime": 1790994020000,
    "contentHash": "7d2fbc945d4d456b66ad8091f802b41db3adf87f",
    "dateLine": "22년 10월 23일",
    "visit": {
@@ -4485,7 +4485,7 @@
    "no": 29,
    "title": "스물아홉 번째 여행 - 포항 내연산과 보경사",
    "url": "https://brunch.co.kr/@caed5ea4c3d74d9/29",
-   "publishTime": 1790998627060,
+   "publishTime": 1790998627000,
    "contentHash": "bb8fdd887069792a894c4f10d7b10bbb850ecafb",
    "dateLine": "23년 7월 2일",
    "visit": {
@@ -5124,8 +5124,8 @@
    "no": 49,
    "title": "서른세 번째 여행 - 부산 태종대와 법기수원지",
    "url": "https://brunch.co.kr/@caed5ea4c3d74d9/49",
-   "publishTime": 1791005872850,
-   "contentHash": "a0e93166cfe8b5869c9abfd81b1ff708e421056e",
+   "publishTime": 1791005872000,
+   "contentHash": "c7c2fca02fa36b8e4b14486ba922daafbb218bdb",
    "dateLine": "23년 11월 26일",
    "visit": {
     "year": 2023,
@@ -6666,7 +6666,7 @@
    "title": "마흔세 번째 여행 - 해남 땅끝과 진도 세방낙조",
    "url": "https://brunch.co.kr/@caed5ea4c3d74d9/59",
    "publishTime": 1791026175000,
-   "contentHash": "bd27933f7bde49a4ccc6697a98910fa65fc8beca",
+   "contentHash": "7cca8f649447c3ffe8a5f05917aefc40572b0c69",
    "dateLine": "24년 8월 3일",
    "visit": {
     "year": 2024,
@@ -9041,7 +9041,7 @@
    "no": 72,
    "title": "쉰다섯 번째 여행 - 울릉도 ② 관음도와 행남 해안길",
    "url": "https://brunch.co.kr/@caed5ea4c3d74d9/72",
-   "publishTime": 1791115327491,
+   "publishTime": 1791115327000,
    "contentHash": "58c04b97bbb73c86d26784b519f9b69aa6329e6d",
    "dateLine": null,
    "visit": null,
@@ -12155,7 +12155,7 @@
    "no": 93,
    "title": "일흔여섯 번째 여행 - 오도산 일출과 합천호 소원길",
    "url": "https://brunch.co.kr/@caed5ea4c3d74d9/93",
-   "publishTime": 1791373466085,
+   "publishTime": 1791373466000,
    "contentHash": "492b24974445fea4d2afe06617d7caa505e6426c",
    "dateLine": "26년 5월 17일",
    "visit": {
@@ -13692,7 +13692,7 @@
    "title": "여든네 번째 여행 - 마라도와 서귀포 치유의 숲",
    "url": "https://brunch.co.kr/@caed5ea4c3d74d9/131",
    "publishTime": 1794633556000,
-   "contentHash": "c46313380f480893b74f276d28f0cb4f132da2fa",
+   "contentHash": "c7caab1bd60dc6ef1dab60a594f68e3d924c06a4",
    "dateLine": "26년 10월 19일",
    "visit": {
     "year": 2026,
@@ -13702,7 +13702,7 @@
    "sections": [
     "국토 최남단, 마라도",
     "서귀포 치유의 숲 삼나무 아래",
-    "맛집"
+    "이번에 발견한 맛집"
    ],
    "photos": [
     {
@@ -13860,13 +13860,6 @@
      "section": "서귀포 치유의 숲 삼나무 아래"
     },
     {
-     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/J3XzoGHRUnndBjNDuLdcXEI18CA.jpg",
-     "w": 640,
-     "h": 1385,
-     "cap": "",
-     "section": "서귀포 치유의 숲 삼나무 아래"
-    },
-    {
      "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/HQjOy66Vb-w0RYamA9dvzkI62j8.jpg",
      "w": 640,
      "h": 1385,
@@ -13978,6 +13971,194 @@
      "h": 760,
      "cap": "",
      "section": "6. 의견 보내기"
+    }
+   ]
+  },
+  {
+   "no": 133,
+   "title": "여든다섯 번째 여행 - 거제 정글돔과 노자산 케이블카",
+   "url": "https://brunch.co.kr/@caed5ea4c3d74d9/133",
+   "publishTime": 1795604956000,
+   "contentHash": "6ff43701fca823f1f0c73d932d9b0865c7a8984e",
+   "dateLine": "26년 11월 15일",
+   "visit": {
+    "year": 2026,
+    "month": 11,
+    "day": 15
+   },
+   "sections": [
+    "가을비 그친 아침, 거제로",
+    "정글돔 안의 열대 숲",
+    "노자산을 물들인 만추"
+   ],
+   "photos": [
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/G1_IFHTeh4utUTbP3s_VeV_dV_8.jpg",
+     "w": 1385,
+     "h": 640,
+     "cap": "가덕도 휴게소에서",
+     "section": "가을비 그친 아침, 거제로"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/bSwlw7fXdx2sRVQuxufBRHZhSWk.jpg",
+     "w": 1385,
+     "h": 640,
+     "cap": "정글돔",
+     "section": "가을비 그친 아침, 거제로"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/mCw6-QyHz0wY1dWz7DeYrQ8q8w4.jpg",
+     "w": 1385,
+     "h": 640,
+     "cap": "",
+     "section": "가을비 그친 아침, 거제로"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/txcnr4-o7Yuhng-M3SzcV-luju8.jpg",
+     "w": 1385,
+     "h": 640,
+     "cap": "",
+     "section": "가을비 그친 아침, 거제로"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/DTszytWKCe7ntBVrRaH0kT7h8rI.jpg",
+     "w": 1385,
+     "h": 640,
+     "cap": "",
+     "section": "가을비 그친 아침, 거제로"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/GEE0P-SQcyIfdVefwu_SWPp7q9A.jpg",
+     "w": 1384,
+     "h": 640,
+     "cap": "",
+     "section": "가을비 그친 아침, 거제로"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/jVYYF4_w0h9yQIbarLe-Qyre-G4.jpg",
+     "w": 1385,
+     "h": 640,
+     "cap": "",
+     "section": "정글돔 안의 열대 숲"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/rlzm3MKHoz4aQyKBxAxQ2QCj05Q.jpg",
+     "w": 640,
+     "h": 1385,
+     "cap": "",
+     "section": "정글돔 안의 열대 숲"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/k3eCWqQNKlWnIUeFyoukNf7d2u4.jpg",
+     "w": 1385,
+     "h": 640,
+     "cap": "",
+     "section": "정글돔 안의 열대 숲"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/TJwgU1OdydOjwLqnnlvoR9IkmBg.jpg",
+     "w": 640,
+     "h": 1385,
+     "cap": "",
+     "section": "정글돔 안의 열대 숲"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/fjzbZ3rMAoHM3DkGLjsFwNKWViI.jpg",
+     "w": 640,
+     "h": 1385,
+     "cap": "",
+     "section": "정글돔 안의 열대 숲"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/vyCvIS4Q7d30yL_m9W5SOPunOXI.jpg",
+     "w": 640,
+     "h": 1385,
+     "cap": "",
+     "section": "정글돔 안의 열대 숲"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/cNoV7quLTFLhf0-1rwUTef7ukjs.jpg",
+     "w": 640,
+     "h": 1385,
+     "cap": "",
+     "section": "정글돔 안의 열대 숲"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/oCrNNIdmrBqonERMM0cmb9WRpOU.jpg",
+     "w": 640,
+     "h": 1385,
+     "cap": "",
+     "section": "정글돔 안의 열대 숲"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/xWAeeeGBzIEEpgPqptjhkAsuoI8.jpg",
+     "w": 640,
+     "h": 1385,
+     "cap": "",
+     "section": "정글돔 안의 열대 숲"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/gpNBEyyADzUGL_NiKAjo4IcgHho.jpg",
+     "w": 1385,
+     "h": 640,
+     "cap": "",
+     "section": "정글돔 안의 열대 숲"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/lz4jN7oDO1Uc5w_jyR8z5Q81xWY.jpg",
+     "w": 640,
+     "h": 1385,
+     "cap": "",
+     "section": "정글돔 안의 열대 숲"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/XHC3CfIB2SHlLms5A_xujQ1L38M.jpg",
+     "w": 1385,
+     "h": 640,
+     "cap": "",
+     "section": "노자산을 물들인 만추"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/txv4gdU8NN-Ow02vCKE-iztBCUw.jpg",
+     "w": 1385,
+     "h": 640,
+     "cap": "",
+     "section": "노자산을 물들인 만추"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/8zBDS43r3D-AzCbRdFiVRJJEpP8.jpg",
+     "w": 1385,
+     "h": 640,
+     "cap": "",
+     "section": "노자산을 물들인 만추"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/ToB2fVNen366XH4YwVNsvTLLPbo.jpg",
+     "w": 1385,
+     "h": 640,
+     "cap": "",
+     "section": "노자산을 물들인 만추"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/eR6Yjx3VSrRfUNZHLAKF4P2Lkfw.jpg",
+     "w": 1385,
+     "h": 640,
+     "cap": "노자산의 단풍",
+     "section": "노자산을 물들인 만추"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/HNF1rWRedYb8TJJ2hiSWoeEEZPA.jpg",
+     "w": 1385,
+     "h": 640,
+     "cap": "",
+     "section": "노자산을 물들인 만추"
+    },
+    {
+     "src": "https://t1.kakaocdn.net/brunch/service/user/i5bK/image/UYxVrJnkFojqSpDesn8UpcW_4ZQ.jpg",
+     "w": 1385,
+     "h": 640,
+     "cap": "노자산 전망대",
+     "section": "노자산을 물들인 만추"
     }
    ]
   }
